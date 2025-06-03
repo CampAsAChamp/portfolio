@@ -27,6 +27,12 @@ export const experiences = [
                     Launched Attribute Based Routing to match customers to tax experts at a more granular level, driving a 11% reduction in TurboTax Live customer service time without impact to quality and 6% increase in same-day tax filings (contributing to $5.3M savings).
                   </li>
                   <li>
+                    Created service with accompanying web app for syncing expert skills and creating routing plans in AWS, enabling Attribute Based Routing.
+                  </li>
+                  <li>
+                    Developed service for scheduling expert appointments and fulfilling them at their scheduled time, handling over 500,000 appointments a year.
+                  </li>
+                  <li>
                     Decoupled TurboTax Live from Amazon Connect, saving 1100 hours per year by eliminating the need for personal queues and licenses to be created by Ops team.
                   </li>
                   `,
