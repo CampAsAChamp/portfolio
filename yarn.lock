@@ -10015,32 +10015,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"portfolio@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "portfolio@workspace:."
-  dependencies:
-    "@babel/plugin-proposal-private-property-in-object": "npm:^7.21.11"
-    "@trivago/prettier-plugin-sort-imports": "npm:^4.3.0"
-    animate.css: "npm:^4.1.1"
-    eslint: "npm:^8.52.0"
-    gh-pages: "npm:^5.0.0"
-    html-react-parser: "npm:^1.4.13"
-    postcss: "npm:^8.4.38"
-    prettier: "npm:^3.5.2"
-    prettier-eslint: "npm:^16.1.2"
-    prettier-plugin-css-order: "npm:^1.2.0"
-    react: "npm:^18.3.1"
-    react-animate-on-scroll: "npm:^2.1.9"
-    react-dark-mode-toggle: "npm:^0.2.0"
-    react-dom: "npm:^18.3.1"
-    react-fns: "npm:^1.4.0"
-    react-inlinesvg: "npm:^3.0.0"
-    react-scripts: "npm:^5.0.1"
-    source-map-explorer: "npm:^2.5.2"
-    swiper: "npm:^8.2.4"
-  languageName: unknown
-  linkType: soft
-
 "picocolors@npm:^0.2.1":
   version: 0.2.1
   resolution: "picocolors@npm:0.2.1"
@@ -10116,6 +10090,32 @@ __metadata:
   checksum: 10c0/ecb60e1f8e1f611c0bdf1a0b6a474d6dfb51185567dc6f29cdef37c8d480ecba5362e006606bb290519bbb6f49526c403fabea93c3090c20368d98bb90c999ab
   languageName: node
   linkType: hard
+
+"portfolio@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "portfolio@workspace:."
+  dependencies:
+    "@babel/plugin-proposal-private-property-in-object": "npm:^7.21.11"
+    "@trivago/prettier-plugin-sort-imports": "npm:^4.3.0"
+    animate.css: "npm:^4.1.1"
+    eslint: "npm:^8.52.0"
+    gh-pages: "npm:^5.0.0"
+    html-react-parser: "npm:^1.4.13"
+    postcss: "npm:^8.4.38"
+    prettier: "npm:^3.5.2"
+    prettier-eslint: "npm:^16.1.2"
+    prettier-plugin-css-order: "npm:^1.2.0"
+    react: "npm:^18.3.1"
+    react-animate-on-scroll: "npm:^2.1.9"
+    react-dark-mode-toggle: "npm:^0.2.0"
+    react-dom: "npm:^18.3.1"
+    react-fns: "npm:^1.4.0"
+    react-inlinesvg: "npm:^3.0.0"
+    react-scripts: "npm:^5.0.1"
+    source-map-explorer: "npm:^2.5.2"
+    swiper: "npm:^8.2.4"
+  languageName: unknown
+  linkType: soft
 
 "possible-typed-array-names@npm:^1.0.0":
   version: 1.1.0
