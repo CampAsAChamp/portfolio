@@ -7,7 +7,7 @@
     <img src="src/assets/S_Logo_Purple.svg" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">Personal Website</h3>
+<h3 align="center">Portfolio</h3>
 
   <p align="center">
     Portfolio Website to visually show off my work in my career and free time
