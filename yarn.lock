@@ -10015,9 +10015,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"personal-website@workspace:.":
+"portfolio@workspace:.":
   version: 0.0.0-use.local
-  resolution: "personal-website@workspace:."
+  resolution: "portfolio@workspace:."
   dependencies:
     "@babel/plugin-proposal-private-property-in-object": "npm:^7.21.11"
     "@trivago/prettier-plugin-sort-imports": "npm:^4.3.0"

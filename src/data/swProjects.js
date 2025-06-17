@@ -1,16 +1,16 @@
+import * as technologies from './technologies';
+
 import ChickFilAThumbnail from 'assets/Projects/Software/Chick_Fil_A.webp';
-import DiggermanVideoThumbnailMp4 from 'assets/Projects/Software/Diggerman.mp4';
-import DiggermanVideoThumbnail from 'assets/Projects/Software/Diggerman.webm';
 import DiggermanThumbnail from 'assets/Projects/Software/Diggerman.webp';
-import FaceSwappingVideoThumbnailMp4 from 'assets/Projects/Software/Face_Morphing.mp4';
-import FaceSwappingVideoThumbnail from 'assets/Projects/Software/Face_Morphing.webm';
+import DiggermanVideoThumbnail from 'assets/Projects/Software/Diggerman.webm';
+import DiggermanVideoThumbnailMp4 from 'assets/Projects/Software/Diggerman.mp4';
 import FaceSwappingThumbnail from 'assets/Projects/Software/Face_Morphing.webp';
+import FaceSwappingVideoThumbnail from 'assets/Projects/Software/Face_Morphing.webm';
+import FaceSwappingVideoThumbnailMp4 from 'assets/Projects/Software/Face_Morphing.mp4';
 import HomeServerThumbnail from 'assets/Projects/Software/Home_Server.webp';
 import ObjectDetectionThumbnail from 'assets/Projects/Software/Object_Detection.webp';
-import PersonalWebsiteThumbnail from 'assets/Projects/Software/Portfolio_Thumbnail.webp';
+import PortfolioThumbnail from 'assets/Projects/Software/Portfolio_Thumbnail.webp';
 import SpotifyPPThumbnail from 'assets/Projects/Software/Spotify.webp';
-
-import * as technologies from './technologies';
 
 const projects = [
   {
@@ -122,7 +122,7 @@ const projects = [
     isVideo: true,
   },
   {
-    name: 'Personal Website',
+    name: 'Portfolio Website',
     technologies: [technologies.REACT, technologies.JAVASCRIPT, technologies.HTML5, technologies.CSS3, technologies.FIGMA],
     textContent: `<li>
                     Static React, Javascript, HTML and CSS website built to showcase my design skills along with experience and projects I've had over the years.
@@ -130,8 +130,8 @@ const projects = [
                   <li>
                     Created mockup design with Figma.
                   </li>`,
-    link: 'https://github.com/CampAsAChamp/campasachamp.github.io',
-    thumbnail: PersonalWebsiteThumbnail,
+    link: 'https://nickhs.dev',
+    thumbnail: PortfolioThumbnail,
   },
   {
     name: 'Home Server',
