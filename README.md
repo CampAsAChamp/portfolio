@@ -3,7 +3,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/CampAsAChamp/campasachamp.github.io">
+  <a href="https://github.com/CampAsAChamp/portfolio">
     <img src="src/assets/S_Logo_Purple.svg" alt="Logo" width="80" height="80">
   </a>
 
@@ -12,14 +12,14 @@
   <p align="center">
     Portfolio Website to visually show off my work in my career and free time
     <br />
-    <a href="https://campasachamp.github.io/">https://campasachamp.github.io/</a>
+    <a href="https://nickhs.dev/">https://nickhs.dev/</a>
     <br />
     <br />
-    <a href="https://campasachamp.github.io/">View Website</a>
+    <a href="https://nickhs.dev/">View Website</a>
     ·
-    <a href="https://github.com/CampAsAChamp/campasachamp.github.io/issues">Report Bug</a>
+    <a href="https://github.com/CampAsAChamp/portfolio/issues">Report Bug</a>
     ·
-    <a href="https://github.com/CampAsAChamp/campasachamp.github.io/issues">Request Feature</a>
+    <a href="https://github.com/CampAsAChamp/portfolio/issues">Request Feature</a>
   </p>
 </div>
 
@@ -67,7 +67,7 @@
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/CampAsAChamp/campasachamp.github.io.git
+   git clone https://github.com/CampAsAChamp/portfolio.git
    ```
 2. Navigate into the repo and run
    ```sh
@@ -108,7 +108,7 @@ the React app.
 
 ## Usage
 
-1. View the site live at https://campasachamp.github.io/
+1. View the site live at https://nickhs.dev/
 
 <!-- LICENSE -->
 
