@@ -27,3 +27,6 @@ yarn-error.log*
 
 # Githook Config
 .intuitgithookrc
+
+# Yarn config
+.yarn
