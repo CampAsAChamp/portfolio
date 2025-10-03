@@ -11,10 +11,6 @@ export function SwProjectVideo({
     const [isPlayButtonFading, setIsPlayButtonFading] = useState(false);
     const videoRef = useRef(null);
 
-    // Check if we're in Instagram browser
-    const isInstagramBrowser = typeof navigator !== 'undefined' &&
-        navigator.userAgent.includes('Instagram');
-
     const handleVideoPlay = (e) => {
         e.stopPropagation();
         setIsVideoPlaying(true);
@@ -45,23 +41,8 @@ export function SwProjectVideo({
         }
     };
 
-    const startVideoManually = (event) => {
-        event.stopPropagation();
-        event.preventDefault();
-
+    const startVideoManually = () => {
         if (!videoRef.current) return;
-
-        // For Instagram browser, use simpler approach
-        if (isInstagramBrowser) {
-            videoRef.current.play()
-                .then(() => {
-                    setIsVideoPlaying(true);
-                })
-                .catch(() => {
-                    onVideoError?.();
-                });
-            return;
-        }
 
         setIsPlayButtonFading(true);
 
@@ -81,11 +62,6 @@ export function SwProjectVideo({
 
     const getPlayButtonClassName = () => {
         const baseClass = 'video-play-overlay';
-
-        // Simpler styling for Instagram browser
-        if (isInstagramBrowser) {
-            return `${baseClass} instagram-simple`;
-        }
 
         if (isPlayButtonFading) {
             return `${baseClass} fading`;
@@ -109,24 +85,24 @@ export function SwProjectVideo({
                 poster={project.thumbnail}
                 alt={project.name}
                 title={project.name}
-                autoPlay={canAutoPlay && !isInstagramBrowser}
-                loop={canAutoPlay && !isInstagramBrowser}
+                autoPlay={canAutoPlay}
+                loop={canAutoPlay}
                 muted
                 playsInline
                 disablePictureInPicture
-                controls={isInstagramBrowser ? true : false}
+                controls={false}
                 preload="metadata"
                 onError={handleVideoError}
                 onLoadStart={(e) => e.stopPropagation()}
                 onPlay={handleVideoPlay}
                 onPause={handleVideoPause}
-                onClick={isInstagramBrowser ? undefined : toggleVideoPlayback}
+                onClick={toggleVideoPlayback}
                 style={{
                     background: `url(${project.thumbnail}) center/cover no-repeat`
                 }}
             />
 
-            {shouldShowPlayButton && !isInstagramBrowser && (
+            {shouldShowPlayButton && (
                 <div
                     className={getPlayButtonClassName()}
                     onClick={startVideoManually}
