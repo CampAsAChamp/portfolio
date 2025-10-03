@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export function SwProjectVideo({
     project,
@@ -11,9 +11,40 @@ export function SwProjectVideo({
     const [isPlayButtonFading, setIsPlayButtonFading] = useState(false);
     const videoRef = useRef(null);
 
+    // Handle Instagram browser specific behavior
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        // Additional event listeners for Instagram browser compatibility
+        const handleTimeUpdate = () => {
+            if (video.currentTime > 0 && !video.paused) {
+                setIsVideoPlaying(true);
+                setIsPlayButtonFading(false);
+            }
+        };
+
+        const handleWaiting = () => {
+            // Video is buffering, keep play button hidden if it was playing
+            if (isVideoPlaying) {
+                setIsPlayButtonFading(false);
+            }
+        };
+
+        video.addEventListener('timeupdate', handleTimeUpdate);
+        video.addEventListener('waiting', handleWaiting);
+
+        return () => {
+            video.removeEventListener('timeupdate', handleTimeUpdate);
+            video.removeEventListener('waiting', handleWaiting);
+        };
+    }, [isVideoPlaying]);
+
     const handleVideoPlay = (e) => {
         e.stopPropagation();
         setIsVideoPlaying(true);
+        // Ensure play button is hidden when video starts playing
+        setIsPlayButtonFading(false);
         onVideoPlay?.();
     };
 
@@ -63,6 +94,11 @@ export function SwProjectVideo({
     const getPlayButtonClassName = () => {
         const baseClass = 'video-play-overlay';
 
+        // Force hide button when video is playing (especially for Instagram browser)
+        if (isVideoPlaying) {
+            return `${baseClass} hidden`;
+        }
+
         if (isPlayButtonFading) {
             return `${baseClass} fading`;
         }
@@ -74,7 +110,9 @@ export function SwProjectVideo({
         return baseClass;
     };
 
-    const shouldShowPlayButton = !canAutoPlay || !isVideoPlaying;
+    // Fix play button visibility logic for Instagram browser
+    // Show play button only when autoplay is disabled AND video is not playing
+    const shouldShowPlayButton = !canAutoPlay && !isVideoPlaying;
 
     return (
         <div className="video-container">
