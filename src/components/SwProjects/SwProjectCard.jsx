@@ -11,6 +11,8 @@ export function SwProjectCard(props) {
   const { project, index } = props;
   const [canAutoPlay, setCanAutoPlay] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isPlayButtonFading, setIsPlayButtonFading] = useState(false);
   const videoRef = useRef(null);
 
   // Check if we're in a problematic browser environment
@@ -36,10 +38,43 @@ export function SwProjectCard(props) {
 
   const startVideoManually = () => {
     if (videoRef.current) {
-      videoRef.current.play().catch(() => {
-        // Fallback to showing static image if video fails
+      // Start fade animation immediately
+      setIsPlayButtonFading(true);
+
+      videoRef.current.play().then(() => {
+        // Video started successfully
+        setIsVideoPlaying(true);
+
+        // For initial play, enable autoplay state
+        if (!canAutoPlay) {
+          setCanAutoPlay(true);
+        }
+
+        // Wait for fade animation to complete before hiding button
+        setTimeout(() => {
+          setIsPlayButtonFading(false);
+        }, 300); // Match animation duration
+      }).catch(() => {
+        // Reset fade state if video fails
+        setIsPlayButtonFading(false);
         setVideoError(true);
       });
+    }
+  };
+
+  const toggleVideoPlayback = (event) => {
+    event.stopPropagation();
+    if (videoRef.current) {
+      if (isVideoPlaying) {
+        videoRef.current.pause();
+        setIsVideoPlaying(false);
+      } else {
+        videoRef.current.play().then(() => {
+          setIsVideoPlaying(true);
+        }).catch(() => {
+          setVideoError(true);
+        });
+      }
     }
   };
 
@@ -79,17 +114,26 @@ export function SwProjectCard(props) {
                   preload="metadata"
                   onError={handleVideoError}
                   onLoadStart={(e) => e.stopPropagation()}
-                  onPlay={(e) => e.stopPropagation()}
+                  onPlay={(e) => {
+                    e.stopPropagation();
+                    setIsVideoPlaying(true);
+                  }}
+                  onPause={(e) => {
+                    e.stopPropagation();
+                    setIsVideoPlaying(false);
+                  }}
+                  onClick={toggleVideoPlayback}
                   style={{
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
                     display: 'block',
                     borderRadius: 'var(--rounded-component-corners-size)',
-                    background: `url(${project.thumbnail}) center/cover no-repeat`
+                    background: `url(${project.thumbnail}) center/cover no-repeat`,
+                    cursor: 'pointer'
                   }}
                 />
-                {!canAutoPlay && (
+                {(!canAutoPlay || !isVideoPlaying) && (
                   <div
                     className="video-play-overlay"
                     onClick={startVideoManually}
@@ -98,16 +142,49 @@ export function SwProjectCard(props) {
                       top: '50%',
                       left: '50%',
                       transform: 'translate(-50%, -50%)',
-                      background: 'rgba(0,0,0,0.7)',
-                      color: 'white',
-                      padding: '10px 15px',
-                      borderRadius: '5px',
+                      width: '60px',
+                      height: '60px',
+                      borderRadius: '50%',
+                      background: 'rgba(255, 255, 255, 0.9)',
+                      backdropFilter: 'blur(10px)',
                       cursor: 'pointer',
-                      fontSize: '14px',
-                      userSelect: 'none'
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      transition: 'all 0.3s ease',
+                      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
+                      animation: isPlayButtonFading
+                        ? 'playButtonFadeOut 0.3s ease-out forwards'
+                        : canAutoPlay && !isVideoPlaying
+                          ? 'playButtonFadeIn 0.3s ease-in forwards, playButtonPulse 2s ease-in-out infinite 0.3s'
+                          : 'playButtonPulse 2s ease-in-out infinite',
+                      opacity: isPlayButtonFading ? 0 : 1
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isPlayButtonFading) {
+                        e.target.style.transform = 'translate(-50%, -50%) scale(1.1)';
+                        e.target.style.background = 'rgba(255, 255, 255, 1)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isPlayButtonFading) {
+                        e.target.style.transform = 'translate(-50%, -50%) scale(1)';
+                        e.target.style.background = 'rgba(255, 255, 255, 0.9)';
+                      }
                     }}
                   >
-                    ▶ Play Video
+                    {/* Play triangle icon */}
+                    <div
+                      style={{
+                        width: 0,
+                        height: 0,
+                        borderLeft: '12px solid #6c63ff',
+                        borderTop: '8px solid transparent',
+                        borderBottom: '8px solid transparent',
+                        marginLeft: '3px', // Optical centering
+                        transition: 'all 0.3s ease'
+                      }}
+                    />
                   </div>
                 )}
               </div>
