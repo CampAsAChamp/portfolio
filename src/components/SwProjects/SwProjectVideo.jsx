@@ -23,7 +23,36 @@ export function SwProjectVideo({
         onVideoPause?.();
     };
 
-    const handleVideoError = () => {
+    const handleVideoError = (e) => {
+        const video = e?.target;
+        let errorMessage = 'Video playback error';
+        
+        if (video?.error) {
+            switch (video.error.code) {
+                case 1:
+                    errorMessage = 'Video loading aborted';
+                    break;
+                case 2:
+                    errorMessage = 'Network error while loading video';
+                    break;
+                case 3:
+                    errorMessage = 'Video decoding failed (format may not be supported)';
+                    break;
+                case 4:
+                    errorMessage = 'Video format not supported by browser';
+                    break;
+                default:
+                    errorMessage = `Unknown video error (code: ${video.error.code})`;
+            }
+        }
+        
+        console.error(`${errorMessage} - Project: ${project.name}`, {
+            error: video?.error,
+            currentSrc: video?.currentSrc,
+            networkState: video?.networkState,
+            readyState: video?.readyState
+        });
+        
         onVideoError?.();
     };
 
@@ -37,11 +66,19 @@ export function SwProjectVideo({
         } else {
             videoRef.current.play()
                 .then(() => setIsVideoPlaying(true))
-                .catch(() => onVideoError?.());
+                .catch((error) => {
+                    console.error('Failed to toggle video playback:', error);
+                    onVideoError?.();
+                });
         }
     };
 
-    const startVideoManually = () => {
+    const startVideoManually = (event) => {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        
         if (!videoRef.current) return;
 
         setIsPlayButtonFading(true);
@@ -54,10 +91,17 @@ export function SwProjectVideo({
                     setIsPlayButtonFading(false);
                 }, 300);
             })
-            .catch(() => {
+            .catch((error) => {
+                console.error('Video playback failed:', error);
                 setIsPlayButtonFading(false);
                 onVideoError?.();
             });
+    };
+
+    const handlePlayButtonTouch = (event) => {
+        // Prevent click event from also firing on touch devices
+        event.preventDefault();
+        startVideoManually(event);
     };
 
     const getPlayButtonClassName = () => {
@@ -81,7 +125,6 @@ export function SwProjectVideo({
             <video
                 ref={videoRef}
                 className="sw-projects-thumbnail"
-                src={project.videoThumbnail}
                 poster={project.thumbnail}
                 alt={project.name}
                 title={project.name}
@@ -100,12 +143,22 @@ export function SwProjectVideo({
                 style={{
                     background: `url(${project.thumbnail}) center/cover no-repeat`
                 }}
-            />
+            >
+                {/* MP4 first for Safari iOS support */}
+                {project.videoThumbnailMp4 && (
+                    <source src={project.videoThumbnailMp4} type="video/mp4" />
+                )}
+                {/* WebM as fallback for browsers that support it (smaller file size) */}
+                {project.videoThumbnail && (
+                    <source src={project.videoThumbnail} type="video/webm" />
+                )}
+            </video>
 
             {shouldShowPlayButton && (
                 <div
                     className={getPlayButtonClassName()}
                     onClick={startVideoManually}
+                    onTouchEnd={handlePlayButtonTouch}
                 >
                     <div className="play-triangle" />
                 </div>
