@@ -1,0 +1,170 @@
+# Portfolio Website - Cursor Rules
+
+## Project Overview
+This is a React-based portfolio website showcasing software engineering and art projects. Built with React 18 and JavaScript (not TypeScript).
+
+## Code Style & Formatting
+
+### General
+- Use JavaScript (JSX), NOT TypeScript
+- Follow Prettier configuration (single quotes, 140 char line length, 2-space tabs)
+- Run `yarn format` before committing changes
+- Use named exports for components: `export function ComponentName() {}`
+- Use arrow functions for inline/small functions
+
+### Imports
+- Use absolute imports from `src` directory (configured in jsconfig.json)
+- Import order (handled by Prettier plugin):
+  1. External packages (React, libraries)
+  2. Internal components (`components/...`)
+  3. Assets (`assets/...`)
+  4. Data (`data/...`)
+  5. Styles (`styles/...`)
+- Example:
+  ```jsx
+  import React from 'react';
+  import { ComponentName } from 'components/Path/ComponentName';
+  import ImageAsset from 'assets/path/image.svg';
+  import 'styles/Path/ComponentName.css';
+  ```
+
+## Component Structure
+
+### Component Files
+- Place components in appropriate folders under `src/components/`
+- Use PascalCase for component names
+- Named exports: `export function MyComponent() {}`
+- Each major component should have its own folder
+- Co-locate CSS files with components in `src/styles/` following the same folder structure
+
+### Component Organization
+```
+src/
+  components/
+    MyComponent/
+      MyComponent.jsx
+      SubComponent.jsx (if needed)
+  styles/
+    MyComponent/
+      MyComponent.css
+```
+
+### Functional Components
+- Use functional components with hooks (no class components)
+- Destructure props in function signature when appropriate
+- Use React hooks (useState, useEffect, etc.) as needed
+
+## Styling
+
+### CSS
+- Use plain CSS (not CSS-in-JS, not Tailwind)
+- One CSS file per component in `src/styles/`
+- Use semantic class names and IDs
+- Follow BEM-like naming when appropriate
+- Use CSS variables defined in `Globals.css` for colors and common values
+- Import animate.css classes where needed for animations
+
+### Responsive Design
+- Design mobile-first
+- Use media queries for responsive layouts
+- Test on multiple screen sizes
+
+## Data Management
+
+### Content Data
+- Store content data in `src/data/` folder
+- Keep data separate from components for easy updates
+- Use clear, exported constants and arrays
+- Examples:
+  - `experiences.js` - work experience data
+  - `swProjects.js` - software projects
+  - `technologies.js` - tech stack icons and info
+  - `colors.js` - color constants
+
+### Data Structure
+- Export named constants for reusability
+- Use descriptive property names
+- Include all necessary metadata (company, duration, technologies, etc.)
+
+## Assets
+
+### Organization
+- Store all assets in `src/assets/`
+- Organize by type:
+  - `Company_Logos/` - company/brand logos
+  - `Dev_Icons/` - technology icons
+  - `Illustrations/` - custom illustrations
+  - `Organic_Shapes/` - decorative shapes/blobs
+  - `Projects/` - project screenshots/media
+- Use optimized formats (SVG for logos/icons, WebP for images)
+
+### Asset Usage
+- Import assets directly in components
+- Use descriptive alt text for images
+- Optimize images before adding to project
+
+## Features & Libraries
+
+### Key Dependencies
+- `react-animate-on-scroll` - for scroll animations
+- `animate.css` - CSS animation library
+- `swiper` - for carousels/sliders
+- `html-react-parser` - for parsing HTML strings
+- `react-inlinesvg` - for inline SVG manipulation
+
+### Animation
+- Use `ScrollAnimation` component from react-animate-on-scroll
+- Include `animateOnce` prop to prevent re-animation
+- Use animate.css classes for animation effects
+
+## Development Practices
+
+### Before Committing
+- Run `yarn format` to format code
+- Test locally with `yarn start`
+- Check for console errors and warnings
+- Verify responsive design
+
+### Adding New Features
+- Create components in appropriate folders
+- Add corresponding CSS files in `styles/`
+- Update data files if adding new content
+- Import and use in `App.jsx` or parent component
+- Test all functionality
+
+### Performance
+- Use WebP for images when possible
+- Lazy load images and components where appropriate
+- Minimize bundle size
+- Optimize assets before adding
+
+## File Naming
+- Components: PascalCase (e.g., `AboutMe.jsx`)
+- Data files: camelCase (e.g., `experiences.js`)
+- CSS files: PascalCase matching component (e.g., `AboutMe.css`)
+- Assets: snake_case or PascalCase (e.g., `Profile_Pic.webp`, `IntuitLogo.svg`)
+
+## Common Patterns
+
+### Section Components
+- Each page section is a component (AboutMe, Experience, etc.)
+- Use semantic HTML5 tags (`<section>`, `<article>`, etc.)
+- Include unique IDs for navigation/scrolling
+- Wrap in containers with `page-container` class
+
+### Navigation
+- Use IDs for scroll-to sections
+- Navbar links to section IDs
+- Include ScrollToTopButton component
+
+## Testing
+- Run `yarn start` and manually test in browser
+- Check responsive design at various breakpoints
+- Test all interactive elements
+- Verify animations work as expected
+
+## Deployment
+- Deployed via GitHub Pages
+- Run `yarn deploy` to build and deploy
+- Updates to main branch should be production-ready
+
