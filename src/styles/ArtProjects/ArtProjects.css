@@ -94,25 +94,6 @@ body.art-modal-open .column img:hover {
   }
 }
 
-#art-modal-close {
-  color: white;
-  float: right;
-  font-size: 3rem;
-  font-weight: bold;
-  position: absolute;
-  right: 20px;
-  top: 0;
-  transition: 0.5s ease-out;
-  z-index: 1;
-}
-
-#art-modal-close:hover,
-#art-modal-close:focus {
-  color: var(--color-purple);
-  cursor: pointer;
-  text-decoration: none;
-}
-
 .swiper {
   display: none;
 }

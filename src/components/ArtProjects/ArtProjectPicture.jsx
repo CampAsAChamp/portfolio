@@ -67,16 +67,11 @@ export function ArtProjectPicture({ imgSrc, altText }) {
         tabIndex={0}
         aria-label="Close modal"
       >
-        <span
-          id="art-modal-close"
-          onClick={hideModal}
-          onKeyDown={(e) => handleKeyDown(e, hideModal)}
-          role="button"
-          tabIndex={0}
-          aria-label="Close"
-        >
-          &times;
-        </span>
+        <button className="modal-close" onClick={hideModal} onKeyDown={(e) => handleKeyDown(e, hideModal)} type="button" aria-label="Close">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
         <img id="art-modal-img" alt={altText} title={altText} />
       </div>
     </>

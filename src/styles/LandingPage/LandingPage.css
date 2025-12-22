@@ -124,37 +124,6 @@
   visibility: visible;
 }
 
-#contact-me-modal-close {
-  position: absolute;
-  right: 16px;
-  top: 16px;
-  background: transparent;
-  border: none;
-  color: white;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  transition: all 0.2s ease;
-  z-index: 10;
-  opacity: 0.9;
-}
-
-#contact-me-modal-close:hover {
-  background-color: rgba(255, 194, 97, 0.2);
-  color: var(--color-yellow);
-  transform: rotate(90deg);
-  opacity: 1;
-}
-
-#contact-me-modal-close:focus {
-  outline: 2px solid var(--color-yellow);
-  outline-offset: 2px;
-}
-
 #contact-me-modal-header {
   background: linear-gradient(135deg, var(--color-purple) 0%, var(--color-purple-550) 100%);
   padding: 48px 32px 32px;

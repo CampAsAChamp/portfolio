@@ -216,6 +216,38 @@ ul ul {
   visibility: visible;
 }
 
+/* Shared Modal Close Button Styles */
+.modal-close {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  z-index: 10;
+  opacity: 0.9;
+}
+
+.modal-close:hover {
+  background-color: rgba(255, 194, 97, 0.2);
+  color: var(--color-yellow);
+  transform: rotate(90deg);
+  opacity: 1;
+}
+
+.modal-close:focus {
+  outline: 2px solid var(--color-yellow);
+  outline-offset: 2px;
+}
+
 @media screen and (max-width: 1100px) {
   html {
     font-size: 12px;
