@@ -65,7 +65,7 @@ export function ThemeSwitcher() {
     document.documentElement.style.setProperty('--r', `${endRadius}px`);
 
     // Animate the transition
-    const transition = document.startViewTransition(() => {
+    document.startViewTransition(() => {
       if (isDarkMode) {
         setLightMode();
       } else {
