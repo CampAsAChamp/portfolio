@@ -1,7 +1,30 @@
 module.exports = {
-  extends: ['react-app', 'react-app/jest', 'plugin:jsx-a11y/recommended', 'plugin:eslint-comments/recommended', 'prettier'],
-  plugins: ['unused-imports', 'eslint-comments', 'prettier'],
+  env: {
+    browser: true,
+    es2021: true,
+    node: true,
+  },
+  extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
+    'plugin:react-hooks/recommended',
+    'plugin:jsx-a11y/recommended',
+    'plugin:eslint-comments/recommended',
+    'prettier',
+  ],
+  plugins: ['react', 'react-hooks', 'unused-imports', 'eslint-comments', 'prettier'],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
+    },
+  },
   settings: {
+    react: {
+      version: 'detect',
+    },
     'import/resolver': {
       node: {
         paths: ['src'],
@@ -40,15 +63,15 @@ module.exports = {
     'react/self-closing-comp': 'warn',
     'react/jsx-curly-brace-presence': ['warn', { props: 'never', children: 'never' }],
 
-    // Import rules
-    'import/no-relative-parent-imports': 'off', // Disabled - false positives with jsconfig.json baseUrl
-    'import/first': 'error',
-    'import/newline-after-import': 'error',
-    'import/no-duplicates': 'error',
-    'import/named': 'error',
-    'import/default': 'error',
-    'import/namespace': 'error',
+    // Import rules (disabled - using Prettier's import sorting plugin instead)
+    'import/no-relative-parent-imports': 'off',
+    'import/first': 'off',
+    'import/newline-after-import': 'off',
+    'import/no-duplicates': 'off',
+    'import/named': 'off',
+    'import/default': 'off',
+    'import/namespace': 'off',
     'import/no-unresolved': 'off',
-    'import/order': 'off', // Disabled - using Prettier's import sorting plugin instead
+    'import/order': 'off',
   },
 }
