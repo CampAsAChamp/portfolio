@@ -51,7 +51,7 @@
 
 ### Built With
 
-[![My Skills](https://skillicons.dev/icons?i=react,js,html,css,figma,cloudflare)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=react,vite,js,html,css,figma,cloudflare)](https://skillicons.dev)
 
 <!-- GETTING STARTED -->
 
@@ -80,7 +80,7 @@
    ```sh
    yarn start
    ```
-4. Open your web browser (if not automatically done for you) to `localhost:3000`
+4. Open your web browser to `localhost:5173`
 
 ## Usage
 
@@ -144,7 +144,13 @@ To create a production build locally without deploying:
 yarn build
 ```
 
-This creates an optimized build in the `build` folder that you can test locally.
+This creates an optimized build in the `build` folder. To preview the production build locally:
+
+```sh
+yarn preview
+```
+
+This will serve the production build at `localhost:4173`.
 
 ### Notes
 
