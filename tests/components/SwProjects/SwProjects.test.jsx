@@ -1,7 +1,7 @@
+import { render } from 'tests/utils'
 import { describe, it } from 'vitest'
 
-import { SWProjects } from '../../../src/components/SwProjects/SwProjects'
-import { render } from '../../test-utils'
+import { SWProjects } from 'components/SwProjects/SwProjects'
 
 describe('SWProjects', () => {
   it('renders without crashing', () => {

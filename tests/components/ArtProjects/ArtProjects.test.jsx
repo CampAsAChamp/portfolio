@@ -1,7 +1,7 @@
+import { render } from 'tests/utils'
 import { describe, it } from 'vitest'
 
-import { ArtProjects } from '../../../src/components/ArtProjects/ArtProjects'
-import { render } from '../../test-utils'
+import { ArtProjects } from 'components/ArtProjects/ArtProjects'
 
 describe('ArtProjects', () => {
   it('renders without crashing', () => {

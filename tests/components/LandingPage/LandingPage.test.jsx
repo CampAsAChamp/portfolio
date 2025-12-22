@@ -1,7 +1,7 @@
+import { render, screen } from 'tests/utils'
 import { describe, expect, it } from 'vitest'
 
-import { LandingPage } from '../../../src/components/LandingPage/LandingPage'
-import { render, screen } from '../../test-utils'
+import { LandingPage } from 'components/LandingPage/LandingPage'
 
 describe('LandingPage', () => {
   it('renders without crashing', () => {

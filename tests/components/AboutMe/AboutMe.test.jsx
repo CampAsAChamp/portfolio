@@ -1,7 +1,7 @@
+import { render, screen } from 'tests/utils'
 import { describe, expect, it } from 'vitest'
 
-import { AboutMe } from '../../../src/components/AboutMe/AboutMe'
-import { render, screen } from '../../test-utils'
+import { AboutMe } from 'components/AboutMe/AboutMe'
 
 describe('AboutMe', () => {
   it('renders without crashing', () => {

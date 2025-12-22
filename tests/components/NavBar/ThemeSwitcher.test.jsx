@@ -1,7 +1,7 @@
+import { render } from 'tests/utils'
 import { describe, it } from 'vitest'
 
-import { ThemeSwitcher } from '../../../src/components/NavBar/ThemeSwitcher'
-import { render } from '../../test-utils'
+import { ThemeSwitcher } from 'components/NavBar/ThemeSwitcher'
 
 describe('ThemeSwitcher', () => {
   it('renders without crashing', () => {

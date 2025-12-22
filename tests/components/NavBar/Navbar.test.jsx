@@ -1,7 +1,7 @@
+import { render, screen } from 'tests/utils'
 import { describe, expect, it } from 'vitest'
 
-import { Navbar } from '../../../src/components/NavBar/Navbar'
-import { render, screen } from '../../test-utils'
+import { Navbar } from 'components/NavBar/Navbar'
 
 describe('Navbar', () => {
   it('renders without crashing', () => {

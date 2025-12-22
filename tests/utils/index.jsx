@@ -1,5 +1,13 @@
 import '@testing-library/jest-dom'
 import { render } from '@testing-library/react'
+import { vi } from 'vitest'
+
+// Mock react-inlinesvg to avoid async warnings in tests
+vi.mock('react-inlinesvg', () => ({
+  default: ({ src, alt, title, ...props }) => {
+    return <svg data-src={src} aria-label={alt || title} {...props} />
+  },
+}))
 
 // Mock localStorage for tests
 const localStorageMock = {
