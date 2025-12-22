@@ -94,6 +94,21 @@ body.art-modal-open .column img:hover {
   }
 }
 
+/* Add Animation - Zoom out the Modal */
+@keyframes zoom-out {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0);
+  }
+}
+
+#art-modal-img.closing {
+  animation-duration: 0.6s;
+  animation-name: zoom-out;
+}
+
 .swiper {
   display: none;
 }

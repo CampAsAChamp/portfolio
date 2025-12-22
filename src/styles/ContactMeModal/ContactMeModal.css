@@ -180,7 +180,7 @@
 
 /* Completely disable default morphing/crossfade to prevent circle wipe */
 ::view-transition-group(modal-content) {
-  animation-duration: 0.4s;
+  animation-duration: 0.6s;
 }
 
 ::view-transition-image-pair(modal-content) {
@@ -189,7 +189,7 @@
 
 ::view-transition-old(modal-content),
 ::view-transition-new(modal-content) {
-  animation-duration: 0.4s;
+  animation-duration: 0.6s;
   animation-fill-mode: both;
   mix-blend-mode: normal;
 }
@@ -201,17 +201,17 @@
 
 ::view-transition-new(modal-content) {
   animation-name: modal-pop-in;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1);
 }
 
 /* Backdrop transitions */
 ::view-transition-group(modal-backdrop) {
-  animation-duration: 0.35s;
+  animation-duration: 0.5s;
 }
 
 ::view-transition-old(modal-backdrop),
 ::view-transition-new(modal-backdrop) {
-  animation-duration: 0.35s;
+  animation-duration: 0.5s;
   animation-fill-mode: both;
   mix-blend-mode: normal;
 }

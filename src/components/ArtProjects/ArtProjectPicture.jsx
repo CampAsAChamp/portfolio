@@ -22,10 +22,17 @@ export function ArtProjectPicture({ imgSrc, altText }) {
     const modalBackground = document.getElementById('art-modal-background')
     const modalImg = document.getElementById('art-modal-img')
 
-    modalBackground.classList.remove('show')
-    modalImg.classList.remove('show')
-    document.body.classList.remove('art-modal-open')
-    setIsModalOpen(false)
+    // Add closing animation class
+    modalImg.classList.add('closing')
+
+    // Wait for animation to complete before hiding
+    setTimeout(() => {
+      modalBackground.classList.remove('show')
+      modalImg.classList.remove('show')
+      modalImg.classList.remove('closing')
+      document.body.classList.remove('art-modal-open')
+      setIsModalOpen(false)
+    }, 600) // Match the animation duration (0.6s)
   }, [])
 
   // Add ESC key listener to close modal

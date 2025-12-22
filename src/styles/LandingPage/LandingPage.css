@@ -89,11 +89,17 @@
   transition: 0.5s;
 }
 
-#contact-me-button:hover span {
+#contact-me-button:hover span,
+#contact-me-button:focus span,
+#contact-me-button:active span,
+#contact-me-button.modal-open span {
   padding-right: 20px;
 }
 
-#contact-me-button:hover span:after {
+#contact-me-button:hover span:after,
+#contact-me-button:focus span:after,
+#contact-me-button:active span:after,
+#contact-me-button.modal-open span:after {
   opacity: 1;
   right: 0;
 }
