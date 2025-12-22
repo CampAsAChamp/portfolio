@@ -7,10 +7,9 @@
     "yarn": ">=1.22.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "format": "prettier --write \"./**/*.{ts,tsx,js,jsx,json}\"",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "lint": "eslint src/**/*.{js,jsx}",
@@ -29,12 +28,14 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@vitejs/plugin-react": "^4.2.0",
     "eslint": "^8.52.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react": "^7.37.0",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-unused-imports": "^4.3.0",
     "glob": "^13.0.0",
@@ -44,8 +45,8 @@
     "prettier": "^3.5.2",
     "prettier-eslint": "^16.1.2",
     "prettier-plugin-css-order": "^1.2.0",
-    "react-scripts": "^5.0.1",
-    "source-map-explorer": "^2.5.2"
+    "source-map-explorer": "^2.5.2",
+    "vite": "^5.0.0"
   },
   "browserslist": {
     "production": [">0.2%", "not dead", "not op_mini all"],
