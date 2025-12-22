@@ -1,10 +1,8 @@
 import { Svg } from 'components/Common/Svg'
-import { ContactMeModal } from 'components/ContactMeModal/ContactMeModal'
+import { ContactMeBar } from 'components/LandingPage/ContactMeBar'
 import { MouseScrollIndicator } from 'components/LandingPage/MouseScrollIndicator'
 
 import ArtProfilePic from 'assets/Art_Profile_Pic.svg'
-import GitHubLogo from 'assets/Dev_Icons/GitHub.svg'
-import LinkedInLogo from 'assets/Dev_Icons/LinkedIn.svg'
 import HeroImageBlobShape from 'assets/Organic_Shapes/Hero_Image_Blob_Shape.svg'
 
 import { useModal } from 'hooks/useModal'
@@ -27,20 +25,7 @@ export function LandingPage() {
           <div id="software-engineer">Software Engineer</div>
           <br />
           <div id="subtitle">If you&apos;re going to make something, why not make it pretty?</div>
-          <div id="contact-me-bar">
-            <button type="button" className="button" id="contact-me-button" onClick={open}>
-              <span>Contact Me</span>
-            </button>
-            <ContactMeModal isOpen={isOpen} close={close} />
-            <div id="contact-me-socials">
-              <a href="https://github.com/CampAsAChamp/" target="_blank" rel="noopener noreferrer">
-                <Svg className="contact-me-item" id="github-logo" src={GitHubLogo} alt="Github Icon" title="Github Icon" />
-              </a>
-              <a href="https://www.linkedin.com/in/nick-schneider-swe/" target="_blank" rel="noopener noreferrer">
-                <Svg className="contact-me-item" id="linkedin-logo" src={LinkedInLogo} alt="LinkedIn Icon" title="LinkedIn Icon" />
-              </a>
-            </div>
-          </div>
+          <ContactMeBar isOpen={isOpen} open={open} close={close} />
           <MouseScrollIndicator />
         </div>
         <div id="profile-pic-container">

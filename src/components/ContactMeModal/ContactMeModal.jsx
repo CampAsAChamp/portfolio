@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 
+import { CloseIcon } from 'components/Common/Icons/CloseIcon'
+import { EmailIcon } from 'components/Common/Icons/EmailIcon'
 import { Svg } from 'components/Common/Svg'
 
 import GitHubLogo from 'assets/Dev_Icons/GitHub.svg'
@@ -43,9 +45,7 @@ export function ContactMeModal({ isOpen, close }) {
       <div id="contact-me-modal-content" onClick={(e) => e.stopPropagation()}>
         {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
         <button className="modal-close" onClick={close} {...modalCloseKeyboardProps} type="button" aria-label="Close">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <CloseIcon />
         </button>
         <div id="contact-me-modal-header">
           <img id="contact-me-modal-profile-pic" src={RealProfilePic} alt="Nick Schneider" />
@@ -55,15 +55,7 @@ export function ContactMeModal({ isOpen, close }) {
         <div id="contact-me-modal-body">
           <div className="contact-me-modal-section">
             <div className="contact-me-modal-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M3 8L10.89 13.26C11.2187 13.4793 11.6049 13.5963 12 13.5963C12.3951 13.5963 12.7813 13.4793 13.11 13.26L21 8M5 19H19C19.5304 19 20.0391 18.7893 20.4142 18.4142C20.7893 18.0391 21 17.5304 21 17V7C21 6.46957 20.7893 5.96086 20.4142 5.58579C20.0391 5.21071 19.5304 5 19 5H5C4.46957 5 3.96086 5.21071 3.58579 5.58579C3.21071 5.96086 3 6.46957 3 7V17C3 17.5304 3.21071 18.0391 3.58579 18.4142C3.96086 18.7893 4.46957 19 5 19Z"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              <EmailIcon />
             </div>
             <div className="contact-me-modal-info">
               <div className="contact-me-modal-label">Email</div>
