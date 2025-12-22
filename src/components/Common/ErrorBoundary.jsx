@@ -37,7 +37,7 @@ export class ErrorBoundary extends React.Component {
           <h1 style={{ fontSize: '48px', marginBottom: '20px', color: 'var(--color-purple)' }}>Oops!</h1>
           <h2 style={{ fontSize: '24px', marginBottom: '20px' }}>Something went wrong</h2>
           <p style={{ fontSize: '16px', marginBottom: '30px', maxWidth: '600px' }}>
-            We're sorry for the inconvenience. Please try refreshing the page, or come back later.
+            We&apos;re sorry for the inconvenience. Please try refreshing the page, or come back later.
           </p>
           <button
             onClick={() => window.location.reload()}

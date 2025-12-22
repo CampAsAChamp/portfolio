@@ -2,6 +2,7 @@
   "name": "portfolio",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "engines": {
     "node": ">=18.0.0",
     "yarn": ">=1.22.0"
@@ -14,6 +15,8 @@
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "lint": "eslint src/**/*.{js,jsx}",
     "lint:fix": "eslint src/**/*.{js,jsx} --fix",
+    "browserslist:update": "npx update-browserslist-db@latest",
+    "postinstall": "yarn browserslist:update",
     "prepare": "husky"
   },
   "dependencies": {
