@@ -64,15 +64,21 @@
 }
 
 #contact-me-button {
+  align-items: center;
   color: white;
+  display: flex;
   font-size: 1.625rem;
+  justify-content: center;
+  line-height: 1;
   padding: 15px 20px;
   view-transition-name: contact-button;
 }
 
 #contact-me-button span {
   cursor: pointer;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  line-height: 1;
   position: relative;
   transition: 0.5s;
 }

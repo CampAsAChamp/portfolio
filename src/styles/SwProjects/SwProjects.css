@@ -60,8 +60,10 @@
 }
 
 .sw-projects-button {
+  align-items: center;
   display: flex;
   justify-content: space-around;
+  line-height: 1;
   padding: 10px 15px;
 }
 
@@ -72,8 +74,10 @@
 }
 
 .sw-projects-button span {
+  align-items: center;
   cursor: pointer;
-  display: inline-block;
+  display: flex;
+  line-height: 1;
   position: relative;
   transition: 0.5s;
 }
@@ -182,7 +186,9 @@
 }
 
 .video-play-overlay.fade-in {
-  animation: playButtonFadeIn 0.3s ease-in forwards, playButtonPulse 2s ease-in-out infinite 0.3s;
+  animation:
+    playButtonFadeIn 0.3s ease-in forwards,
+    playButtonPulse 2s ease-in-out infinite 0.3s;
 }
 
 .video-play-overlay:hover {
