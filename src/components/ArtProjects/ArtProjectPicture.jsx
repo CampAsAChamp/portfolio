@@ -1,5 +1,9 @@
+import { useCallback, useEffect, useState } from 'react'
+
 export function ArtProjectPicture({ imgSrc, altText }) {
-  function showModal() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const showModal = useCallback(() => {
     const modalBackground = document.getElementById('art-modal-background')
     const modalImg = document.getElementById('art-modal-img')
 
@@ -9,16 +13,32 @@ export function ArtProjectPicture({ imgSrc, altText }) {
 
     modalImg.src = imgSrc
     modalImg.title = altText
-  }
+    setIsModalOpen(true)
+  }, [imgSrc, altText])
 
-  function hideModal() {
+  const hideModal = useCallback(() => {
     const modalBackground = document.getElementById('art-modal-background')
     const modalImg = document.getElementById('art-modal-img')
 
     modalBackground.classList.remove('show')
     modalImg.classList.remove('show')
     document.body.classList.remove('art-modal-open')
-  }
+    setIsModalOpen(false)
+  }, [])
+
+  // Add ESC key listener to close modal
+  useEffect(() => {
+    if (!isModalOpen) return
+
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        hideModal()
+      }
+    }
+
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [isModalOpen, hideModal])
 
   const handleKeyDown = (event, callback) => {
     if (event.key === 'Enter' || event.key === ' ') {

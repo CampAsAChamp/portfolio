@@ -67,6 +67,7 @@
   color: white;
   font-size: 1.625rem;
   padding: 15px 20px;
+  view-transition-name: contact-button;
 }
 
 #contact-me-button span {
@@ -101,16 +102,21 @@
   box-shadow:
     0 4px 8px 0 rgba(0, 0, 0, 0.2),
     0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  display: none;
   font-size: 2rem;
   margin: 10% auto; /* 10% from the top and centered */
+  opacity: 0;
   padding: 40px;
+  pointer-events: none;
   position: relative;
+  visibility: hidden;
   width: 50%; /* Could be more or less, depending on screen size */
+  view-transition-name: modal-content;
 }
 
 #contact-me-modal-content.show {
-  display: block;
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
 }
 
 #contact-me-modal-close {
@@ -131,8 +137,127 @@
   text-decoration: none;
 }
 
+/* View Transitions API styles */
+#contact-me-modal-background {
+  view-transition-name: modal-backdrop;
+}
+
+/* Keep contact button, social icons, and mouse scroll stable during transition */
+::view-transition-group(contact-button),
+::view-transition-group(contact-socials),
+::view-transition-group(mouse-scroll) {
+  animation-duration: 0s;
+}
+
+::view-transition-old(contact-button),
+::view-transition-new(contact-button),
+::view-transition-old(contact-socials),
+::view-transition-new(contact-socials),
+::view-transition-old(mouse-scroll),
+::view-transition-new(mouse-scroll) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Completely disable default morphing/crossfade to prevent circle wipe */
+::view-transition-group(modal-content) {
+  animation-duration: 0.4s;
+}
+
+::view-transition-image-pair(modal-content) {
+  isolation: auto;
+}
+
+::view-transition-old(modal-content),
+::view-transition-new(modal-content) {
+  animation-duration: 0.4s;
+  animation-fill-mode: both;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(modal-content) {
+  animation-name: modal-fade-out;
+  animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
+
+::view-transition-new(modal-content) {
+  animation-name: modal-pop-in;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Backdrop transitions */
+::view-transition-group(modal-backdrop) {
+  animation-duration: 0.35s;
+}
+
+::view-transition-old(modal-backdrop),
+::view-transition-new(modal-backdrop) {
+  animation-duration: 0.35s;
+  animation-fill-mode: both;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(modal-backdrop) {
+  animation-name: fade-out;
+  animation-timing-function: ease-out;
+}
+
+::view-transition-new(modal-backdrop) {
+  animation-name: fade-in;
+  animation-timing-function: ease-out;
+}
+
+/* Modal pop-in animation - scale up + slide up + fade in */
+@keyframes modal-pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Modal fade-out animation - reverse of entrance */
+@keyframes modal-fade-out {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.9) translateY(30px);
+  }
+}
+
+/* Backdrop fade animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 #contact-me-socials {
   margin: 0 50px;
+  view-transition-name: contact-socials;
+}
+
+/* Compensate for scrollbar when modal is open */
+body[style*='position: fixed'] #contact-me-socials {
+  margin-right: calc(50px + var(--scrollbar-width, 0px));
 }
 
 #contact-me-socials svg {
@@ -166,6 +291,13 @@
   top: 0px;
   width: 50%;
   z-index: -1;
+}
+
+/* Compensate for scrollbar when modal is open */
+body[style*='position: fixed'] #landing-blob {
+  right: var(--scrollbar-width, 0px);
+  /* Fix width calculation to account for body padding */
+  width: calc(50% - var(--scrollbar-width, 0px) / 2);
 }
 
 @media screen and (max-width: 1100px) {
