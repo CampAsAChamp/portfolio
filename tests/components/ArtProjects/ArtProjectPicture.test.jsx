@@ -83,7 +83,7 @@ describe('ArtProjectPicture', () => {
     expect(modalBackground.classList.contains('show')).toBe(true)
 
     // Close modal by clicking X button
-    const closeButton = document.getElementById('art-modal-close')
+    const closeButton = screen.getByRole('button', { name: 'Close' })
     fireEvent.click(closeButton)
 
     // Modal should be closed immediately (View Transitions API handles animation)
