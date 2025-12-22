@@ -57,6 +57,11 @@
 
 ## Getting Started
 
+### Prerequisites
+
+- Node.js version 18 or higher
+- Yarn package manager
+
 ### Installation
 
 1. Clone the repo

@@ -7,10 +7,34 @@ This is a React-based portfolio website showcasing software engineering and art 
 
 ### General
 - Use JavaScript (JSX), NOT TypeScript
-- Follow Prettier configuration (single quotes, 140 char line length, 2-space tabs)
-- Run `yarn format` before committing changes
+- Follow Prettier configuration:
+  - Single quotes, no semicolons
+  - 140 char line length, 2-space tabs
+  - LF line endings, bracket spacing
+  - Auto-format on save (configured in VS Code settings)
+- Run `yarn format` before committing changes (automatically runs on pre-commit via Husky)
+- Run `yarn lint` to check for issues, `yarn lint:fix` to auto-fix
 - Use named exports for components: `export function ComponentName() {}`
 - Use arrow functions for inline/small functions
+
+### Linting & Code Quality
+- ESLint configured with:
+  - React hooks rules (rules-of-hooks, exhaustive-deps)
+  - Accessibility linting (jsx-a11y)
+  - Unused imports removal
+  - Code quality rules (no-console warnings, no-debugger, eqeqeq)
+  - Best practices (prefer-const, no-var, prefer-template)
+- Prettier integration via eslint-plugin-prettier
+- Pre-commit hooks via Husky and lint-staged:
+  - Auto-format and lint files before commit
+  - Only staged files are checked
+
+### Accessibility
+- All interactive elements must be keyboard accessible
+- Use semantic HTML where possible
+- Provide ARIA labels for custom interactive elements
+- Include keyboard event handlers (onKeyDown) for click handlers on non-button elements
+- Ensure proper focus management and tab order
 
 ### Imports
 - Use absolute imports from `src` directory (configured in jsconfig.json)
@@ -120,10 +144,14 @@ src/
 ## Development Practices
 
 ### Before Committing
-- Run `yarn format` to format code
+- Pre-commit hooks automatically run via Husky:
+  - Formats code with Prettier
+  - Lints and auto-fixes with ESLint
+  - Only processes staged files
 - Test locally with `yarn start`
 - Check for console errors and warnings
 - Verify responsive design
+- Review accessibility with `yarn lint`
 
 ### Adding New Features
 - Create components in appropriate folders
@@ -157,14 +185,46 @@ src/
 - Navbar links to section IDs
 - Include ScrollToTopButton component
 
+## Editor Setup
+
+### VS Code (Recommended)
+- Settings configured in `.vscode/settings.json`:
+  - Auto-format on save with Prettier
+  - Auto-fix ESLint issues on save
+  - Consistent tab size (2 spaces)
+  - Unix line endings (LF)
+  - Trim trailing whitespace
+- Install recommended extensions:
+  - ESLint
+  - Prettier - Code formatter
+  - EditorConfig for VS Code
+
+### EditorConfig
+- Cross-editor consistency via `.editorconfig`:
+  - Indent style and size
+  - Line endings (LF)
+  - Charset (UTF-8)
+  - Trailing whitespace handling
+- Supported by most modern editors
+
 ## Testing
 - Run `yarn start` and manually test in browser
 - Check responsive design at various breakpoints
-- Test all interactive elements
+- Test all interactive elements (mouse and keyboard)
+- Verify keyboard navigation and accessibility
+- Check for console errors and linting warnings with `yarn lint`
 - Verify animations work as expected
+- Test in multiple browsers (Chrome, Firefox, Safari)
 
 ## Deployment
-- Deployed via GitHub Pages
-- Run `yarn deploy` to build and deploy
+- Deployed automatically via Cloudflare Pages
+- Cloudflare Pages configuration:
+  - Build command: `yarn build`
+  - Build output directory: `build`
+  - Automatic deployments on push to main branch
+  - Preview deployments for pull requests
+- Custom domain configured: https://nickhs.dev
+- Cloudflare provides automatic HTTPS, CDN, and DDoS protection
+- To test production build locally: `yarn build`
 - Updates to main branch should be production-ready
 
