@@ -11,7 +11,7 @@ export function SWProjects() {
   return (
     <section id="sw-projects-container" className="page-container">
       <div id="sw-projects-header" className="section-header">
-        <ScrollAnimation animateIn="animate__jackInTheBox" animateOnce>
+        <ScrollAnimation animateIn="animate__fadeIn" animateOnce>
           <h2>Software Projects</h2>
         </ScrollAnimation>
       </div>

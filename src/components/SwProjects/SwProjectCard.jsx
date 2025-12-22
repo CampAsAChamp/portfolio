@@ -39,29 +39,21 @@ export function SwProjectCard(props) {
     const shouldShowVideo = project.isVideo && !videoError;
 
     if (shouldShowVideo) {
-      return (
-        <SwProjectVideo
-          project={project}
-          canAutoPlay={canAutoPlay}
-          onVideoError={handleVideoError}
-        />
-      );
+      return <SwProjectVideo project={project} canAutoPlay={canAutoPlay} onVideoError={handleVideoError} />;
     }
 
     return <SwProjectImage project={project} />;
   };
 
   return (
-    <ScrollAnimation animateIn="animate__slideInLeft" animateOnce>
+    <ScrollAnimation animateIn="animate__springIn" animateOnce>
       <div className="card sw-projects-card" id={'sw-projects-card' + index}>
         <div className="sw-projects-title-container">
           <div className="sw-project-title card-title">{project.name}</div>
           <TechnologiesBar technologyNames={project.technologies} fillColor={COLORS.PURPLE} />
         </div>
         <div className="sw-projects-content">
-          <div className="sw-projects-thumbnail-container">
-            {renderProjectMedia()}
-          </div>
+          <div className="sw-projects-thumbnail-container">{renderProjectMedia()}</div>
           <div className="sw-projects-info-container">
             <div className="sw-projects-text">
               <ul>{parse(project.textContent)}</ul>

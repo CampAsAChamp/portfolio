@@ -16,7 +16,6 @@ nav ul {
 }
 
 nav li {
-  animation: navLinkFade 0.5s ease forwards;
   float: left;
   margin-bottom: 0;
 }
@@ -27,6 +26,7 @@ nav li a {
   font-weight: 900;
   text-decoration: none;
   transition: var(--animation-duration);
+  position: relative;
 }
 
 nav li a:hover {
@@ -70,16 +70,6 @@ nav li a:hover::after {
   width: 25px;
 }
 
-@keyframes navLinkFade {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0px);
-  }
-}
 
 #logo {
   fill: var(--color-logo);

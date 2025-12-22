@@ -1,7 +1,72 @@
-.theme-switcher {
-  display: block;
+/* View Transition Animation */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  clip-path: circle(0 at var(--x, 50%) var(--y, 50%));
+  animation: revealTheme 0.6s ease-in-out;
+}
+
+@keyframes revealTheme {
+  to {
+    clip-path: circle(var(--r, 100vmax) at var(--x, 50%) var(--y, 50%));
+  }
+}
+
+/* Custom Toggle Button */
+.theme-toggle-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
   z-index: 1;
 }
 
+.theme-toggle-button:hover {
+  transform: scale(1.1);
+}
+
+.theme-toggle-button:active {
+  transform: scale(0.95);
+}
+
+/* Theme Icon Styling */
+.theme-icon {
+  color: var(--color-white);
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+
+/* Sun icon (light mode) - yellow color */
+.theme-toggle-button .theme-icon:not([d*='12.79']) {
+  color: var(--color-yellow);
+}
+
+/* Moon icon (dark mode) - white/light color */
+.theme-toggle-button .theme-icon[d*='12.79'] {
+  color: var(--color-white);
+}
+
+/* Rotate sun icon slightly on hover */
+.theme-toggle-button:hover .theme-icon:not([d*='12.79']) {
+  transform: rotate(45deg);
+}
+
 @media screen and (max-width: 1100px) {
+  .theme-toggle-button {
+    padding: 12px;
+  }
+
+  .theme-icon {
+    width: 35px;
+    height: 35px;
+  }
 }

@@ -28,7 +28,7 @@ export function ArtProjects() {
   return (
     <section id="graphic-design-container" className="page-container">
       <div id="graphic-design-header" className="section-header">
-        <ScrollAnimation animateIn="animate__jackInTheBox" animateOnce>
+        <ScrollAnimation animateIn="animate__fadeIn" animateOnce>
           <h2>Art & Design Projects</h2>
         </ScrollAnimation>
       </div>

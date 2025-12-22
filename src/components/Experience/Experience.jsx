@@ -12,7 +12,7 @@ export function Experience() {
     <>
       <section id="experience-container" className="page-container">
         <div id="experience-header" className="section-header">
-          <ScrollAnimation animateIn="animate__jackInTheBox" animateOnce>
+          <ScrollAnimation animateIn="animate__fadeIn" animateOnce>
             <h2>Experience</h2>
           </ScrollAnimation>
         </div>

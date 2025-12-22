@@ -1,5 +1,28 @@
 @import 'styles/Common/hover.css';
 
+/* Custom spring animation for cards */
+@keyframes springIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate__springIn {
+  animation-name: springIn;
+  animation-duration: 0.6s;
+  animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation-fill-mode: both;
+}
+
 :root {
   --color-purple: hsl(243, 100%, 69%); /* #6c63ff */
   --color-purple-550: hsl(243, 100%, 64%);
@@ -155,7 +178,7 @@ ul ul {
 }
 
 .card:hover {
-  transform: scale(1.1);
+  transform: scale(1.03);
 }
 
 .modal-bg {

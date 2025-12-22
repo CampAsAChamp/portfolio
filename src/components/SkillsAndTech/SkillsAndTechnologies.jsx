@@ -11,17 +11,15 @@ export function SkillsAndTechnologies() {
   return (
     <section id="skills-container" className="page-container">
       <div id="skills-header" className="section-header">
-        <ScrollAnimation animateIn="animate__jackInTheBox" animateOnce>
+        <ScrollAnimation animateIn="animate__fadeIn" animateOnce>
           <h2>Skills & Technologies</h2>
         </ScrollAnimation>
       </div>
       <div id="skills-content">
-        <ScrollAnimation animateIn="animate__slideInLeft" animateOnce>
-          <SkillsRow
-            technologyNames={[technologies.GO, technologies.JAVA, technologies.SPRING, technologies.PYTHON, technologies.CPP]}
-          />
+        <ScrollAnimation animateIn="animate__fadeIn" animateOnce>
+          <SkillsRow technologyNames={[technologies.GO, technologies.JAVA, technologies.SPRING, technologies.PYTHON, technologies.CPP]} />
         </ScrollAnimation>
-        <ScrollAnimation animateIn="animate__slideInRight" animateOnce>
+        <ScrollAnimation animateIn="animate__fadeIn" animateOnce>
           <SkillsRow
             technologyNames={[
               technologies.TYPESCRIPT,
@@ -33,10 +31,10 @@ export function SkillsAndTechnologies() {
             ]}
           />
         </ScrollAnimation>
-        <ScrollAnimation animateIn="animate__slideInLeft" animateOnce>
+        <ScrollAnimation animateIn="animate__fadeIn" animateOnce>
           <SkillsRow technologyNames={[technologies.POSTGRES, technologies.KUBERNETES, technologies.DOCKER, technologies.GCP]} />
         </ScrollAnimation>
-        <ScrollAnimation animateIn="animate__slideInRight" animateOnce>
+        <ScrollAnimation animateIn="animate__fadeIn" animateOnce>
           <SkillsRow technologyNames={[technologies.GIT, technologies.LINUX, technologies.FIGMA]} />
         </ScrollAnimation>
       </div>

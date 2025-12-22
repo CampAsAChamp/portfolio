@@ -12,26 +12,33 @@ export function AboutMe() {
     <section id="about-me-container" className="page-container">
       <img id="background-logo" src={S_Logo_Purple} alt="Logo Backdrop" />
       <div id="about-me-images">
-        <ScrollAnimation animateIn="animate__lightSpeedInLeft" animateOnce>
+        <ScrollAnimation animateIn="animate__springIn" animateOnce style={{ gridArea: '1 / 1 / 2 / 2' }}>
           <img id="grad-cap-illustration" src={GradCapIllustration} alt="Graduation Cap" />
         </ScrollAnimation>
-        <ScrollAnimation animateIn="animate__lightSpeedInLeft" delay="500" animateOnce>
-          <img id="anteater-illustration" className="hvr-grow-rotate" src={AnteaterIllustration} alt="Anteater Illustration" />
+        <ScrollAnimation animateIn="animate__springIn" delay={100} animateOnce style={{ gridArea: '1 / 2 / 2 / 3' }}>
+          <img id="anteater-illustration" src={AnteaterIllustration} alt="Anteater Illustration" />
         </ScrollAnimation>
-        <img id="desk-illustration" src={DeskIllustration} alt="Desk Illustration" />
+        <ScrollAnimation
+          animateIn="animate__springIn"
+          delay={200}
+          animateOnce
+          style={{ gridArea: '2 / 1 / 3 / 3', display: 'flex', justifyContent: 'center', alignItems: 'start', marginTop: '-40px' }}
+        >
+          <img id="desk-illustration" src={DeskIllustration} alt="Desk Illustration" />
+        </ScrollAnimation>
       </div>
       <div id="about-me-text">
         <div id="about-me-header">
-          <ScrollAnimation animateIn="animate__jackInTheBox" animateOnce>
+          <ScrollAnimation animateIn="animate__springIn" animateOnce>
             <h2>ABOUT ME</h2>
           </ScrollAnimation>
         </div>
-        <ScrollAnimation animateIn="animate__backInRight" animateOnce>
+        <ScrollAnimation animateIn="animate__springIn" delay={100} animateOnce>
           <p>Hey I'm Nick, a software engineer based in San Diego ☀️🌮</p>
           <p>
             I graduated from the 🎓 <strong>University of California, Irvine</strong> in 2019 with a{' '}
-            <strong>B.S. in Computer Science</strong> and am currently working full time as a Software Engineer at{' '}
-            <strong>Intuit</strong> 🧾
+            <strong>B.S. in Computer Science</strong> and am currently working full time as a Software Engineer at <strong>Intuit</strong>{' '}
+            🧾
           </p>
         </ScrollAnimation>
       </div>
