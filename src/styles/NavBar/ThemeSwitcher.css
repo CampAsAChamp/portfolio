@@ -1,22 +1,24 @@
 /* View Transition Animation - Prevent flicker during theme switch */
 
-/* Disable default cross-fade animations */
+/* Circle wipe animation ONLY when theme is transitioning */
+/* This prevents the animation from appearing on nav links, modals, etc. */
+/* Note: We check for the data attribute on :root and apply to pseudo-elements */
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation-duration: 0.5s;
-  animation-timing-function: ease-in-out;
+  animation-duration: 0.5s !important;
+  animation-timing-function: ease-in-out !important;
 }
 
 /* Old view stays in place and fades out */
 ::view-transition-old(root) {
   z-index: 1;
-  animation-name: none;
+  animation-name: none !important;
 }
 
-/* New view clips in with circular reveal */
+/* New view clips in with circular reveal - only when data attribute is present */
 ::view-transition-new(root) {
   z-index: 2;
-  animation-name: revealTheme;
+  animation-name: var(--theme-transition-animation, none) !important;
 }
 
 /* Circular reveal animation */

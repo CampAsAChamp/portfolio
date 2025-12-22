@@ -182,8 +182,8 @@ ul ul {
 }
 
 /* View Transitions API - Disable root animation by default to prevent unwanted circle wipe */
-/* This prevents the circle wipe from appearing on modals and nav links */
-/* Theme switcher will override this with its own animation */
+/* This prevents the circle wipe from appearing on modals, nav menu, and nav links */
+/* Theme switcher ONLY will override this with !important to enable circle wipe on theme toggle */
 ::view-transition-group(root) {
   animation: none;
 }

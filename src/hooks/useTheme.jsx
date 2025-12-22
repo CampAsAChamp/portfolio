@@ -63,6 +63,12 @@ export function useTheme() {
       document.documentElement.style.setProperty('--y', `${y}px`)
       document.documentElement.style.setProperty('--r', `${endRadius}px`)
 
+      // Enable circle wipe animation for theme transitions only
+      document.documentElement.style.setProperty('--theme-transition-animation', 'revealTheme')
+
+      // Mark that we're transitioning theme (for debugging/reference)
+      document.documentElement.setAttribute('data-theme-transitioning', 'true')
+
       // Update React state immediately to prevent icon flash
       setIsDarkMode(newTheme === DARK)
 
@@ -72,12 +78,22 @@ export function useTheme() {
         localStorage.setItem(COLOR_MODE_KEY, newTheme)
       })
 
+      // Clean up after transition finishes
+      if (transition && transition.finished) {
+        transition.finished.finally(() => {
+          document.documentElement.removeAttribute('data-theme-transitioning')
+          document.documentElement.style.removeProperty('--theme-transition-animation')
+        })
+      }
+
       // Ensure transition completes properly (if ready promise exists)
       if (transition && transition.ready) {
         transition.ready.catch(() => {
           // If transition fails, ensure theme is still fully applied
           document.documentElement.setAttribute(COLOR_MODE_KEY, newTheme)
           localStorage.setItem(COLOR_MODE_KEY, newTheme)
+          document.documentElement.removeAttribute('data-theme-transitioning')
+          document.documentElement.style.removeProperty('--theme-transition-animation')
         })
       }
     },
