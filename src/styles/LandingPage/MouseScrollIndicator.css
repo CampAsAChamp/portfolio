@@ -14,6 +14,11 @@
   height: 60px;
 }
 
+/* Disable view-transition-name during theme transitions to prevent premature color changes */
+:root[data-theme-transitioning] #mouse-scroll-indicator {
+  view-transition-name: none;
+}
+
 /* Add the little scroll wheel animation */
 #mouse-scroll-indicator::after {
   position: absolute;

@@ -65,6 +65,11 @@
   view-transition-name: contact-button;
 }
 
+/* Disable view-transition-name during theme transitions to prevent premature color changes */
+:root[data-theme-transitioning] #contact-me-button {
+  view-transition-name: none;
+}
+
 #contact-me-button span {
   cursor: pointer;
   display: flex;
@@ -93,26 +98,14 @@
   right: 0;
 }
 
-/* Keep contact button, social icons, and mouse scroll stable during transition */
-::view-transition-group(contact-button),
-::view-transition-group(contact-socials),
-::view-transition-group(mouse-scroll) {
-  animation-duration: 0s;
-}
-
-::view-transition-old(contact-button),
-::view-transition-new(contact-button),
-::view-transition-old(contact-socials),
-::view-transition-new(contact-socials),
-::view-transition-old(mouse-scroll),
-::view-transition-new(mouse-scroll) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
 #contact-me-socials {
   margin: 0 50px;
   view-transition-name: contact-socials;
+}
+
+/* Disable view-transition-name during theme transitions to prevent premature color changes */
+:root[data-theme-transitioning] #contact-me-socials {
+  view-transition-name: none;
 }
 
 /* Compensate for scrollbar when modal is open */
