@@ -1,5 +1,3 @@
-<div id="top"></div>
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -24,26 +22,26 @@
 </div>
 
 <!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#deployment-to-github-pages">Deployment to GitHub Pages</a></li>
-    <li><a href="#license">License</a></li>
-  </ol>
-</details>
+
+## Table of Contents
+
+<ol>
+  <li>
+    <a href="#about-the-project">About The Project</a>
+    <ul>
+      <li><a href="#built-with">Built With</a></li>
+    </ul>
+  </li>
+  <li>
+    <a href="#getting-started">Getting Started</a>
+    <ul>
+      <li><a href="#installation">Installation</a></li>
+    </ul>
+  </li>
+  <li><a href="#usage">Usage</a></li>
+  <li><a href="#deployment">Deployment</a></li>
+  <li><a href="#license">License</a></li>
+</ol>
 
 <!-- ABOUT THE PROJECT -->
 
@@ -51,13 +49,9 @@
 
 ![product-screenshot]
 
-<p align="right">(<a href="#top">back to top</a>)</p>
-
 ### Built With
 
-[![My Skills](https://skillicons.dev/icons?i=react,js,html,css,figma,netlify,cloudflare)](https://skillicons.dev)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
+[![My Skills](https://skillicons.dev/icons?i=react,js,html,css,figma,cloudflare)](https://skillicons.dev)
 
 <!-- GETTING STARTED -->
 
@@ -83,67 +77,81 @@
    ```
 4. Open your web browser (if not automatically done for you) to `localhost:3000`
 
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
 ## Usage
 
 1. View the site live at https://nickhs.dev/
 
-<p align="right">(<a href="#top">back to top</a>)</p>
-
 <!-- DEPLOYMENT -->
 
-## Deployment to GitHub Pages
+## Deployment
 
-This project is configured to deploy to GitHub Pages using the `gh-pages` package.
+This project automatically deploys to Cloudflare Pages.
 
-### Prerequisites
+### Automatic Deployment
 
-1. Ensure your GitHub repository has GitHub Pages enabled
-   - Go to your repository Settings → Pages
-   - Source should be set to "Deploy from a branch"
-   - Branch should be set to `gh-pages` (will be created automatically on first deploy)
+Cloudflare Pages automatically deploys your site whenever you push to the repository:
 
-### Deploying
-
-1. Make sure all changes are committed and pushed to your repository
-
-2. Run the deploy command:
+1. Make your changes and commit them:
    ```sh
-   yarn deploy
+   git add .
+   git commit -m "Your commit message"
    ```
-   This will:
-   - Automatically run `yarn build` to create an optimized production build
-   - Deploy the `build` folder to the `gh-pages` branch
-   - Push changes to GitHub
 
-3. Your site will be available at your GitHub Pages URL (e.g., `https://username.github.io/portfolio`)
-   - Custom domains can be configured in repository Settings → Pages
+2. Push to the main branch:
+   ```sh
+   git push origin main
+   ```
 
-### Manual Build
+3. Cloudflare Pages will automatically:
+   - Detect the changes
+   - Install dependencies
+   - Build the project with `yarn build`
+   - Deploy to production
 
-To create a production build without deploying:
+4. View deployment status and logs in your Cloudflare Pages dashboard
+
+5. Your site will be live at `https://nickhs.dev` (or your configured domain)
+
+### Cloudflare Pages Configuration
+
+Your Cloudflare Pages project should be configured with:
+
+- **Build command:** `yarn build`
+- **Build output directory:** `build`
+- **Root directory:** `/` (default)
+- **Node version:** 18 or higher
+
+### Custom Domain
+
+The custom domain `nickhs.dev` is configured in Cloudflare:
+
+1. DNS is managed through Cloudflare
+2. SSL/TLS is automatically handled
+3. CDN caching and optimization are enabled
+
+To update the domain or DNS settings, visit your Cloudflare dashboard.
+
+### Local Development Build
+
+To create a production build locally without deploying:
+
 ```sh
 yarn build
 ```
 
-This creates an optimized build in the `build` folder.
+This creates an optimized build in the `build` folder that you can test locally.
 
 ### Notes
 
-- The `predeploy` script automatically runs `yarn build` before deploying
-- The `prebuild` script ensures dependencies are installed
 - Run `yarn format` before committing to ensure code is properly formatted
-
-<p align="right">(<a href="#top">back to top</a>)</p>
+- Cloudflare Pages deployments typically complete in 1-2 minutes
+- Preview deployments are automatically created for pull requests
+- Cloudflare provides automatic HTTPS, CDN, and DDoS protection
 
 <!-- LICENSE -->
 
 ## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 [product-screenshot]: src/assets/website_screenshot.png
