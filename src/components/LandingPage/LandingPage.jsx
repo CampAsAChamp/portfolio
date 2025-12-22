@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import { Svg } from 'components/Common/Svg'
 import { MouseScrollIndicator } from 'components/LandingPage/MouseScrollIndicator'
 
@@ -7,31 +9,29 @@ import LinkedInLogo from 'assets/Dev_Icons/LinkedIn.svg'
 import HeroImageBlobShape from 'assets/Organic_Shapes/Hero_Image_Blob_Shape.svg'
 import RealProfilePic from 'assets/Real_Profile_Pic.webp'
 
+import { useKeyboardAccessibility } from 'hooks/useKeyboardAccessibility'
+import { useModal } from 'hooks/useModal'
+
 import 'styles/LandingPage/LandingPage.css'
 
 export function LandingPage() {
-  function showModal() {
+  const { isOpen, open, close } = useModal()
+  const modalBackgroundKeyboardProps = useKeyboardAccessibility(close)
+  const modalCloseKeyboardProps = useKeyboardAccessibility(close)
+
+  // Sync modal state with CSS classes
+  useEffect(() => {
     const modalBackground = document.getElementById('contact-me-modal-background')
     const modalContent = document.getElementById('contact-me-modal-content')
 
-    modalBackground.classList.add('show')
-    modalContent.classList.add('show')
-  }
-
-  function hideModal() {
-    const modalBackground = document.getElementById('contact-me-modal-background')
-    const modalContent = document.getElementById('contact-me-modal-content')
-
-    modalBackground.classList.remove('show')
-    modalContent.classList.remove('show')
-  }
-
-  const handleKeyDown = (event, callback) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault()
-      callback()
+    if (isOpen) {
+      modalBackground.classList.add('show')
+      modalContent.classList.add('show')
+    } else {
+      modalBackground.classList.remove('show')
+      modalContent.classList.remove('show')
     }
-  }
+  }, [isOpen])
 
   return (
     <>
@@ -47,23 +47,25 @@ export function LandingPage() {
           <br />
           <div id="subtitle">If you&apos;re going to make something, why not make it pretty?</div>
           <div id="contact-me-bar">
-            <button type="button" className="button" id="contact-me-button" onClick={showModal}>
+            <button type="button" className="button" id="contact-me-button" onClick={open}>
               <span>Contact Me</span>
             </button>
+            {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
             <div
               className="modal-bg"
               id="contact-me-modal-background"
-              onClick={hideModal}
-              onKeyDown={(e) => handleKeyDown(e, hideModal)}
+              onClick={close}
+              {...modalBackgroundKeyboardProps}
               role="button"
               tabIndex={0}
               aria-label="Close modal"
             >
               <div id="contact-me-modal-content">
+                {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
                 <span
                   id="contact-me-modal-close"
-                  onClick={hideModal}
-                  onKeyDown={(e) => handleKeyDown(e, hideModal)}
+                  onClick={close}
+                  {...modalCloseKeyboardProps}
                   role="button"
                   tabIndex={0}
                   aria-label="Close"

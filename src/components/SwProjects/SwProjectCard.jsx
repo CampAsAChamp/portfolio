@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import parse from 'html-react-parser'
 import ScrollAnimation from 'react-animate-on-scroll'
@@ -12,28 +12,13 @@ import GitHubIcon from 'assets/Dev_Icons/GitHub.svg'
 
 import { COLORS } from 'data/colors'
 
+import { useBrowserDetection } from 'hooks/useBrowserDetection'
+
 export function SwProjectCard(props) {
   const { project, index } = props
-  const [canAutoPlay, setCanAutoPlay] = useState(false)
+  const { isProblematicBrowser } = useBrowserDetection()
+  const [canAutoPlay] = useState(() => !isProblematicBrowser)
   const [videoError, setVideoError] = useState(false)
-
-  // Check if we're in a problematic browser environment
-  useEffect(() => {
-    const userAgent = navigator.userAgent
-    const isInstagramBrowser = userAgent.includes('Instagram')
-    const isFacebookBrowser = userAgent.includes('FBAN') || userAgent.includes('FBAV')
-    const isIOSMobile = /iPad|iPhone|iPod/.test(userAgent)
-    const isAndroidMobile = /Android/.test(userAgent)
-
-    // Only disable autoplay for known problematic mobile in-app browsers
-    const isProblematicBrowser = (isInstagramBrowser || isFacebookBrowser) && (isIOSMobile || isAndroidMobile)
-
-    if (!isProblematicBrowser) {
-      // Allow autoplay immediately for safe environments (including desktop)
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setCanAutoPlay(true)
-    }
-  }, [])
 
   const handleVideoError = () => {
     setVideoError(true)

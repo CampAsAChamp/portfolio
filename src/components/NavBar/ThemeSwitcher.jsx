@@ -1,76 +1,15 @@
-import { useCallback, useEffect, useState } from 'react'
-
 import { MoonIcon } from 'components/NavBar/MoonIcon'
 import { SunIcon } from 'components/NavBar/SunIcon'
 
+import { useTheme } from 'hooks/useTheme'
+
 import 'styles/NavBar/ThemeSwitcher.css'
 
-const DARK = 'dark'
-const LIGHT = 'light'
-const COLOR_MODE_KEY = 'color-mode'
-
-// Helper to get initial theme preference
-const getInitialTheme = () => {
-  const localStorageTheme = localStorage.getItem(COLOR_MODE_KEY)
-
-  // Check for the OS theme if no localStorage theme
-  if (!localStorageTheme) {
-    const osDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
-    return osDarkTheme ? DARK : LIGHT
-  }
-
-  return localStorageTheme
-}
-
 export function ThemeSwitcher() {
-  const [isDarkMode, setIsDarkMode] = useState(() => getInitialTheme() === DARK)
-
-  // Initialize theme DOM attribute on mount only
-  useEffect(() => {
-    const initialTheme = getInitialTheme()
-    document.documentElement.setAttribute(COLOR_MODE_KEY, initialTheme)
-  }, [])
-
-  // Apply theme to DOM and localStorage
-  const applyTheme = useCallback((theme) => {
-    document.documentElement.setAttribute(COLOR_MODE_KEY, theme)
-    localStorage.setItem(COLOR_MODE_KEY, theme)
-    setIsDarkMode(theme === DARK)
-  }, [])
-
-  const switchTheme = useCallback(
-    (event) => {
-      const newTheme = isDarkMode ? LIGHT : DARK
-
-      // Get click position for circular reveal origin
-      const x = event.clientX
-      const y = event.clientY
-
-      // Check if View Transitions API is supported
-      if (!document.startViewTransition) {
-        // Fallback: instant switch
-        applyTheme(newTheme)
-        return
-      }
-
-      // Calculate radius for full-screen circle
-      const endRadius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y))
-
-      // Set CSS custom properties for animation
-      document.documentElement.style.setProperty('--x', `${x}px`)
-      document.documentElement.style.setProperty('--y', `${y}px`)
-      document.documentElement.style.setProperty('--r', `${endRadius}px`)
-
-      // Animate the transition
-      document.startViewTransition(() => {
-        applyTheme(newTheme)
-      })
-    },
-    [isDarkMode, applyTheme],
-  )
+  const { isDarkMode, toggleTheme } = useTheme()
 
   return (
-    <button className="theme-toggle-button" onClick={switchTheme} aria-label="Toggle theme">
+    <button className="theme-toggle-button" onClick={toggleTheme} aria-label="Toggle theme">
       {isDarkMode ? <MoonIcon /> : <SunIcon />}
     </button>
   )

@@ -1,20 +1,11 @@
+import { useKeyboardAccessibility } from 'hooks/useKeyboardAccessibility'
+
 export function HamburgerMenu({ navSlide }) {
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault()
-      navSlide()
-    }
-  }
+  const keyboardProps = useKeyboardAccessibility(navSlide)
 
   return (
-    <div
-      className="hamburger-menu"
-      onClick={navSlide}
-      onKeyDown={handleKeyDown}
-      role="button"
-      tabIndex={0}
-      aria-label="Toggle navigation menu"
-    >
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+    <div className="hamburger-menu" onClick={navSlide} {...keyboardProps} role="button" tabIndex={0} aria-label="Toggle navigation menu">
       <div className="hamburger-menu-line" id="hamburger-menu-line1" />
       <div className="hamburger-menu-line" id="hamburger-menu-line2" />
       <div className="hamburger-menu-line" id="hamburger-menu-line3" />
