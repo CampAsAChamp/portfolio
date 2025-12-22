@@ -39,6 +39,7 @@
     </ul>
   </li>
   <li><a href="#usage">Usage</a></li>
+  <li><a href="#testing">Testing</a></li>
   <li><a href="#deployment">Deployment</a></li>
   <li><a href="#license">License</a></li>
 </ol>
@@ -85,6 +86,53 @@
 ## Usage
 
 1. View the site live at https://nickhs.dev/
+
+<!-- TESTING -->
+
+## Testing
+
+This project includes automated tests to catch regressions and ensure components render correctly.
+
+### Running Tests
+
+Run all tests once:
+```sh
+yarn test
+```
+
+Run tests in watch mode (useful during development):
+```sh
+yarn test:watch
+```
+
+Open the Vitest UI for an interactive testing experience:
+```sh
+yarn test:ui
+```
+
+Generate test coverage report:
+```sh
+yarn test:coverage
+```
+
+### Continuous Integration
+
+Tests run automatically on every push and pull request via GitHub Actions. The CI pipeline:
+- Installs dependencies
+- Runs ESLint to check code quality
+- Runs all tests
+- Builds the project
+
+Pull requests must pass all checks before merging. You can view test results in the "Actions" tab of the repository.
+
+### Test Structure
+
+Tests are located in the `tests/` directory, mirroring the structure of `src/`:
+- `tests/App.test.jsx` - Main app component
+- `tests/components/` - Component tests organized by feature
+- Smoke tests verify components render without errors
+- Focus on catching regressions when updating content or refactoring
+- Use React Testing Library for behavior-focused testing
 
 <!-- DEPLOYMENT -->
 

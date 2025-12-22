@@ -148,6 +148,7 @@ src/
   - Formats code with Prettier
   - Lints and auto-fixes with ESLint
   - Only processes staged files
+- Run `yarn test` to ensure all tests pass
 - Test locally with `yarn start`
 - Check for console errors and warnings
 - Verify responsive design
@@ -208,6 +209,17 @@ src/
 - Supported by most modern editors
 
 ## Testing
+
+### Automated Tests
+- Run `yarn test` to execute all tests
+- Run `yarn test:watch` for watch mode during development
+- Run `yarn test:ui` to open the interactive Vitest UI
+- Run `yarn test:coverage` to generate coverage reports
+- Tests automatically run in CI on every push/PR
+- Tests focus on preventing regressions when updating content or refactoring
+- Located in `tests/` directory mirroring `src/` structure (e.g., `tests/components/MyComponent/MyComponent.test.jsx`)
+
+### Manual Testing
 - Run `yarn start` and manually test in browser
 - Check responsive design at various breakpoints
 - Test all interactive elements (mouse and keyboard)
