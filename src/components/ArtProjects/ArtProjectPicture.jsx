@@ -5,6 +5,7 @@ export function ArtProjectPicture({ imgSrc, altText }) {
 
     modalBackground.classList.add('show')
     modalImg.classList.add('show')
+    document.body.classList.add('art-modal-open')
 
     modalImg.src = imgSrc
     modalImg.title = altText
@@ -16,6 +17,7 @@ export function ArtProjectPicture({ imgSrc, altText }) {
 
     modalBackground.classList.remove('show')
     modalImg.classList.remove('show')
+    document.body.classList.remove('art-modal-open')
   }
 
   const handleKeyDown = (event, callback) => {

@@ -49,6 +49,10 @@
   transform: scale(1.1);
 }
 
+body.art-modal-open .column img:hover {
+  transform: none;
+}
+
 #main-carousel {
   display: none;
 }
