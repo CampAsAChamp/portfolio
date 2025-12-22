@@ -35,24 +35,48 @@ export function ArtProjects() {
       <div id="graphic-design-content">
         <div className="row">
           <div className="column">
-            <ArtProjectPicture imgSrc={AlohaPic} altText="Aloha Pic" />
-            <ArtProjectPicture imgSrc={LosAngelesPostCardPic} altText="LA" />
-            <ArtProjectPicture imgSrc={GradientFluidPosterPic} altText="Gradient Poster" />
+            <ScrollAnimation animateIn="animate__fadeInUp" delay={0} animateOnce>
+              <ArtProjectPicture imgSrc={AlohaPic} altText="Aloha Pic" />
+            </ScrollAnimation>
+            <ScrollAnimation animateIn="animate__fadeInUp" delay={100} animateOnce>
+              <ArtProjectPicture imgSrc={LosAngelesPostCardPic} altText="LA" />
+            </ScrollAnimation>
+            <ScrollAnimation animateIn="animate__fadeInUp" delay={200} animateOnce>
+              <ArtProjectPicture imgSrc={GradientFluidPosterPic} altText="Gradient Poster" />
+            </ScrollAnimation>
           </div>
           <div className="column">
-            <ArtProjectPicture imgSrc={TriFergPic} altText="Tri Ferg Poster" />
-            <ArtProjectPicture imgSrc={LineArtLogoPic} altText="Line Art Logo Poster" />
-            <ArtProjectPicture imgSrc={ThreeDimensionalBlendTextPic} altText="3D Blend Text" />
+            <ScrollAnimation animateIn="animate__fadeInUp" delay={50} animateOnce>
+              <ArtProjectPicture imgSrc={TriFergPic} altText="Tri Ferg Poster" />
+            </ScrollAnimation>
+            <ScrollAnimation animateIn="animate__fadeInUp" delay={150} animateOnce>
+              <ArtProjectPicture imgSrc={LineArtLogoPic} altText="Line Art Logo Poster" />
+            </ScrollAnimation>
+            <ScrollAnimation animateIn="animate__fadeInUp" delay={250} animateOnce>
+              <ArtProjectPicture imgSrc={ThreeDimensionalBlendTextPic} altText="3D Blend Text" />
+            </ScrollAnimation>
           </div>
           <div className="column">
-            <ArtProjectPicture imgSrc={FloralTextPic} altText="Floral Text" />
-            <ArtProjectPicture imgSrc={RetroStripeLetteringPic} altText="Retro Stripe Lettering" />
-            <ArtProjectPicture imgSrc={BeeLogoPic} altText="Bee Logo" />
+            <ScrollAnimation animateIn="animate__fadeInUp" delay={100} animateOnce>
+              <ArtProjectPicture imgSrc={FloralTextPic} altText="Floral Text" />
+            </ScrollAnimation>
+            <ScrollAnimation animateIn="animate__fadeInUp" delay={200} animateOnce>
+              <ArtProjectPicture imgSrc={RetroStripeLetteringPic} altText="Retro Stripe Lettering" />
+            </ScrollAnimation>
+            <ScrollAnimation animateIn="animate__fadeInUp" delay={300} animateOnce>
+              <ArtProjectPicture imgSrc={BeeLogoPic} altText="Bee Logo" />
+            </ScrollAnimation>
           </div>
           <div className="column">
-            <ArtProjectPicture imgSrc={LineFillLetteringPic} altText="Line Fill Lettering" />
-            <ArtProjectPicture imgSrc={WellPic} altText="Well" />
-            <ArtProjectPicture imgSrc={WaterColorPopsiclesPic} altText="Water Color Popsicles" />
+            <ScrollAnimation animateIn="animate__fadeInUp" delay={150} animateOnce>
+              <ArtProjectPicture imgSrc={LineFillLetteringPic} altText="Line Fill Lettering" />
+            </ScrollAnimation>
+            <ScrollAnimation animateIn="animate__fadeInUp" delay={250} animateOnce>
+              <ArtProjectPicture imgSrc={WellPic} altText="Well" />
+            </ScrollAnimation>
+            <ScrollAnimation animateIn="animate__fadeInUp" delay={350} animateOnce>
+              <ArtProjectPicture imgSrc={WaterColorPopsiclesPic} altText="Water Color Popsicles" />
+            </ScrollAnimation>
           </div>
         </div>
         {/* For Mobile Only */}

@@ -34,15 +34,18 @@
   padding: 0 5px;
 }
 
-.column > img {
-  border-radius: 10px;
+.column > div {
   margin-top: 10px;
+}
+
+.column img {
+  border-radius: 10px;
   transition: transform 0.25s;
   vertical-align: middle;
   width: 100%;
 }
 
-.column > img:hover {
+.column img:hover {
   transform: scale(1.1);
 }
 

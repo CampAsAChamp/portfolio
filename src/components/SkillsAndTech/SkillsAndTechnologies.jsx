@@ -16,27 +16,26 @@ export function SkillsAndTechnologies() {
         </ScrollAnimation>
       </div>
       <div id="skills-content">
-        <ScrollAnimation animateIn="animate__fadeIn" animateOnce>
-          <SkillsRow technologyNames={[technologies.GO, technologies.JAVA, technologies.SPRING, technologies.PYTHON, technologies.CPP]} />
-        </ScrollAnimation>
-        <ScrollAnimation animateIn="animate__fadeIn" animateOnce>
-          <SkillsRow
-            technologyNames={[
-              technologies.TYPESCRIPT,
-              technologies.JAVASCRIPT,
-              technologies.REACT,
-              technologies.REDUX,
-              technologies.HTML5,
-              technologies.CSS3,
-            ]}
-          />
-        </ScrollAnimation>
-        <ScrollAnimation animateIn="animate__fadeIn" animateOnce>
-          <SkillsRow technologyNames={[technologies.POSTGRES, technologies.KUBERNETES, technologies.DOCKER, technologies.GCP]} />
-        </ScrollAnimation>
-        <ScrollAnimation animateIn="animate__fadeIn" animateOnce>
-          <SkillsRow technologyNames={[technologies.GIT, technologies.LINUX, technologies.FIGMA]} />
-        </ScrollAnimation>
+        <SkillsRow
+          technologyNames={[technologies.GO, technologies.JAVA, technologies.SPRING, technologies.PYTHON, technologies.CPP]}
+          rowDelay={0}
+        />
+        <SkillsRow
+          technologyNames={[
+            technologies.TYPESCRIPT,
+            technologies.JAVASCRIPT,
+            technologies.REACT,
+            technologies.REDUX,
+            technologies.HTML5,
+            technologies.CSS3,
+          ]}
+          rowDelay={100}
+        />
+        <SkillsRow
+          technologyNames={[technologies.POSTGRES, technologies.KUBERNETES, technologies.DOCKER, technologies.GCP]}
+          rowDelay={200}
+        />
+        <SkillsRow technologyNames={[technologies.GIT, technologies.LINUX, technologies.FIGMA]} rowDelay={300} />
       </div>
     </section>
   );
