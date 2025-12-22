@@ -1,78 +1,78 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 
-import 'styles/NavBar/ThemeSwitcher.css';
+import 'styles/NavBar/ThemeSwitcher.css'
 
-const DARK = 'dark';
-const LIGHT = 'light';
-const COLOR_MODE_KEY = 'color-mode';
+const DARK = 'dark'
+const LIGHT = 'light'
+const COLOR_MODE_KEY = 'color-mode'
 
 export function ThemeSwitcher() {
-  let localStorageTheme = localStorage.getItem(COLOR_MODE_KEY);
+  let localStorageTheme = localStorage.getItem(COLOR_MODE_KEY)
 
   // Check for the OS theme if no localStorage theme
   if (!localStorageTheme) {
-    const osDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const osDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
 
-    localStorageTheme = osDarkTheme ? DARK : LIGHT;
+    localStorageTheme = osDarkTheme ? DARK : LIGHT
   }
 
-  const [isDarkMode, setIsDarkMode] = useState(localStorageTheme === DARK);
+  const [isDarkMode, setIsDarkMode] = useState(localStorageTheme === DARK)
 
-  // Initialize theme
+  // Initialize theme on mount only
   useEffect(() => {
     if (isDarkMode) {
-      setDarkMode();
+      setDarkMode()
     } else {
-      setLightMode();
+      setLightMode()
     }
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const setDarkMode = () => {
-    document.documentElement.setAttribute(COLOR_MODE_KEY, DARK);
-    localStorage.setItem(COLOR_MODE_KEY, DARK);
-    setIsDarkMode(true);
-  };
+    document.documentElement.setAttribute(COLOR_MODE_KEY, DARK)
+    localStorage.setItem(COLOR_MODE_KEY, DARK)
+    setIsDarkMode(true)
+  }
 
   const setLightMode = () => {
-    document.documentElement.setAttribute(COLOR_MODE_KEY, LIGHT);
-    localStorage.setItem(COLOR_MODE_KEY, LIGHT);
-    setIsDarkMode(false);
-  };
+    document.documentElement.setAttribute(COLOR_MODE_KEY, LIGHT)
+    localStorage.setItem(COLOR_MODE_KEY, LIGHT)
+    setIsDarkMode(false)
+  }
 
   const switchTheme = (event) => {
     // Get click position for circular reveal origin
-    const x = event.clientX;
-    const y = event.clientY;
+    const x = event.clientX
+    const y = event.clientY
 
     // Check if View Transitions API is supported
     if (!document.startViewTransition) {
       // Fallback: instant switch
       if (isDarkMode) {
-        setLightMode();
+        setLightMode()
       } else {
-        setDarkMode();
+        setDarkMode()
       }
-      return;
+      return
     }
 
     // Calculate radius for full-screen circle
-    const endRadius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+    const endRadius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y))
 
     // Set CSS custom properties for animation
-    document.documentElement.style.setProperty('--x', `${x}px`);
-    document.documentElement.style.setProperty('--y', `${y}px`);
-    document.documentElement.style.setProperty('--r', `${endRadius}px`);
+    document.documentElement.style.setProperty('--x', `${x}px`)
+    document.documentElement.style.setProperty('--y', `${y}px`)
+    document.documentElement.style.setProperty('--r', `${endRadius}px`)
 
     // Animate the transition
     document.startViewTransition(() => {
       if (isDarkMode) {
-        setLightMode();
+        setLightMode()
       } else {
-        setDarkMode();
+        setDarkMode()
       }
-    });
-  };
+    })
+  }
 
   return (
     <button className="theme-toggle-button" onClick={switchTheme} aria-label="Toggle theme">
@@ -103,5 +103,5 @@ export function ThemeSwitcher() {
         </svg>
       )}
     </button>
-  );
+  )
 }

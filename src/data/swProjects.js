@@ -1,16 +1,16 @@
-import * as technologies from './technologies';
+import ChickFilAThumbnail from 'assets/Projects/Software/Chick_Fil_A.webp'
+import DiggermanVideoThumbnailMp4 from 'assets/Projects/Software/Diggerman.mp4'
+import DiggermanVideoThumbnail from 'assets/Projects/Software/Diggerman.webm'
+import DiggermanThumbnail from 'assets/Projects/Software/Diggerman.webp'
+import FaceSwappingVideoThumbnailMp4 from 'assets/Projects/Software/Face_Morphing.mp4'
+import FaceSwappingVideoThumbnail from 'assets/Projects/Software/Face_Morphing.webm'
+import FaceSwappingThumbnail from 'assets/Projects/Software/Face_Morphing.webp'
+import HomeServerThumbnail from 'assets/Projects/Software/Home_Server.webp'
+import ObjectDetectionThumbnail from 'assets/Projects/Software/Object_Detection.webp'
+import PortfolioThumbnail from 'assets/Projects/Software/Portfolio_Thumbnail.webp'
+import SpotifyPPThumbnail from 'assets/Projects/Software/Spotify.webp'
 
-import ChickFilAThumbnail from 'assets/Projects/Software/Chick_Fil_A.webp';
-import DiggermanThumbnail from 'assets/Projects/Software/Diggerman.webp';
-import DiggermanVideoThumbnail from 'assets/Projects/Software/Diggerman.webm';
-import DiggermanVideoThumbnailMp4 from 'assets/Projects/Software/Diggerman.mp4';
-import FaceSwappingThumbnail from 'assets/Projects/Software/Face_Morphing.webp';
-import FaceSwappingVideoThumbnail from 'assets/Projects/Software/Face_Morphing.webm';
-import FaceSwappingVideoThumbnailMp4 from 'assets/Projects/Software/Face_Morphing.mp4';
-import HomeServerThumbnail from 'assets/Projects/Software/Home_Server.webp';
-import ObjectDetectionThumbnail from 'assets/Projects/Software/Object_Detection.webp';
-import PortfolioThumbnail from 'assets/Projects/Software/Portfolio_Thumbnail.webp';
-import SpotifyPPThumbnail from 'assets/Projects/Software/Spotify.webp';
+import * as technologies from './technologies'
 
 const projects = [
   {
@@ -151,12 +151,12 @@ const projects = [
     link: 'https://github.com/CampAsAChamp/home-server',
     thumbnail: HomeServerThumbnail,
   },
-];
+]
 
-const projectMap = new Map();
+const projectMap = new Map()
 
 projects.forEach((item) => {
-  projectMap.set(item.name, item);
-});
+  projectMap.set(item.name, item)
+})
 
-export { projects, projectMap };
+export { projects, projectMap }

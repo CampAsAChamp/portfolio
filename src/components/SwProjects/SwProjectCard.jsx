@@ -1,53 +1,56 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 
-import { COLORS } from 'data/colors';
-import GitHubIcon from 'assets/Dev_Icons/GitHub.svg';
-import ScrollAnimation from 'react-animate-on-scroll';
-import { Svg } from 'components/Common/Svg';
-import { SwProjectImage } from 'components/SwProjects/SwProjectImage';
-import { SwProjectVideo } from 'components/SwProjects/SwProjectVideo';
-import { TechnologiesBar } from 'components/Common/TechnologiesBar';
-import parse from 'html-react-parser';
+import parse from 'html-react-parser'
+import ScrollAnimation from 'react-animate-on-scroll'
+
+import { Svg } from 'components/Common/Svg'
+import { TechnologiesBar } from 'components/Common/TechnologiesBar'
+import { SwProjectImage } from 'components/SwProjects/SwProjectImage'
+import { SwProjectVideo } from 'components/SwProjects/SwProjectVideo'
+
+import GitHubIcon from 'assets/Dev_Icons/GitHub.svg'
+
+import { COLORS } from 'data/colors'
 
 export function SwProjectCard(props) {
-  const { project, index } = props;
-  const [canAutoPlay, setCanAutoPlay] = useState(false);
-  const [videoError, setVideoError] = useState(false);
+  const { project, index } = props
+  const [canAutoPlay, setCanAutoPlay] = useState(false)
+  const [videoError, setVideoError] = useState(false)
 
   // Check if we're in a problematic browser environment
   useEffect(() => {
-    const userAgent = navigator.userAgent;
-    const isInstagramBrowser = userAgent.includes('Instagram');
-    const isFacebookBrowser = userAgent.includes('FBAN') || userAgent.includes('FBAV');
-    const isIOSMobile = /iPad|iPhone|iPod/.test(userAgent);
-    const isAndroidMobile = /Android/.test(userAgent);
+    const userAgent = navigator.userAgent
+    const isInstagramBrowser = userAgent.includes('Instagram')
+    const isFacebookBrowser = userAgent.includes('FBAN') || userAgent.includes('FBAV')
+    const isIOSMobile = /iPad|iPhone|iPod/.test(userAgent)
+    const isAndroidMobile = /Android/.test(userAgent)
 
     // Only disable autoplay for known problematic mobile in-app browsers
-    const isProblematicBrowser = (isInstagramBrowser || isFacebookBrowser) && (isIOSMobile || isAndroidMobile);
+    const isProblematicBrowser = (isInstagramBrowser || isFacebookBrowser) && (isIOSMobile || isAndroidMobile)
 
     if (!isProblematicBrowser) {
       // Allow autoplay immediately for safe environments (including desktop)
-      setCanAutoPlay(true);
+      setCanAutoPlay(true)
     }
-  }, []);
+  }, [])
 
   const handleVideoError = () => {
-    setVideoError(true);
-  };
+    setVideoError(true)
+  }
 
   const renderProjectMedia = () => {
-    const shouldShowVideo = project.isVideo && !videoError;
+    const shouldShowVideo = project.isVideo && !videoError
 
     if (shouldShowVideo) {
-      return <SwProjectVideo project={project} canAutoPlay={canAutoPlay} onVideoError={handleVideoError} />;
+      return <SwProjectVideo project={project} canAutoPlay={canAutoPlay} onVideoError={handleVideoError} />
     }
 
-    return <SwProjectImage project={project} />;
-  };
+    return <SwProjectImage project={project} />
+  }
 
   return (
     <ScrollAnimation animateIn="animate__springIn" animateOnce>
-      <div className="card sw-projects-card" id={'sw-projects-card' + index}>
+      <div className="card sw-projects-card" id={`sw-projects-card${index}`}>
         <div className="sw-projects-title-container">
           <div className="sw-project-title card-title">{project.name}</div>
           <TechnologiesBar technologyNames={project.technologies} fillColor={COLORS.PURPLE} />
@@ -65,9 +68,9 @@ export function SwProjectCard(props) {
                 onClick={(event) => {
                   // Prevent unwanted triggers from Instagram or other injected scripts
                   if (!event || !event.isTrusted) {
-                    return;
+                    return
                   }
-                  window.open(project.link, '_blank');
+                  window.open(project.link, '_blank')
                 }}
                 onTouchStart={(e) => e.stopPropagation()} // Prevent touch interference
               >
@@ -79,5 +82,5 @@ export function SwProjectCard(props) {
         </div>
       </div>
     </ScrollAnimation>
-  );
+  )
 }

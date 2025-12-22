@@ -1,17 +1,18 @@
-import 'animate.css/animate.min.css';
-import React from 'react';
+import React from 'react'
 
-import { AboutMe } from 'components/AboutMe/AboutMe';
-import { ArtProjects } from 'components/ArtProjects/ArtProjects';
-import { Experience } from 'components/Experience/Experience';
-import { LandingPage } from 'components/LandingPage/LandingPage';
-import { Navbar } from 'components/NavBar/Navbar';
-import { SWProjects } from 'components/SwProjects/SwProjects';
-import { ScrollToTopButton } from 'components/Common/ScrollToTopButton';
-import { SkillsAndTechnologies } from 'components/SkillsAndTech/SkillsAndTechnologies';
+import 'animate.css/animate.min.css'
 
-import 'styles/Common/Globals.css';
-import 'styles/Common/Scrollbar.css';
+import { AboutMe } from 'components/AboutMe/AboutMe'
+import { ArtProjects } from 'components/ArtProjects/ArtProjects'
+import { ScrollToTopButton } from 'components/Common/ScrollToTopButton'
+import { Experience } from 'components/Experience/Experience'
+import { LandingPage } from 'components/LandingPage/LandingPage'
+import { Navbar } from 'components/NavBar/Navbar'
+import { SkillsAndTechnologies } from 'components/SkillsAndTech/SkillsAndTechnologies'
+import { SWProjects } from 'components/SwProjects/SwProjects'
+
+import 'styles/Common/Globals.css'
+import 'styles/Common/Scrollbar.css'
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
       <SWProjects />
       <ArtProjects />
     </>
-  );
+  )
 }
 
-export default App;
+export default App

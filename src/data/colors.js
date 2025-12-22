@@ -7,4 +7,4 @@ export const COLORS = {
   RAYTHEON: '#ce1126',
   REAZON: '#00acee',
   YELLOW: '#f2d541',
-};
+}

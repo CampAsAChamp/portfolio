@@ -1,18 +1,17 @@
-import ArculesLogo from 'assets/Company_Logos/Arcules.svg';
-import IntuitLogo from 'assets/Company_Logos/Intuit.svg';
-import IDTechLogo from 'assets/Company_Logos/ID_Tech.svg';
-import RaytheonLogo from 'assets/Company_Logos/Raytheon.svg';
-import ReazonLogo from 'assets/Company_Logos/Reazon.svg';
+import ArculesLogo from 'assets/Company_Logos/Arcules.svg'
+import IDTechLogo from 'assets/Company_Logos/ID_Tech.svg'
+import IntuitLogo from 'assets/Company_Logos/Intuit.svg'
+import RaytheonLogo from 'assets/Company_Logos/Raytheon.svg'
+import ReazonLogo from 'assets/Company_Logos/Reazon.svg'
 
-import * as technologies from 'data/technologies';
+import { COLORS } from 'data/colors'
+import * as technologies from 'data/technologies'
 
-import { COLORS } from 'data/colors';
-
-export const RAYTHEON = 'Raytheon Intelligence & Space';
-export const ARCULES = 'Arcules';
-export const ID_TECH = 'ID Tech';
-export const INTUIT = 'Intuit';
-export const REAZON = 'Reazon Systems';
+export const RAYTHEON = 'Raytheon Intelligence & Space'
+export const ARCULES = 'Arcules'
+export const ID_TECH = 'ID Tech'
+export const INTUIT = 'Intuit'
+export const REAZON = 'Reazon Systems'
 
 export const experiences = [
   {
@@ -142,12 +141,12 @@ export const experiences = [
     logo: ReazonLogo,
     color: COLORS.REAZON,
   },
-];
+]
 
-const experienceMap = new Map();
+const experienceMap = new Map()
 
 experiences.forEach((item) => {
-  experienceMap.set(item.company_name, item);
-});
+  experienceMap.set(item.company_name, item)
+})
 
-export { experienceMap };
+export { experienceMap }

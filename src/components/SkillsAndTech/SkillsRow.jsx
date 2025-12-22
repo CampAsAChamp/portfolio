@@ -1,17 +1,18 @@
-import React from 'react';
-import ScrollAnimation from 'react-animate-on-scroll';
+import React from 'react'
 
-import { Svg } from 'components/Common/Svg';
+import ScrollAnimation from 'react-animate-on-scroll'
 
-import { COLORS } from 'data/colors';
-import { technologiesMap } from 'data/technologies';
+import { Svg } from 'components/Common/Svg'
+
+import { COLORS } from 'data/colors'
+import { technologiesMap } from 'data/technologies'
 
 export function SkillsRow(props) {
-  const { technologyNames, rowDelay = 0 } = props;
+  const { technologyNames, rowDelay = 0 } = props
 
   const technologies = technologyNames.map((name) => {
-    return technologiesMap.get(name);
-  });
+    return technologiesMap.get(name)
+  })
 
   return (
     <div className="skills-row">
@@ -24,15 +25,15 @@ export function SkillsRow(props) {
                   className="skills-icon hvr-grow"
                   src={tech.image}
                   fill={COLORS.PURPLE}
-                  title={tech.name + ' Icon'}
-                  alt={tech.name + ' Icon'}
+                  title={`${tech.name} Icon`}
+                  alt={`${tech.name} Icon`}
                 />
               </a>
               <div className="skills-caption">{tech.name}</div>
             </div>
           </ScrollAnimation>
-        );
+        )
       })}
     </div>
-  );
+  )
 }

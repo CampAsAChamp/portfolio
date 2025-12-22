@@ -1,31 +1,38 @@
-import React from 'react';
+import React from 'react'
 
-import ArtProfilePic from 'assets/Art_Profile_Pic.svg';
-import GitHubLogo from 'assets/Dev_Icons/GitHub.svg';
-import LinkedInLogo from 'assets/Dev_Icons/LinkedIn.svg';
-import HeroImageBlobShape from 'assets/Organic_Shapes/Hero_Image_Blob_Shape.svg';
-import RealProfilePic from 'assets/Real_Profile_Pic.webp';
+import { Svg } from 'components/Common/Svg'
+import { MouseScrollIndicator } from 'components/LandingPage/MouseScrollIndicator'
 
-import { MouseScrollIndicator } from 'components/LandingPage/MouseScrollIndicator';
-import { Svg } from 'components/Common/Svg';
+import ArtProfilePic from 'assets/Art_Profile_Pic.svg'
+import GitHubLogo from 'assets/Dev_Icons/GitHub.svg'
+import LinkedInLogo from 'assets/Dev_Icons/LinkedIn.svg'
+import HeroImageBlobShape from 'assets/Organic_Shapes/Hero_Image_Blob_Shape.svg'
+import RealProfilePic from 'assets/Real_Profile_Pic.webp'
 
-import 'styles/LandingPage/LandingPage.css';
+import 'styles/LandingPage/LandingPage.css'
 
 export function LandingPage() {
   function showModal() {
-    let modalBackground = document.getElementById('contact-me-modal-background');
-    let modalContent = document.getElementById('contact-me-modal-content');
+    const modalBackground = document.getElementById('contact-me-modal-background')
+    const modalContent = document.getElementById('contact-me-modal-content')
 
-    modalBackground.classList.add('show');
-    modalContent.classList.add('show');
+    modalBackground.classList.add('show')
+    modalContent.classList.add('show')
   }
 
   function hideModal() {
-    let modalBackground = document.getElementById('contact-me-modal-background');
-    let modalContent = document.getElementById('contact-me-modal-content');
+    const modalBackground = document.getElementById('contact-me-modal-background')
+    const modalContent = document.getElementById('contact-me-modal-content')
 
-    modalBackground.classList.remove('show');
-    modalContent.classList.remove('show');
+    modalBackground.classList.remove('show')
+    modalContent.classList.remove('show')
+  }
+
+  const handleKeyDown = (event, callback) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      callback()
+    }
   }
 
   return (
@@ -45,9 +52,24 @@ export function LandingPage() {
             <button type="button" className="button" id="contact-me-button" onClick={showModal}>
               <span>Contact Me</span>
             </button>
-            <div className="modal-bg" id="contact-me-modal-background" onClick={hideModal}>
+            <div
+              className="modal-bg"
+              id="contact-me-modal-background"
+              onClick={hideModal}
+              onKeyDown={(e) => handleKeyDown(e, hideModal)}
+              role="button"
+              tabIndex={0}
+              aria-label="Close modal"
+            >
               <div id="contact-me-modal-content">
-                <span id="contact-me-modal-close" onClick={hideModal}>
+                <span
+                  id="contact-me-modal-close"
+                  onClick={hideModal}
+                  onKeyDown={(e) => handleKeyDown(e, hideModal)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label="Close"
+                >
                   ×
                 </span>
                 <img id="contact-me-modal-profile-pic" src={RealProfilePic} alt="Nick Schneider" />
@@ -75,5 +97,5 @@ export function LandingPage() {
         </div>
       </section>
     </>
-  );
+  )
 }

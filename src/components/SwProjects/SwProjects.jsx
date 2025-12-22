@@ -1,11 +1,12 @@
-import React from 'react';
-import ScrollAnimation from 'react-animate-on-scroll';
+import React from 'react'
 
-import { SwProjectCard } from 'components/SwProjects/SwProjectCard';
+import ScrollAnimation from 'react-animate-on-scroll'
 
-import { projects } from 'data/swProjects';
+import { SwProjectCard } from 'components/SwProjects/SwProjectCard'
 
-import 'styles/SwProjects/SwProjects.css';
+import { projects } from 'data/swProjects'
+
+import 'styles/SwProjects/SwProjects.css'
 
 export function SWProjects() {
   return (
@@ -16,8 +17,8 @@ export function SWProjects() {
         </ScrollAnimation>
       </div>
       {projects.map((project, index) => {
-        return <SwProjectCard key={project.name} index={index + 1} project={project} />;
+        return <SwProjectCard key={project.name} index={index + 1} project={project} />
       })}
     </section>
-  );
+  )
 }

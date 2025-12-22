@@ -1,4 +1,5 @@
-import { memo } from 'react';
-import inlinesvg from 'react-inlinesvg';
+import { memo } from 'react'
 
-export const Svg = memo(inlinesvg);
+import InlineSVG from 'react-inlinesvg'
+
+export const Svg = memo(InlineSVG)

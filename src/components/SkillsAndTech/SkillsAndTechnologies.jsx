@@ -1,11 +1,12 @@
-import React from 'react';
-import ScrollAnimation from 'react-animate-on-scroll';
+import React from 'react'
 
-import { SkillsRow } from 'components/SkillsAndTech/SkillsRow';
+import ScrollAnimation from 'react-animate-on-scroll'
 
-import * as technologies from 'data/technologies';
+import { SkillsRow } from 'components/SkillsAndTech/SkillsRow'
 
-import 'styles/SkillsAndTech/SkillsAndTechnologies.css';
+import * as technologies from 'data/technologies'
+
+import 'styles/SkillsAndTech/SkillsAndTechnologies.css'
 
 export function SkillsAndTechnologies() {
   return (
@@ -38,5 +39,5 @@ export function SkillsAndTechnologies() {
         <SkillsRow technologyNames={[technologies.GIT, technologies.LINUX, technologies.FIGMA]} rowDelay={300} />
       </div>
     </section>
-  );
+  )
 }

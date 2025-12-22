@@ -1,15 +1,16 @@
-import parse from 'html-react-parser';
-import React from 'react';
-import ScrollAnimation from 'react-animate-on-scroll';
+import React from 'react'
 
-import { TechnologiesBar } from '../Common/TechnologiesBar';
+import parse from 'html-react-parser'
+import ScrollAnimation from 'react-animate-on-scroll'
+
+import { TechnologiesBar } from 'components/Common/TechnologiesBar'
 
 export function ExperienceCard(props) {
-  const { experience, index } = props;
+  const { experience, index } = props
 
   return (
     <ScrollAnimation animateIn="animate__springIn" animateOnce>
-      <div className="card" id={'card' + index}>
+      <div className="card" id={`card${index}`}>
         <div className="experience-title-container">
           <div className="employer card-title" style={{ color: experience.color }}>
             {experience.company_name}
@@ -27,5 +28,5 @@ export function ExperienceCard(props) {
         <TechnologiesBar technologyNames={experience.technologies} fillColor={experience.color} />
       </div>
     </ScrollAnimation>
-  );
+  )
 }

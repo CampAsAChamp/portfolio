@@ -1,11 +1,12 @@
-import React from 'react';
-import ScrollAnimation from 'react-animate-on-scroll';
+import React from 'react'
 
-import { ExperienceCard } from 'components/Experience/ExperienceCard';
+import ScrollAnimation from 'react-animate-on-scroll'
 
-import { experiences } from 'data/experiences';
+import { ExperienceCard } from 'components/Experience/ExperienceCard'
 
-import 'styles/Experience/Experience.css';
+import { experiences } from 'data/experiences'
+
+import 'styles/Experience/Experience.css'
 
 export function Experience() {
   return (
@@ -17,9 +18,9 @@ export function Experience() {
           </ScrollAnimation>
         </div>
         {experiences.map((exp, index) => {
-          return <ExperienceCard key={exp.company_name} index={index + 1} experience={exp} />;
+          return <ExperienceCard key={exp.company_name} index={index + 1} experience={exp} />
         })}
       </section>
     </>
-  );
+  )
 }
