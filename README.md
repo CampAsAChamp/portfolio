@@ -40,7 +40,7 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#deployment-to-github-pages">Deployment to GitHub Pages</a></li>
     <li><a href="#license">License</a></li>
   </ol>
 </details>
@@ -69,13 +69,17 @@
    ```sh
    git clone https://github.com/CampAsAChamp/portfolio.git
    ```
-2. Navigate into the repo and run
+2. Navigate into the repo and install dependencies
    ```sh
-   npm install
+   yarn install
    ```
-3. Start the website with
+   Or simply:
    ```sh
-   npm run start
+   yarn
+   ```
+3. Start the development server
+   ```sh
+   yarn start
    ```
 4. Open your web browser (if not automatically done for you) to `localhost:3000`
 
@@ -85,6 +89,54 @@
 ## Usage
 
 1. View the site live at https://nickhs.dev/
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- DEPLOYMENT -->
+
+## Deployment to GitHub Pages
+
+This project is configured to deploy to GitHub Pages using the `gh-pages` package.
+
+### Prerequisites
+
+1. Ensure your GitHub repository has GitHub Pages enabled
+   - Go to your repository Settings → Pages
+   - Source should be set to "Deploy from a branch"
+   - Branch should be set to `gh-pages` (will be created automatically on first deploy)
+
+### Deploying
+
+1. Make sure all changes are committed and pushed to your repository
+
+2. Run the deploy command:
+   ```sh
+   yarn deploy
+   ```
+   This will:
+   - Automatically run `yarn build` to create an optimized production build
+   - Deploy the `build` folder to the `gh-pages` branch
+   - Push changes to GitHub
+
+3. Your site will be available at your GitHub Pages URL (e.g., `https://username.github.io/portfolio`)
+   - Custom domains can be configured in repository Settings → Pages
+
+### Manual Build
+
+To create a production build without deploying:
+```sh
+yarn build
+```
+
+This creates an optimized build in the `build` folder.
+
+### Notes
+
+- The `predeploy` script automatically runs `yarn build` before deploying
+- The `prebuild` script ensures dependencies are installed
+- Run `yarn format` before committing to ensure code is properly formatted
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- LICENSE -->
 
