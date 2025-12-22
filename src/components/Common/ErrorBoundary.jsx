@@ -1,5 +1,9 @@
 import React from 'react'
 
+// Note: This must be a class component because React error boundaries
+// require componentDidCatch and getDerivedStateFromError lifecycle methods,
+// which are not available as hooks. This is the only intentional exception
+// to the functional components rule.
 export class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props)
