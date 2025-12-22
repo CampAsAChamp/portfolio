@@ -1,5 +1,3 @@
-import React from 'react'
-
 export function HamburgerMenu({ navSlide }) {
   const handleKeyDown = (event) => {
     if (event.key === 'Enter' || event.key === ' ') {

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import ScrollAnimation from 'react-animate-on-scroll'
 
 import { Svg } from 'components/Common/Svg'

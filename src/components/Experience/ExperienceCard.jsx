@@ -1,5 +1,3 @@
-import React from 'react'
-
 import parse from 'html-react-parser'
 import ScrollAnimation from 'react-animate-on-scroll'
 

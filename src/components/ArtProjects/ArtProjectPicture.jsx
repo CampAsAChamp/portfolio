@@ -1,5 +1,3 @@
-import React from 'react'
-
 export function ArtProjectPicture({ imgSrc, altText }) {
   function showModal() {
     const modalBackground = document.getElementById('art-modal-background')

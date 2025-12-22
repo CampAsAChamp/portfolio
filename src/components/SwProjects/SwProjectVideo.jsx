@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 export function SwProjectVideo({ project, canAutoPlay, onVideoPlay, onVideoPause, onVideoError }) {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false)

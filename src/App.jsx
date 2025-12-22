@@ -1,5 +1,3 @@
-import React from 'react'
-
 import 'animate.css/animate.min.css'
 
 import { AboutMe } from 'components/AboutMe/AboutMe'

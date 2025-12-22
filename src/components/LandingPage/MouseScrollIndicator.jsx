@@ -1,5 +1,3 @@
-import React from 'react'
-
 import useScrollPosition from 'hooks/useScrollPosition'
 
 import 'styles/LandingPage/MouseScrollIndicator.css'

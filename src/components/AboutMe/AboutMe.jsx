@@ -1,5 +1,3 @@
-import React from 'react'
-
 import ScrollAnimation from 'react-animate-on-scroll'
 
 import AnteaterIllustration from 'assets/Illustrations/Anteater_Illustration.webp'
@@ -36,7 +34,7 @@ export function AboutMe() {
           </ScrollAnimation>
         </div>
         <ScrollAnimation animateIn="animate__springIn" delay={100} animateOnce>
-          <p>Hey I'm Nick, a software engineer based in San Diego ☀️🌮</p>
+          <p>Hey I&apos;m Nick, a software engineer based in San Diego ☀️🌮</p>
           <p>
             I graduated from the 🎓 <strong>University of California, Irvine</strong> in 2019 with a{' '}
             <strong>B.S. in Computer Science</strong> and am currently working full time as a Software Engineer at <strong>Intuit</strong>{' '}

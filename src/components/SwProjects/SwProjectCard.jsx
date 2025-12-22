@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import parse from 'html-react-parser'
 import ScrollAnimation from 'react-animate-on-scroll'
@@ -30,6 +30,7 @@ export function SwProjectCard(props) {
 
     if (!isProblematicBrowser) {
       // Allow autoplay immediately for safe environments (including desktop)
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCanAutoPlay(true)
     }
   }, [])

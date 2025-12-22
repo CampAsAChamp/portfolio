@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Svg } from 'components/Common/Svg'
 import { MouseScrollIndicator } from 'components/LandingPage/MouseScrollIndicator'
 
@@ -47,7 +45,7 @@ export function LandingPage() {
           </h1>
           <div id="software-engineer">Software Engineer</div>
           <br />
-          <div id="subtitle">If you're going to make something, why not make it pretty?</div>
+          <div id="subtitle">If you&apos;re going to make something, why not make it pretty?</div>
           <div id="contact-me-bar">
             <button type="button" className="button" id="contact-me-button" onClick={showModal}>
               <span>Contact Me</span>
