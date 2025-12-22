@@ -20,7 +20,6 @@
     "lint": "eslint src/**/*.{js,jsx}",
     "lint:fix": "eslint src/**/*.{js,jsx} --fix",
     "browserslist:update": "npx update-browserslist-db@latest",
-    "postinstall": "yarn browserslist:update",
     "prepare": "husky"
   },
   "dependencies": {
