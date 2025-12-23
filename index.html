@@ -1,73 +1,67 @@
 <!doctype html>
 <html lang="en" color-mode="light">
-  <head>
-    <meta charset="utf-8" />
-    <!-- Prevent dark mode flash by setting theme before page renders -->
-    <script>
-      (function() {
-        const theme = localStorage.getItem('color-mode') ||
-                      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.setAttribute('color-mode', theme);
-      })();
-    </script>
-    <!-- Favicons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6c63ff" />
-    <meta name="msapplication-TileColor" content="#6c63ff" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#6c63ff" />
-    <meta name="description" content="Software Engineer and Designer specializing in full-stack development, cloud architecture, and visual design. Explore my projects in web development, machine learning, and digital art." />
-    <meta name="author" content="Nick Schneider" />
-    <meta property="og:title" content="Nick Schneider&rsquo;s Portfolio" />
-    <meta property="og:image" content="https://i.imgur.com/d3hznr3.png" />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="1918" />
-    <meta property="og:image:height" content="1041" />
-    <meta property="og:description" content="Software Engineer and Designer specializing in full-stack development, cloud architecture, and visual design. Explore my projects in web development, machine learning, and digital art." />
-    <meta property="og:url" content="https://nickhs.dev" />
-    <meta property="og:type" content="website" />
+<head>
+  <meta charset="utf-8" />
+  <!-- Prevent dark mode flash by setting theme before page renders -->
+  <script>
+    (function () {
+      const theme = localStorage.getItem('color-mode') ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('color-mode', theme);
+    })();
+  </script>
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6c63ff" />
+  <meta name="msapplication-TileColor" content="#6c63ff" />
 
-    <!-- External Dependencies -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#6c63ff" />
+  <meta name="description"
+    content="Software Engineer and Designer specializing in full-stack development, cloud architecture, and visual design. Explore my projects in web development, machine learning, and digital art." />
+  <meta name="author" content="Nick Schneider" />
+  <meta property="og:title" content="Nick Schneider&rsquo;s Portfolio" />
+  <meta property="og:image" content="https://i.imgur.com/d3hznr3.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1918" />
+  <meta property="og:image:height" content="1041" />
+  <meta property="og:description"
+    content="Software Engineer and Designer specializing in full-stack development, cloud architecture, and visual design. Explore my projects in web development, machine learning, and digital art." />
+  <meta property="og:url" content="https://nickhs.dev" />
+  <meta property="og:type" content="website" />
 
-    <!-- Connect to domain of font files -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- External Dependencies -->
 
-    <!-- Optionally increase loading priority -->
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,600;0,700;0,800;0,900;1,400&display=swap"
-    />
+  <!-- Connect to domain of font files -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Async CSS -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,600;0,700;0,800;0,900;1,400&display=swap"
-      rel="stylesheet"
-      media="print"
-      onload="this.onload=null;this.removeAttribute('media');"
-    />
+  <!-- Optionally increase loading priority -->
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,600;0,700;0,800;0,900;1,400&display=swap" />
 
-    <!-- No-JS fallback -->
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,600;0,700;0,800;0,900;1,400&display=swap"
-      />
-    </noscript>
+  <!-- Async CSS -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,600;0,700;0,800;0,900;1,400&display=swap"
+    rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');" />
 
-    <link rel="manifest" href="/manifest.json" />
-    <title>Nick's Website</title>
-  </head>
+  <!-- No-JS fallback -->
+  <noscript>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,600;0,700;0,800;0,900;1,400&display=swap" />
+  </noscript>
 
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <script type="module" src="/src/index.js"></script>
-  </body>
+  <link rel="manifest" href="/manifest.json" />
+  <title>Nick's Website</title>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <script type="module" src="/src/index.js"></script>
+</body>
+
 </html>
-
-
