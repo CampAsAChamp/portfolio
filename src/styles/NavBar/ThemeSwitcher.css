@@ -1,7 +1,9 @@
 /* View Transition Animation - Prevent flicker during theme switch */
 
 /* Circle wipe animation ONLY when theme is transitioning */
+
 /* This prevents the animation from appearing on nav links, modals, etc. */
+
 /* Note: We check for the data attribute on :root and apply to pseudo-elements */
 ::view-transition-old(root),
 ::view-transition-new(root) {
@@ -22,10 +24,11 @@
 }
 
 /* Circular reveal animation */
-@keyframes revealTheme {
+@keyframes reveal-theme {
   from {
     clip-path: circle(0 at var(--x, 50%) var(--y, 50%));
   }
+
   to {
     clip-path: circle(var(--r, 100vmax) at var(--x, 50%) var(--y, 50%));
   }

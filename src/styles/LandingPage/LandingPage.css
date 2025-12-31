@@ -34,8 +34,7 @@
 #software-engineer {
   font-size: 2.25rem;
   font-weight: 700;
-  margin-block-end: 0;
-  margin-block-start: 0;
+  margin-block: 0;
 }
 
 #subtitle {
@@ -96,10 +95,10 @@
   padding-right: 20px;
 }
 
-#contact-me-button:hover span:after,
-#contact-me-button:focus span:after,
-#contact-me-button:active span:after,
-#contact-me-button.modal-open span:after {
+#contact-me-button:hover span::after,
+#contact-me-button:focus span::after,
+#contact-me-button:active span::after,
+#contact-me-button.modal-open span::after {
   opacity: 1;
   right: 0;
 }
@@ -109,14 +108,14 @@
   view-transition-name: contact-socials;
 }
 
-/* Disable view-transition-name during theme transitions to prevent premature color changes */
-:root[data-theme-transitioning] #contact-me-socials {
-  view-transition-name: none;
-}
-
 /* Compensate for scrollbar when modal is open */
 body[style*='position: fixed'] #contact-me-socials {
   margin-right: calc(50px + var(--scrollbar-width, 0px));
+}
+
+/* Disable view-transition-name during theme transitions to prevent premature color changes */
+:root[data-theme-transitioning] #contact-me-socials {
+  view-transition-name: none;
 }
 
 #contact-me-socials svg {
@@ -146,8 +145,8 @@ body[style*='position: fixed'] #contact-me-socials {
 
 #landing-blob {
   position: absolute;
-  right: 0px;
-  top: 0px;
+  right: 0;
+  top: 0;
   width: 50%;
   z-index: -1;
 }
@@ -155,7 +154,8 @@ body[style*='position: fixed'] #contact-me-socials {
 /* Compensate for scrollbar when modal is open (desktop only) */
 @media screen and (min-width: 1101px) {
   body[style*='position: fixed'] #landing-blob {
-    right: var(--scrollbar-width, 0px);
+    right: var(--scrollbar-width, 0);
+
     /* Fix width calculation to account for body padding */
     width: calc(50% - var(--scrollbar-width, 0px) / 2);
   }

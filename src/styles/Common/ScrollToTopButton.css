@@ -25,7 +25,7 @@
 
 #scroll-to-top-button.show {
   opacity: 1;
-  transform: translateX(0px);
+  transform: translateX(0);
 }
 
 #scroll-to-top-button:hover {

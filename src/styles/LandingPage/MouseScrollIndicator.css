@@ -14,18 +14,13 @@
   height: 60px;
 }
 
-/* Disable view-transition-name during theme transitions to prevent premature color changes */
-:root[data-theme-transitioning] #mouse-scroll-indicator {
-  view-transition-name: none;
-}
-
 /* Add the little scroll wheel animation */
 #mouse-scroll-indicator::after {
   position: absolute;
   top: 5px;
   left: 50%;
-  -webkit-transform: translateY(0px) scaleY(1) scaleX(1) translateZ(0px);
-  transform: translateY(0px) scaleY(1) scaleX(1) translateZ(0px);
+  -webkit-transform: translateY(0) scaleY(1) scaleX(1) translateZ(0);
+  transform: translateY(0) scaleY(1) scaleX(1) translateZ(0);
   opacity: 1;
   -webkit-animation: scroll 2s -1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
   animation: scroll 2s -1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
@@ -46,20 +41,27 @@ body[style*='position: fixed'] #mouse-scroll-indicator {
   left: calc(50% - var(--scrollbar-width, 0px) / 2);
 }
 
-@-webkit-keyframes scroll {
+/* Disable view-transition-name during theme transitions to prevent premature color changes */
+:root[data-theme-transitioning] #mouse-scroll-indicator {
+  view-transition-name: none;
+}
+
+@keyframes scroll {
   0%,
   20% {
-    -webkit-transform: translateY(0px) scaleY(1) scaleX(1) translateZ(0px);
-    transform: translateY(0px) scaleY(1) scaleX(1) translateZ(0px);
+    -webkit-transform: translateY(0) scaleY(1) scaleX(1) translateZ(0);
+    transform: translateY(0) scaleY(1) scaleX(1) translateZ(0);
   }
+
   10% {
-    -webkit-transform: translateY(0px) scaleY(1.2) scaleX(1.2) translateZ(0px);
-    transform: translateY(0px) scaleY(1.2) scaleX(1.2) translateZ(0px);
+    -webkit-transform: translateY(0) scaleY(1.2) scaleX(1.2) translateZ(0);
+    transform: translateY(0) scaleY(1.2) scaleX(1.2) translateZ(0);
     opacity: 1;
   }
+
   100% {
-    -webkit-transform: translateY(20px) scaleY(2.5) scaleX(0.5) translateZ(0px);
-    transform: translateY(20px) scaleY(2.5) scaleX(0.5) translateZ(0px);
+    -webkit-transform: translateY(20px) scaleY(2.5) scaleX(0.5) translateZ(0);
+    transform: translateY(20px) scaleY(2.5) scaleX(0.5) translateZ(0);
     opacity: 0.01;
   }
 }
@@ -67,17 +69,19 @@ body[style*='position: fixed'] #mouse-scroll-indicator {
 @keyframes scroll {
   0%,
   20% {
-    -webkit-transform: translateY(0px) scaleY(1) scaleX(1) translateZ(0px);
-    transform: translateY(0px) scaleY(1) scaleX(1) translateZ(0px);
+    -webkit-transform: translateY(0) scaleY(1) scaleX(1) translateZ(0);
+    transform: translateY(0) scaleY(1) scaleX(1) translateZ(0);
   }
+
   10% {
-    -webkit-transform: translateY(0px) scaleY(1.2) scaleX(1.2) translateZ(0px);
-    transform: translateY(0px) scaleY(1.2) scaleX(1.2) translateZ(0px);
+    -webkit-transform: translateY(0) scaleY(1.2) scaleX(1.2) translateZ(0);
+    transform: translateY(0) scaleY(1.2) scaleX(1.2) translateZ(0);
     opacity: 1;
   }
+
   100% {
-    -webkit-transform: translateY(20px) scaleY(2.5) scaleX(0.5) translateZ(0px);
-    transform: translateY(20px) scaleY(2.5) scaleX(0.5) translateZ(0px);
+    -webkit-transform: translateY(20px) scaleY(2.5) scaleX(0.5) translateZ(0);
+    transform: translateY(20px) scaleY(2.5) scaleX(0.5) translateZ(0);
     opacity: 0.01;
   }
 }

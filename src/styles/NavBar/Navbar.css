@@ -119,7 +119,15 @@ nav li a:hover::after {
 
   /* Staggered fade-in animation for menu items when menu opens */
   .nav-active li {
-    animation: navLinkFadeIn 0.5s ease forwards;
+    animation: nav-link-fade-in 0.5s ease forwards;
+  }
+
+  /* Staggered fade-out animation for menu items when menu closes (reverse order) */
+
+  /* Note: Actual animation is applied via JavaScript inline styles for better control */
+  .nav-closing li {
+    opacity: 1;
+    transform: translateX(0);
   }
 
   .nav-active li:nth-child(1) {
@@ -146,29 +154,24 @@ nav li a:hover::after {
     animation-delay: 0.6s;
   }
 
-  /* Staggered fade-out animation for menu items when menu closes (reverse order) */
-  /* Note: Actual animation is applied via JavaScript inline styles for better control */
-  .nav-closing li {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  @keyframes navLinkFadeIn {
+  @keyframes nav-link-fade-in {
     from {
       opacity: 0;
       transform: translateX(50px);
     }
+
     to {
       opacity: 1;
       transform: translateX(0);
     }
   }
 
-  @keyframes navLinkFadeOut {
+  @keyframes nav-link-fade-out {
     from {
       opacity: 1;
       transform: translateX(0);
     }
+
     to {
       opacity: 0;
       transform: translateX(50px);
@@ -185,9 +188,11 @@ nav li a:hover::after {
   .toggle #hamburger-menu-line1 {
     transform: rotate(-45deg) translate(-8px, 6px);
   }
+
   .toggle #hamburger-menu-line2 {
     opacity: 0;
   }
+
   .toggle #hamburger-menu-line3 {
     transform: rotate(45deg) translate(-8px, -6px);
   }

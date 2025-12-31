@@ -66,9 +66,8 @@ body.art-modal-open .column img:hover {
 #art-modal-img {
   animation-duration: 0.6s;
   animation-name: zoom;
-  bottom: 0;
+  inset: 0;
   display: none;
-  left: 0;
   margin: auto;
   max-height: 100%;
   max-width: 100%;
@@ -76,8 +75,6 @@ body.art-modal-open .column img:hover {
   overflow: auto;
   padding: 50px;
   position: fixed;
-  right: 0;
-  top: 0;
 }
 
 #art-modal-img.show {
@@ -89,6 +86,7 @@ body.art-modal-open .column img:hover {
   from {
     transform: scale(0);
   }
+
   to {
     transform: scale(1);
   }
@@ -99,6 +97,7 @@ body.art-modal-open .column img:hover {
   from {
     transform: scale(1);
   }
+
   to {
     transform: scale(0);
   }
@@ -139,7 +138,7 @@ body.art-modal-open .column img:hover {
   }
 
   .swiper-pagination {
-    /* By default it uses position absolute which we don't want because we want the pagination bar below the images*/
+    /* By default it uses position absolute which we don't want because we want the pagination bar below the images */
     position: unset;
   }
 
@@ -150,8 +149,8 @@ body.art-modal-open .column img:hover {
     color: var(--color-purple);
   }
 
-  .swiper-button-next:after,
-  .swiper-button-prev:after {
+  .swiper-button-next::after,
+  .swiper-button-prev::after {
     font-size: 2rem;
     font-weight: 900;
   }

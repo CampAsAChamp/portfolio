@@ -10,6 +10,7 @@
   transition-property: transform;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0);
 }
+
 .hvr-grow:hover,
 .hvr-grow:focus,
 .hvr-grow:active {
@@ -29,12 +30,10 @@
   transition-property: color;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0);
 }
-.hvr-bounce-to-right:before {
+
+.hvr-bounce-to-right::before {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
   -webkit-transform: scaleX(0);
   transform: scaleX(0);
   -webkit-transform-origin: 0 50%;
@@ -50,14 +49,16 @@
   background: var(--color-yellow);
   content: '';
 }
+
 .hvr-bounce-to-right:hover,
 .hvr-bounce-to-right:focus,
 .hvr-bounce-to-right:active {
   color: white;
 }
-.hvr-bounce-to-right:hover:before,
-.hvr-bounce-to-right:focus:before,
-.hvr-bounce-to-right:active:before {
+
+.hvr-bounce-to-right:hover::before,
+.hvr-bounce-to-right:focus::before,
+.hvr-bounce-to-right:active::before {
   -webkit-transform: scaleX(1);
   transform: scaleX(1);
   -webkit-transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);

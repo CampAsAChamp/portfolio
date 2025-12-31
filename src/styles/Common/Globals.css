@@ -1,15 +1,17 @@
 @import 'styles/Common/hover.css';
 
 /* Custom spring animation for cards */
-@keyframes springIn {
+@keyframes spring-in {
   0% {
     opacity: 0;
     transform: scale(0.8);
   }
+
   60% {
     opacity: 1;
     transform: scale(1.05);
   }
+
   100% {
     opacity: 1;
     transform: scale(1);
@@ -17,23 +19,41 @@
 }
 
 .animate__springIn {
-  animation-name: springIn;
+  animation-name: spring-in;
   animation-duration: 0.6s;
   animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
   animation-fill-mode: both;
 }
 
+/* Skip Navigation Link */
+.skip-link {
+  background-color: var(--color-purple);
+  border-radius: 4px;
+  color: white;
+  left: 50%;
+  padding: 8px 16px;
+  position: absolute;
+  text-decoration: none;
+  top: -100px;
+  transform: translateX(-50%);
+  transition: top 0.3s;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  top: 10px;
+}
+
 :root {
-  --color-purple: hsl(243, 100%, 69%); /* #6c63ff */
-  --color-purple-550: hsl(243, 100%, 64%);
+  --color-purple: hsl(243deg, 100%, 69%); /* #6c63ff */
+  --color-purple-550: hsl(243deg, 100%, 64%);
   --color-white: white;
   --color-off-grey: #707070;
   --color-yellow: #ffc261;
   --color-arcules: #0cb4df;
   --color-reazon: #00acee;
   --color-raytheon: #ce1126;
-  --color-id-tech: #006633;
-
+  --color-id-tech: #063;
   --thumbnail-size: 40px;
   --language-item-size: 35px;
   --mobile-thumbnail-size: 30px;
@@ -80,8 +100,8 @@
 }
 
 *,
-*:before,
-*:after {
+*::before,
+*::after {
   box-sizing: inherit;
 }
 
@@ -104,16 +124,14 @@ body {
 }
 
 h1 {
-  margin-block-start: 0;
-  margin-block-end: 0;
+  margin-block: 0;
   font-weight: 900;
   font-size: 6rem;
   line-height: 131px;
 }
 
 h2 {
-  margin-block-start: 0;
-  margin-block-end: 0;
+  margin-block: 0;
   font-weight: 900;
   font-size: 3.125rem;
 }
@@ -123,8 +141,7 @@ a {
 }
 
 ul {
-  margin-block-start: 0em;
-  margin-block-end: 0em;
+  margin-block: 0;
   padding-left: 0;
   list-style-position: inside;
 }
@@ -157,7 +174,9 @@ ul ul {
   background: var(--color-purple);
 
   color: white;
-  font: 900 large 'Nunito';
+  font:
+    900 large 'Nunito',
+    sans-serif;
   font-size: 1.125rem;
   text-align: center;
   text-transform: uppercase;
@@ -169,7 +188,7 @@ ul ul {
   flex-direction: column;
   transition: transform 0.5s;
   margin: 20px auto;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
   border-radius: var(--rounded-component-corners-size);
   background: var(--color-card);
   padding: 35px;
@@ -182,7 +201,9 @@ ul ul {
 }
 
 /* View Transitions API - Disable root animation by default to prevent unwanted circle wipe */
+
 /* This prevents the circle wipe from appearing on modals, nav menu, and nav links */
+
 /* Theme switcher ONLY will override this with !important to enable circle wipe on theme toggle */
 ::view-transition-group(root) {
   animation: none;
@@ -193,6 +214,7 @@ ul ul {
   animation: none;
   mix-blend-mode: normal;
 }
+
 .modal-bg {
   background-color: rgba(0, 0, 0, 0.8);
   height: 100%;
@@ -274,7 +296,7 @@ ul ul {
 
   .card {
     margin: 15px auto;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
     padding: 25px;
     width: 90%;
     font-size: 1.25rem;
@@ -282,5 +304,39 @@ ul ul {
 
   .card:hover {
     transform: none;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* Disable animate.css animations */
+  .animate__animated {
+    animation: none !important;
+  }
+
+  /* Disable custom spring animation */
+  .animate__springIn {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: scale(1) !important;
+  }
+
+  /* Disable card transforms */
+  .card:hover {
+    transform: none !important;
+  }
+
+  /* Disable scroll animations */
+  .scroll-animation {
+    animation: none !important;
   }
 }

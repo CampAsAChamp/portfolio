@@ -1,6 +1,7 @@
 #skills-container {
   background-image: url('assets/Organic_Shapes/Skills_and_Technologies_Blob_Shape.svg');
   background-repeat: no-repeat;
+
   /* background-position: center; */
   background-size: cover;
   display: grid;
