@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { supportsViewTransitions } from '@/utils/viewTransitionsUtils'
 import { Theme } from 'types/common.types'
 
 const DARK: Theme = 'dark'
@@ -49,7 +50,7 @@ export function useTheme(): UseThemeReturn {
       const newTheme = isDarkMode ? LIGHT : DARK
 
       // Check if View Transitions API is supported
-      if (!('startViewTransition' in document) || typeof document.startViewTransition !== 'function') {
+      if (!supportsViewTransitions()) {
         // Fallback: instant switch
         document.documentElement.setAttribute(COLOR_MODE_KEY, newTheme)
         localStorage.setItem(COLOR_MODE_KEY, newTheme)
@@ -79,12 +80,13 @@ export function useTheme(): UseThemeReturn {
       setIsDarkMode(newTheme === DARK)
 
       // Animate the transition - only update DOM and localStorage in callback
-      const transition = document.startViewTransition(() => {
+      const transition = document.startViewTransition!(() => {
         document.documentElement.setAttribute(COLOR_MODE_KEY, newTheme)
         localStorage.setItem(COLOR_MODE_KEY, newTheme)
       })
 
       // Clean up after transition finishes
+      // Note: We intentionally don't await these cleanup operations - they run asynchronously in the background
       if (transition) {
         void transition.finished?.finally(() => {
           document.documentElement.removeAttribute('data-theme-transitioning')

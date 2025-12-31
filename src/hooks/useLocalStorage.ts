@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
 
+/**
+ * Setter function type that accepts either a direct value or an updater function.
+ * Mimics the same API as React's useState setter for consistency.
+ */
 type SetValue<T> = (value: T | ((prevValue: T) => T)) => void
 
 /**

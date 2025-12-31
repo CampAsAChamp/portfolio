@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { supportsViewTransitions } from '@/utils/viewTransitionsUtils'
+
 interface UseModalReturn {
   isOpen: boolean
   open: () => void
@@ -18,40 +20,38 @@ export function useModal(initialState = false): UseModalReturn {
     // Calculate scrollbar width to prevent layout shift
     const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
 
-    // Use View Transitions API if available, otherwise fall back to instant change
-    if ('startViewTransition' in document && typeof document.startViewTransition === 'function') {
-      document.startViewTransition(() => {
-        setIsOpen(true)
-        // Lock body scroll and compensate for scrollbar width
-        document.body.style.position = 'fixed'
-        document.body.style.paddingRight = `${scrollbarWidth}px`
-        // Set CSS variable for elements that need scrollbar compensation
-        document.documentElement.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`)
-      })
-    } else {
+    const updateState = (): void => {
       setIsOpen(true)
+      // Lock body scroll and compensate for scrollbar width
       document.body.style.position = 'fixed'
       document.body.style.paddingRight = `${scrollbarWidth}px`
+      // Set CSS variable for elements that need scrollbar compensation
       document.documentElement.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`)
+    }
+
+    // Use View Transitions API if available, otherwise fall back to instant change
+    if (supportsViewTransitions()) {
+      document.startViewTransition!(updateState)
+    } else {
+      updateState()
     }
   }, [])
 
   const close = useCallback(() => {
-    // Use View Transitions API if available, otherwise fall back to instant change
-    if ('startViewTransition' in document && typeof document.startViewTransition === 'function') {
-      document.startViewTransition(() => {
-        setIsOpen(false)
-        // Restore body scroll and remove padding
-        document.body.style.position = ''
-        document.body.style.paddingRight = ''
-        // Remove CSS variable
-        document.documentElement.style.removeProperty('--scrollbar-width')
-      })
-    } else {
+    const updateState = (): void => {
       setIsOpen(false)
+      // Restore body scroll and remove padding
       document.body.style.position = ''
       document.body.style.paddingRight = ''
+      // Remove CSS variable
       document.documentElement.style.removeProperty('--scrollbar-width')
+    }
+
+    // Use View Transitions API if available, otherwise fall back to instant change
+    if (supportsViewTransitions()) {
+      document.startViewTransition!(updateState)
+    } else {
+      updateState()
     }
   }, [])
 
