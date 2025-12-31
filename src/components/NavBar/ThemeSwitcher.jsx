@@ -1,5 +1,4 @@
-import { MoonIcon } from 'components/NavBar/MoonIcon'
-import { SunIcon } from 'components/NavBar/SunIcon'
+import { MorphIcon } from 'components/NavBar/MorphIcon'
 
 import { useTheme } from 'hooks/useTheme'
 
@@ -10,7 +9,7 @@ export function ThemeSwitcher() {
 
   return (
     <button className="theme-toggle-button" onClick={toggleTheme} aria-label="Toggle theme">
-      {isDarkMode ? <MoonIcon /> : <SunIcon />}
+      <MorphIcon isDarkMode={isDarkMode} />
     </button>
   )
 }

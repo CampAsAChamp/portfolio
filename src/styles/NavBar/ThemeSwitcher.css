@@ -57,27 +57,60 @@
   transform: scale(0.95);
 }
 
-/* Theme Icon Styling */
-.theme-icon {
-  color: var(--color-white);
-  transition:
-    transform 0.3s ease,
-    opacity 0.3s ease;
+/* Morph Icon Styling */
+.morph-icon {
+  overflow: visible;
 }
 
-/* Sun icon (light mode) - yellow color */
-.theme-toggle-button .theme-icon:not([d*='12.79']) {
+/* Sun elements (rays and circle) - always yellow */
+.sun-rays,
+.sun-circle {
   color: var(--color-yellow);
+  transition:
+    opacity 0.6s ease-in-out,
+    transform 0.6s ease-in-out;
+  transform-origin: center;
 }
 
-/* Moon icon (dark mode) - white/light color */
-.theme-toggle-button .theme-icon[d*='12.79'] {
-  color: var(--color-white);
+/* Moon path - always yellow */
+.moon-path {
+  color: var(--color-yellow);
+  transition:
+    opacity 0.6s ease-in-out,
+    transform 0.6s ease-in-out;
+  transform-origin: center;
 }
 
-/* Rotate sun icon slightly on hover */
-.theme-toggle-button:hover .theme-icon:not([d*='12.79']) {
-  transform: rotate(45deg);
+/* Visible state */
+.sun-rays.visible {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+.sun-circle.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.moon-path.visible {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+/* Hidden state with transform */
+.sun-rays.hidden {
+  opacity: 0;
+  transform: rotate(180deg) scale(0.5);
+}
+
+.sun-circle.hidden {
+  opacity: 0;
+  transform: scale(0.3);
+}
+
+.moon-path.hidden {
+  opacity: 0;
+  transform: scale(0.3) rotate(-90deg);
 }
 
 @media screen and (max-width: 1100px) {
