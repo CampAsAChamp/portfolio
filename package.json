@@ -21,7 +21,7 @@
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "lint": "eslint src/**/*.{js,jsx,ts,tsx} && tsc --noEmit",
     "lint:fix": "eslint src/**/*.{js,jsx,ts,tsx} --fix && tsc --noEmit",
-    "type-check": "tsc --noEmit",
+    "lint:types": "tsc --noEmit",
     "browserslist:update": "npx update-browserslist-db@latest",
     "prepare": "husky"
   },
