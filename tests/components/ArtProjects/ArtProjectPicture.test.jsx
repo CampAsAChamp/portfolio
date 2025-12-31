@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { ArtProjectPicture } from 'components/ArtProjects/ArtProjectPicture'
@@ -54,7 +54,7 @@ describe('ArtProjectPicture', () => {
     expect(document.body.classList.contains('art-modal-open')).toBe(true)
   })
 
-  it('closes modal when background is clicked', () => {
+  it('closes modal when background is clicked', async () => {
     render(<ArtProjectPicture imgSrc={mockImgSrc} altText={mockAltText} />)
 
     // Open modal
@@ -67,12 +67,14 @@ describe('ArtProjectPicture', () => {
     // Close modal by clicking background
     fireEvent.click(modalBackground)
 
-    // Modal should be closed immediately (View Transitions API handles animation)
-    expect(modalBackground.classList.contains('show')).toBe(false)
-    expect(document.body.classList.contains('art-modal-open')).toBe(false)
+    // Wait for animation to complete
+    await waitFor(() => {
+      expect(modalBackground.classList.contains('show')).toBe(false)
+      expect(document.body.classList.contains('art-modal-open')).toBe(false)
+    })
   })
 
-  it('closes modal when X button is clicked', () => {
+  it('closes modal when X button is clicked', async () => {
     render(<ArtProjectPicture imgSrc={mockImgSrc} altText={mockAltText} />)
 
     // Open modal
@@ -86,12 +88,14 @@ describe('ArtProjectPicture', () => {
     const closeButton = screen.getByRole('button', { name: 'Close' })
     fireEvent.click(closeButton)
 
-    // Modal should be closed immediately (View Transitions API handles animation)
-    expect(modalBackground.classList.contains('show')).toBe(false)
-    expect(document.body.classList.contains('art-modal-open')).toBe(false)
+    // Wait for animation to complete
+    await waitFor(() => {
+      expect(modalBackground.classList.contains('show')).toBe(false)
+      expect(document.body.classList.contains('art-modal-open')).toBe(false)
+    })
   })
 
-  it('closes modal when ESC key is pressed', () => {
+  it('closes modal when ESC key is pressed', async () => {
     render(<ArtProjectPicture imgSrc={mockImgSrc} altText={mockAltText} />)
 
     // Open modal
@@ -107,9 +111,11 @@ describe('ArtProjectPicture', () => {
       document.dispatchEvent(event)
     })
 
-    // Modal should be closed immediately (View Transitions API handles animation)
-    expect(modalBackground.classList.contains('show')).toBe(false)
-    expect(document.body.classList.contains('art-modal-open')).toBe(false)
+    // Wait for animation to complete
+    await waitFor(() => {
+      expect(modalBackground.classList.contains('show')).toBe(false)
+      expect(document.body.classList.contains('art-modal-open')).toBe(false)
+    })
   })
 
   it('does not close modal when other keys are pressed', () => {
