@@ -2,12 +2,19 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { CloseIcon } from 'components/Common/Icons/CloseIcon'
 
-export function ArtProjectPicture({ imgSrc, altText }) {
+interface ArtProjectPictureProps {
+  imgSrc: string
+  altText: string
+}
+
+export function ArtProjectPicture({ imgSrc, altText }: ArtProjectPictureProps): React.ReactElement {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const showModal = useCallback(() => {
     const modalBackground = document.getElementById('art-modal-background')
-    const modalImg = document.getElementById('art-modal-img')
+    const modalImg = document.getElementById('art-modal-img') as HTMLImageElement | null
+
+    if (!modalBackground || !modalImg) return
 
     modalBackground.classList.add('show')
     modalImg.classList.add('show')
@@ -21,6 +28,8 @@ export function ArtProjectPicture({ imgSrc, altText }) {
   const hideModal = useCallback(() => {
     const modalBackground = document.getElementById('art-modal-background')
     const modalImg = document.getElementById('art-modal-img')
+
+    if (!modalBackground || !modalImg) return
 
     // Add closing animation class
     modalImg.classList.add('closing')
@@ -39,7 +48,7 @@ export function ArtProjectPicture({ imgSrc, altText }) {
   useEffect(() => {
     if (!isModalOpen) return
 
-    const handleEscape = (event) => {
+    const handleEscape = (event: KeyboardEvent): void => {
       if (event.key === 'Escape') {
         hideModal()
       }
@@ -49,7 +58,7 @@ export function ArtProjectPicture({ imgSrc, altText }) {
     return () => document.removeEventListener('keydown', handleEscape)
   }, [isModalOpen, hideModal])
 
-  const handleKeyDown = (event, callback) => {
+  const handleKeyDown = (event: React.KeyboardEvent, callback: () => void): void => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault()
       callback()

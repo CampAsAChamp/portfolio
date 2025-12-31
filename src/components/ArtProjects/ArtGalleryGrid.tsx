@@ -1,12 +1,20 @@
 import ScrollAnimation from 'react-animate-on-scroll'
+import { ArtProject } from 'types/project.types'
 
 import { ArtProjectPicture } from 'components/ArtProjects/ArtProjectPicture'
 
-export function ArtGalleryGrid({ projects }) {
+interface ArtGalleryGridProps {
+  projects: ArtProject[]
+}
+
+export function ArtGalleryGrid({ projects }: ArtGalleryGridProps): React.ReactElement {
   // Organize projects into 4 columns
-  const columns = [[], [], [], []]
+  const columns: ArtProject[][] = [[], [], [], []]
   projects.forEach((project, index) => {
-    columns[index % 4].push(project)
+    const columnIndex = index % 4
+    if (columns[columnIndex]) {
+      columns[columnIndex].push(project)
+    }
   })
 
   // Base delay for staggered animations (50ms between columns)
@@ -18,7 +26,7 @@ export function ArtGalleryGrid({ projects }) {
         <div key={columnIndex} className="column">
           {columnProjects.map((project, projectIndex) => {
             // Stagger delay: column base delay + (100ms * project position in column)
-            const delay = columnDelays[columnIndex] + projectIndex * 100
+            const delay = (columnDelays[columnIndex] ?? 0) + projectIndex * 100
             return (
               <ScrollAnimation key={project.id} animateIn="animate__fadeInUp" delay={delay} animateOnce>
                 <ArtProjectPicture imgSrc={project.imageSrc} altText={project.altText} />

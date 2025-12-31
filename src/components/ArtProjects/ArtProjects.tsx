@@ -7,7 +7,7 @@ import { artProjects } from 'data/artProjects'
 
 import 'styles/ArtProjects/ArtProjects.css'
 
-export function ArtProjects() {
+export function ArtProjects(): React.ReactElement {
   return (
     <section id="graphic-design-container" className="page-container">
       <div id="graphic-design-header" className="section-header">

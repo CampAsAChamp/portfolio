@@ -4,8 +4,13 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { ArtProject } from 'types/project.types'
 
-export function ArtGalleryCarousel({ projects }) {
+interface ArtGalleryCarouselProps {
+  projects: ArtProject[]
+}
+
+export function ArtGalleryCarousel({ projects }: ArtGalleryCarouselProps): React.ReactElement {
   return (
     <Swiper
       spaceBetween={50}
