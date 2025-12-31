@@ -6,7 +6,7 @@ import { projects } from 'data/swProjects'
 
 import 'styles/SwProjects/SwProjects.css'
 
-export function SWProjects() {
+export function SWProjects(): React.ReactElement {
   return (
     <section id="sw-projects-container" className="page-container">
       <div id="sw-projects-header" className="section-header">

@@ -1,24 +1,34 @@
 import { useRef, useState } from 'react'
 
-export function SwProjectVideo({ project, canAutoPlay, onVideoPlay, onVideoPause, onVideoError }) {
+import { SoftwareProject } from 'types/project.types'
+
+interface SwProjectVideoProps {
+  project: SoftwareProject
+  canAutoPlay: boolean
+  onVideoPlay?: () => void
+  onVideoPause?: () => void
+  onVideoError?: () => void
+}
+
+export function SwProjectVideo({ project, canAutoPlay, onVideoPlay, onVideoPause, onVideoError }: SwProjectVideoProps): React.ReactElement {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false)
   const [isPlayButtonFading, setIsPlayButtonFading] = useState(false)
-  const videoRef = useRef(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
-  const handleVideoPlay = (e) => {
+  const handleVideoPlay = (e: React.SyntheticEvent<HTMLVideoElement>): void => {
     e.stopPropagation()
     setIsVideoPlaying(true)
     onVideoPlay?.()
   }
 
-  const handleVideoPause = (e) => {
+  const handleVideoPause = (e: React.SyntheticEvent<HTMLVideoElement>): void => {
     e.stopPropagation()
     setIsVideoPlaying(false)
     onVideoPause?.()
   }
 
-  const handleVideoError = (e) => {
-    const video = e?.target
+  const handleVideoError = (e: React.SyntheticEvent<HTMLVideoElement>): void => {
+    const video = e?.target as HTMLVideoElement | null
     let errorMessage = 'Video playback error'
 
     if (video?.error) {
@@ -50,7 +60,7 @@ export function SwProjectVideo({ project, canAutoPlay, onVideoPlay, onVideoPause
     onVideoError?.()
   }
 
-  const toggleVideoPlayback = (event) => {
+  const toggleVideoPlayback = (event: React.MouseEvent<HTMLVideoElement>): void => {
     event.stopPropagation()
     if (!videoRef.current) return
 
@@ -68,7 +78,7 @@ export function SwProjectVideo({ project, canAutoPlay, onVideoPlay, onVideoPause
     }
   }
 
-  const startVideoManually = (event) => {
+  const startVideoManually = (event?: React.MouseEvent | React.TouchEvent | React.KeyboardEvent): void => {
     if (event) {
       event.preventDefault()
       event.stopPropagation()
@@ -94,13 +104,13 @@ export function SwProjectVideo({ project, canAutoPlay, onVideoPlay, onVideoPause
       })
   }
 
-  const handlePlayButtonTouch = (event) => {
+  const handlePlayButtonTouch = (event: React.TouchEvent): void => {
     // Prevent click event from also firing on touch devices
     event.preventDefault()
     startVideoManually(event)
   }
 
-  const getPlayButtonClassName = () => {
+  const getPlayButtonClassName = (): string => {
     const baseClass = 'video-play-overlay'
 
     if (isPlayButtonFading) {
@@ -122,7 +132,6 @@ export function SwProjectVideo({ project, canAutoPlay, onVideoPlay, onVideoPause
         ref={videoRef}
         className="sw-projects-thumbnail"
         poster={project.thumbnail}
-        alt={project.name}
         title={project.name}
         autoPlay={canAutoPlay}
         loop={canAutoPlay}
@@ -151,7 +160,7 @@ export function SwProjectVideo({ project, canAutoPlay, onVideoPlay, onVideoPause
           className={getPlayButtonClassName()}
           onClick={startVideoManually}
           onTouchEnd={handlePlayButtonTouch}
-          onKeyDown={(e) => {
+          onKeyDown={(e: React.KeyboardEvent) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault()
               startVideoManually(e)

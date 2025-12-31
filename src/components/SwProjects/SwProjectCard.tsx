@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import parse from 'html-react-parser'
 import ScrollAnimation from 'react-animate-on-scroll'
+import { SoftwareProject } from 'types/project.types'
 
 import { Svg } from 'components/Common/Svg'
 import { TechnologiesBar } from 'components/Common/TechnologiesBar'
@@ -14,17 +15,21 @@ import { COLORS } from 'data/colors'
 
 import { useBrowserDetection } from 'hooks/useBrowserDetection'
 
-export function SwProjectCard(props) {
-  const { project, index } = props
+interface SwProjectCardProps {
+  project: SoftwareProject
+  index: number
+}
+
+export function SwProjectCard({ project, index }: SwProjectCardProps): React.ReactElement {
   const { isProblematicBrowser } = useBrowserDetection()
   const [canAutoPlay] = useState(() => !isProblematicBrowser)
   const [videoError, setVideoError] = useState(false)
 
-  const handleVideoError = () => {
+  const handleVideoError = (): void => {
     setVideoError(true)
   }
 
-  const renderProjectMedia = () => {
+  const renderProjectMedia = (): React.ReactElement => {
     const shouldShowVideo = project.isVideo && !videoError
 
     if (shouldShowVideo) {
@@ -60,7 +65,7 @@ export function SwProjectCard(props) {
                 }}
                 onTouchStart={(e) => e.stopPropagation()} // Prevent touch interference
               >
-                <Svg className="github-button-icon" src={GitHubIcon} fill="white" alt="Github Icon" />
+                <Svg className="github-button-icon" src={GitHubIcon} fill="white" title="Github Icon" />
                 <span>View Code</span>
               </button>
             </div>
