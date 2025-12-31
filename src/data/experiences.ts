@@ -1,3 +1,5 @@
+import { Experience, ExperienceMap } from 'types/experience.types'
+
 import ArculesLogo from 'assets/Company_Logos/Arcules.svg'
 import IDTechLogo from 'assets/Company_Logos/ID_Tech.svg'
 import IntuitLogo from 'assets/Company_Logos/Intuit.svg'
@@ -13,7 +15,7 @@ export const ID_TECH = 'ID Tech'
 export const INTUIT = 'Intuit'
 export const REAZON = 'Reazon Systems'
 
-export const experiences = [
+export const experiences: Experience[] = [
   {
     company_name: INTUIT,
     location: 'San Diego, CA',
@@ -143,7 +145,7 @@ export const experiences = [
   },
 ]
 
-const experienceMap = new Map()
+const experienceMap: ExperienceMap = new Map()
 
 experiences.forEach((item) => {
   experienceMap.set(item.company_name, item)

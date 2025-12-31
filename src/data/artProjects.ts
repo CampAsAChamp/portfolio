@@ -1,3 +1,5 @@
+import { ArtProject } from 'types/project.types'
+
 import ThreeDimensionalBlendTextPic from 'assets/Projects/Art/3D_Blend_Text.svg'
 import AlohaPic from 'assets/Projects/Art/Aloha.webp'
 import BeeLogoPic from 'assets/Projects/Art/Bee_Logo.svg'
@@ -11,7 +13,7 @@ import TriFergPic from 'assets/Projects/Art/Tri_Ferg.svg'
 import WaterColorPopsiclesPic from 'assets/Projects/Art/Water_Color_Popsicles.svg'
 import WellPic from 'assets/Projects/Art/Well.webp'
 
-export const artProjects = [
+export const artProjects: ArtProject[] = [
   {
     id: 'aloha',
     name: 'Aloha',

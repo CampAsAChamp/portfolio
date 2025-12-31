@@ -1,3 +1,5 @@
+import { SoftwareProject, SoftwareProjectMap } from 'types/project.types'
+
 import ChickFilAThumbnail from 'assets/Projects/Software/Chick_Fil_A.webp'
 import DiggermanVideoThumbnailMp4 from 'assets/Projects/Software/Diggerman.mp4'
 import DiggermanVideoThumbnail from 'assets/Projects/Software/Diggerman.webm'
@@ -12,7 +14,7 @@ import SpotifyPPThumbnail from 'assets/Projects/Software/Spotify.webp'
 
 import * as technologies from './technologies'
 
-const projects = [
+const projects: SoftwareProject[] = [
   {
     name: 'Los Angeles Sports Chick Fil A Scraper',
     technologies: [technologies.PYTHON, technologies.GITHUB_ACTIONS],
@@ -75,8 +77,8 @@ const projects = [
                       >Spotify Web API</a
                     >
                     with custom front end interface built from the ground up using
-                    <a 
-                      href="https://github.com/khanhas/spicetify-cli" target="_blank" 
+                    <a
+                      href="https://github.com/khanhas/spicetify-cli" target="_blank"
                       rel="noopener noreferrer"
                       >Spicetify</a
                     >
@@ -97,7 +99,7 @@ const projects = [
                     Python program that uses gradient features of an image for edge detection.
                   </li>
                   <li>
-                    Uses sliding window classification for detecting objects based on a template generated from test images. 
+                    Uses sliding window classification for detecting objects based on a template generated from test images.
                   </li>
                   <li>
                     Can detect any object including faces given test data.
@@ -153,7 +155,7 @@ const projects = [
   },
 ]
 
-const projectMap = new Map()
+const projectMap: SoftwareProjectMap = new Map()
 
 projects.forEach((item) => {
   projectMap.set(item.name, item)

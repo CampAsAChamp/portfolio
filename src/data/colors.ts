@@ -1,4 +1,6 @@
-export const COLORS = {
+import { ColorMap } from 'types/common.types'
+
+export const COLORS: ColorMap = {
   ARCULES: '#0cb4df',
   ID_TECH: '#006633',
   INTUIT: '#236CFF',

@@ -1,4 +1,6 @@
-export const navigationLinks = [
+import { NavigationLink } from 'types/navigation.types'
+
+export const navigationLinks: NavigationLink[] = [
   {
     id: 'about-me',
     label: 'About Me',

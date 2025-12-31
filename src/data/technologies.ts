@@ -1,3 +1,5 @@
+import { Technology, TechnologyMap } from 'types/technology.types'
+
 import AWS_Icon from 'assets/Dev_Icons/AWS.svg'
 import Adobe_Illustrator_Icon from 'assets/Dev_Icons/Adobe_Illustrator.svg'
 import Adobe_Photoshop_Icon from 'assets/Dev_Icons/Adobe_Photoshop.svg'
@@ -76,7 +78,7 @@ export const SPRING = 'Spring'
 export const TYPESCRIPT = 'TypeScript'
 export const UBUNTU = 'Ubuntu'
 
-const technologies = [
+const technologies: Technology[] = [
   {
     name: ADOBE_ILLUSTRATOR,
     image: Adobe_Illustrator_Icon,
@@ -269,7 +271,7 @@ const technologies = [
   },
 ]
 
-const technologiesMap = new Map()
+const technologiesMap: TechnologyMap = new Map()
 
 technologies.forEach((item) => {
   technologiesMap.set(item.name, item)
