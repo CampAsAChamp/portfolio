@@ -60,8 +60,9 @@
 
 ### Prerequisites
 
-- Node.js version 18 or higher
-- Yarn package manager
+- Node.js version 22 or higher
+- Yarn package manager (version 4 or higher)
+- (Optional) [nvm](https://github.com/nvm-sh/nvm) for Node version management
 
 ### Installation
 
@@ -69,7 +70,17 @@
    ```sh
    git clone https://github.com/CampAsAChamp/portfolio.git
    ```
-2. Navigate into the repo and install dependencies
+2. Navigate into the repo
+   ```sh
+   cd portfolio
+   ```
+3. (Optional) If using nvm, install and use the correct Node version
+   ```sh
+   nvm install
+   nvm use
+   ```
+   This will automatically use the Node version specified in `.nvmrc`
+4. Install dependencies
    ```sh
    yarn install
    ```
@@ -77,11 +88,11 @@
    ```sh
    yarn
    ```
-3. Start the development server
+5. Start the development server
    ```sh
    yarn start
    ```
-4. Open your web browser to `localhost:5173`
+6. Open your web browser to `localhost:5173`
 
 ## Usage
 
@@ -172,7 +183,7 @@ Your Cloudflare Pages project should be configured with:
 - **Build command:** `yarn build`
 - **Build output directory:** `build`
 - **Root directory:** `/` (default)
-- **Node version:** 18 or higher
+- **Node version:** 22 or higher
 
 ### Custom Domain
 

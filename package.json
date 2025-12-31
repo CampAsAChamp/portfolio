@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=18.0.0",
-    "yarn": ">=1.22.0"
+    "node": ">=22.0.0",
+    "yarn": ">=4.0.0"
   },
   "scripts": {
     "start": "vite",
@@ -71,5 +71,6 @@
   "lint-staged": {
     "*.{js,jsx}": ["eslint --fix", "prettier --write"],
     "*.{json,css}": ["prettier --write"]
-  }
+  },
+  "packageManager": "yarn@4.12.0"
 }
