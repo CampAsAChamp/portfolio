@@ -1,0 +1,5 @@
+# Cloudflare Pages redirects
+
+# SPA fallback - serve index.html for all routes (handles client-side routing)
+/*    /index.html   200
+
