@@ -15,18 +15,6 @@ export default defineConfig({
       hooks: path.resolve(__dirname, './src/hooks'),
     },
   },
-  esbuild: {
-    loader: 'jsx',
-    include: /src\/.*\.jsx?$/,
-    exclude: [],
-  },
-  optimizeDeps: {
-    esbuildOptions: {
-      loader: {
-        '.js': 'jsx',
-      },
-    },
-  },
   build: {
     outDir: 'build', // Cloudflare Pages expects 'build'
   },
