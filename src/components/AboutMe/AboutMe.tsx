@@ -7,7 +7,7 @@ import S_Logo_Purple from 'assets/S_Logo_Purple.svg'
 
 import 'styles/AboutMe/AboutMe.css'
 
-export function AboutMe() {
+export function AboutMe(): React.ReactElement {
   return (
     <section id="about-me-container" className="page-container">
       <img id="background-logo" src={S_Logo_Purple} alt="Logo Backdrop" />
