@@ -1,6 +1,10 @@
 import { useKeyboardAccessibility } from 'hooks/useKeyboardAccessibility'
 
-export function HamburgerMenu({ navSlide }) {
+interface HamburgerMenuProps {
+  navSlide: () => void
+}
+
+export function HamburgerMenu({ navSlide }: HamburgerMenuProps): React.ReactElement {
   const keyboardProps = useKeyboardAccessibility(navSlide)
 
   return (

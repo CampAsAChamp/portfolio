@@ -1,4 +1,8 @@
-export function MorphIcon({ isDarkMode }) {
+interface MorphIconProps {
+  isDarkMode: boolean
+}
+
+export function MorphIcon({ isDarkMode }: MorphIconProps): React.ReactElement {
   return (
     <svg
       className={`morph-icon ${isDarkMode ? 'moon-mode' : 'sun-mode'}`}
