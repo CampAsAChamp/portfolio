@@ -1,0 +1,20 @@
+import { render, screen } from '@testing-library/react'
+import { describe, expect, it } from 'vitest'
+
+import { LandingPage } from 'components/LandingPage/LandingPage'
+
+describe('LandingPage', () => {
+  it('renders without crashing', () => {
+    render(<LandingPage />)
+  })
+
+  it('displays the name', () => {
+    render(<LandingPage />)
+    expect(screen.getByRole('heading', { name: /NICK/i })).toBeInTheDocument()
+  })
+
+  it('displays the contact me button', () => {
+    render(<LandingPage />)
+    expect(screen.getByRole('button', { name: /Contact Me/i })).toBeInTheDocument()
+  })
+})

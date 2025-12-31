@@ -1,0 +1,69 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "ES2020", // Compile to ES2020 JavaScript (modern browsers support this)
+    "lib": ["ES2020", "DOM", "DOM.Iterable"], // Include type definitions for ES2020 features, DOM APIs, and iterable DOM collections
+    "jsx": "react-jsx", // Use React 17+ JSX transform (no need to import React in every file)
+    "types": ["vite/client"], // Include Vite's type definitions for import.meta.env and other Vite features
+
+    /* Modules */
+    "module": "ESNext", // Use the latest ES module system (import/export)
+    "moduleResolution": "bundler", // Use bundler-style module resolution (optimized for Vite/Webpack)
+    "resolveJsonModule": true, // Allow importing .json files as modules
+    "baseUrl": "src", // Base directory for resolving non-relative module imports
+    "paths": {
+      // Path aliases for cleaner imports (e.g., "import X from 'components/X'" instead of "../../components/X")
+      "@/*": ["./*"], // @/ refers to src/ directory
+      "components/*": ["components/*"], // Import from components/ directly
+      "assets/*": ["assets/*"], // Import from assets/ directly
+      "data/*": ["data/*"], // Import from data/ directly
+      "styles/*": ["styles/*"], // Import from styles/ directly
+      "hooks/*": ["hooks/*"], // Import from hooks/ directly
+      "utils/*": ["utils/*"], // Import from utils/ directly
+      "tests/*": ["../tests/*"] // Import from tests/ directory (one level up from src)
+    },
+
+    /* JavaScript Support */
+    "allowJs": false, // Don't allow .js files in the project (TypeScript only)
+    "checkJs": false, // Don't type-check .js files
+
+    /* Emit */
+    "declaration": true, // Generate .d.ts declaration files for TypeScript consumers
+    "declarationMap": true, // Generate .d.ts.map files for easier debugging of declaration files
+    "sourceMap": true, // Generate .map files for debugging (maps compiled JS back to original TS)
+    "noEmit": true, // Don't emit compiled files (Vite handles compilation, TypeScript just does type checking)
+
+    /* Interop Constraints */
+    "esModuleInterop": true, // Enable interoperability between CommonJS and ES modules (allows default imports from CommonJS modules)
+    "allowSyntheticDefaultImports": true, // Allow default imports from modules with no default export (type-checking only)
+    "forceConsistentCasingInFileNames": true, // Ensure imports match file name casing exactly (prevents case-sensitivity issues across OS)
+    "isolatedModules": true, // Ensure each file can be safely transpiled without relying on other imports (required for Vite/esbuild)
+
+    /* Type Checking - Strict Mode */
+    "strict": true, // Enable all strict type checking options (recommended for all projects)
+    "noImplicitAny": true, // Error on variables with implicit 'any' type (forces explicit typing)
+    "strictNullChecks": true, // Treat null and undefined as distinct types (prevents null reference errors)
+    "strictFunctionTypes": true, // Enable strict checking of function types (contravariance for parameters)
+    "strictBindCallApply": true, // Check that bind, call, and apply methods are called with correct arguments
+    "strictPropertyInitialization": true, // Ensure class properties are initialized in constructor or declaration
+    "noImplicitThis": true, // Error when 'this' expression has an implicit 'any' type
+    "useUnknownInCatchVariables": true, // Catch variables are 'unknown' instead of 'any' (safer error handling)
+    "alwaysStrict": true, // Parse files in strict mode and emit "use strict" in output
+
+    /* Additional Checks */
+    "noUnusedLocals": true, // Error on unused local variables (keeps code clean)
+    "noUnusedParameters": true, // Error on unused function parameters (keeps function signatures clean)
+    "noImplicitReturns": true, // Ensure all code paths in a function return a value
+    "noFallthroughCasesInSwitch": true, // Error on fallthrough cases in switch statements (must use break or return)
+    "noUncheckedIndexedAccess": true, // Treat indexed access as potentially undefined (array[i] is T | undefined, not just T)
+    "noImplicitOverride": false, // Don't require 'override' keyword when overriding base class methods
+    "noPropertyAccessFromIndexSignature": false, // Allow property access on indexed types (obj.prop vs obj['prop'])
+
+    /* Completeness */
+    "skipLibCheck": true // Skip type checking of declaration files (.d.ts) for faster compilation (trust that library types are correct)
+  },
+  // Include these files/directories for TypeScript to process
+  "include": ["src/**/*", "tests/**/*", "vite.config.ts", "vitest.config.ts"],
+  // Exclude these directories from TypeScript processing (third-party code and build output)
+  "exclude": ["node_modules", "build", "dist"]
+}

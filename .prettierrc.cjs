@@ -29,6 +29,12 @@ module.exports = {
         parser: 'json',
       },
     },
+    {
+      files: `${baseLintingPath}*.{ts,tsx}`,
+      options: {
+        parser: 'typescript',
+      },
+    },
   ],
   singleQuote: true,
   trailingComma: 'all',

@@ -1,12 +1,12 @@
 # Portfolio Website - Cursor Rules
 
 ## Project Overview
-This is a React-based portfolio website showcasing software engineering and art projects. Built with React 18 and JavaScript (not TypeScript).
+This is a React-based portfolio website showcasing software engineering and art projects. Built with React 18 and TypeScript with strict mode enabled.
 
 ## Code Style & Formatting
 
 ### General
-- Use JavaScript (JSX), NOT TypeScript
+- Use TypeScript (TSX) with strict mode enabled
 - Follow Prettier configuration:
   - Single quotes, no semicolons
   - 140 char line length, 2-space tabs
@@ -14,19 +14,30 @@ This is a React-based portfolio website showcasing software engineering and art 
   - Auto-format on save (configured in VS Code settings)
 - Run `yarn format` before committing changes (automatically runs on pre-commit via Husky)
 - Run `yarn lint` to check for issues, `yarn lint:fix` to auto-fix
+- Run `yarn type-check` to verify TypeScript types
 - Use named exports for components: `export function ComponentName() {}`
 - Use arrow functions for inline/small functions
+- Define proper TypeScript types for props, state, and function parameters
+- Use `React.ReactElement` for component return types (not `JSX.Element`)
+- Prefer interfaces over type aliases for component props
+- Use strict null checks and avoid `any` type unless absolutely necessary
 
 ### Linting & Code Quality
 - ESLint configured with:
+  - TypeScript ESLint with strict rules (@typescript-eslint/recommended)
   - React hooks rules (rules-of-hooks, exhaustive-deps)
   - Accessibility linting (jsx-a11y)
   - Unused imports removal
   - Code quality rules (no-console warnings, no-debugger, eqeqeq)
   - Best practices (prefer-const, no-var, prefer-template)
 - Prettier integration via eslint-plugin-prettier
+- TypeScript compiler runs in strict mode with:
+  - noImplicitAny, strictNullChecks, strictFunctionTypes
+  - noUnusedLocals, noUnusedParameters
+  - noFallthroughCasesInSwitch
 - Pre-commit hooks via Husky and lint-staged:
   - Auto-format and lint files before commit
+  - Type checking with TypeScript
   - Only staged files are checked
 
 ### Accessibility
@@ -37,18 +48,24 @@ This is a React-based portfolio website showcasing software engineering and art 
 - Ensure proper focus management and tab order
 
 ### Imports
-- Use absolute imports from `src` directory (configured in jsconfig.json)
+- Use absolute imports from `src` directory (configured in tsconfig.json and vite.config.ts)
 - Import order (handled by Prettier plugin):
   1. External packages (React, libraries)
   2. Internal components (`components/...`)
   3. Assets (`assets/...`)
   4. Data (`data/...`)
-  5. Styles (`styles/...`)
+  5. Types (`types/...`)
+  6. Styles (`styles/...`)
 - Example:
-  ```jsx
+  ```tsx
   import React from 'react';
+
   import { ComponentName } from 'components/Path/ComponentName';
+
   import ImageAsset from 'assets/path/image.svg';
+
+  import { MyType } from 'types/common.types';
+
   import 'styles/Path/ComponentName.css';
   ```
 
@@ -66,17 +83,22 @@ This is a React-based portfolio website showcasing software engineering and art 
 src/
   components/
     MyComponent/
-      MyComponent.jsx
-      SubComponent.jsx (if needed)
+      MyComponent.tsx
+      SubComponent.tsx (if needed)
   styles/
     MyComponent/
       MyComponent.css
+  types/
+    common.types.ts
+    component-specific.types.ts
 ```
 
 ### Functional Components
-- Use functional components with hooks (no class components)
+- Use functional components with hooks (no class components, except ErrorBoundary)
 - Destructure props in function signature when appropriate
 - Use React hooks (useState, useEffect, etc.) as needed
+- Define prop interfaces for all components
+- Use proper TypeScript types for hooks (useState<Type>, useRef<Type>, etc.)
 
 ## Styling
 
@@ -98,17 +120,18 @@ src/
 ### Content Data
 - Store content data in `src/data/` folder
 - Keep data separate from components for easy updates
-- Use clear, exported constants and arrays
+- Use clear, exported constants and arrays with proper TypeScript types
 - Examples:
-  - `experiences.js` - work experience data
-  - `swProjects.js` - software projects
-  - `technologies.js` - tech stack icons and info
-  - `colors.js` - color constants
+  - `experiences.ts` - work experience data
+  - `swProjects.ts` - software projects
+  - `technologies.ts` - tech stack icons and info
+  - `colors.ts` - color constants
 
 ### Data Structure
 - Export named constants for reusability
 - Use descriptive property names
 - Include all necessary metadata (company, duration, technologies, etc.)
+- Define TypeScript types/interfaces for all data structures in `src/types/`
 
 ## Assets
 
@@ -156,9 +179,11 @@ src/
 
 ### Adding New Features
 - Create components in appropriate folders
+- Define TypeScript interfaces/types for component props in `types/`
 - Add corresponding CSS files in `styles/`
 - Update data files if adding new content
-- Import and use in `App.jsx` or parent component
+- Import and use in `App.tsx` or parent component
+- Run `yarn type-check` to verify types
 - Test all functionality
 
 ### Performance
@@ -168,8 +193,10 @@ src/
 - Optimize assets before adding
 
 ## File Naming
-- Components: PascalCase (e.g., `AboutMe.jsx`)
-- Data files: camelCase (e.g., `experiences.js`)
+- Components: PascalCase (e.g., `AboutMe.tsx`)
+- Data files: camelCase (e.g., `experiences.ts`)
+- Type files: camelCase with `.types.ts` suffix (e.g., `common.types.ts`, `project.types.ts`)
+- Type declaration files: `.d.ts` for ambient declarations (e.g., `assets.d.ts`, `global.d.ts`)
 - CSS files: PascalCase matching component (e.g., `AboutMe.css`)
 - Assets: snake_case or PascalCase (e.g., `Profile_Pic.webp`, `IntuitLogo.svg`)
 
@@ -211,13 +238,14 @@ src/
 ## Testing
 
 ### Automated Tests
-- Run `yarn test` to execute all tests
+- Run `yarn test` to execute all tests (requires Node 22+, use `nvm use 22`)
 - Run `yarn test:watch` for watch mode during development
 - Run `yarn test:ui` to open the interactive Vitest UI
 - Run `yarn test:coverage` to generate coverage reports
 - Tests automatically run in CI on every push/PR
 - Tests focus on preventing regressions when updating content or refactoring
-- Located in `tests/` directory mirroring `src/` structure (e.g., `tests/components/MyComponent/MyComponent.test.jsx`)
+- Located in `tests/` directory mirroring `src/` structure (e.g., `tests/components/MyComponent/MyComponent.test.tsx`)
+- Test files use TypeScript for type safety in tests
 
 ### Manual Testing
 - Run `yarn start` and manually test in browser

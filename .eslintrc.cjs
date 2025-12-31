@@ -11,12 +11,16 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:jsx-a11y/recommended',
     'plugin:eslint-comments/recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'prettier',
   ],
-  plugins: ['react', 'react-hooks', 'unused-imports', 'eslint-comments', 'prettier'],
+  plugins: ['react', 'react-hooks', 'unused-imports', 'eslint-comments', 'prettier', '@typescript-eslint'],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
+    project: ['./tsconfig.json'],
     ecmaFeatures: {
       jsx: true,
     },
@@ -26,9 +30,10 @@ module.exports = {
       version: 'detect',
     },
     'import/resolver': {
+      typescript: {},
       node: {
         paths: ['src'],
-        extensions: ['.js', '.jsx'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
     },
   },
@@ -40,8 +45,17 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
 
-    // Unused imports
-    'no-unused-vars': 'off',
+    // Unused imports (TypeScript)
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        vars: 'all',
+        varsIgnorePattern: '^_',
+        args: 'after-used',
+        argsIgnorePattern: '^_',
+        ignoreRestSiblings: true,
+      },
+    ],
     'unused-imports/no-unused-imports': 'error',
     'unused-imports/no-unused-vars': ['warn', { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' }],
 
@@ -58,8 +72,8 @@ module.exports = {
     'prefer-arrow-callback': 'warn',
 
     // React specific
-    'react/prop-types': 'off',
-    'react/react-in-jsx-scope': 'off',
+    'react/prop-types': 'off', // Using TypeScript interfaces for type safety instead of PropTypes
+    'react/react-in-jsx-scope': 'off', // Not needed with React 18+ new JSX transform (jsx-runtime)
     'react/self-closing-comp': 'warn',
     'react/jsx-curly-brace-presence': ['warn', { props: 'never', children: 'never' }],
 

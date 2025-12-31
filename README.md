@@ -52,7 +52,7 @@
 
 ### Built With
 
-[![My Skills](https://skillicons.dev/icons?i=react,vite,js,html,css,figma,cloudflare)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=react,vite,ts,html,css,figma,cloudflare)](https://skillicons.dev)
 
 <!-- GETTING STARTED -->
 
@@ -139,11 +139,12 @@ Pull requests must pass all checks before merging. You can view test results in 
 ### Test Structure
 
 Tests are located in the `tests/` directory, mirroring the structure of `src/`:
-- `tests/App.test.jsx` - Main app component
+- `tests/App.test.tsx` - Main app component
 - `tests/components/` - Component tests organized by feature
 - Smoke tests verify components render without errors
 - Focus on catching regressions when updating content or refactoring
 - Use React Testing Library for behavior-focused testing
+- Written in TypeScript for type safety
 
 <!-- DEPLOYMENT -->
 
