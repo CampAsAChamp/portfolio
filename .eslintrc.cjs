@@ -11,12 +11,16 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:jsx-a11y/recommended',
     'plugin:eslint-comments/recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'prettier',
   ],
-  plugins: ['react', 'react-hooks', 'unused-imports', 'eslint-comments', 'prettier'],
+  plugins: ['react', 'react-hooks', 'unused-imports', 'eslint-comments', 'prettier', '@typescript-eslint'],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
+    project: ['./tsconfig.json'],
     ecmaFeatures: {
       jsx: true,
     },
@@ -26,9 +30,10 @@ module.exports = {
       version: 'detect',
     },
     'import/resolver': {
+      typescript: {},
       node: {
         paths: ['src'],
-        extensions: ['.js', '.jsx'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
     },
   },
@@ -40,8 +45,9 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
 
-    // Unused imports
+    // Unused imports (TypeScript)
     'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
     'unused-imports/no-unused-imports': 'error',
     'unused-imports/no-unused-vars': ['warn', { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' }],
 
