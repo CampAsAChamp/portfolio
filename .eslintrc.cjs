@@ -46,8 +46,16 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn',
 
     // Unused imports (TypeScript)
-    'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        vars: 'all',
+        varsIgnorePattern: '^_',
+        args: 'after-used',
+        argsIgnorePattern: '^_',
+        ignoreRestSiblings: true,
+      },
+    ],
     'unused-imports/no-unused-imports': 'error',
     'unused-imports/no-unused-vars': ['warn', { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' }],
 
@@ -64,8 +72,8 @@ module.exports = {
     'prefer-arrow-callback': 'warn',
 
     // React specific
-    'react/prop-types': 'off',
-    'react/react-in-jsx-scope': 'off',
+    'react/prop-types': 'off', // Using TypeScript interfaces for type safety instead of PropTypes
+    'react/react-in-jsx-scope': 'off', // Not needed with React 18+ new JSX transform (jsx-runtime)
     'react/self-closing-comp': 'warn',
     'react/jsx-curly-brace-presence': ['warn', { props: 'never', children: 'never' }],
 
