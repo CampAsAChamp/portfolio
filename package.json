@@ -7,6 +7,7 @@
     "node": ">=22.0.0",
     "yarn": ">=4.0.0"
   },
+  "packageManager": "yarn@4.12.0",
   "scripts": {
     "start": "vite",
     "dev": "vite",
@@ -23,6 +24,10 @@
     "type-check": "tsc --noEmit",
     "browserslist:update": "npx update-browserslist-db@latest",
     "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"],
+    "*.{json,css}": ["prettier --write"]
   },
   "dependencies": {
     "animate.css": "^4.1.1",
@@ -75,10 +80,5 @@
   "browserslist": {
     "production": [">0.2%", "not dead", "not op_mini all"],
     "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"],
-    "*.{json,css}": ["prettier --write"]
-  },
-  "packageManager": "yarn@4.12.0"
+  }
 }
