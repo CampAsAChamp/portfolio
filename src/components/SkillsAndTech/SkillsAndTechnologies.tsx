@@ -6,7 +6,7 @@ import * as technologies from 'data/technologies'
 
 import 'styles/SkillsAndTech/SkillsAndTechnologies.css'
 
-export function SkillsAndTechnologies() {
+export function SkillsAndTechnologies(): React.ReactElement {
   return (
     <section id="skills-container" className="page-container">
       <div id="skills-header" className="section-header">
