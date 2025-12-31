@@ -12,12 +12,12 @@ describe('useTheme', () => {
 
   it('should initialize with light theme by default', () => {
     // Mock matchMedia to return false (light mode)
-    window.matchMedia = vi.fn().mockImplementation((query) => ({
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
       matches: false,
       media: query,
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
-    }))
+    })) as unknown as typeof window.matchMedia
 
     const { result } = renderHook(() => useTheme())
 
@@ -27,12 +27,12 @@ describe('useTheme', () => {
 
   it('should initialize with dark theme from system preference', () => {
     // Mock matchMedia to return true (dark mode)
-    window.matchMedia = vi.fn().mockImplementation((query) => ({
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
       matches: true,
       media: query,
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
-    }))
+    })) as unknown as typeof window.matchMedia
 
     const { result } = renderHook(() => useTheme())
 
@@ -54,12 +54,12 @@ describe('useTheme', () => {
     document.startViewTransition = undefined
 
     // Mock matchMedia to return false (light mode)
-    window.matchMedia = vi.fn().mockImplementation((query) => ({
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
       matches: false,
       media: query,
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
-    }))
+    })) as unknown as typeof window.matchMedia
 
     const { result } = renderHook(() => useTheme())
 
@@ -97,19 +97,19 @@ describe('useTheme', () => {
 
   it('should toggle theme with View Transitions API', () => {
     // Mock View Transitions API
-    const mockTransition = vi.fn((callback) => {
+    const mockTransition = vi.fn((callback: () => void) => {
       callback()
       return Promise.resolve()
     })
-    document.startViewTransition = mockTransition
+    document.startViewTransition = mockTransition as unknown as typeof document.startViewTransition
 
     // Mock matchMedia to return false (light mode)
-    window.matchMedia = vi.fn().mockImplementation((query) => ({
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
       matches: false,
       media: query,
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
-    }))
+    })) as unknown as typeof window.matchMedia
 
     const { result } = renderHook(() => useTheme())
 
@@ -126,10 +126,10 @@ describe('useTheme', () => {
   })
 
   it('should set CSS custom properties for animation', () => {
-    document.startViewTransition = vi.fn((callback) => {
+    document.startViewTransition = vi.fn((callback: () => void) => {
       callback()
       return Promise.resolve()
-    })
+    }) as unknown as typeof document.startViewTransition
 
     const { result } = renderHook(() => useTheme())
 
@@ -145,12 +145,12 @@ describe('useTheme', () => {
     document.startViewTransition = undefined
 
     // Mock matchMedia to return false (light mode)
-    window.matchMedia = vi.fn().mockImplementation((query) => ({
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
       matches: false,
       media: query,
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
-    }))
+    })) as unknown as typeof window.matchMedia
 
     const { result } = renderHook(() => useTheme())
 

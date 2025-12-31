@@ -13,14 +13,14 @@ describe('ArtProjectPicture', () => {
 
     // Mock document.startViewTransition for browsers that don't support it
     if (!document.startViewTransition) {
-      document.startViewTransition = vi.fn((callback) => {
+      document.startViewTransition = vi.fn((callback: () => void) => {
         callback()
         return {
           ready: Promise.resolve(),
           updateCallbackDone: Promise.resolve(),
           finished: Promise.resolve(),
         }
-      })
+      }) as unknown as typeof document.startViewTransition
     }
   })
 
