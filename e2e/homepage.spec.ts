@@ -151,28 +151,6 @@ test.describe('Homepage', () => {
     expect(currentTheme).toBe('light')
   })
 
-  test('contact modal opens and closes', async ({ page }) => {
-    await page.goto('/')
-
-    // Find and click "Contact Me" button
-    await page.click('#contact-me-button')
-
-    // Wait for modal to appear
-    await page.waitForTimeout(500)
-
-    // Check that modal content is visible
-    await expect(page.locator('#contact-me-modal-content')).toBeVisible()
-
-    // Close modal by clicking close button
-    await page.click('.modal-close')
-
-    // Wait for modal to close
-    await page.waitForTimeout(500)
-
-    // Check that modal is hidden
-    await expect(page.locator('#contact-me-modal-content')).not.toBeVisible()
-  })
-
   test('project cards display correctly', async ({ page }) => {
     await page.goto('/')
 

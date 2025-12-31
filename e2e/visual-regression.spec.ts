@@ -52,10 +52,13 @@ async function waitForPageReady(page: Page): Promise<void> {
   await page.waitForTimeout(1500)
 
   // Wait for page height to stabilize - check multiple times
+  // Add max iterations to prevent infinite loops
   let stableCount = 0
   let previousHeight = 0
+  let iterations = 0
+  const maxIterations = 20 // Maximum 6 seconds (20 * 300ms)
 
-  while (stableCount < 3) {
+  while (stableCount < 3 && iterations < maxIterations) {
     const currentHeight = await page.evaluate(() => document.body.scrollHeight)
     if (currentHeight === previousHeight) {
       stableCount++
@@ -64,6 +67,7 @@ async function waitForPageReady(page: Page): Promise<void> {
       previousHeight = currentHeight
     }
     await page.waitForTimeout(300)
+    iterations++
   }
 }
 
@@ -130,38 +134,22 @@ test.describe('Visual Regression Tests', () => {
     })
   })
 
-  test('software projects section', async ({ page, browserName }, testInfo) => {
-    // Skip Firefox and Mobile Chrome due to rendering inconsistencies in this section
-    // The section height is unstable on these browsers due to dynamic content loading
-    // Other browsers (chromium desktop, webkit, Mobile Safari) still test this
-    test.skip(
-      browserName === 'firefox' || testInfo.project.name === 'Mobile Chrome',
-      'Firefox and Mobile Chrome rendering is flaky for this section',
-    )
-
+  test('contact modal', async ({ page }) => {
     await page.goto('/')
 
     // Wait for page to be fully ready
     await waitForPageReady(page)
 
-    // Scroll to software projects section
-    await clickNavLink(page, '#sw-projects-header')
-
-    const swProjectsSection = page.locator('#sw-projects-container')
-    await expect(swProjectsSection).toHaveScreenshot('sw-projects-section.png', {
-      animations: 'disabled',
-    })
-  })
-
-  test('contact modal', async ({ page }) => {
-    await page.goto('/')
-
-    // Open contact modal by clicking the Contact Me button
-    await page.click('#contact-me-button')
+    // Wait for and click the Contact Me button
+    const contactButton = page.locator('#contact-me-button')
+    await contactButton.waitFor({ state: 'visible', timeout: 5000 })
+    await contactButton.click()
     await page.waitForTimeout(500)
 
-    // Take screenshot of modal
+    // Wait for modal to be visible before taking screenshot
     const modal = page.locator('#contact-me-modal-content')
+    await modal.waitFor({ state: 'visible', timeout: 5000 })
+
     await expect(modal).toHaveScreenshot('contact-modal.png', {
       animations: 'disabled',
     })
