@@ -27,9 +27,8 @@ export function Navbar(): React.ReactElement {
       burger.classList.add('toggle')
 
       // Clear any inline styles from previous closing animation
-      listItems.forEach((li) => {
-        const listItem = li as HTMLElement
-        listItem.style.animation = ''
+      listItems.forEach((li: HTMLElement) => {
+        li.style.animation = ''
       })
     } else {
       // Add closing animation
@@ -38,18 +37,16 @@ export function Navbar(): React.ReactElement {
         nav.classList.add('nav-closing')
 
         // Manually apply closing animation to each item
-        listItems.forEach((li, index) => {
-          const listItem = li as HTMLElement
+        listItems.forEach((li: HTMLElement, index) => {
           const delay = (listItems.length - 1 - index) * 0.05
-          listItem.style.animation = `navLinkFadeOut 0.4s ease ${delay}s forwards`
+          li.style.animation = `navLinkFadeOut 0.4s ease ${delay}s forwards`
         })
 
         // Remove closing class and clean up after animation completes
         setTimeout(() => {
           nav.classList.remove('nav-closing')
-          listItems.forEach((li) => {
-            const listItem = li as HTMLElement
-            listItem.style.animation = ''
+          listItems.forEach((li: HTMLElement) => {
+            li.style.animation = ''
           })
         }, 700)
       }

@@ -1,10 +1,9 @@
+import { getTechnologies } from '@/utils/technologiesUtils'
 import ScrollAnimation from 'react-animate-on-scroll'
-import { Technology } from 'types/technology.types'
 
 import { Svg } from 'components/Common/Svg'
 
 import { COLORS } from 'data/colors'
-import { technologiesMap } from 'data/technologies'
 
 interface SkillsRowProps {
   technologyNames: string[]
@@ -12,11 +11,7 @@ interface SkillsRowProps {
 }
 
 export function SkillsRow({ technologyNames, rowDelay = 0 }: SkillsRowProps): React.ReactElement {
-  const technologies = technologyNames
-    .map((name) => {
-      return technologiesMap.get(name)
-    })
-    .filter((tech): tech is Technology => tech !== undefined)
+  const technologies = getTechnologies(technologyNames)
 
   return (
     <div className="skills-row">

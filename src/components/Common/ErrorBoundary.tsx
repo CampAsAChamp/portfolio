@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react'
 
+import 'styles/Common/ErrorBoundary.css'
+
 interface ErrorBoundaryProps {
   children: ReactNode
 }
@@ -32,84 +34,43 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
     })
   }
 
-  render(): ReactNode {
-    if (this.state.hasError) {
-      return (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            minHeight: '100vh',
-            padding: '20px',
-            textAlign: 'center',
-            backgroundColor: 'var(--color-background)',
-            color: 'var(--color-body-text)',
-          }}
-        >
-          <h1 style={{ fontSize: '48px', marginBottom: '20px', color: 'var(--color-purple)' }}>Oops!</h1>
-          <h2 style={{ fontSize: '24px', marginBottom: '20px' }}>Something went wrong</h2>
-          <p style={{ fontSize: '16px', marginBottom: '30px', maxWidth: '600px' }}>
-            We&apos;re sorry for the inconvenience. Please try refreshing the page, or come back later.
-          </p>
-          <button
-            onClick={() => window.location.reload()}
-            style={{
-              padding: '12px 24px',
-              fontSize: '16px',
-              backgroundColor: 'var(--color-purple)',
-              color: 'white',
-              border: 'none',
-              borderRadius: 'var(--rounded-button-corners-size)',
-              cursor: 'pointer',
-              transition: 'transform 0.2s, box-shadow 0.2s',
-            }}
-            onMouseOver={(e) => {
-              const target = e.target as HTMLButtonElement
-              target.style.transform = 'translateY(-2px)'
-              target.style.boxShadow = '0 4px 12px rgba(108, 99, 255, 0.4)'
-            }}
-            onMouseOut={(e) => {
-              const target = e.target as HTMLButtonElement
-              target.style.transform = 'translateY(0)'
-              target.style.boxShadow = 'none'
-            }}
-            onFocus={(e) => {
-              const target = e.target as HTMLButtonElement
-              target.style.transform = 'translateY(-2px)'
-              target.style.boxShadow = '0 4px 12px rgba(108, 99, 255, 0.4)'
-            }}
-            onBlur={(e) => {
-              const target = e.target as HTMLButtonElement
-              target.style.transform = 'translateY(0)'
-              target.style.boxShadow = 'none'
-            }}
-          >
-            Refresh Page
-          </button>
-          {import.meta.env.DEV && this.state.error && (
-            <details style={{ marginTop: '40px', textAlign: 'left', maxWidth: '800px' }}>
-              <summary style={{ cursor: 'pointer', fontSize: '14px', marginBottom: '10px' }}>Error Details (dev only)</summary>
-              <pre
-                style={{
-                  backgroundColor: '#f5f5f5',
-                  padding: '15px',
-                  borderRadius: '8px',
-                  overflow: 'auto',
-                  fontSize: '12px',
-                }}
-              >
-                {this.state.error.toString()}
-                {'\n\n'}
-                {this.state.errorInfo?.componentStack}
-              </pre>
-            </details>
-          )}
-        </div>
-      )
+  private renderErrorUI(): ReactNode {
+    return (
+      <div className="error-boundary-container">
+        <h1 className="error-boundary-title">Oops!</h1>
+        <h2 className="error-boundary-subtitle">Something went wrong</h2>
+        <p className="error-boundary-message">
+          We&apos;re sorry for the inconvenience. Please try refreshing the page, or come back later.
+        </p>
+        <button className="error-boundary-button" onClick={() => window.location.reload()}>
+          Refresh Page
+        </button>
+        {this.renderErrorDetails()}
+      </div>
+    )
+  }
+
+  private renderErrorDetails(): ReactNode {
+    // Show detailed error info only in development mode (import.meta.env.DEV is Vite's boolean for dev mode)
+    if (!import.meta.env.DEV || !this.state.error) {
+      return null
     }
 
-    return this.props.children
+    return (
+      <details className="error-boundary-details">
+        <summary className="error-boundary-summary">Error Details (dev only)</summary>
+        <pre className="error-boundary-pre">
+          {this.state.error.toString()}
+          {'\n\n'}
+          {this.state.errorInfo?.componentStack}
+        </pre>
+      </details>
+    )
+  }
+
+  render(): ReactNode {
+    // If no error, render children normally (e.g., <App />, <Routes />, or any component tree wrapped by this boundary)
+    // If error occurred, show the error UI instead
+    return this.state.hasError ? this.renderErrorUI() : this.props.children
   }
 }

@@ -1,8 +1,6 @@
-import { Technology } from 'types/technology.types'
+import { getTechnologies } from '@/utils/technologiesUtils'
 
 import { Svg } from 'components/Common/Svg'
-
-import { technologiesMap } from 'data/technologies'
 
 interface TechnologiesBarProps {
   technologyNames: string[]
@@ -10,11 +8,7 @@ interface TechnologiesBarProps {
 }
 
 export function TechnologiesBar({ technologyNames, fillColor }: TechnologiesBarProps): React.ReactElement {
-  const technologies = technologyNames
-    .map((name) => {
-      return technologiesMap.get(name)
-    })
-    .filter((tech): tech is Technology => tech !== undefined)
+  const technologies = getTechnologies(technologyNames)
 
   return (
     <div className="languages-bar ">
