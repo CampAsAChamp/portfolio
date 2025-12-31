@@ -171,6 +171,23 @@ describe('useTheme', () => {
     expect(document.documentElement.style.getPropertyValue('--y')).toBe('75px')
   })
 
+  it('should set correct animation name matching the CSS keyframe', () => {
+    document.startViewTransition = vi.fn((callback: () => void) => {
+      callback()
+      return Promise.resolve()
+    }) as unknown as typeof document.startViewTransition
+
+    const { result } = renderHook(() => useTheme())
+
+    act(() => {
+      result.current.toggleTheme({ clientX: 100, clientY: 100 } as React.MouseEvent)
+    })
+
+    // Verify the animation name matches the CSS keyframe name (reveal-theme)
+    // This prevents regressions where the JS uses 'revealTheme' but CSS has 'reveal-theme'
+    expect(document.documentElement.style.getPropertyValue('--theme-transition-animation')).toBe('reveal-theme')
+  })
+
   it('should persist theme across multiple toggles', () => {
     document.startViewTransition = undefined
 
