@@ -2,10 +2,10 @@ import useScrollPosition from 'hooks/useScrollPosition'
 
 import 'styles/Common/ScrollToTopButton.css'
 
-export function ScrollToTopButton() {
+export function ScrollToTopButton(): React.ReactElement {
   const scrollPosition = useScrollPosition()
 
-  const scrollToTop = () => {
+  const scrollToTop = (): void => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
@@ -15,7 +15,7 @@ export function ScrollToTopButton() {
   const showScrollToTopButton = scrollPosition.y > 400
 
   return (
-    <button onClick={scrollToTop} className={`button ${showScrollToTopButton && 'show'}`} id="scroll-to-top-button" title="Go to top">
+    <button onClick={scrollToTop} className={`button ${showScrollToTopButton ? 'show' : ''}`} id="scroll-to-top-button" title="Go to top">
       ↑
     </button>
   )

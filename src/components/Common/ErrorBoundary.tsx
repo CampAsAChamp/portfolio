@@ -1,20 +1,30 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
+
+interface ErrorBoundaryProps {
+  children: ReactNode
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean
+  error: Error | null
+  errorInfo: React.ErrorInfo | null
+}
 
 // Note: This must be a class component because React error boundaries
 // require componentDidCatch and getDerivedStateFromError lifecycle methods,
 // which are not available as hooks. This is the only intentional exception
 // to the functional components rule.
-export class ErrorBoundary extends React.Component {
-  constructor(props) {
+export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props)
     this.state = { hasError: false, error: null, errorInfo: null }
   }
 
-  static getDerivedStateFromError(_error) {
+  static getDerivedStateFromError(_error: Error): Partial<ErrorBoundaryState> {
     return { hasError: true }
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     console.error('Error caught by boundary:', error, errorInfo)
     this.setState({
       error: error,
@@ -22,7 +32,7 @@ export class ErrorBoundary extends React.Component {
     })
   }
 
-  render() {
+  render(): ReactNode {
     if (this.state.hasError) {
       return (
         <div
@@ -56,25 +66,29 @@ export class ErrorBoundary extends React.Component {
               transition: 'transform 0.2s, box-shadow 0.2s',
             }}
             onMouseOver={(e) => {
-              e.target.style.transform = 'translateY(-2px)'
-              e.target.style.boxShadow = '0 4px 12px rgba(108, 99, 255, 0.4)'
+              const target = e.target as HTMLButtonElement
+              target.style.transform = 'translateY(-2px)'
+              target.style.boxShadow = '0 4px 12px rgba(108, 99, 255, 0.4)'
             }}
             onMouseOut={(e) => {
-              e.target.style.transform = 'translateY(0)'
-              e.target.style.boxShadow = 'none'
+              const target = e.target as HTMLButtonElement
+              target.style.transform = 'translateY(0)'
+              target.style.boxShadow = 'none'
             }}
             onFocus={(e) => {
-              e.target.style.transform = 'translateY(-2px)'
-              e.target.style.boxShadow = '0 4px 12px rgba(108, 99, 255, 0.4)'
+              const target = e.target as HTMLButtonElement
+              target.style.transform = 'translateY(-2px)'
+              target.style.boxShadow = '0 4px 12px rgba(108, 99, 255, 0.4)'
             }}
             onBlur={(e) => {
-              e.target.style.transform = 'translateY(0)'
-              e.target.style.boxShadow = 'none'
+              const target = e.target as HTMLButtonElement
+              target.style.transform = 'translateY(0)'
+              target.style.boxShadow = 'none'
             }}
           >
             Refresh Page
           </button>
-          {process.env.NODE_ENV === 'development' && this.state.error && (
+          {import.meta.env.DEV && this.state.error && (
             <details style={{ marginTop: '40px', textAlign: 'left', maxWidth: '800px' }}>
               <summary style={{ cursor: 'pointer', fontSize: '14px', marginBottom: '10px' }}>Error Details (dev only)</summary>
               <pre
