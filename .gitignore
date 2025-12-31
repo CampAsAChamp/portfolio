@@ -29,3 +29,4 @@ yarn-error.log*
 
 # Githook Config
 .intuitgithookrc
+.yarn/install-state.gz
