@@ -6,7 +6,7 @@ import { experiences } from 'data/experiences'
 
 import 'styles/Experience/Experience.css'
 
-export function Experience() {
+export function Experience(): React.ReactElement {
   return (
     <>
       <section id="experience-container" className="page-container">

@@ -1,11 +1,15 @@
 import parse from 'html-react-parser'
 import ScrollAnimation from 'react-animate-on-scroll'
+import { Experience } from 'types/experience.types'
 
 import { TechnologiesBar } from 'components/Common/TechnologiesBar'
 
-export function ExperienceCard(props) {
-  const { experience, index } = props
+interface ExperienceCardProps {
+  experience: Experience
+  index: number
+}
 
+export function ExperienceCard({ experience, index }: ExperienceCardProps): React.ReactElement {
   return (
     <ScrollAnimation animateIn="animate__springIn" animateOnce>
       <div className="card" id={`card${index}`}>
