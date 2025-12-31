@@ -32,4 +32,12 @@ jobs:
       - name: Build
         run: yarn build
 
+      - name: Check bundle size
+        run: |
+          echo "Checking bundle sizes..."
+          du -sh build/assets/*.js | sort -h
+          echo ""
+          echo "Total build size:"
+          du -sh build
+
 

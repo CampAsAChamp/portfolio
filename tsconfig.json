@@ -63,7 +63,7 @@
     "skipLibCheck": true // Skip type checking of declaration files (.d.ts) for faster compilation (trust that library types are correct)
   },
   // Include these files/directories for TypeScript to process
-  "include": ["src/**/*", "tests/**/*", "vite.config.ts", "vitest.config.ts"],
+  "include": ["src/**/*", "tests/**/*", "e2e/**/*", "vite.config.ts", "vitest.config.ts", "playwright.config.ts"],
   // Exclude these directories from TypeScript processing (third-party code and build output)
   "exclude": ["node_modules", "build", "dist"]
 }

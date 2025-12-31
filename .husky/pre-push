@@ -1,0 +1,5 @@
+# Ensure you're using Node 22: nvm use
+# Tests require Node 22 (per .nvmrc) but terminal may default to Node 18
+
+yarn test:all
+

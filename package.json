@@ -17,17 +17,24 @@
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:all": "yarn test && yarn test:e2e",
     "format": "prettier --write \"./**/*.{ts,tsx,js,jsx,json}\"",
-    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "analyze": "source-map-explorer 'build/assets/*.js'",
     "lint": "eslint src/**/*.{js,jsx,ts,tsx} && tsc --noEmit",
     "lint:fix": "eslint src/**/*.{js,jsx,ts,tsx} --fix && tsc --noEmit",
     "lint:types": "tsc --noEmit",
+    "lint:css": "stylelint \"src/**/*.css\"",
+    "lint:css:fix": "stylelint \"src/**/*.css\" --fix",
     "browserslist:update": "npx update-browserslist-db@latest",
     "prepare": "husky"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"],
-    "*.{json,css}": ["prettier --write"]
+    "*.css": ["stylelint --fix", "prettier --write"],
+    "*.json": ["prettier --write"]
   },
   "dependencies": {
     "animate.css": "^4.1.1",
@@ -42,6 +49,7 @@
   "devDependencies": {
     "@babel/core": "^7.28.5",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@playwright/test": "^1.48.0",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",
@@ -72,9 +80,13 @@
     "prettier": "^3.5.2",
     "prettier-eslint": "^16.1.2",
     "prettier-plugin-css-order": "^2.1.2",
+    "rollup-plugin-visualizer": "^5.12.0",
     "source-map-explorer": "^2.5.2",
+    "stylelint": "^16.0.0",
+    "stylelint-config-standard": "^36.0.0",
     "typescript": "^5.9.3",
     "vite": "^5.0.0",
+    "vite-plugin-compression": "^0.5.1",
     "vitest": "^4.0.16"
   },
   "browserslist": {
