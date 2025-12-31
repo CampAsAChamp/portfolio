@@ -1,4 +1,4 @@
-import { render } from 'tests/utils'
+import { render } from '@testing-library/react'
 import { describe, it } from 'vitest'
 
 import { Experience } from 'components/Experience/Experience'

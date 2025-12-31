@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from 'tests/utils'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
 import { ContactMeModal } from 'components/ContactMeModal/ContactMeModal'
@@ -59,7 +59,8 @@ describe('ContactMeModal', () => {
     render(<ContactMeModal isOpen={true} close={mockClose} />)
 
     const modalContent = document.getElementById('contact-me-modal-content')
-    fireEvent.click(modalContent)
+    expect(modalContent).toBeTruthy()
+    fireEvent.click(modalContent!)
 
     expect(mockClose).not.toHaveBeenCalled()
   })

@@ -1,8 +1,17 @@
+import React from 'react'
+
 import { act, renderHook } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { useTheme } from 'hooks/useTheme'
 
+/**
+ * Tests for the useTheme hook.
+ *
+ * Note: This test suite uses the "as unknown as typeof X" pattern for mocking browser APIs.
+ * The first occurrence of each mock (matchMedia, startViewTransition) has detailed comments
+ * explaining why this pattern is necessary. Subsequent uses follow the same pattern.
+ */
 describe('useTheme', () => {
   beforeEach(() => {
     localStorage.clear()
@@ -11,7 +20,18 @@ describe('useTheme', () => {
   })
 
   it('should initialize with light theme by default', () => {
-    // Mock matchMedia to return false (light mode)
+    /**
+     * Mock window.matchMedia for testing media queries (like dark mode detection).
+     *
+     * The double type assertion "as unknown as typeof window.matchMedia" is necessary because:
+     * 1. vi.fn().mockImplementation() returns a Vitest mock type
+     * 2. window.matchMedia has a specific MediaQueryList return type
+     * 3. Our mock only implements the properties we need (matches, media, addEventListener, removeEventListener)
+     * 4. TypeScript won't allow direct assignment, so we cast through 'unknown' as an escape hatch
+     *
+     * This is a standard testing pattern - we provide a minimal mock that's sufficient for the test,
+     * rather than implementing the entire MediaQueryList interface.
+     */
     window.matchMedia = vi.fn().mockImplementation((query: string) => ({
       matches: false,
       media: query,
@@ -68,7 +88,7 @@ describe('useTheme', () => {
 
     // Toggle to dark
     act(() => {
-      result.current.toggleTheme({ clientX: 100, clientY: 100 })
+      result.current.toggleTheme({ clientX: 100, clientY: 100 } as React.MouseEvent)
     })
 
     expect(result.current.isDarkMode).toBe(true)
@@ -87,7 +107,7 @@ describe('useTheme', () => {
 
     // Toggle to light
     act(() => {
-      result.current.toggleTheme({ clientX: 100, clientY: 100 })
+      result.current.toggleTheme({ clientX: 100, clientY: 100 } as React.MouseEvent)
     })
 
     expect(result.current.isDarkMode).toBe(false)
@@ -96,7 +116,17 @@ describe('useTheme', () => {
   })
 
   it('should toggle theme with View Transitions API', () => {
-    // Mock View Transitions API
+    /**
+     * Mock document.startViewTransition for testing the View Transitions API.
+     *
+     * Note: This mock is incomplete - it's missing the full return type properties
+     * (ready, updateCallbackDone, finished, skipTransition). It just returns Promise.resolve()
+     * directly, which works for this test because the useTheme hook doesn't use those properties.
+     *
+     * The double type assertion "as unknown as typeof document.startViewTransition" allows us
+     * to assign this simplified mock to the strictly-typed API. This is acceptable because
+     * we know the mock is sufficient for the specific functionality being tested.
+     */
     const mockTransition = vi.fn((callback: () => void) => {
       callback()
       return Promise.resolve()
@@ -115,7 +145,7 @@ describe('useTheme', () => {
 
     // Toggle theme
     act(() => {
-      result.current.toggleTheme({ clientX: 100, clientY: 200 })
+      result.current.toggleTheme({ clientX: 100, clientY: 200 } as React.MouseEvent)
     })
 
     expect(mockTransition).toHaveBeenCalled()
@@ -134,7 +164,7 @@ describe('useTheme', () => {
     const { result } = renderHook(() => useTheme())
 
     act(() => {
-      result.current.toggleTheme({ clientX: 50, clientY: 75 })
+      result.current.toggleTheme({ clientX: 50, clientY: 75 } as React.MouseEvent)
     })
 
     expect(document.documentElement.style.getPropertyValue('--x')).toBe('50px')
@@ -156,17 +186,17 @@ describe('useTheme', () => {
 
     // Toggle multiple times
     act(() => {
-      result.current.toggleTheme({ clientX: 0, clientY: 0 })
+      result.current.toggleTheme({ clientX: 0, clientY: 0 } as React.MouseEvent)
     })
     expect(result.current.isDarkMode).toBe(true)
 
     act(() => {
-      result.current.toggleTheme({ clientX: 0, clientY: 0 })
+      result.current.toggleTheme({ clientX: 0, clientY: 0 } as React.MouseEvent)
     })
     expect(result.current.isDarkMode).toBe(false)
 
     act(() => {
-      result.current.toggleTheme({ clientX: 0, clientY: 0 })
+      result.current.toggleTheme({ clientX: 0, clientY: 0 } as React.MouseEvent)
     })
     expect(result.current.isDarkMode).toBe(true)
 

@@ -1,4 +1,4 @@
-import { render, screen } from 'tests/utils'
+import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
 import { LandingPage } from 'components/LandingPage/LandingPage'

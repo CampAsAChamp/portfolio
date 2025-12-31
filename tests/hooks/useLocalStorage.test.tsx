@@ -43,19 +43,23 @@ describe('useLocalStorage', () => {
     })
 
     expect(result.current[0]).toEqual(testObject)
-    expect(JSON.parse(localStorage.getItem('test-key'))).toEqual(testObject)
+    const storedValue = localStorage.getItem('test-key')
+    expect(storedValue).toBeTruthy()
+    expect(JSON.parse(storedValue!)).toEqual(testObject)
   })
 
   it('should handle arrays correctly', () => {
     const testArray = [1, 2, 3, 4, 5]
-    const { result } = renderHook(() => useLocalStorage('test-key', []))
+    const { result } = renderHook(() => useLocalStorage<number[]>('test-key', []))
 
     act(() => {
       result.current[1](testArray)
     })
 
     expect(result.current[0]).toEqual(testArray)
-    expect(JSON.parse(localStorage.getItem('test-key'))).toEqual(testArray)
+    const storedValue = localStorage.getItem('test-key')
+    expect(storedValue).toBeTruthy()
+    expect(JSON.parse(storedValue!)).toEqual(testArray)
   })
 
   it('should handle boolean values', () => {
@@ -66,7 +70,9 @@ describe('useLocalStorage', () => {
     })
 
     expect(result.current[0]).toBe(true)
-    expect(JSON.parse(localStorage.getItem('test-key'))).toBe(true)
+    const storedValue = localStorage.getItem('test-key')
+    expect(storedValue).toBeTruthy()
+    expect(JSON.parse(storedValue!)).toBe(true)
   })
 
   it('should handle function updates like useState', () => {
@@ -77,7 +83,9 @@ describe('useLocalStorage', () => {
     })
 
     expect(result.current[0]).toBe(15)
-    expect(JSON.parse(localStorage.getItem('test-key'))).toBe(15)
+    const storedValue = localStorage.getItem('test-key')
+    expect(storedValue).toBeTruthy()
+    expect(JSON.parse(storedValue!)).toBe(15)
   })
 
   it('should handle invalid JSON gracefully', () => {

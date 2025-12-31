@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { renderHook } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -8,60 +10,64 @@ describe('useKeyboardAccessibility', () => {
     const callback = vi.fn()
     const { result } = renderHook(() => useKeyboardAccessibility(callback))
 
+    const preventDefault = vi.fn()
     const event = {
       key: 'Enter',
-      preventDefault: vi.fn(),
-    }
+      preventDefault,
+    } as unknown as React.KeyboardEvent<Element>
 
     result.current.onKeyDown(event)
 
     expect(callback).toHaveBeenCalledWith(event)
-    expect(event.preventDefault).toHaveBeenCalled()
+    expect(preventDefault).toHaveBeenCalled()
   })
 
   it('should call callback when Space key is pressed', () => {
     const callback = vi.fn()
     const { result } = renderHook(() => useKeyboardAccessibility(callback))
 
+    const preventDefault = vi.fn()
     const event = {
       key: ' ',
-      preventDefault: vi.fn(),
-    }
+      preventDefault,
+    } as unknown as React.KeyboardEvent<Element>
 
     result.current.onKeyDown(event)
 
     expect(callback).toHaveBeenCalledWith(event)
-    expect(event.preventDefault).toHaveBeenCalled()
+    expect(preventDefault).toHaveBeenCalled()
   })
 
   it('should not call callback for other keys', () => {
     const callback = vi.fn()
     const { result } = renderHook(() => useKeyboardAccessibility(callback))
 
+    const preventDefault = vi.fn()
     const event = {
       key: 'Escape',
-      preventDefault: vi.fn(),
-    }
+      preventDefault,
+    } as unknown as React.KeyboardEvent<Element>
 
     result.current.onKeyDown(event)
 
     expect(callback).not.toHaveBeenCalled()
-    expect(event.preventDefault).not.toHaveBeenCalled()
+    expect(preventDefault).not.toHaveBeenCalled()
   })
 
   it('should not call callback for Tab key', () => {
     const callback = vi.fn()
     const { result } = renderHook(() => useKeyboardAccessibility(callback))
 
+    const preventDefault = vi.fn()
     const event = {
       key: 'Tab',
-      preventDefault: vi.fn(),
-    }
+      preventDefault,
+    } as unknown as React.KeyboardEvent<Element>
 
     result.current.onKeyDown(event)
 
     expect(callback).not.toHaveBeenCalled()
-    expect(event.preventDefault).not.toHaveBeenCalled()
+    expect(preventDefault).not.toHaveBeenCalled()
   })
 
   it('should not call callback for arrow keys', () => {
@@ -71,15 +77,16 @@ describe('useKeyboardAccessibility', () => {
     const arrowKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
 
     arrowKeys.forEach((key) => {
+      const preventDefault = vi.fn()
       const event = {
         key,
-        preventDefault: vi.fn(),
-      }
+        preventDefault,
+      } as unknown as React.KeyboardEvent<Element>
 
       result.current.onKeyDown(event)
 
       expect(callback).not.toHaveBeenCalled()
-      expect(event.preventDefault).not.toHaveBeenCalled()
+      expect(preventDefault).not.toHaveBeenCalled()
     })
   })
 
@@ -93,7 +100,7 @@ describe('useKeyboardAccessibility', () => {
     const event = {
       key: 'Enter',
       preventDefault: vi.fn(),
-    }
+    } as unknown as React.KeyboardEvent<Element>
 
     result1.current.onKeyDown(event)
     expect(callback1).toHaveBeenCalled()
@@ -112,13 +119,15 @@ describe('useKeyboardAccessibility', () => {
       preventDefault: vi.fn(),
       target: { id: 'test-element' },
       currentTarget: { className: 'test-class' },
-    }
+    } as unknown as React.KeyboardEvent<Element>
 
     result.current.onKeyDown(event)
 
     expect(callback).toHaveBeenCalledWith(event)
-    expect(callback.mock.calls[0][0]).toHaveProperty('target')
-    expect(callback.mock.calls[0][0]).toHaveProperty('currentTarget')
+    expect(callback.mock.calls[0]).toBeTruthy()
+    expect(callback.mock.calls[0]![0]).toBeTruthy()
+    expect(callback.mock.calls[0]![0]).toHaveProperty('target')
+    expect(callback.mock.calls[0]![0]).toHaveProperty('currentTarget')
   })
 
   it('should return consistent handler reference when callback changes', () => {

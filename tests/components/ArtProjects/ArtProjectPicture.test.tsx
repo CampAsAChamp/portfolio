@@ -11,7 +11,24 @@ describe('ArtProjectPicture', () => {
     // Clean up any existing modal classes
     document.body.classList.remove('art-modal-open')
 
-    // Mock document.startViewTransition for browsers that don't support it
+    /**
+     * Mock document.startViewTransition for test environments that don't support it.
+     *
+     * NOTE: The ArtProjectPicture component doesn't actually use startViewTransition,
+     * so this mock is unnecessary for this specific test file. However, it's included
+     * as defensive setup in case the component is updated to use it in the future.
+     *
+     * The double type assertion "as unknown as typeof X" is a TypeScript testing pattern
+     * that allows us to assign an incomplete mock to a strictly-typed API. This is necessary
+     * because:
+     * 1. vi.fn() returns a Vitest mock function type
+     * 2. document.startViewTransition has a complex return type with specific properties
+     * 3. TypeScript won't allow direct assignment between incompatible types
+     * 4. Casting through 'unknown' tells TypeScript "trust me, I know what I'm doing"
+     *
+     * This is a common and acceptable pattern in testing when you know the mock is sufficient
+     * for the test's needs, even if it doesn't implement the complete interface.
+     */
     if (!document.startViewTransition) {
       document.startViewTransition = vi.fn((callback: () => void) => {
         callback()
@@ -19,6 +36,7 @@ describe('ArtProjectPicture', () => {
           ready: Promise.resolve(),
           updateCallbackDone: Promise.resolve(),
           finished: Promise.resolve(),
+          skipTransition: () => {},
         }
       }) as unknown as typeof document.startViewTransition
     }
@@ -35,7 +53,7 @@ describe('ArtProjectPicture', () => {
   it('displays the thumbnail image', () => {
     render(<ArtProjectPicture imgSrc={mockImgSrc} altText={mockAltText} />)
     const thumbnails = screen.getAllByAltText(mockAltText)
-    const thumbnail = thumbnails.find((img) => img.classList.contains('art-grid-img'))
+    const thumbnail = thumbnails.find((img) => img.classList.contains('art-grid-img')) as HTMLImageElement
     expect(thumbnail).toBeTruthy()
     expect(thumbnail.src).toContain(mockImgSrc)
   })
@@ -49,8 +67,10 @@ describe('ArtProjectPicture', () => {
     const modalBackground = document.getElementById('art-modal-background')
     const modalImg = document.getElementById('art-modal-img')
 
-    expect(modalBackground.classList.contains('show')).toBe(true)
-    expect(modalImg.classList.contains('show')).toBe(true)
+    expect(modalBackground).toBeTruthy()
+    expect(modalImg).toBeTruthy()
+    expect(modalBackground!.classList.contains('show')).toBe(true)
+    expect(modalImg!.classList.contains('show')).toBe(true)
     expect(document.body.classList.contains('art-modal-open')).toBe(true)
   })
 
@@ -62,14 +82,15 @@ describe('ArtProjectPicture', () => {
     fireEvent.click(button)
 
     const modalBackground = document.getElementById('art-modal-background')
-    expect(modalBackground.classList.contains('show')).toBe(true)
+    expect(modalBackground).toBeTruthy()
+    expect(modalBackground!.classList.contains('show')).toBe(true)
 
     // Close modal by clicking background
-    fireEvent.click(modalBackground)
+    fireEvent.click(modalBackground!)
 
     // Wait for animation to complete
     await waitFor(() => {
-      expect(modalBackground.classList.contains('show')).toBe(false)
+      expect(modalBackground!.classList.contains('show')).toBe(false)
       expect(document.body.classList.contains('art-modal-open')).toBe(false)
     })
   })
@@ -82,7 +103,8 @@ describe('ArtProjectPicture', () => {
     fireEvent.click(button)
 
     const modalBackground = document.getElementById('art-modal-background')
-    expect(modalBackground.classList.contains('show')).toBe(true)
+    expect(modalBackground).toBeTruthy()
+    expect(modalBackground!.classList.contains('show')).toBe(true)
 
     // Close modal by clicking X button
     const closeButton = screen.getByRole('button', { name: 'Close' })
@@ -90,7 +112,7 @@ describe('ArtProjectPicture', () => {
 
     // Wait for animation to complete
     await waitFor(() => {
-      expect(modalBackground.classList.contains('show')).toBe(false)
+      expect(modalBackground!.classList.contains('show')).toBe(false)
       expect(document.body.classList.contains('art-modal-open')).toBe(false)
     })
   })
@@ -103,7 +125,8 @@ describe('ArtProjectPicture', () => {
     fireEvent.click(button)
 
     const modalBackground = document.getElementById('art-modal-background')
-    expect(modalBackground.classList.contains('show')).toBe(true)
+    expect(modalBackground).toBeTruthy()
+    expect(modalBackground!.classList.contains('show')).toBe(true)
 
     // Press ESC key
     act(() => {
@@ -113,7 +136,7 @@ describe('ArtProjectPicture', () => {
 
     // Wait for animation to complete
     await waitFor(() => {
-      expect(modalBackground.classList.contains('show')).toBe(false)
+      expect(modalBackground!.classList.contains('show')).toBe(false)
       expect(document.body.classList.contains('art-modal-open')).toBe(false)
     })
   })
@@ -126,7 +149,8 @@ describe('ArtProjectPicture', () => {
     fireEvent.click(button)
 
     const modalBackground = document.getElementById('art-modal-background')
-    expect(modalBackground.classList.contains('show')).toBe(true)
+    expect(modalBackground).toBeTruthy()
+    expect(modalBackground!.classList.contains('show')).toBe(true)
 
     // Press Enter key
     act(() => {
@@ -134,7 +158,7 @@ describe('ArtProjectPicture', () => {
       document.dispatchEvent(event)
     })
 
-    expect(modalBackground.classList.contains('show')).toBe(true)
+    expect(modalBackground!.classList.contains('show')).toBe(true)
 
     // Press Space key
     act(() => {
@@ -142,14 +166,15 @@ describe('ArtProjectPicture', () => {
       document.dispatchEvent(event)
     })
 
-    expect(modalBackground.classList.contains('show')).toBe(true)
+    expect(modalBackground!.classList.contains('show')).toBe(true)
   })
 
   it('does not respond to ESC key when modal is closed', () => {
     render(<ArtProjectPicture imgSrc={mockImgSrc} altText={mockAltText} />)
 
     const modalBackground = document.getElementById('art-modal-background')
-    expect(modalBackground.classList.contains('show')).toBe(false)
+    expect(modalBackground).toBeTruthy()
+    expect(modalBackground!.classList.contains('show')).toBe(false)
 
     // Press ESC key when modal is closed
     act(() => {
@@ -158,7 +183,7 @@ describe('ArtProjectPicture', () => {
     })
 
     // Modal should remain closed
-    expect(modalBackground.classList.contains('show')).toBe(false)
+    expect(modalBackground!.classList.contains('show')).toBe(false)
   })
 
   it('sets modal image source when opened', () => {
@@ -167,7 +192,8 @@ describe('ArtProjectPicture', () => {
     const button = screen.getByRole('button', { name: `View ${mockAltText}` })
     fireEvent.click(button)
 
-    const modalImg = document.getElementById('art-modal-img')
+    const modalImg = document.getElementById('art-modal-img') as HTMLImageElement
+    expect(modalImg).toBeTruthy()
     expect(modalImg.src).toContain(mockImgSrc)
     expect(modalImg.title).toBe(mockAltText)
   })
