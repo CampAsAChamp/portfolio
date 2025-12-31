@@ -1,11 +1,17 @@
 import { useCallback, useEffect, useState } from 'react'
 
+interface UseModalReturn {
+  isOpen: boolean
+  open: () => void
+  close: () => void
+  toggle: () => void
+}
+
 /**
  * Custom hook for managing modal state with body scroll lock and View Transitions API
- * @param {boolean} initialState - Initial open/closed state (default: false)
- * @returns {{ isOpen: boolean, open: Function, close: Function, toggle: Function }}
+ * @param initialState - Initial open/closed state (default: false)
  */
-export function useModal(initialState = false) {
+export function useModal(initialState = false): UseModalReturn {
   const [isOpen, setIsOpen] = useState(initialState)
 
   const open = useCallback(() => {
@@ -13,7 +19,7 @@ export function useModal(initialState = false) {
     const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
 
     // Use View Transitions API if available, otherwise fall back to instant change
-    if (document.startViewTransition) {
+    if ('startViewTransition' in document && typeof document.startViewTransition === 'function') {
       document.startViewTransition(() => {
         setIsOpen(true)
         // Lock body scroll and compensate for scrollbar width
@@ -32,7 +38,7 @@ export function useModal(initialState = false) {
 
   const close = useCallback(() => {
     // Use View Transitions API if available, otherwise fall back to instant change
-    if (document.startViewTransition) {
+    if ('startViewTransition' in document && typeof document.startViewTransition === 'function') {
       document.startViewTransition(() => {
         setIsOpen(false)
         // Restore body scroll and remove padding
@@ -61,7 +67,7 @@ export function useModal(initialState = false) {
   useEffect(() => {
     if (!isOpen) return
 
-    const handleEscape = (event) => {
+    const handleEscape = (event: KeyboardEvent): void => {
       if (event.key === 'Escape') {
         close()
       }

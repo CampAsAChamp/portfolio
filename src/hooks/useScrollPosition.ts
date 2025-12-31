@@ -1,10 +1,15 @@
 import { useEffect, useState } from 'react'
 
-export const useScrollPosition = () => {
-  const [scrollPosition, setScrollPosition] = useState({ x: 0, y: 0 })
+interface ScrollPosition {
+  x: number
+  y: number
+}
+
+export function useScrollPosition(): ScrollPosition {
+  const [scrollPosition, setScrollPosition] = useState<ScrollPosition>({ x: 0, y: 0 })
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = (): void => {
       setScrollPosition({ x: window.scrollX, y: window.scrollY })
     }
 

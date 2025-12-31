@@ -1,17 +1,18 @@
 import { useState } from 'react'
 
+interface BrowserInfo {
+  isInstagramBrowser: boolean
+  isFacebookBrowser: boolean
+  isIOSMobile: boolean
+  isAndroidMobile: boolean
+  isProblematicBrowser: boolean
+}
+
 /**
  * Custom hook for detecting browser environment and user agent information
- * @returns {{
- *   isInstagramBrowser: boolean,
- *   isFacebookBrowser: boolean,
- *   isIOSMobile: boolean,
- *   isAndroidMobile: boolean,
- *   isProblematicBrowser: boolean
- * }}
  */
-export function useBrowserDetection() {
-  const [browserInfo] = useState(() => {
+export function useBrowserDetection(): BrowserInfo {
+  const [browserInfo] = useState<BrowserInfo>(() => {
     const userAgent = navigator.userAgent
     const isInstagram = userAgent.includes('Instagram')
     const isFacebook = userAgent.includes('FBAN') || userAgent.includes('FBAV')

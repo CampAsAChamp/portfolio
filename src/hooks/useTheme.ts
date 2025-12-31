@@ -1,14 +1,21 @@
 import { useCallback, useEffect, useState } from 'react'
 
-const DARK = 'dark'
-const LIGHT = 'light'
+import { Theme } from 'types/common.types'
+
+const DARK: Theme = 'dark'
+const LIGHT: Theme = 'light'
 const COLOR_MODE_KEY = 'color-mode'
+
+interface UseThemeReturn {
+  isDarkMode: boolean
+  toggleTheme: (event: React.MouseEvent) => void
+}
 
 /**
  * Helper to get initial theme preference from localStorage or system preference
  */
-const getInitialTheme = () => {
-  const localStorageTheme = localStorage.getItem(COLOR_MODE_KEY)
+const getInitialTheme = (): Theme => {
+  const localStorageTheme = localStorage.getItem(COLOR_MODE_KEY) as Theme | null
 
   // Check for the OS theme if no localStorage theme
   if (!localStorageTheme) {
@@ -21,9 +28,8 @@ const getInitialTheme = () => {
 
 /**
  * Custom hook for managing dark/light theme with View Transitions API support
- * @returns {{ isDarkMode: boolean, toggleTheme: Function }}
  */
-export function useTheme() {
+export function useTheme(): UseThemeReturn {
   const [isDarkMode, setIsDarkMode] = useState(() => getInitialTheme() === DARK)
 
   // Initialize theme DOM attribute on mount if not already set
@@ -39,11 +45,11 @@ export function useTheme() {
 
   // Toggle theme with View Transitions API support
   const toggleTheme = useCallback(
-    (event) => {
+    (event: React.MouseEvent) => {
       const newTheme = isDarkMode ? LIGHT : DARK
 
       // Check if View Transitions API is supported
-      if (!document.startViewTransition) {
+      if (!('startViewTransition' in document) || typeof document.startViewTransition !== 'function') {
         // Fallback: instant switch
         document.documentElement.setAttribute(COLOR_MODE_KEY, newTheme)
         localStorage.setItem(COLOR_MODE_KEY, newTheme)
@@ -79,16 +85,14 @@ export function useTheme() {
       })
 
       // Clean up after transition finishes
-      if (transition && transition.finished) {
-        transition.finished.finally(() => {
+      if (transition) {
+        void transition.finished?.finally(() => {
           document.documentElement.removeAttribute('data-theme-transitioning')
           document.documentElement.style.removeProperty('--theme-transition-animation')
         })
-      }
 
-      // Ensure transition completes properly (if ready promise exists)
-      if (transition && transition.ready) {
-        transition.ready.catch(() => {
+        // Ensure transition completes properly (if ready promise exists)
+        void transition.ready?.catch(() => {
           // If transition fails, ensure theme is still fully applied
           document.documentElement.setAttribute(COLOR_MODE_KEY, newTheme)
           localStorage.setItem(COLOR_MODE_KEY, newTheme)
