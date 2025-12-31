@@ -1,8 +1,19 @@
 {
-  "extends": "./tsconfig.json",
+  /**
+   * Test-specific TypeScript configuration
+   *
+   * This extends the main tsconfig.json and adds test-specific type definitions.
+   * Used by Vitest for running tests with proper TypeScript support.
+   */
+  "extends": "./tsconfig.json", // Inherit all settings from main tsconfig.json
   "compilerOptions": {
-    "types": ["vitest/globals", "@testing-library/jest-dom"]
+    "types": [
+      "vitest/globals", // Include Vitest global types (describe, it, expect, etc. without imports)
+      "@testing-library/jest-dom" // Include jest-dom matchers (toBeInTheDocument, toHaveClass, etc.)
+    ]
   },
+  // Include source files and tests for type checking
   "include": ["tests/**/*", "src/**/*"],
+  // Exclude third-party code and build artifacts
   "exclude": ["node_modules", "build", "dist"]
 }
