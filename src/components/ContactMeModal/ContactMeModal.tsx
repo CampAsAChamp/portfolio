@@ -12,7 +12,12 @@ import { useKeyboardAccessibility } from 'hooks/useKeyboardAccessibility'
 
 import 'styles/ContactMeModal/ContactMeModal.css'
 
-export function ContactMeModal({ isOpen, close }) {
+interface ContactMeModalProps {
+  isOpen: boolean
+  close: () => void
+}
+
+export function ContactMeModal({ isOpen, close }: ContactMeModalProps): React.ReactElement {
   const modalBackgroundKeyboardProps = useKeyboardAccessibility(close)
   const modalCloseKeyboardProps = useKeyboardAccessibility(close)
 
@@ -20,6 +25,8 @@ export function ContactMeModal({ isOpen, close }) {
   useEffect(() => {
     const modalBackground = document.getElementById('contact-me-modal-background')
     const modalContent = document.getElementById('contact-me-modal-content')
+
+    if (!modalBackground || !modalContent) return
 
     if (isOpen) {
       modalBackground.classList.add('show')
@@ -75,7 +82,7 @@ export function ContactMeModal({ isOpen, close }) {
                 className="contact-me-modal-social-link"
                 aria-label="GitHub Profile"
               >
-                <Svg className="contact-me-modal-social-icon" src={GitHubLogo} alt="Github Icon" title="Github" />
+                <Svg className="contact-me-modal-social-icon" src={GitHubLogo} title="Github" />
                 <span>GitHub</span>
               </a>
               <a
@@ -85,7 +92,7 @@ export function ContactMeModal({ isOpen, close }) {
                 className="contact-me-modal-social-link"
                 aria-label="LinkedIn Profile"
               >
-                <Svg className="contact-me-modal-social-icon" src={LinkedInLogo} alt="LinkedIn Icon" title="LinkedIn" />
+                <Svg className="contact-me-modal-social-icon" src={LinkedInLogo} title="LinkedIn" />
                 <span>LinkedIn</span>
               </a>
             </div>
