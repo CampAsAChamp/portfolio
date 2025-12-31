@@ -238,4 +238,48 @@ test.describe('Homepage', () => {
       await expect(landingPage).toBeInViewport()
     }
   })
+
+  test('theme switcher sets correct animation properties for circle wipe', async ({ page }) => {
+    await page.goto('/')
+
+    // Open mobile menu if needed
+    await openMobileMenu(page)
+
+    // Find the theme toggle button
+    const themeToggle = page.locator('.theme-toggle-button')
+    await expect(themeToggle).toBeVisible()
+
+    // Click the theme toggle and verify animation CSS variables are set
+    await themeToggle.click()
+
+    // Check that the CSS custom properties for animation are set correctly
+    const animationName = await page.evaluate(() => {
+      return document.documentElement.style.getPropertyValue('--theme-transition-animation')
+    })
+
+    const xProperty = await page.evaluate(() => {
+      return document.documentElement.style.getPropertyValue('--x')
+    })
+
+    const yProperty = await page.evaluate(() => {
+      return document.documentElement.style.getPropertyValue('--y')
+    })
+
+    const rProperty = await page.evaluate(() => {
+      return document.documentElement.style.getPropertyValue('--r')
+    })
+
+    // Verify animation name matches CSS keyframe (prevent revealTheme vs reveal-theme regression)
+    expect(animationName).toBe('reveal-theme')
+
+    // Verify position and radius properties are set (they should have values)
+    expect(xProperty).toBeTruthy()
+    expect(yProperty).toBeTruthy()
+    expect(rProperty).toBeTruthy()
+
+    // Verify the values are in the expected format (e.g., "100px")
+    expect(xProperty).toMatch(/^\d+px$/)
+    expect(yProperty).toMatch(/^\d+px$/)
+    expect(rProperty).toMatch(/^\d+(\.\d+)?px$/)
+  })
 })
