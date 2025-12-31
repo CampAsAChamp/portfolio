@@ -71,7 +71,7 @@ export function useTheme(): UseThemeReturn {
       document.documentElement.style.setProperty('--r', `${endRadius}px`)
 
       // Enable circle wipe animation for theme transitions only
-      document.documentElement.style.setProperty('--theme-transition-animation', 'revealTheme')
+      document.documentElement.style.setProperty('--theme-transition-animation', 'reveal-theme')
 
       // Mark that we're transitioning theme (for debugging/reference)
       document.documentElement.setAttribute('data-theme-transitioning', 'true')
