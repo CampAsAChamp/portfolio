@@ -31,12 +31,18 @@ export default defineConfig({
     timeout: 10000,
     /* Screenshot comparison settings */
     toHaveScreenshot: {
-      /* Maximum pixel ratio difference between images */
-      maxDiffPixelRatio: 0.05,
-      /* Threshold for pixel color difference */
-      threshold: 0.3,
-      /* Maximum number of pixels that could have non-zero difference */
-      maxDiffPixels: undefined,
+      /*
+       * Tolerant settings to account for minor rendering differences across browsers
+       * and dynamic content loading. This catches major visual regressions while
+       * avoiding false positives from minor layout shifts.
+       */
+      maxDiffPixelRatio: 0.02,
+      /* Threshold for pixel color difference (0-1, higher = more tolerant) */
+      threshold: 0.4,
+      /* Scale images to compare their structure regardless of minor size differences */
+      scale: 'css',
+      /* Disable animations for consistent screenshots */
+      animations: 'disabled',
     },
   },
 
