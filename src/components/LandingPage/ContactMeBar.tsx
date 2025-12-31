@@ -6,10 +6,16 @@ import { ContactMeModal } from 'components/ContactMeModal/ContactMeModal'
 import GitHubLogo from 'assets/Dev_Icons/GitHub.svg'
 import LinkedInLogo from 'assets/Dev_Icons/LinkedIn.svg'
 
-export function ContactMeBar({ isOpen, open, close }) {
-  const buttonRef = useRef(null)
+interface ContactMeBarProps {
+  isOpen: boolean
+  open: () => void
+  close: () => void
+}
 
-  const handleContactMeClick = (e) => {
+export function ContactMeBar({ isOpen, open, close }: ContactMeBarProps): React.ReactElement {
+  const buttonRef = useRef<HTMLButtonElement>(null)
+
+  const handleContactMeClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
     open()
     // Blur the button after opening to remove focus
     setTimeout(() => {
@@ -26,6 +32,7 @@ export function ContactMeBar({ isOpen, open, close }) {
       // Keep arrow visible while modal is open
       button.classList.add('modal-open')
       button.style.viewTransitionName = 'none'
+      return
     } else {
       // Start button exit animation slightly before modal fully disappears
       const timeoutId = setTimeout(() => {
@@ -44,10 +51,10 @@ export function ContactMeBar({ isOpen, open, close }) {
       <ContactMeModal isOpen={isOpen} close={close} />
       <div id="contact-me-socials">
         <a href="https://github.com/CampAsAChamp/" target="_blank" rel="noopener noreferrer">
-          <Svg className="contact-me-item" id="github-logo" src={GitHubLogo} alt="Github Icon" title="Github Icon" />
+          <Svg className="contact-me-item" id="github-logo" src={GitHubLogo} title="Github Icon" />
         </a>
         <a href="https://www.linkedin.com/in/nick-schneider-swe/" target="_blank" rel="noopener noreferrer">
-          <Svg className="contact-me-item" id="linkedin-logo" src={LinkedInLogo} alt="LinkedIn Icon" title="LinkedIn Icon" />
+          <Svg className="contact-me-item" id="linkedin-logo" src={LinkedInLogo} title="LinkedIn Icon" />
         </a>
       </div>
     </div>

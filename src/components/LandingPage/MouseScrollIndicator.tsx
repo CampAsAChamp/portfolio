@@ -2,7 +2,7 @@ import useScrollPosition from 'hooks/useScrollPosition'
 
 import 'styles/LandingPage/MouseScrollIndicator.css'
 
-export function MouseScrollIndicator() {
+export function MouseScrollIndicator(): React.ReactElement {
   const scrollPosition = useScrollPosition()
 
   const showMouse = scrollPosition.y > 400

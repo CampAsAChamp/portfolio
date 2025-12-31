@@ -9,7 +9,7 @@ import { useModal } from 'hooks/useModal'
 
 import 'styles/LandingPage/LandingPage.css'
 
-export function LandingPage() {
+export function LandingPage(): React.ReactElement {
   const { isOpen, open, close } = useModal()
 
   return (
@@ -29,7 +29,7 @@ export function LandingPage() {
           <MouseScrollIndicator />
         </div>
         <div id="profile-pic-container">
-          <Svg id="profile-pic" src={ArtProfilePic} alt="Flat Profile Pic" className="center" />
+          <Svg id="profile-pic" src={ArtProfilePic} title="Flat Profile Pic" className="center" />
         </div>
       </section>
     </>
