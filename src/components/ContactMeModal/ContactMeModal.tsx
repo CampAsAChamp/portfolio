@@ -50,7 +50,6 @@ export function ContactMeModal({ isOpen, close }: ContactMeModalProps): React.Re
     >
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
       <div id="contact-me-modal-content" onClick={(e) => e.stopPropagation()}>
-        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
         <button className="modal-close" onClick={close} {...modalCloseKeyboardProps} type="button" aria-label="Close">
           <CloseIcon />
         </button>

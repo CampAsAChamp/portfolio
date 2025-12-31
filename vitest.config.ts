@@ -4,7 +4,6 @@ import { defineConfig } from 'vitest/config'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // @ts-expect-error - vitest has its own vite version which causes plugin type mismatch
   plugins: [react()],
   resolve: {
     alias: {

@@ -4,7 +4,6 @@
  * Script to convert relative imports to absolute imports
  * Run with: node scripts/fix-imports.js
  */
-
 /* eslint-disable no-console -- console output is intentional in this utility script */
 import fs from 'fs'
 import { glob } from 'glob'

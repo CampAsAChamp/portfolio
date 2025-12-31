@@ -105,17 +105,17 @@
 @keyframes play-button-pulse {
   0% {
     transform: translate(-50%, -50%) scale(1);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 20px rgb(0, 0, 0, 0.2);
   }
 
   50% {
     transform: translate(-50%, -50%) scale(1.05);
-    box-shadow: 0 6px 25px rgba(108, 99, 255, 0.3);
+    box-shadow: 0 6px 25px rgb(108, 99, 255, 0.3);
   }
 
   100% {
     transform: translate(-50%, -50%) scale(1);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 20px rgb(0, 0, 0, 0.2);
   }
 }
 
@@ -170,14 +170,14 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgb(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 20px rgb(0, 0, 0, 0.2);
   animation: play-button-pulse 2s ease-in-out infinite;
 }
 
@@ -194,12 +194,12 @@
 
 .video-play-overlay:hover {
   transform: translate(-50%, -50%) scale(1.1);
-  background: rgba(255, 255, 255, 1);
+  background: rgb(255, 255, 255, 1);
 }
 
 .video-play-overlay.fading:hover {
   transform: translate(-50%, -50%) scale(1);
-  background: rgba(255, 255, 255, 0.9);
+  background: rgb(255, 255, 255, 0.9);
 }
 
 /* Play triangle icon */
