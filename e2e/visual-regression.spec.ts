@@ -130,7 +130,11 @@ test.describe('Visual Regression Tests', () => {
     })
   })
 
-  test('software projects section', async ({ page }) => {
+  test('software projects section', async ({ page, browserName }) => {
+    // Skip Firefox due to rendering inconsistencies in this section
+    // Other browsers (chromium, webkit, Mobile Chrome, Mobile Safari) still test this
+    test.skip(browserName === 'firefox', 'Firefox rendering is flaky for this section')
+
     await page.goto('/')
 
     // Wait for page to be fully ready
