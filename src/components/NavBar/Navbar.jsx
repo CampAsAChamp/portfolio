@@ -17,12 +17,37 @@ export function Navbar() {
   useEffect(() => {
     const burger = document.querySelector('.hamburger-menu')
     const nav = document.querySelector('nav ul')
+    const listItems = nav.querySelectorAll('li')
 
     if (isOpen) {
+      nav.classList.remove('nav-closing')
       nav.classList.add('nav-active')
       burger.classList.add('toggle')
+
+      // Clear any inline styles from previous closing animation
+      listItems.forEach((li) => {
+        li.style.animation = ''
+      })
     } else {
-      nav.classList.remove('nav-active')
+      // Add closing animation
+      if (nav.classList.contains('nav-active')) {
+        nav.classList.remove('nav-active')
+        nav.classList.add('nav-closing')
+
+        // Manually apply closing animation to each item
+        listItems.forEach((li, index) => {
+          const delay = (listItems.length - 1 - index) * 0.05
+          li.style.animation = `navLinkFadeOut 0.4s ease ${delay}s forwards`
+        })
+
+        // Remove closing class and clean up after animation completes
+        setTimeout(() => {
+          nav.classList.remove('nav-closing')
+          listItems.forEach((li) => {
+            li.style.animation = ''
+          })
+        }, 700)
+      }
       burger.classList.remove('toggle')
     }
   }, [isOpen])
@@ -33,7 +58,9 @@ export function Navbar() {
         <Svg id="logo" src={S_Logo} alt="Home" title="Home" />
       </a>
       <ul>
-        <ThemeSwitcher />
+        <li>
+          <ThemeSwitcher />
+        </li>
         <li>
           <a href="#about-me-images" onClick={close}>
             About Me

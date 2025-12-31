@@ -57,6 +57,11 @@ nav li a:hover::after {
   transform: translateX(0%);
 }
 
+.nav-closing {
+  transform: translateX(100%);
+  transition: transform 0.5s ease-out 0.35s;
+}
+
 .hamburger-menu {
   display: none;
 }
@@ -69,7 +74,6 @@ nav li a:hover::after {
   transition: all 0.5s ease;
   width: 25px;
 }
-
 
 #logo {
   fill: var(--color-logo);
@@ -101,10 +105,74 @@ nav li a:hover::after {
 
   nav li {
     opacity: 0;
+    transform: translateX(50px);
   }
 
   nav li a {
+    color: var(--color-white);
     font-size: 3rem;
+  }
+
+  nav li a:hover {
+    color: var(--color-yellow);
+  }
+
+  /* Staggered fade-in animation for menu items when menu opens */
+  .nav-active li {
+    animation: navLinkFadeIn 0.5s ease forwards;
+  }
+
+  .nav-active li:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+
+  .nav-active li:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .nav-active li:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  .nav-active li:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+
+  .nav-active li:nth-child(5) {
+    animation-delay: 0.5s;
+  }
+
+  .nav-active li:nth-child(6) {
+    animation-delay: 0.6s;
+  }
+
+  /* Staggered fade-out animation for menu items when menu closes (reverse order) */
+  /* Note: Actual animation is applied via JavaScript inline styles for better control */
+  .nav-closing li {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  @keyframes navLinkFadeIn {
+    from {
+      opacity: 0;
+      transform: translateX(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes navLinkFadeOut {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(50px);
+    }
   }
 
   .hamburger-menu {

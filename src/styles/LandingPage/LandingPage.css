@@ -152,11 +152,13 @@ body[style*='position: fixed'] #contact-me-socials {
   z-index: -1;
 }
 
-/* Compensate for scrollbar when modal is open */
-body[style*='position: fixed'] #landing-blob {
-  right: var(--scrollbar-width, 0px);
-  /* Fix width calculation to account for body padding */
-  width: calc(50% - var(--scrollbar-width, 0px) / 2);
+/* Compensate for scrollbar when modal is open (desktop only) */
+@media screen and (min-width: 1101px) {
+  body[style*='position: fixed'] #landing-blob {
+    right: var(--scrollbar-width, 0px);
+    /* Fix width calculation to account for body padding */
+    width: calc(50% - var(--scrollbar-width, 0px) / 2);
+  }
 }
 
 @media screen and (max-width: 1100px) {
