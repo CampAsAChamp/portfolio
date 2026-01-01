@@ -15,11 +15,11 @@ interface ContactMeBarProps {
 export function ContactMeBar({ isOpen, open, close }: ContactMeBarProps): React.ReactElement {
   const buttonRef = useRef<HTMLButtonElement>(null)
 
-  const handleContactMeClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
+  const handleContactMeClick = (): void => {
     open()
     // Blur the button after opening to remove focus
     setTimeout(() => {
-      e.currentTarget.blur()
+      buttonRef.current?.blur()
     }, 100)
   }
 
