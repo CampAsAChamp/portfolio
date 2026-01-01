@@ -22,5 +22,8 @@ export default defineConfig({
     setupFiles: './tests/utils/index.tsx',
     include: ['tests/**/*.{test,spec}.{ts,tsx}'],
     css: true,
+    coverage: {
+      reportsDirectory: './test_results/unit/coverage',
+    },
   },
 })
