@@ -57,14 +57,6 @@
 
 [![My Skills](https://skills.syvixor.com/api/icons?perline=7&i=reactjs,typescript,nodejs,yarn,vite,vitest,playwright,eslint,prettier,commitlint,dependabot,git,github,cloudflare)](https://builder.syvixor.com/)
 
-**Additional Tools:**
-- [Playwright](https://playwright.dev/) - E2E testing
-- [Vitest](https://vitest.dev/) - Unit testing
-- [ESLint](https://eslint.org/) - Code linting
-- [Stylelint](https://stylelint.io/) - CSS linting
-- [Commitlint](https://commitlint.js.org/) - Commit message validation
-- [Husky](https://typicode.github.io/husky/) - Git hooks
-
 <!-- GETTING STARTED -->
 
 ## Getting Started
