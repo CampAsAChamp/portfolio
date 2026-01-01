@@ -6,12 +6,6 @@ const baseLintingPath = '{,!(node_modules|dist|build|coverage|.git|reports)/**/}
 module.exports = {
   overrides: [
     {
-      files: 'package.json',
-      options: {
-        parser: 'json-stringify',
-      },
-    },
-    {
       files: `${baseLintingPath}*.yaml`,
       options: {
         parser: 'yaml',
@@ -33,6 +27,12 @@ module.exports = {
       files: `${baseLintingPath}*.{ts,tsx}`,
       options: {
         parser: 'typescript',
+      },
+    },
+    {
+      files: 'package.json',
+      options: {
+        parser: 'json-stringify',
       },
     },
   ],
