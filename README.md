@@ -39,7 +39,9 @@
     </ul>
   </li>
   <li><a href="#usage">Usage</a></li>
+  <li><a href="#available-scripts">Available Scripts</a></li>
   <li><a href="#testing">Testing</a></li>
+  <li><a href="#project-maintenance">Project Maintenance</a></li>
   <li><a href="#contributing">Contributing</a></li>
   <li><a href="#deployment">Deployment</a></li>
   <li><a href="#license">License</a></li>
@@ -54,6 +56,14 @@
 ### Built With
 
 [![My Skills](https://skillicons.dev/icons?i=react,vite,ts,html,css,figma,cloudflare)](https://skillicons.dev)
+
+**Additional Tools:**
+- [Playwright](https://playwright.dev/) - E2E testing
+- [Vitest](https://vitest.dev/) - Unit testing
+- [ESLint](https://eslint.org/) - Code linting
+- [Stylelint](https://stylelint.io/) - CSS linting
+- [Commitlint](https://commitlint.js.org/) - Commit message validation
+- [Husky](https://typicode.github.io/husky/) - Git hooks
 
 <!-- GETTING STARTED -->
 
@@ -99,15 +109,51 @@
 
 1. View the site live at https://nickhs.dev/
 
+## Available Scripts
+
+### Development
+
+- `yarn start` or `yarn dev` - Start development server on `localhost:5173`
+- `yarn build` - Create production build in `build/` directory
+- `yarn preview` - Preview production build locally on `localhost:4173`
+
+### Testing
+
+- `yarn test` - Run unit tests once
+- `yarn test:watch` - Run unit tests in watch mode
+- `yarn test:ui` - Open interactive Vitest UI
+- `yarn test:coverage` - Generate test coverage report
+- `yarn test:e2e` - Run Playwright E2E tests
+- `yarn test:e2e:ui` - Open interactive Playwright UI
+- `yarn test:e2e:headed` - Run E2E tests with visible browser
+- `yarn test:all` - Run all tests (unit + E2E)
+
+### Code Quality
+
+- `yarn lint` - Run all linters (ESLint + Stylelint + TypeScript)
+- `yarn lint:fix` - Auto-fix linting issues
+- `yarn lint:eslint` - Run ESLint only
+- `yarn lint:eslint:fix` - Auto-fix ESLint issues
+- `yarn lint:types` - Run TypeScript type checking
+- `yarn lint:css` - Run Stylelint on CSS files
+- `yarn lint:css:fix` - Auto-fix CSS linting issues
+- `yarn format` - Format code with Prettier
+
+### Analysis
+
+- `yarn analyze` - Analyze bundle size with source-map-explorer
+
 <!-- TESTING -->
 
 ## Testing
 
-This project includes automated tests to catch regressions and ensure components render correctly.
+This project includes comprehensive automated testing to catch regressions and ensure quality.
 
-### Running Tests
+### Unit Tests
 
-Run all tests once:
+Unit tests verify component rendering and behavior using Vitest and React Testing Library.
+
+Run all unit tests once:
 ```sh
 yarn test
 ```
@@ -127,25 +173,92 @@ Generate test coverage report:
 yarn test:coverage
 ```
 
+### E2E Tests
+
+End-to-end tests verify the application works correctly in real browsers using Playwright.
+
+Run all E2E tests:
+```sh
+yarn test:e2e
+```
+
+Run E2E tests with interactive UI:
+```sh
+yarn test:e2e:ui
+```
+
+Run E2E tests with browser visible (headed mode):
+```sh
+yarn test:e2e:headed
+```
+
+**Test Coverage:**
+- Functional tests verify user interactions and navigation
+- Visual regression tests catch unintended UI changes
+- Tests run against 5 browser configurations:
+  - Desktop: Chrome, Firefox, Safari
+  - Mobile: Chrome (Pixel 5), Safari (iPhone 12)
+
+### Run All Tests
+
+Run both unit and E2E tests:
+```sh
+yarn test:all
+```
+
 ### Continuous Integration
 
-Tests run automatically on every push and pull request via GitHub Actions. The CI pipeline:
-- Installs dependencies
-- Runs ESLint to check code quality
-- Runs all tests
-- Builds the project
+The CI pipeline runs automatically on every push and pull request via GitHub Actions ([`.github/workflows/test.yml`](.github/workflows/test.yml)):
 
-Pull requests must pass all checks before merging. You can view test results in the "Actions" tab of the repository.
+1. **Setup**: Install Node.js 22 and dependencies
+2. **Lint**: Run ESLint, Stylelint, and TypeScript type checking
+3. **Test**: Run unit tests with Vitest
+4. **Build**: Create production build
+5. **Analyze**: Check bundle sizes
+
+**Note:** E2E tests run locally via the pre-push hook but are not part of the CI pipeline to keep build times fast. Pull requests must pass all CI checks before merging.
 
 ### Test Structure
 
 Tests are located in the `tests/` directory, mirroring the structure of `src/`:
-- `tests/App.test.tsx` - Main app component
-- `tests/components/` - Component tests organized by feature
-- Smoke tests verify components render without errors
+- `tests/unit/` - Unit tests with Vitest
+  - `App.test.tsx` - Main app component
+  - `components/` - Component tests organized by feature
+  - `hooks/` - Custom hook tests
+  - `utils/` - Utility function tests
+- `tests/e2e/` - End-to-end tests with Playwright
+  - `functional/` - User interaction and navigation tests
+  - `visual-regression/` - Screenshot comparison tests
+- All tests use TypeScript for type safety
 - Focus on catching regressions when updating content or refactoring
-- Use React Testing Library for behavior-focused testing
-- Written in TypeScript for type safety
+
+<!-- PROJECT MAINTENANCE -->
+
+## Project Maintenance
+
+### Automated Dependency Updates
+
+This project uses [Dependabot](https://docs.github.com/en/code-security/dependabot) to automatically keep dependencies up to date:
+
+- Runs weekly on Mondays at 9:00 AM PST
+- Creates grouped pull requests for related dependencies:
+  - React ecosystem packages
+  - Testing libraries (Vitest, Playwright, Testing Library)
+  - Linting tools (ESLint, TypeScript, Prettier, Stylelint)
+  - Build tools (Vite, Rollup)
+- Also updates GitHub Actions weekly
+- Maximum of 5 open dependency PRs at a time
+- All PRs follow [conventional commit format](#contributing)
+
+Configuration can be found in [`.github/dependabot.yml`](.github/dependabot.yml).
+
+### Security
+
+For information about reporting security vulnerabilities, see [`SECURITY.md`](SECURITY.md).
+
+### Changelog
+
+All notable changes are documented in [`CHANGELOG.md`](CHANGELOG.md) following the [Keep a Changelog](https://keepachangelog.com/) format.
 
 <!-- CONTRIBUTING -->
 
@@ -202,11 +315,18 @@ echo "feat: your message" | yarn commitlint
 
 ### Pre-commit Hooks
 
-This project uses Husky to enforce quality standards:
+This project uses [Husky](https://typicode.github.io/husky/) to enforce quality standards:
 
-- **pre-commit**: Runs lint-staged (ESLint, Prettier, Stylelint on staged files)
-- **commit-msg**: Validates commit message format with commitlint
-- **pre-push**: Runs all tests (unit and e2e) before pushing
+- **pre-commit**: Runs `lint-staged` which formats and lints only staged files:
+  - ESLint auto-fixes JavaScript/TypeScript issues
+  - Prettier formats code
+  - Stylelint fixes CSS issues
+- **commit-msg**: Validates commit message format with `commitlint` (rejects invalid commits)
+- **pre-push**: Runs `yarn test:all` (both unit and E2E tests) before pushing
+
+**Note:** If tests fail during pre-push, the push will be blocked. Ensure all tests pass locally before pushing.
+
+**Node Version:** All tests require Node.js version 22 or higher (specified in `.nvmrc`). If you use nvm, run `nvm use` to switch to the correct version.
 
 <!-- DEPLOYMENT -->
 
@@ -278,6 +398,7 @@ This will serve the production build at `localhost:4173`.
 
 - Follow [conventional commit format](#contributing) for all commits
 - Pre-commit hooks automatically format code and validate commits
+- Pre-push hook runs all tests (unit + E2E) before pushing to remote
 - Cloudflare Pages deployments typically complete in 1-2 minutes
 - Preview deployments are automatically created for pull requests
 - Cloudflare provides automatic HTTPS, CDN, and DDoS protection
@@ -286,6 +407,6 @@ This will serve the production build at `localhost:4173`.
 
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distributed under the MIT License. See [`LICENSE`](LICENSE) for more information.
 
 [product-screenshot]: src/assets/website_screenshot.png
