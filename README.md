@@ -40,6 +40,7 @@
   </li>
   <li><a href="#usage">Usage</a></li>
   <li><a href="#testing">Testing</a></li>
+  <li><a href="#contributing">Contributing</a></li>
   <li><a href="#deployment">Deployment</a></li>
   <li><a href="#license">License</a></li>
 </ol>
@@ -146,6 +147,67 @@ Tests are located in the `tests/` directory, mirroring the structure of `src/`:
 - Use React Testing Library for behavior-focused testing
 - Written in TypeScript for type safety
 
+<!-- CONTRIBUTING -->
+
+## Contributing
+
+This project follows conventional commit standards to maintain a clean and readable git history.
+
+### Commit Message Format
+
+All commit messages must follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
+
+```
+<type>(<optional-scope>): <subject>
+```
+
+**Example commits:**
+```sh
+feat: add dark mode toggle
+fix: resolve mobile navigation bug
+docs: update README with setup instructions
+chore: update dependencies
+refactor(auth): simplify login logic
+test: add unit tests for utils
+style: format code with prettier
+perf: optimize image loading
+```
+
+### Commit Types
+
+- **feat**: A new feature
+- **fix**: A bug fix
+- **docs**: Documentation changes
+- **style**: Code style changes (formatting, missing semicolons, etc.)
+- **refactor**: Code changes that neither fix bugs nor add features
+- **perf**: Performance improvements
+- **test**: Adding or updating tests
+- **build**: Changes to build system or dependencies
+- **ci**: Changes to CI configuration files and scripts
+- **chore**: Other changes that don't modify src or test files
+- **revert**: Reverts a previous commit
+
+### Validation
+
+Commit messages are automatically validated using [commitlint](https://commitlint.js.org/):
+
+- The commit-msg hook runs on every commit
+- Invalid commit messages will be rejected
+- You'll see an error message explaining what's wrong
+
+To manually validate a commit message:
+```sh
+echo "feat: your message" | yarn commitlint
+```
+
+### Pre-commit Hooks
+
+This project uses Husky to enforce quality standards:
+
+- **pre-commit**: Runs lint-staged (ESLint, Prettier, Stylelint on staged files)
+- **commit-msg**: Validates commit message format with commitlint
+- **pre-push**: Runs all tests (unit and e2e) before pushing
+
 <!-- DEPLOYMENT -->
 
 ## Deployment
@@ -156,10 +218,10 @@ This project automatically deploys to Cloudflare Pages.
 
 Cloudflare Pages automatically deploys your site whenever you push to the repository:
 
-1. Make your changes and commit them:
+1. Make your changes and commit them (following [conventional commit format](#contributing)):
    ```sh
    git add .
-   git commit -m "Your commit message"
+   git commit -m "feat: your feature description"
    ```
 
 2. Push to the main branch:
@@ -214,7 +276,8 @@ This will serve the production build at `localhost:4173`.
 
 ### Notes
 
-- Run `yarn format` before committing to ensure code is properly formatted
+- Follow [conventional commit format](#contributing) for all commits
+- Pre-commit hooks automatically format code and validate commits
 - Cloudflare Pages deployments typically complete in 1-2 minutes
 - Preview deployments are automatically created for pull requests
 - Cloudflare provides automatic HTTPS, CDN, and DDoS protection

@@ -30,6 +30,7 @@
     "lint:types": "tsc --noEmit",
     "lint:css": "stylelint \"src/**/*.css\"",
     "lint:css:fix": "stylelint \"src/**/*.css\" --fix",
+    "lint:commits": "commitlint --edit",
     "browserslist:update": "npx update-browserslist-db@latest",
     "prepare": "husky"
   },
@@ -50,6 +51,8 @@
   "devDependencies": {
     "@babel/core": "^7.28.5",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@commitlint/cli": "^20.2.0",
+    "@commitlint/config-conventional": "^20.2.0",
     "@eslint/js": "^9.39.2",
     "@playwright/test": "^1.48.0",
     "@testing-library/dom": "^10.4.1",
