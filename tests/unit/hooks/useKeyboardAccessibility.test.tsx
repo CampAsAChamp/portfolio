@@ -15,7 +15,6 @@ describe('useKeyboardAccessibility', () => {
     result.current.onKeyDown(event)
 
     expect(callback).toHaveBeenCalledWith(event)
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(event.preventDefault).toHaveBeenCalledTimes(1)
   })
 
@@ -27,7 +26,6 @@ describe('useKeyboardAccessibility', () => {
     result.current.onKeyDown(event)
 
     expect(callback).toHaveBeenCalledWith(event)
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(event.preventDefault).toHaveBeenCalledTimes(1)
   })
 
@@ -39,7 +37,6 @@ describe('useKeyboardAccessibility', () => {
     result.current.onKeyDown(event)
 
     expect(callback).not.toHaveBeenCalled()
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(event.preventDefault).toHaveBeenCalledTimes(0)
   })
 
@@ -51,7 +48,6 @@ describe('useKeyboardAccessibility', () => {
     result.current.onKeyDown(event)
 
     expect(callback).not.toHaveBeenCalled()
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(event.preventDefault).toHaveBeenCalledTimes(0)
   })
 
@@ -64,7 +60,6 @@ describe('useKeyboardAccessibility', () => {
       result.current.onKeyDown(event)
 
       expect(callback).not.toHaveBeenCalled()
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(event.preventDefault).toHaveBeenCalledTimes(0)
     })
   })

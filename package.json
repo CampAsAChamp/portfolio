@@ -22,7 +22,9 @@
     "test:e2e:headed": "playwright test --headed",
     "test:all": "yarn test && yarn test:e2e",
     "analyze": "source-map-explorer 'build/assets/*.js'",
-    "lint": "./scripts/lint.sh",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "lint": "./scripts/lint.sh && yarn format:check",
     "lint:fix": "./scripts/lint.sh --fix",
     "lint:eslint": "eslint src/**/*.{js,jsx,ts,tsx}",
     "lint:eslint:fix": "eslint src/**/*.{js,jsx,ts,tsx} --fix",
@@ -34,7 +36,7 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write", "bash -c 'tsc --noEmit'"],
+    "*.{js,jsx,ts,tsx}": ["eslint --fix", "bash -c 'tsc --noEmit'"],
     "*.css": ["stylelint --fix", "prettier --write"],
     "*.json": ["prettier --write"]
   },

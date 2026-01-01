@@ -24,7 +24,7 @@ export default [
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
-        project: ['./tsconfig.json'],
+        project: ['./tsconfig.json', './tsconfig.test.json'],
         ecmaFeatures: {
           jsx: true,
         },
@@ -154,6 +154,14 @@ export default [
       'react/react-in-jsx-scope': 'off', // Not needed with React 18+ new JSX transform (jsx-runtime)
       'react/self-closing-comp': 'warn',
       'react/jsx-curly-brace-presence': ['warn', { props: 'never', children: 'never' }],
+    },
+  },
+
+  // Test-specific configuration
+  {
+    files: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}', 'tests/**/*.{ts,tsx}'],
+    rules: {
+      '@typescript-eslint/unbound-method': 'off', // Allow Vitest mock assertions
     },
   },
 ]

@@ -97,18 +97,19 @@ const localStorageMock: LocalStorageMockType = {
  * The eslint-disable comment suppresses warnings about using 'any' since it's intentional here.
  * Defensive semicolon: The leading ';' prevents ASI issues when a line starts with '('.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access */
 ;(global as any).matchMedia = (query: string): MediaQueryList =>
   ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: () => {},
-    removeListener: () => {},
-    addEventListener: () => {},
-    removeEventListener: () => {},
-    dispatchEvent: () => false,
+    addListener: (): void => {},
+    removeListener: (): void => {},
+    addEventListener: (): void => {},
+    removeEventListener: (): void => {},
+    dispatchEvent: (): boolean => false,
   }) as MediaQueryList
+/* eslint-enable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access */
 
 /**
  * Note on test utilities:
