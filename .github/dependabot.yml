@@ -15,6 +15,9 @@ updates:
     open-pull-requests-limit: 5
     # Automatically rebase PRs when they become out of date
     rebase-strategy: 'auto'
+    # Assign reviewers to PRs
+    reviewers:
+      - 'CampAsAChamp'
     # Group related updates
     groups:
       # Group React and related packages together
@@ -64,9 +67,13 @@ updates:
       time: '09:00'
       timezone: 'America/Los_Angeles'
     open-pull-requests-limit: 3
+    # Assign reviewers to PRs
+    reviewers:
+      - 'CampAsAChamp'
     labels:
       - 'dependencies'
       - 'github-actions'
     commit-message:
       prefix: 'ci'
+
 
