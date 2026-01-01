@@ -55,7 +55,7 @@
 
 ### Built With
 
-[![My Skills](https://skillicons.dev/icons?i=react,vite,ts,html,css,figma,cloudflare)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=react,vite,ts,html,css,vitest,playwright,eslint,git,github,githubactions,figma,cloudflare)](https://skillicons.dev)
 
 **Additional Tools:**
 - [Playwright](https://playwright.dev/) - E2E testing
