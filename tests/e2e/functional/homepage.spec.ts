@@ -1,29 +1,6 @@
-import { Page, expect, test } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 
-// Helper function to check if we're in mobile viewport
-function isMobileViewport(page: Page): boolean {
-  const viewport = page.viewportSize()
-  return viewport ? viewport.width <= 1100 : false
-}
-
-// Helper function to open hamburger menu on mobile
-async function openMobileMenu(page: Page): Promise<void> {
-  const isMobile = isMobileViewport(page)
-  if (isMobile) {
-    const hamburger = page.locator('.hamburger-menu')
-    if (await hamburger.isVisible()) {
-      await hamburger.click()
-      await page.waitForTimeout(500) // Wait for menu animation
-    }
-  }
-}
-
-// Helper function to click a navigation link (handles mobile menu)
-async function clickNavLink(page: Page, href: string): Promise<void> {
-  await openMobileMenu(page)
-  await page.locator(`a[href="${href}"]`).click()
-  await page.waitForTimeout(500) // Wait for scroll/navigation
-}
+import { clickNavLink, isMobileViewport, openMobileMenu } from '../helpers/utils'
 
 test.describe('Homepage', () => {
   test('loads and displays all sections', async ({ page }) => {

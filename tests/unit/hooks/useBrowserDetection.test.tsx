@@ -3,133 +3,74 @@ import { beforeEach, describe, expect, it } from 'vitest'
 
 import { useBrowserDetection } from 'hooks/useBrowserDetection'
 
+import { BROWSER_DETECTION_CASES, BrowserDetectionResult, TEST_USER_AGENTS } from '../helpers/constants'
+import { mockUserAgent } from '../helpers/mocks'
+
 describe('useBrowserDetection', () => {
   const originalUserAgent = navigator.userAgent
 
   beforeEach(() => {
-    // Reset navigator.userAgent mock
-    Object.defineProperty(navigator, 'userAgent', {
-      value: originalUserAgent,
-      writable: true,
-      configurable: true,
-    })
+    // Reset navigator.userAgent to original
+    mockUserAgent(originalUserAgent)
   })
 
-  it('should detect desktop Chrome browser', () => {
-    Object.defineProperty(navigator, 'userAgent', {
-      value: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-      writable: true,
+  /**
+   * Helper function to test user agent detection.
+   * Reduces duplication by centralizing the test logic.
+   */
+  function testUserAgentDetection(testName: string, userAgent: string, expected: BrowserDetectionResult): void {
+    it(testName, () => {
+      mockUserAgent(userAgent)
+      const { result } = renderHook(() => useBrowserDetection())
+
+      expect(result.current.isInstagramBrowser).toBe(expected.isInstagramBrowser)
+      expect(result.current.isFacebookBrowser).toBe(expected.isFacebookBrowser)
+      expect(result.current.isIOSMobile).toBe(expected.isIOSMobile)
+      expect(result.current.isAndroidMobile).toBe(expected.isAndroidMobile)
+      expect(result.current.isProblematicBrowser).toBe(expected.isProblematicBrowser)
     })
+  }
 
-    const { result } = renderHook(() => useBrowserDetection())
+  // Test all major browser scenarios using the helper
+  testUserAgentDetection('should detect desktop Chrome browser', TEST_USER_AGENTS.CHROME_DESKTOP, BROWSER_DETECTION_CASES.CHROME_DESKTOP)
 
-    expect(result.current.isInstagramBrowser).toBe(false)
-    expect(result.current.isFacebookBrowser).toBe(false)
-    expect(result.current.isIOSMobile).toBe(false)
-    expect(result.current.isAndroidMobile).toBe(false)
-    expect(result.current.isProblematicBrowser).toBe(false)
-  })
+  testUserAgentDetection('should detect Instagram browser on iOS', TEST_USER_AGENTS.INSTAGRAM_IOS, BROWSER_DETECTION_CASES.INSTAGRAM_IOS)
 
-  it('should detect Instagram browser on iOS', () => {
-    Object.defineProperty(navigator, 'userAgent', {
-      value: 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Instagram 195.0.0.31.123',
-      writable: true,
-    })
+  testUserAgentDetection(
+    'should detect Instagram browser on Android',
+    TEST_USER_AGENTS.INSTAGRAM_ANDROID,
+    BROWSER_DETECTION_CASES.INSTAGRAM_ANDROID,
+  )
 
-    const { result } = renderHook(() => useBrowserDetection())
+  testUserAgentDetection(
+    'should detect Facebook browser (FBAN) on iOS',
+    TEST_USER_AGENTS.FACEBOOK_IOS,
+    BROWSER_DETECTION_CASES.FACEBOOK_IOS,
+  )
 
-    expect(result.current.isInstagramBrowser).toBe(true)
-    expect(result.current.isFacebookBrowser).toBe(false)
-    expect(result.current.isIOSMobile).toBe(true)
-    expect(result.current.isAndroidMobile).toBe(false)
-    expect(result.current.isProblematicBrowser).toBe(true)
-  })
+  testUserAgentDetection(
+    'should detect Facebook browser (FBAV) on Android',
+    TEST_USER_AGENTS.FACEBOOK_ANDROID,
+    BROWSER_DETECTION_CASES.FACEBOOK_ANDROID,
+  )
 
-  it('should detect Instagram browser on Android', () => {
-    Object.defineProperty(navigator, 'userAgent', {
-      value: 'Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Instagram 195.0.0.31.123',
-      writable: true,
-    })
+  testUserAgentDetection('should detect iOS Safari (not problematic)', TEST_USER_AGENTS.IOS_SAFARI, BROWSER_DETECTION_CASES.IOS_SAFARI)
 
-    const { result } = renderHook(() => useBrowserDetection())
+  testUserAgentDetection(
+    'should detect Android Chrome (not problematic)',
+    TEST_USER_AGENTS.ANDROID_CHROME,
+    BROWSER_DETECTION_CASES.ANDROID_CHROME,
+  )
 
-    expect(result.current.isInstagramBrowser).toBe(true)
-    expect(result.current.isFacebookBrowser).toBe(false)
-    expect(result.current.isIOSMobile).toBe(false)
-    expect(result.current.isAndroidMobile).toBe(true)
-    expect(result.current.isProblematicBrowser).toBe(true)
-  })
+  testUserAgentDetection(
+    'should not flag Instagram on desktop as problematic',
+    TEST_USER_AGENTS.INSTAGRAM_DESKTOP,
+    BROWSER_DETECTION_CASES.INSTAGRAM_DESKTOP,
+  )
 
-  it('should detect Facebook browser (FBAN) on iOS', () => {
-    Object.defineProperty(navigator, 'userAgent', {
-      value:
-        'Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 [FBAN/FBIOS;FBAV/325.0.0.41.114]',
-      writable: true,
-    })
-
-    const { result } = renderHook(() => useBrowserDetection())
-
-    expect(result.current.isInstagramBrowser).toBe(false)
-    expect(result.current.isFacebookBrowser).toBe(true)
-    expect(result.current.isIOSMobile).toBe(true)
-    expect(result.current.isAndroidMobile).toBe(false)
-    expect(result.current.isProblematicBrowser).toBe(true)
-  })
-
-  it('should detect Facebook browser (FBAV) on Android', () => {
-    Object.defineProperty(navigator, 'userAgent', {
-      value:
-        'Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.120 Mobile Safari/537.36 [FBAV/325.0.0.41.114]',
-      writable: true,
-    })
-
-    const { result } = renderHook(() => useBrowserDetection())
-
-    expect(result.current.isInstagramBrowser).toBe(false)
-    expect(result.current.isFacebookBrowser).toBe(true)
-    expect(result.current.isIOSMobile).toBe(false)
-    expect(result.current.isAndroidMobile).toBe(true)
-    expect(result.current.isProblematicBrowser).toBe(true)
-  })
-
-  it('should detect iOS Safari (not problematic)', () => {
-    Object.defineProperty(navigator, 'userAgent', {
-      value:
-        'Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Mobile/15E148 Safari/604.1',
-      writable: true,
-    })
-
-    const { result } = renderHook(() => useBrowserDetection())
-
-    expect(result.current.isInstagramBrowser).toBe(false)
-    expect(result.current.isFacebookBrowser).toBe(false)
-    expect(result.current.isIOSMobile).toBe(true)
-    expect(result.current.isAndroidMobile).toBe(false)
-    expect(result.current.isProblematicBrowser).toBe(false)
-  })
-
-  it('should detect Android Chrome (not problematic)', () => {
-    Object.defineProperty(navigator, 'userAgent', {
-      value: 'Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36',
-      writable: true,
-    })
-
-    const { result } = renderHook(() => useBrowserDetection())
-
-    expect(result.current.isInstagramBrowser).toBe(false)
-    expect(result.current.isFacebookBrowser).toBe(false)
-    expect(result.current.isIOSMobile).toBe(false)
-    expect(result.current.isAndroidMobile).toBe(true)
-    expect(result.current.isProblematicBrowser).toBe(false)
-  })
-
+  // Additional device-specific tests
   it('should detect iPad', () => {
-    Object.defineProperty(navigator, 'userAgent', {
-      value:
-        'Mozilla/5.0 (iPad; CPU OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1',
-      writable: true,
-    })
-
+    mockUserAgent(TEST_USER_AGENTS.IPAD_SAFARI)
     const { result } = renderHook(() => useBrowserDetection())
 
     expect(result.current.isIOSMobile).toBe(true)
@@ -137,30 +78,10 @@ describe('useBrowserDetection', () => {
   })
 
   it('should detect iPod', () => {
-    Object.defineProperty(navigator, 'userAgent', {
-      value:
-        'Mozilla/5.0 (iPod touch; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1',
-      writable: true,
-    })
-
+    mockUserAgent(TEST_USER_AGENTS.IPOD_SAFARI)
     const { result } = renderHook(() => useBrowserDetection())
 
     expect(result.current.isIOSMobile).toBe(true)
     expect(result.current.isAndroidMobile).toBe(false)
-  })
-
-  it('should not flag Instagram on desktop as problematic', () => {
-    Object.defineProperty(navigator, 'userAgent', {
-      value:
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Instagram',
-      writable: true,
-    })
-
-    const { result } = renderHook(() => useBrowserDetection())
-
-    expect(result.current.isInstagramBrowser).toBe(true)
-    expect(result.current.isIOSMobile).toBe(false)
-    expect(result.current.isAndroidMobile).toBe(false)
-    expect(result.current.isProblematicBrowser).toBe(false)
   })
 })

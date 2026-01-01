@@ -3,43 +3,16 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { ArtProjectPicture } from 'components/ArtProjects/ArtProjectPicture'
 
+import { expectModalClosed, expectModalOpen } from '../../helpers/assertions'
+import { TEST_PROPS } from '../../helpers/constants'
+import { setupModalMocks } from '../../helpers/mocks'
+
 describe('ArtProjectPicture', () => {
-  const mockImgSrc = 'test-image.jpg'
-  const mockAltText = 'Test Art Project'
+  const mockImgSrc = TEST_PROPS.MOCK_IMG_SRC
+  const mockAltText = TEST_PROPS.MOCK_ALT_TEXT
 
   beforeEach(() => {
-    // Clean up any existing modal classes
-    document.body.classList.remove('art-modal-open')
-
-    /**
-     * Mock document.startViewTransition for test environments that don't support it.
-     *
-     * NOTE: The ArtProjectPicture component doesn't actually use startViewTransition,
-     * so this mock is unnecessary for this specific test file. However, it's included
-     * as defensive setup in case the component is updated to use it in the future.
-     *
-     * The double type assertion "as unknown as typeof X" is a TypeScript testing pattern
-     * that allows us to assign an incomplete mock to a strictly-typed API. This is necessary
-     * because:
-     * 1. vi.fn() returns a Vitest mock function type
-     * 2. document.startViewTransition has a complex return type with specific properties
-     * 3. TypeScript won't allow direct assignment between incompatible types
-     * 4. Casting through 'unknown' tells TypeScript "trust me, I know what I'm doing"
-     *
-     * This is a common and acceptable pattern in testing when you know the mock is sufficient
-     * for the test's needs, even if it doesn't implement the complete interface.
-     */
-    if (!document.startViewTransition) {
-      document.startViewTransition = vi.fn((callback: () => void) => {
-        callback()
-        return {
-          ready: Promise.resolve(),
-          updateCallbackDone: Promise.resolve(),
-          finished: Promise.resolve(),
-          skipTransition: () => {},
-        }
-      }) as unknown as typeof document.startViewTransition
-    }
+    setupModalMocks()
   })
 
   afterEach(() => {
@@ -58,53 +31,58 @@ describe('ArtProjectPicture', () => {
     expect(thumbnail.src).toContain(mockImgSrc)
   })
 
+  /**
+   * Helper to open the modal for testing.
+   */
+  function openModal(): void {
+    const button = screen.getByRole('button', { name: `View ${mockAltText}` })
+    fireEvent.click(button)
+  }
+
+  /**
+   * Helper to get modal elements.
+   */
+  function getModalElements(): { modalBackground: HTMLElement | null; modalImg: HTMLElement | null } {
+    return {
+      modalBackground: document.getElementById('art-modal-background'),
+      modalImg: document.getElementById('art-modal-img'),
+    }
+  }
+
   it('opens modal when thumbnail is clicked', () => {
     render(<ArtProjectPicture imgSrc={mockImgSrc} altText={mockAltText} />)
 
-    const button = screen.getByRole('button', { name: `View ${mockAltText}` })
-    fireEvent.click(button)
+    openModal()
 
-    const modalBackground = document.getElementById('art-modal-background')
-    const modalImg = document.getElementById('art-modal-img')
-
-    expect(modalBackground).toBeTruthy()
-    expect(modalImg).toBeTruthy()
-    expect(modalBackground!.classList.contains('show')).toBe(true)
-    expect(modalImg!.classList.contains('show')).toBe(true)
-    expect(document.body.classList.contains('art-modal-open')).toBe(true)
+    const { modalBackground, modalImg } = getModalElements()
+    expectModalOpen(modalBackground, 'art-modal-open')
+    expectModalOpen(modalImg)
   })
 
   it('closes modal when background is clicked', async () => {
     render(<ArtProjectPicture imgSrc={mockImgSrc} altText={mockAltText} />)
 
-    // Open modal
-    const button = screen.getByRole('button', { name: `View ${mockAltText}` })
-    fireEvent.click(button)
+    openModal()
 
-    const modalBackground = document.getElementById('art-modal-background')
-    expect(modalBackground).toBeTruthy()
-    expect(modalBackground!.classList.contains('show')).toBe(true)
+    const { modalBackground } = getModalElements()
+    expectModalOpen(modalBackground, 'art-modal-open')
 
     // Close modal by clicking background
     fireEvent.click(modalBackground!)
 
     // Wait for animation to complete
     await waitFor(() => {
-      expect(modalBackground!.classList.contains('show')).toBe(false)
-      expect(document.body.classList.contains('art-modal-open')).toBe(false)
+      expectModalClosed(modalBackground, 'art-modal-open')
     })
   })
 
   it('closes modal when X button is clicked', async () => {
     render(<ArtProjectPicture imgSrc={mockImgSrc} altText={mockAltText} />)
 
-    // Open modal
-    const button = screen.getByRole('button', { name: `View ${mockAltText}` })
-    fireEvent.click(button)
+    openModal()
 
-    const modalBackground = document.getElementById('art-modal-background')
-    expect(modalBackground).toBeTruthy()
-    expect(modalBackground!.classList.contains('show')).toBe(true)
+    const { modalBackground } = getModalElements()
+    expectModalOpen(modalBackground, 'art-modal-open')
 
     // Close modal by clicking X button
     const closeButton = screen.getByRole('button', { name: 'Close' })
@@ -112,21 +90,17 @@ describe('ArtProjectPicture', () => {
 
     // Wait for animation to complete
     await waitFor(() => {
-      expect(modalBackground!.classList.contains('show')).toBe(false)
-      expect(document.body.classList.contains('art-modal-open')).toBe(false)
+      expectModalClosed(modalBackground, 'art-modal-open')
     })
   })
 
   it('closes modal when ESC key is pressed', async () => {
     render(<ArtProjectPicture imgSrc={mockImgSrc} altText={mockAltText} />)
 
-    // Open modal
-    const button = screen.getByRole('button', { name: `View ${mockAltText}` })
-    fireEvent.click(button)
+    openModal()
 
-    const modalBackground = document.getElementById('art-modal-background')
-    expect(modalBackground).toBeTruthy()
-    expect(modalBackground!.classList.contains('show')).toBe(true)
+    const { modalBackground } = getModalElements()
+    expectModalOpen(modalBackground, 'art-modal-open')
 
     // Press ESC key
     act(() => {
@@ -136,21 +110,17 @@ describe('ArtProjectPicture', () => {
 
     // Wait for animation to complete
     await waitFor(() => {
-      expect(modalBackground!.classList.contains('show')).toBe(false)
-      expect(document.body.classList.contains('art-modal-open')).toBe(false)
+      expectModalClosed(modalBackground, 'art-modal-open')
     })
   })
 
   it('does not close modal when other keys are pressed', () => {
     render(<ArtProjectPicture imgSrc={mockImgSrc} altText={mockAltText} />)
 
-    // Open modal
-    const button = screen.getByRole('button', { name: `View ${mockAltText}` })
-    fireEvent.click(button)
+    openModal()
 
-    const modalBackground = document.getElementById('art-modal-background')
-    expect(modalBackground).toBeTruthy()
-    expect(modalBackground!.classList.contains('show')).toBe(true)
+    const { modalBackground } = getModalElements()
+    expectModalOpen(modalBackground, 'art-modal-open')
 
     // Press Enter key
     act(() => {
@@ -158,7 +128,7 @@ describe('ArtProjectPicture', () => {
       document.dispatchEvent(event)
     })
 
-    expect(modalBackground!.classList.contains('show')).toBe(true)
+    expectModalOpen(modalBackground)
 
     // Press Space key
     act(() => {
@@ -166,15 +136,14 @@ describe('ArtProjectPicture', () => {
       document.dispatchEvent(event)
     })
 
-    expect(modalBackground!.classList.contains('show')).toBe(true)
+    expectModalOpen(modalBackground)
   })
 
   it('does not respond to ESC key when modal is closed', () => {
     render(<ArtProjectPicture imgSrc={mockImgSrc} altText={mockAltText} />)
 
-    const modalBackground = document.getElementById('art-modal-background')
-    expect(modalBackground).toBeTruthy()
-    expect(modalBackground!.classList.contains('show')).toBe(false)
+    const { modalBackground } = getModalElements()
+    expectModalClosed(modalBackground)
 
     // Press ESC key when modal is closed
     act(() => {
@@ -183,14 +152,13 @@ describe('ArtProjectPicture', () => {
     })
 
     // Modal should remain closed
-    expect(modalBackground!.classList.contains('show')).toBe(false)
+    expectModalClosed(modalBackground)
   })
 
   it('sets modal image source when opened', () => {
     render(<ArtProjectPicture imgSrc={mockImgSrc} altText={mockAltText} />)
 
-    const button = screen.getByRole('button', { name: `View ${mockAltText}` })
-    fireEvent.click(button)
+    openModal()
 
     const modalImg = document.getElementById('art-modal-img') as HTMLImageElement
     expect(modalImg).toBeTruthy()

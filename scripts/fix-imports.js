@@ -61,7 +61,7 @@ async function main() {
   })
 
   console.log(`\\n✨ Done! Updated ${totalChanges} files.`)
-  console.log('\\nNow run: yarn format')
+  console.log('\\nNow run: yarn lint:fix')
 }
 
 main().catch((error) => {

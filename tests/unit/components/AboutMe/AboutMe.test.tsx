@@ -1,15 +1,18 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 
 import { AboutMe } from 'components/AboutMe/AboutMe'
 
 describe('AboutMe', () => {
-  it('renders without crashing', () => {
+  beforeEach(() => {
     render(<AboutMe />)
   })
 
+  it('renders without crashing', () => {
+    expect(screen.getByText(/ABOUT ME/i)).toBeInTheDocument()
+  })
+
   it('displays the About Me header', () => {
-    render(<AboutMe />)
     expect(screen.getByText(/ABOUT ME/i)).toBeInTheDocument()
   })
 })

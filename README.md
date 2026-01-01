@@ -122,14 +122,13 @@
 
 ### Code Quality
 
-- `yarn lint` - Run all linters (ESLint + Stylelint + TypeScript)
-- `yarn lint:fix` - Auto-fix linting issues
+- `yarn lint` - Run all linters (ESLint, TypeScript, Stylelint, Prettier)
+- `yarn lint:fix` - Auto-fix linting issues and format code
 - `yarn lint:eslint` - Run ESLint only
 - `yarn lint:eslint:fix` - Auto-fix ESLint issues
 - `yarn lint:types` - Run TypeScript type checking
 - `yarn lint:css` - Run Stylelint on CSS files
 - `yarn lint:css:fix` - Auto-fix CSS linting issues
-- `yarn format` - Format code with Prettier
 
 ### Analysis
 

@@ -1,9 +1,22 @@
+/**
+ * Global test setup file.
+ *
+ * This file provides global mocks and setup that are applied to all tests:
+ * - localStorage mock for browser storage testing
+ * - matchMedia mock for media query testing
+ * - react-inlinesvg mock to avoid async warnings
+ *
+ * For test-specific utilities (render helpers, mock factories, etc.),
+ * see tests/unit/test-utils.tsx instead.
+ *
+ * This file is automatically loaded by Vitest via the setupFiles configuration.
+ */
 import '@testing-library/jest-dom'
 import { vi } from 'vitest'
 
 // Mock react-inlinesvg to avoid async warnings in tests
 vi.mock('react-inlinesvg', () => ({
-  default: ({ src, alt, title, ...props }: { src: string; alt?: string; title?: string; [key: string]: unknown }) => {
+  default: ({ src, alt, title, ...props }: { src: string; alt?: string; title?: string; [key: string]: unknown }): React.ReactElement => {
     return <svg data-src={src} aria-label={alt || title} {...props} />
   },
 }))
@@ -98,9 +111,12 @@ const localStorageMock: LocalStorageMockType = {
   }) as MediaQueryList
 
 /**
- * Note: This file previously contained a custom render wrapper, but it was removed
- * since it didn't provide any actual wrapping (no providers, contexts, etc.).
+ * Note on test utilities:
  *
- * Test files should now import directly from '@testing-library/react' instead of 'tests/utils'.
- * This file remains for the global test setup (localStorage mock, matchMedia mock, etc.).
+ * This file provides GLOBAL setup (mocks that apply to all tests automatically).
+ * For REUSABLE test utilities (render helpers, mock factories, etc.), use:
+ * - tests/unit/test-utils.tsx - Unit test helper functions
+ * - tests/unit/test-constants.ts - Shared test data and constants
+ *
+ * Test files should import utilities from test-utils.tsx, not from this file.
  */
