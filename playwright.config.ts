@@ -4,7 +4,7 @@ import { defineConfig, devices } from '@playwright/test'
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './e2e',
+  testDir: './tests/e2e',
   /* Output directory for test artifacts */
   outputDir: './test_results/e2e/results',
   /* Run tests in files in parallel */

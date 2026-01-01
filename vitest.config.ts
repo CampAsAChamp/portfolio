@@ -19,8 +19,8 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: './tests/utils/index.tsx',
-    include: ['tests/**/*.{test,spec}.{ts,tsx}'],
+    setupFiles: './tests/unit/utils/index.tsx',
+    include: ['tests/unit/**/*.{test,spec}.{ts,tsx}'],
     css: true,
     coverage: {
       reportsDirectory: './test_results/unit/coverage',
