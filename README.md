@@ -55,7 +55,7 @@
 
 ### Built With
 
-[![My Skills](https://skills.syvixor.com/api/icons?perline=7&i=reactjs,typescript,nodejs,yarn,vite,vitest,playwright,eslint,commitlint,prettier,dependabot,git,github,cloudflare)](https://builder.syvixor.com/)
+[![My Skills](https://skills.syvixor.com/api/icons?perline=7&i=reactjs,typescript,nodejs,yarn,vite,vitest,playwright,eslint,prettier,commitlint,dependabot,git,github,cloudflare)](https://builder.syvixor.com/)
 
 **Additional Tools:**
 - [Playwright](https://playwright.dev/) - E2E testing
