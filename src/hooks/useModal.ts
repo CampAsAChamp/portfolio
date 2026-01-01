@@ -74,7 +74,7 @@ export function useModal(initialState = false): UseModalReturn {
     }
 
     document.addEventListener('keydown', handleEscape)
-    return () => document.removeEventListener('keydown', handleEscape)
+    return (): void => document.removeEventListener('keydown', handleEscape)
   }, [isOpen, close])
 
   return { isOpen, open, close, toggle }

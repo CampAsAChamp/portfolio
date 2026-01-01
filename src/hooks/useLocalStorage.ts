@@ -53,7 +53,7 @@ export function useLocalStorage<T>(key: string, defaultValue: T): [T, SetValue<T
     }
 
     window.addEventListener('storage', handleStorageChange)
-    return () => window.removeEventListener('storage', handleStorageChange)
+    return (): void => window.removeEventListener('storage', handleStorageChange)
   }, [key])
 
   return [value, setStoredValue]

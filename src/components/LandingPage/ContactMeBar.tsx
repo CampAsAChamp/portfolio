@@ -39,7 +39,7 @@ export function ContactMeBar({ isOpen, open, close }: ContactMeBarProps): React.
         button.classList.remove('modal-open')
       }, 300)
       button.style.viewTransitionName = 'contact-button'
-      return () => clearTimeout(timeoutId)
+      return (): void => clearTimeout(timeoutId)
     }
   }, [isOpen])
 

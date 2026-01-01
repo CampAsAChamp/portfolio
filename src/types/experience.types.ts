@@ -1,11 +1,12 @@
 // Work experience types
+import { BulletPoint } from './content.types'
 
 export interface Experience {
   company_name: string
   location: string
   position: string
   duration: string
-  textContent: string
+  bulletPoints: BulletPoint[]
   technologies: string[]
   logo: string
   color: string

@@ -55,7 +55,7 @@ export function ArtProjectPicture({ imgSrc, altText }: ArtProjectPictureProps): 
     }
 
     document.addEventListener('keydown', handleEscape)
-    return () => document.removeEventListener('keydown', handleEscape)
+    return (): void => document.removeEventListener('keydown', handleEscape)
   }, [isModalOpen, hideModal])
 
   const handleKeyDown = (event: React.KeyboardEvent, callback: () => void): void => {

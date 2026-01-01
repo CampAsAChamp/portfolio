@@ -1,7 +1,7 @@
-import parse from 'html-react-parser'
 import ScrollAnimation from 'react-animate-on-scroll'
 import { Experience } from 'types/experience.types'
 
+import { BulletPointList } from 'components/Common/BulletPointList'
 import { TechnologiesBar } from 'components/Common/TechnologiesBar'
 
 interface ExperienceCardProps {
@@ -25,7 +25,7 @@ export function ExperienceCard({ experience, index }: ExperienceCardProps): Reac
           <div className="duration">{experience.duration}</div>
         </div>
         <div className="supporting-text">
-          <ul>{parse(experience.textContent)}</ul>
+          <BulletPointList bulletPoints={experience.bulletPoints} />
         </div>
         <TechnologiesBar technologyNames={experience.technologies} fillColor={experience.color} />
       </div>

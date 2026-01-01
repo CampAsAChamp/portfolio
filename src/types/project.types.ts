@@ -1,9 +1,10 @@
 // Project types for software and art projects
+import { BulletPoint } from './content.types'
 
 export interface SoftwareProject {
   name: string
   technologies: string[]
-  textContent: string
+  bulletPoints: BulletPoint[]
   link: string
   thumbnail: string
   videoThumbnail?: string

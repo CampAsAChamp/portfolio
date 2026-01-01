@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
-import parse from 'html-react-parser'
 import ScrollAnimation from 'react-animate-on-scroll'
 import { SoftwareProject } from 'types/project.types'
 
+import { BulletPointList } from 'components/Common/BulletPointList'
 import { Svg } from 'components/Common/Svg'
 import { TechnologiesBar } from 'components/Common/TechnologiesBar'
 import { SwProjectImage } from 'components/SwProjects/SwProjectImage'
@@ -50,7 +50,7 @@ export function SwProjectCard({ project, index }: SwProjectCardProps): React.Rea
           <div className="sw-projects-thumbnail-container">{renderProjectMedia()}</div>
           <div className="sw-projects-info-container">
             <div className="sw-projects-text">
-              <ul>{parse(project.textContent)}</ul>
+              <BulletPointList bulletPoints={project.bulletPoints} />
             </div>
             <div className="sw-projects-button-row">
               <button

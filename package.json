@@ -41,7 +41,6 @@
   "dependencies": {
     "animate.css": "^4.1.1",
     "classnames": "^2.5.1",
-    "html-react-parser": "^5.2.11",
     "react": "^19.2.3",
     "react-animate-on-scroll": "^2.1.9",
     "react-dom": "^19.2.3",

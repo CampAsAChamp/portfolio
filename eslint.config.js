@@ -94,6 +94,27 @@ export default [
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
 
+      // TypeScript - Explicit types
+      '@typescript-eslint/explicit-function-return-type': [
+        'error',
+        {
+          allowExpressions: false, // Require return types even on arrow function expressions (including callbacks)
+          allowTypedFunctionExpressions: true, // Allow if function type is already defined elsewhere
+          allowHigherOrderFunctions: false, // Require return types on functions that return functions
+          allowDirectConstAssertionInArrowFunctions: true,
+          allowConciseArrowFunctionExpressionsStartingWithVoid: false,
+        },
+      ],
+      '@typescript-eslint/explicit-module-boundary-types': [
+        'error',
+        {
+          allowArgumentsExplicitlyTypedAsAny: false, // Don't allow 'any' as explicit type
+          allowDirectConstAssertionInArrowFunctions: true,
+          allowHigherOrderFunctions: true,
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+
       // Unused imports (TypeScript)
       '@typescript-eslint/no-unused-vars': [
         'error',
