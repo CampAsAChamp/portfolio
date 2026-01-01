@@ -21,23 +21,25 @@ jobs:
           cache: 'yarn'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Run linter
         run: yarn lint
 
-      - name: Run tests
+      - name: Run unit tests
         run: yarn test
 
       - name: Build
         run: yarn build
 
-      - name: Check bundle size
+      - name: Check build output
         run: |
-          echo "Checking bundle sizes..."
+          echo "Checking build output..."
           du -sh build/assets/*.js | sort -h
           echo ""
           echo "Total build size:"
           du -sh build
+          echo ""
+          echo "Build completed successfully"
 
 
