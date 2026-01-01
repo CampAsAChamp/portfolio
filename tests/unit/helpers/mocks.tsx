@@ -1,6 +1,5 @@
-import React from 'react'
-
-import { vi } from 'vitest'
+import React from "react"
+import { vi } from "vitest"
 
 /**
  * Mock functions for testing browser APIs and DOM behaviors.
@@ -100,7 +99,7 @@ export function mockMatchMedia(matches = false): ReturnType<typeof vi.fn> {
  * @param userAgentString - The user agent string to use
  */
 export function mockUserAgent(userAgentString: string): void {
-  Object.defineProperty(navigator, 'userAgent', {
+  Object.defineProperty(navigator, "userAgent", {
     value: userAgentString,
     writable: true,
     configurable: true,
@@ -113,7 +112,7 @@ export function mockUserAgent(userAgentString: string): void {
  */
 export function setupModalMocks(): void {
   // Clean up any existing modal classes
-  document.body.classList.remove('art-modal-open')
+  document.body.classList.remove("art-modal-open")
 
   // Mock startViewTransition if not available
   if (!document.startViewTransition) {

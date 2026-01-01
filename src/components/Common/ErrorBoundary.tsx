@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode } from "react"
 
-import 'styles/Common/ErrorBoundary.css'
+import "styles/Common/ErrorBoundary.css"
 
 interface ErrorBoundaryProps {
   children: ReactNode
@@ -27,7 +27,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
-    console.error('Error caught by boundary:', error, errorInfo)
+    console.error("Error caught by boundary:", error, errorInfo)
     this.setState({
       error: error,
       errorInfo: errorInfo,
@@ -61,7 +61,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
         <summary className="error-boundary-summary">Error Details (dev only)</summary>
         <pre className="error-boundary-pre">
           {this.state.error.toString()}
-          {'\n\n'}
+          {"\n\n"}
           {this.state.errorInfo?.componentStack}
         </pre>
       </details>

@@ -1,9 +1,8 @@
-import { getTechnologies } from '@/utils/technologiesUtils'
-import ScrollAnimation from 'react-animate-on-scroll'
+import { Svg } from "components/Common/Svg"
+import { COLORS } from "data/colors"
+import ScrollAnimation from "react-animate-on-scroll"
 
-import { Svg } from 'components/Common/Svg'
-
-import { COLORS } from 'data/colors'
+import { getTechnologies } from "@/utils/technologiesUtils"
 
 interface SkillsRowProps {
   technologyNames: string[]

@@ -1,8 +1,8 @@
-import react from '@vitejs/plugin-react'
-import path from 'path'
-import { visualizer } from 'rollup-plugin-visualizer'
-import { type Plugin, defineConfig } from 'vite'
-import viteCompression from 'vite-plugin-compression'
+import path from "path"
+import react from "@vitejs/plugin-react"
+import { visualizer } from "rollup-plugin-visualizer"
+import { defineConfig, type Plugin } from "vite"
+import viteCompression from "vite-plugin-compression"
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,17 +10,17 @@ export default defineConfig({
     react(),
     // Gzip compression for production builds
     viteCompression({
-      algorithm: 'gzip',
-      ext: '.gz',
+      algorithm: "gzip",
+      ext: ".gz",
     }),
     // Brotli compression for production builds
     viteCompression({
-      algorithm: 'brotliCompress',
-      ext: '.br',
+      algorithm: "brotliCompress",
+      ext: ".br",
     }),
     // Bundle visualization (generates stats.html after build)
     visualizer({
-      filename: './build/stats.html',
+      filename: "./build/stats.html",
       open: false,
       gzipSize: true,
       brotliSize: true,
@@ -28,17 +28,17 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      components: path.resolve(__dirname, './src/components'),
-      assets: path.resolve(__dirname, './src/assets'),
-      data: path.resolve(__dirname, './src/data'),
-      styles: path.resolve(__dirname, './src/styles'),
-      hooks: path.resolve(__dirname, './src/hooks'),
-      utils: path.resolve(__dirname, './src/utils'),
+      "@": path.resolve(__dirname, "./src"),
+      components: path.resolve(__dirname, "./src/components"),
+      assets: path.resolve(__dirname, "./src/assets"),
+      data: path.resolve(__dirname, "./src/data"),
+      styles: path.resolve(__dirname, "./src/styles"),
+      hooks: path.resolve(__dirname, "./src/hooks"),
+      utils: path.resolve(__dirname, "./src/utils"),
     },
   },
   build: {
-    outDir: 'build', // Cloudflare Pages expects 'build'
+    outDir: "build", // Cloudflare Pages expects 'build'
     sourcemap: true, // Generate source maps for debugging
     // CSS code splitting
     cssCodeSplit: true,
@@ -46,17 +46,17 @@ export default defineConfig({
       output: {
         manualChunks: {
           // Separate vendor chunks for better caching
-          react: ['react', 'react-dom'],
-          animations: ['animate.css', 'react-animate-on-scroll'],
-          swiper: ['swiper'],
+          react: ["react", "react-dom"],
+          animations: ["animate.css", "react-animate-on-scroll"],
+          swiper: ["swiper"],
         },
         // Asset file naming for better caching
         assetFileNames: (assetInfo) => {
-          const info = assetInfo.name?.split('.')
+          const info = assetInfo.name?.split(".")
           const ext = info?.[info.length - 1]
-          if (/png|jpe?g|svg|gif|tiff|bmp|ico|webp/i.test(ext ?? '')) {
+          if (/png|jpe?g|svg|gif|tiff|bmp|ico|webp/i.test(ext ?? "")) {
             return `assets/images/[name]-[hash][extname]`
-          } else if (/woff|woff2|eot|ttf|otf/i.test(ext ?? '')) {
+          } else if (/woff|woff2|eot|ttf|otf/i.test(ext ?? "")) {
             return `assets/fonts/[name]-[hash][extname]`
           }
           return `assets/[name]-[hash][extname]`

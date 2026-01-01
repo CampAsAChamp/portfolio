@@ -1,4 +1,4 @@
-import { expect } from 'vitest'
+import { expect } from "vitest"
 
 /**
  * Custom assertion helpers for testing common patterns.
@@ -12,7 +12,7 @@ import { expect } from 'vitest'
  */
 export function expectModalOpen(modalElement: HTMLElement | null, bodyClass?: string): void {
   expect(modalElement).toBeTruthy()
-  expect(modalElement!.classList.contains('show')).toBe(true)
+  expect(modalElement!.classList.contains("show")).toBe(true)
   if (bodyClass) {
     expect(document.body.classList.contains(bodyClass)).toBe(true)
   }
@@ -26,7 +26,7 @@ export function expectModalOpen(modalElement: HTMLElement | null, bodyClass?: st
  */
 export function expectModalClosed(modalElement: HTMLElement | null, bodyClass?: string): void {
   expect(modalElement).toBeTruthy()
-  expect(modalElement!.classList.contains('show')).toBe(false)
+  expect(modalElement!.classList.contains("show")).toBe(false)
   if (bodyClass) {
     expect(document.body.classList.contains(bodyClass)).toBe(false)
   }

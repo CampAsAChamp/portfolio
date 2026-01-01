@@ -1,11 +1,11 @@
-import { BulletPoint as BulletPointType, Link, TextSegment } from 'types/content.types'
+import { BulletPoint as BulletPointType, Link, TextSegment } from "types/content.types"
 
 interface BulletPointProps {
   bulletPoint: BulletPointType
 }
 
 function isLink(segment: TextSegment): segment is Link {
-  return typeof segment !== 'string'
+  return typeof segment !== "string"
 }
 
 export function BulletPoint({ bulletPoint }: BulletPointProps): React.ReactElement {

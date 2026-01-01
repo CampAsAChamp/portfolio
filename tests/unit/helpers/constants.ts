@@ -8,31 +8,31 @@
  */
 export const TEST_USER_AGENTS = {
   // Desktop browsers
-  CHROME_DESKTOP: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+  CHROME_DESKTOP: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
 
   // Instagram browsers
-  INSTAGRAM_IOS: 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Instagram 195.0.0.31.123',
-  INSTAGRAM_ANDROID: 'Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Instagram 195.0.0.31.123',
+  INSTAGRAM_IOS: "Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Instagram 195.0.0.31.123",
+  INSTAGRAM_ANDROID: "Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Instagram 195.0.0.31.123",
   INSTAGRAM_DESKTOP:
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Instagram',
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Instagram",
 
   // Facebook browsers
   FACEBOOK_IOS:
-    'Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 [FBAN/FBIOS;FBAV/325.0.0.41.114]',
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 [FBAN/FBIOS;FBAV/325.0.0.41.114]",
   FACEBOOK_ANDROID:
-    'Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.120 Mobile Safari/537.36 [FBAV/325.0.0.41.114]',
+    "Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.120 Mobile Safari/537.36 [FBAV/325.0.0.41.114]",
 
   // Mobile Safari
   IOS_SAFARI:
-    'Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Mobile/15E148 Safari/604.1',
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Mobile/15E148 Safari/604.1",
   IPAD_SAFARI:
-    'Mozilla/5.0 (iPad; CPU OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1',
+    "Mozilla/5.0 (iPad; CPU OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1",
   IPOD_SAFARI:
-    'Mozilla/5.0 (iPod touch; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1',
+    "Mozilla/5.0 (iPod touch; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1",
 
   // Android Chrome
   ANDROID_CHROME:
-    'Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36',
+    "Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36",
 } as const
 
 /**
@@ -40,8 +40,8 @@ export const TEST_USER_AGENTS = {
  */
 export const TEST_PROPS = {
   // Mock image data
-  MOCK_IMG_SRC: 'test-image.jpg',
-  MOCK_ALT_TEXT: 'Test Alt Text',
+  MOCK_IMG_SRC: "test-image.jpg",
+  MOCK_ALT_TEXT: "Test Alt Text",
 
   // Mock dimensions
   MOCK_CLICK_X: 100,
@@ -52,14 +52,14 @@ export const TEST_PROPS = {
  * Common keyboard keys used in tests.
  */
 export const TEST_KEYS = {
-  ENTER: 'Enter',
-  ESCAPE: 'Escape',
-  SPACE: ' ',
-  TAB: 'Tab',
-  ARROW_UP: 'ArrowUp',
-  ARROW_DOWN: 'ArrowDown',
-  ARROW_LEFT: 'ArrowLeft',
-  ARROW_RIGHT: 'ArrowRight',
+  ENTER: "Enter",
+  ESCAPE: "Escape",
+  SPACE: " ",
+  TAB: "Tab",
+  ARROW_UP: "ArrowUp",
+  ARROW_DOWN: "ArrowDown",
+  ARROW_LEFT: "ArrowLeft",
+  ARROW_RIGHT: "ArrowRight",
 } as const
 
 /**

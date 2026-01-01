@@ -1,4 +1,4 @@
-import { useKeyboardAccessibility } from 'hooks/useKeyboardAccessibility'
+import { useKeyboardAccessibility } from "hooks/useKeyboardAccessibility"
 
 interface HamburgerMenuProps {
   navSlide: () => void

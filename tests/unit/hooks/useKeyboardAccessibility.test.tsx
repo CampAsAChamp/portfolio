@@ -1,13 +1,12 @@
-import { renderHook } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { renderHook } from "@testing-library/react"
+import { useKeyboardAccessibility } from "hooks/useKeyboardAccessibility"
+import { describe, expect, it, vi } from "vitest"
 
-import { useKeyboardAccessibility } from 'hooks/useKeyboardAccessibility'
+import { ARROW_KEYS, TEST_KEYS } from "../helpers/constants"
+import { createKeyboardEvent } from "../helpers/mocks"
 
-import { ARROW_KEYS, TEST_KEYS } from '../helpers/constants'
-import { createKeyboardEvent } from '../helpers/mocks'
-
-describe('useKeyboardAccessibility', () => {
-  it('should call callback when Enter key is pressed', () => {
+describe("useKeyboardAccessibility", () => {
+  it("should call callback when Enter key is pressed", () => {
     const callback = vi.fn()
     const { result } = renderHook(() => useKeyboardAccessibility(callback))
 
@@ -18,7 +17,7 @@ describe('useKeyboardAccessibility', () => {
     expect(event.preventDefault).toHaveBeenCalledTimes(1)
   })
 
-  it('should call callback when Space key is pressed', () => {
+  it("should call callback when Space key is pressed", () => {
     const callback = vi.fn()
     const { result } = renderHook(() => useKeyboardAccessibility(callback))
 
@@ -29,7 +28,7 @@ describe('useKeyboardAccessibility', () => {
     expect(event.preventDefault).toHaveBeenCalledTimes(1)
   })
 
-  it('should not call callback for other keys', () => {
+  it("should not call callback for other keys", () => {
     const callback = vi.fn()
     const { result } = renderHook(() => useKeyboardAccessibility(callback))
 
@@ -40,7 +39,7 @@ describe('useKeyboardAccessibility', () => {
     expect(event.preventDefault).toHaveBeenCalledTimes(0)
   })
 
-  it('should not call callback for Tab key', () => {
+  it("should not call callback for Tab key", () => {
     const callback = vi.fn()
     const { result } = renderHook(() => useKeyboardAccessibility(callback))
 
@@ -51,7 +50,7 @@ describe('useKeyboardAccessibility', () => {
     expect(event.preventDefault).toHaveBeenCalledTimes(0)
   })
 
-  it('should not call callback for arrow keys', () => {
+  it("should not call callback for arrow keys", () => {
     const callback = vi.fn()
     const { result } = renderHook(() => useKeyboardAccessibility(callback))
 
@@ -64,7 +63,7 @@ describe('useKeyboardAccessibility', () => {
     })
   })
 
-  it('should handle multiple different callbacks', () => {
+  it("should handle multiple different callbacks", () => {
     const callback1 = vi.fn()
     const callback2 = vi.fn()
 
@@ -81,7 +80,7 @@ describe('useKeyboardAccessibility', () => {
     expect(callback2).toHaveBeenCalled()
   })
 
-  it('should pass event object to callback', () => {
+  it("should pass event object to callback", () => {
     const callback = vi.fn()
     const { result } = renderHook(() => useKeyboardAccessibility(callback))
 
@@ -92,11 +91,11 @@ describe('useKeyboardAccessibility', () => {
     expect(callback).toHaveBeenCalledWith(event)
     expect(callback.mock.calls[0]).toBeTruthy()
     expect(callback.mock.calls[0]![0]).toBeTruthy()
-    expect(callback.mock.calls[0]![0]).toHaveProperty('key')
-    expect(callback.mock.calls[0]![0]).toHaveProperty('preventDefault')
+    expect(callback.mock.calls[0]![0]).toHaveProperty("key")
+    expect(callback.mock.calls[0]![0]).toHaveProperty("preventDefault")
   })
 
-  it('should return consistent handler reference when callback changes', () => {
+  it("should return consistent handler reference when callback changes", () => {
     const callback1 = vi.fn()
     const { result, rerender } = renderHook(({ cb }) => useKeyboardAccessibility(cb), {
       initialProps: { cb: callback1 },

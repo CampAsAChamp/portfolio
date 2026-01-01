@@ -1,16 +1,13 @@
-import { useEffect } from 'react'
+import { useEffect } from "react"
+import GitHubLogo from "assets/Dev_Icons/GitHub.svg"
+import LinkedInLogo from "assets/Dev_Icons/LinkedIn.svg"
+import RealProfilePic from "assets/Real_Profile_Pic.webp"
+import { CloseIcon } from "components/Common/Icons/CloseIcon"
+import { EmailIcon } from "components/Common/Icons/EmailIcon"
+import { Svg } from "components/Common/Svg"
+import { useKeyboardAccessibility } from "hooks/useKeyboardAccessibility"
 
-import { CloseIcon } from 'components/Common/Icons/CloseIcon'
-import { EmailIcon } from 'components/Common/Icons/EmailIcon'
-import { Svg } from 'components/Common/Svg'
-
-import GitHubLogo from 'assets/Dev_Icons/GitHub.svg'
-import LinkedInLogo from 'assets/Dev_Icons/LinkedIn.svg'
-import RealProfilePic from 'assets/Real_Profile_Pic.webp'
-
-import { useKeyboardAccessibility } from 'hooks/useKeyboardAccessibility'
-
-import 'styles/ContactMeModal/ContactMeModal.css'
+import "styles/ContactMeModal/ContactMeModal.css"
 
 interface ContactMeModalProps {
   isOpen: boolean
@@ -23,17 +20,17 @@ export function ContactMeModal({ isOpen, close }: ContactMeModalProps): React.Re
 
   // Sync modal state with CSS classes
   useEffect(() => {
-    const modalBackground = document.getElementById('contact-me-modal-background')
-    const modalContent = document.getElementById('contact-me-modal-content')
+    const modalBackground = document.getElementById("contact-me-modal-background")
+    const modalContent = document.getElementById("contact-me-modal-content")
 
     if (!modalBackground || !modalContent) return
 
     if (isOpen) {
-      modalBackground.classList.add('show')
-      modalContent.classList.add('show')
+      modalBackground.classList.add("show")
+      modalContent.classList.add("show")
     } else {
-      modalBackground.classList.remove('show')
-      modalContent.classList.remove('show')
+      modalBackground.classList.remove("show")
+      modalContent.classList.remove("show")
     }
   }, [isOpen])
 

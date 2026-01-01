@@ -1,4 +1,4 @@
-import { SoftwareProject } from 'types/project.types'
+import { SoftwareProject } from "types/project.types"
 
 interface SwProjectImageProps {
   project: SoftwareProject

@@ -1,11 +1,9 @@
-import ScrollAnimation from 'react-animate-on-scroll'
+import { ArtGalleryCarousel } from "components/ArtProjects/ArtGalleryCarousel"
+import { ArtGalleryGrid } from "components/ArtProjects/ArtGalleryGrid"
+import { artProjects } from "data/artProjects"
+import ScrollAnimation from "react-animate-on-scroll"
 
-import { ArtGalleryCarousel } from 'components/ArtProjects/ArtGalleryCarousel'
-import { ArtGalleryGrid } from 'components/ArtProjects/ArtGalleryGrid'
-
-import { artProjects } from 'data/artProjects'
-
-import 'styles/ArtProjects/ArtProjects.css'
+import "styles/ArtProjects/ArtProjects.css"
 
 export function ArtProjects(): React.ReactElement {
   return (

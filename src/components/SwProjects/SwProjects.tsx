@@ -1,10 +1,8 @@
-import ScrollAnimation from 'react-animate-on-scroll'
+import { SwProjectCard } from "components/SwProjects/SwProjectCard"
+import { projects } from "data/swProjects"
+import ScrollAnimation from "react-animate-on-scroll"
 
-import { SwProjectCard } from 'components/SwProjects/SwProjectCard'
-
-import { projects } from 'data/swProjects'
-
-import 'styles/SwProjects/SwProjects.css'
+import "styles/SwProjects/SwProjects.css"
 
 export function SWProjects(): React.ReactElement {
   return (

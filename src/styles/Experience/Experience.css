@@ -3,11 +3,11 @@
   grid-template-columns: 1fr;
 
   grid-template-areas:
-    'experience-header'
-    'card1'
-    'card2'
-    'card3'
-    'card4';
+    "experience-header"
+    "card1"
+    "card2"
+    "card3"
+    "card4";
   margin-top: 50px;
 }
 

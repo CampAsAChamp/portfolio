@@ -1,6 +1,6 @@
 // Common shared types
 
-export type Theme = 'light' | 'dark'
+export type Theme = "light" | "dark"
 
 export interface ColorMap {
   ARCULES: string

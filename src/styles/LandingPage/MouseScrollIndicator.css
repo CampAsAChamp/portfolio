@@ -29,7 +29,7 @@
   background-color: var(--color-mouse);
   width: 4px;
   height: 4px;
-  content: '';
+  content: "";
 }
 
 #mouse-scroll-indicator.show {
@@ -37,7 +37,7 @@
 }
 
 /* Compensate for scrollbar when modal is open */
-body[style*='position: fixed'] #mouse-scroll-indicator {
+body[style*="position: fixed"] #mouse-scroll-indicator {
   left: calc(50% - var(--scrollbar-width, 0px) / 2);
 }
 

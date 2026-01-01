@@ -1,6 +1,6 @@
-import { BulletPoint as BulletPointType } from 'types/content.types'
+import { BulletPoint as BulletPointType } from "types/content.types"
 
-import { BulletPoint } from './BulletPoint'
+import { BulletPoint } from "./BulletPoint"
 
 interface BulletPointListProps {
   bulletPoints: BulletPointType[]

@@ -1,6 +1,6 @@
-import { getTechnologies } from '@/utils/technologiesUtils'
+import { Svg } from "components/Common/Svg"
 
-import { Svg } from 'components/Common/Svg'
+import { getTechnologies } from "@/utils/technologiesUtils"
 
 interface TechnologiesBarProps {
   technologyNames: string[]

@@ -14,47 +14,47 @@
  *   import profilePic from 'assets/Real_Profile_Pic.webp'
  *   import styles from 'styles/Component.css'
  */
-declare module '*.svg' {
+declare module "*.svg" {
   const content: string
   export default content
 }
 
-declare module '*.png' {
+declare module "*.png" {
   const content: string
   export default content
 }
 
-declare module '*.jpg' {
+declare module "*.jpg" {
   const content: string
   export default content
 }
 
-declare module '*.jpeg' {
+declare module "*.jpeg" {
   const content: string
   export default content
 }
 
-declare module '*.webp' {
+declare module "*.webp" {
   const content: string
   export default content
 }
 
-declare module '*.gif' {
+declare module "*.gif" {
   const content: string
   export default content
 }
 
-declare module '*.mp4' {
+declare module "*.mp4" {
   const content: string
   export default content
 }
 
-declare module '*.webm' {
+declare module "*.webm" {
   const content: string
   export default content
 }
 
-declare module '*.css' {
+declare module "*.css" {
   const content: Record<string, string>
   export default content
 }

@@ -1,8 +1,7 @@
-import ScrollAnimation from 'react-animate-on-scroll'
-import { Experience } from 'types/experience.types'
-
-import { BulletPointList } from 'components/Common/BulletPointList'
-import { TechnologiesBar } from 'components/Common/TechnologiesBar'
+import { BulletPointList } from "components/Common/BulletPointList"
+import { TechnologiesBar } from "components/Common/TechnologiesBar"
+import ScrollAnimation from "react-animate-on-scroll"
+import { Experience } from "types/experience.types"
 
 interface ExperienceCardProps {
   experience: Experience

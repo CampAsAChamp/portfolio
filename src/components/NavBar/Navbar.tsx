@@ -1,40 +1,37 @@
-import { useEffect } from 'react'
+import { useEffect } from "react"
+import S_Logo from "assets/S_Logo.svg"
+import { Svg } from "components/Common/Svg"
+import { HamburgerMenu } from "components/NavBar/HamburgerMenu"
+import { ThemeSwitcher } from "components/NavBar/ThemeSwitcher"
+import { useModal } from "hooks/useModal"
 
-import { Svg } from 'components/Common/Svg'
-import { HamburgerMenu } from 'components/NavBar/HamburgerMenu'
-import { ThemeSwitcher } from 'components/NavBar/ThemeSwitcher'
-
-import S_Logo from 'assets/S_Logo.svg'
-
-import { useModal } from 'hooks/useModal'
-
-import 'styles/NavBar/Navbar.css'
+import "styles/NavBar/Navbar.css"
 
 export function Navbar(): React.ReactElement {
   const { isOpen, close, toggle } = useModal()
 
   // Sync modal state with nav classes
   useEffect(() => {
-    const burger = document.querySelector('.hamburger-menu')
-    const nav = document.querySelector('nav ul')
-    const listItems = nav?.querySelectorAll('li')
+    const burger = document.querySelector(".hamburger-menu")
+    const nav = document.querySelector("nav ul")
+    const listItems = nav?.querySelectorAll("li")
 
     if (!burger || !nav || !listItems) return
 
     if (isOpen) {
-      nav.classList.remove('nav-closing')
-      nav.classList.add('nav-active')
-      burger.classList.add('toggle')
+      nav.classList.remove("nav-closing")
+      nav.classList.add("nav-active")
+      burger.classList.add("toggle")
 
       // Clear any inline styles from previous closing animation
       listItems.forEach((li: HTMLElement) => {
-        li.style.animation = ''
+        li.style.animation = ""
       })
     } else {
       // Add closing animation
-      if (nav.classList.contains('nav-active')) {
-        nav.classList.remove('nav-active')
-        nav.classList.add('nav-closing')
+      if (nav.classList.contains("nav-active")) {
+        nav.classList.remove("nav-active")
+        nav.classList.add("nav-closing")
 
         // Manually apply closing animation to each item
         listItems.forEach((li: HTMLElement, index) => {
@@ -44,13 +41,13 @@ export function Navbar(): React.ReactElement {
 
         // Remove closing class and clean up after animation completes
         setTimeout(() => {
-          nav.classList.remove('nav-closing')
+          nav.classList.remove("nav-closing")
           listItems.forEach((li: HTMLElement) => {
-            li.style.animation = ''
+            li.style.animation = ""
           })
         }, 700)
       }
-      burger.classList.remove('toggle')
+      burger.classList.remove("toggle")
     }
   }, [isOpen])
 

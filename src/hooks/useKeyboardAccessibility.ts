@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback } from "react"
 
 interface KeyboardAccessibilityReturn {
   onKeyDown: (event: React.KeyboardEvent) => void
@@ -12,7 +12,7 @@ interface KeyboardAccessibilityReturn {
 export function useKeyboardAccessibility(callback: (event: React.KeyboardEvent) => void): KeyboardAccessibilityReturn {
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
-      if (event.key === 'Enter' || event.key === ' ') {
+      if (event.key === "Enter" || event.key === " ") {
         event.preventDefault()
         callback(event)
       }

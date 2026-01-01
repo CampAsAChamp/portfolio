@@ -1,14 +1,14 @@
 #graphic-design-container {
   aspect-ratio: 16/9;
-  background-image: url('assets/Organic_Shapes/Bottom_Wave.svg');
+  background-image: url("assets/Organic_Shapes/Bottom_Wave.svg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   display: grid;
 
   grid-template-areas:
-    'graphic-design-header'
-    'graphic-design-content';
+    "graphic-design-header"
+    "graphic-design-content";
   padding-bottom: 100px;
 }
 

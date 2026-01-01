@@ -1,6 +1,5 @@
-import { useRef, useState } from 'react'
-
-import { SoftwareProject } from 'types/project.types'
+import { useRef, useState } from "react"
+import { SoftwareProject } from "types/project.types"
 
 interface SwProjectVideoProps {
   project: SoftwareProject
@@ -29,21 +28,21 @@ export function SwProjectVideo({ project, canAutoPlay, onVideoPlay, onVideoPause
 
   const handleVideoError = (e: React.SyntheticEvent<HTMLVideoElement>): void => {
     const video = e?.target as HTMLVideoElement | null
-    let errorMessage = 'Video playback error'
+    let errorMessage = "Video playback error"
 
     if (video?.error) {
       switch (video.error.code) {
         case 1:
-          errorMessage = 'Video loading aborted'
+          errorMessage = "Video loading aborted"
           break
         case 2:
-          errorMessage = 'Network error while loading video'
+          errorMessage = "Network error while loading video"
           break
         case 3:
-          errorMessage = 'Video decoding failed (format may not be supported)'
+          errorMessage = "Video decoding failed (format may not be supported)"
           break
         case 4:
-          errorMessage = 'Video format not supported by browser'
+          errorMessage = "Video format not supported by browser"
           break
         default:
           errorMessage = `Unknown video error (code: ${video.error.code})`
@@ -72,7 +71,7 @@ export function SwProjectVideo({ project, canAutoPlay, onVideoPlay, onVideoPause
         .play()
         .then(() => setIsVideoPlaying(true))
         .catch((error) => {
-          console.error('Failed to toggle video playback:', error)
+          console.error("Failed to toggle video playback:", error)
           onVideoError?.()
         })
     }
@@ -98,7 +97,7 @@ export function SwProjectVideo({ project, canAutoPlay, onVideoPlay, onVideoPause
         }, 300)
       })
       .catch((error) => {
-        console.error('Video playback failed:', error)
+        console.error("Video playback failed:", error)
         setIsPlayButtonFading(false)
         onVideoError?.()
       })
@@ -111,7 +110,7 @@ export function SwProjectVideo({ project, canAutoPlay, onVideoPlay, onVideoPause
   }
 
   const getPlayButtonClassName = (): string => {
-    const baseClass = 'video-play-overlay'
+    const baseClass = "video-play-overlay"
 
     if (isPlayButtonFading) {
       return `${baseClass} fading`
@@ -161,7 +160,7 @@ export function SwProjectVideo({ project, canAutoPlay, onVideoPlay, onVideoPause
           onClick={startVideoManually}
           onTouchEnd={handlePlayButtonTouch}
           onKeyDown={(e: React.KeyboardEvent) => {
-            if (e.key === 'Enter' || e.key === ' ') {
+            if (e.key === "Enter" || e.key === " ") {
               e.preventDefault()
               startVideoManually(e)
             }

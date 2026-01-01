@@ -1,10 +1,8 @@
-import { useEffect, useRef } from 'react'
-
-import { Svg } from 'components/Common/Svg'
-import { ContactMeModal } from 'components/ContactMeModal/ContactMeModal'
-
-import GitHubLogo from 'assets/Dev_Icons/GitHub.svg'
-import LinkedInLogo from 'assets/Dev_Icons/LinkedIn.svg'
+import { useEffect, useRef } from "react"
+import GitHubLogo from "assets/Dev_Icons/GitHub.svg"
+import LinkedInLogo from "assets/Dev_Icons/LinkedIn.svg"
+import { Svg } from "components/Common/Svg"
+import { ContactMeModal } from "components/ContactMeModal/ContactMeModal"
 
 interface ContactMeBarProps {
   isOpen: boolean
@@ -30,15 +28,15 @@ export function ContactMeBar({ isOpen, open, close }: ContactMeBarProps): React.
 
     if (isOpen) {
       // Keep arrow visible while modal is open
-      button.classList.add('modal-open')
-      button.style.viewTransitionName = 'none'
+      button.classList.add("modal-open")
+      button.style.viewTransitionName = "none"
       return
     } else {
       // Start button exit animation slightly before modal fully disappears
       const timeoutId = setTimeout(() => {
-        button.classList.remove('modal-open')
+        button.classList.remove("modal-open")
       }, 300)
-      button.style.viewTransitionName = 'contact-button'
+      button.style.viewTransitionName = "contact-button"
       return (): void => clearTimeout(timeoutId)
     }
   }, [isOpen])

@@ -36,7 +36,7 @@ nav li a:hover {
 /* Bottom bar under for on hover */
 nav li a::after {
   background: var(--color-yellow);
-  content: '';
+  content: "";
   height: 3px;
   left: 0%;
   position: absolute;

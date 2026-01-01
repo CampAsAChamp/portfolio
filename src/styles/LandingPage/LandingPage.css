@@ -2,8 +2,8 @@
   display: grid;
 
   grid-template-areas:
-    'nav nav'
-    'name-intro profile-pic-container';
+    "nav nav"
+    "name-intro profile-pic-container";
   grid-template-columns: 1.5fr 1fr;
   margin-bottom: 150px;
 }
@@ -80,7 +80,7 @@
 
 #contact-me-button span::after {
   color: var(--color-yellow);
-  content: '\00ab'; /* Makes an arrow >> */
+  content: "\00ab"; /* Makes an arrow >> */
   opacity: 0;
   position: absolute;
   right: -20px;
@@ -109,7 +109,7 @@
 }
 
 /* Compensate for scrollbar when modal is open */
-body[style*='position: fixed'] #contact-me-socials {
+body[style*="position: fixed"] #contact-me-socials {
   margin-right: calc(50px + var(--scrollbar-width, 0px));
 }
 
@@ -153,7 +153,7 @@ body[style*='position: fixed'] #contact-me-socials {
 
 /* Compensate for scrollbar when modal is open (desktop only) */
 @media screen and (min-width: 1101px) {
-  body[style*='position: fixed'] #landing-blob {
+  body[style*="position: fixed"] #landing-blob {
     right: var(--scrollbar-width, 0);
 
     /* Fix width calculation to account for body padding */
@@ -168,9 +168,9 @@ body[style*='position: fixed'] #contact-me-socials {
 
   #landing-page-container {
     grid-template-areas:
-      'nav'
-      'profile-pic-container'
-      'name-intro';
+      "nav"
+      "profile-pic-container"
+      "name-intro";
     grid-template-columns: 1fr;
     margin-bottom: 50px;
   }

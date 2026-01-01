@@ -1,13 +1,13 @@
 #sw-projects-container {
   display: grid;
   grid-template-areas:
-    'sw-projects-header'
-    'sw-projects-card1'
-    'sw-projects-card2'
-    'sw-projects-card3'
-    'sw-projects-card4'
-    'sw-projects-card5'
-    'sw-projects-card6';
+    "sw-projects-header"
+    "sw-projects-card1"
+    "sw-projects-card2"
+    "sw-projects-card3"
+    "sw-projects-card4"
+    "sw-projects-card5"
+    "sw-projects-card6";
 
   grid-template-columns: 1fr;
   padding-bottom: 100px;
@@ -84,7 +84,7 @@
 
 .sw-projects-button span::after {
   color: var(--color-yellow);
-  content: '\00ab'; /* Makes an arrow >> */
+  content: "\00ab"; /* Makes an arrow >> */
   opacity: 0;
   position: absolute;
   right: -20px;

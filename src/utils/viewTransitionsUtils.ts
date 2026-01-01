@@ -3,5 +3,5 @@
  * @returns true if document.startViewTransition is available as a function
  */
 export function supportsViewTransitions(): boolean {
-  return typeof document.startViewTransition === 'function'
+  return typeof document.startViewTransition === "function"
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react"
 
 interface ScrollPosition {
   x: number
@@ -13,11 +13,11 @@ export function useScrollPosition(): ScrollPosition {
       setScrollPosition({ x: window.scrollX, y: window.scrollY })
     }
 
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener("scroll", handleScroll)
     handleScroll() // Initial scroll position on mount
 
     return (): void => {
-      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener("scroll", handleScroll)
     }
   }, [])
 

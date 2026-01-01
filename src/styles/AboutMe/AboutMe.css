@@ -1,11 +1,11 @@
 #about-me-container {
   aspect-ratio: 16/9;
-  background-image: url('assets/Organic_Shapes/About_Me_Blob_Shape.svg');
+  background-image: url("assets/Organic_Shapes/About_Me_Blob_Shape.svg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   display: grid;
-  grid-template-areas: 'about-me-images about-me-text';
+  grid-template-areas: "about-me-images about-me-text";
 
   grid-template-columns: 1.15fr 1fr;
   margin-top: 50px;
@@ -65,10 +65,10 @@
 @media screen and (max-width: 1100px) {
   #about-me-container {
     aspect-ratio: 9/16;
-    background-image: url('assets/Organic_Shapes/Phone_About_Me_Blob_Shape.svg');
+    background-image: url("assets/Organic_Shapes/Phone_About_Me_Blob_Shape.svg");
     grid-template:
-      'about-me-images' 4.6fr
-      'about-me-text' auto / 1fr;
+      "about-me-images" 4.6fr
+      "about-me-text" auto / 1fr;
     margin-bottom: 50px;
 
     padding-bottom: 50px;

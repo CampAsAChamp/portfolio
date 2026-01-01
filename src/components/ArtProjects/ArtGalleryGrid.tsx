@@ -1,7 +1,6 @@
-import ScrollAnimation from 'react-animate-on-scroll'
-import { ArtProject } from 'types/project.types'
-
-import { ArtProjectPicture } from 'components/ArtProjects/ArtProjectPicture'
+import { ArtProjectPicture } from "components/ArtProjects/ArtProjectPicture"
+import ScrollAnimation from "react-animate-on-scroll"
+import { ArtProject } from "types/project.types"
 
 interface ArtGalleryGridProps {
   projects: ArtProject[]

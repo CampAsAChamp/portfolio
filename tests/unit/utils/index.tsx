@@ -11,11 +11,12 @@
  *
  * This file is automatically loaded by Vitest via the setupFiles configuration.
  */
-import '@testing-library/jest-dom'
-import { vi } from 'vitest'
+import "@testing-library/jest-dom"
+
+import { vi } from "vitest"
 
 // Mock react-inlinesvg to avoid async warnings in tests
-vi.mock('react-inlinesvg', () => ({
+vi.mock("react-inlinesvg", () => ({
   default: ({ src, alt, title, ...props }: { src: string; alt?: string; title?: string; [key: string]: unknown }): React.ReactElement => {
     return <svg data-src={src} aria-label={alt || title} {...props} />
   },
@@ -44,7 +45,7 @@ interface LocalStorageMockType {
 const localStorageMock: LocalStorageMockType = {
   getItem: (key: string): string | null => {
     const value = localStorageMock[key]
-    return typeof value === 'string' ? value : null
+    return typeof value === "string" ? value : null
   },
   setItem: (key: string, value: string): void => {
     localStorageMock[key] = value
@@ -54,7 +55,7 @@ const localStorageMock: LocalStorageMockType = {
   },
   clear: (): void => {
     Object.keys(localStorageMock).forEach((key) => {
-      if (key !== 'getItem' && key !== 'setItem' && key !== 'removeItem' && key !== 'clear') {
+      if (key !== "getItem" && key !== "setItem" && key !== "removeItem" && key !== "clear") {
         delete localStorageMock[key]
       }
     })

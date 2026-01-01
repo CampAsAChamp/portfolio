@@ -1,8 +1,7 @@
-import { MorphIcon } from 'components/NavBar/MorphIcon'
+import { MorphIcon } from "components/NavBar/MorphIcon"
+import { useTheme } from "hooks/useTheme"
 
-import { useTheme } from 'hooks/useTheme'
-
-import 'styles/NavBar/ThemeSwitcher.css'
+import "styles/NavBar/ThemeSwitcher.css"
 
 export function ThemeSwitcher(): React.ReactElement {
   const { isDarkMode, toggleTheme } = useTheme()

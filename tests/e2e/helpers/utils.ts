@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test'
+import { Page } from "@playwright/test"
 
 /**
  * Checks if the current page is in a mobile viewport.
@@ -20,7 +20,7 @@ export function isMobileViewport(page: Page): boolean {
 export async function openMobileMenu(page: Page): Promise<void> {
   const isMobile = isMobileViewport(page)
   if (isMobile) {
-    const hamburger = page.locator('.hamburger-menu')
+    const hamburger = page.locator(".hamburger-menu")
     if (await hamburger.isVisible()) {
       await hamburger.click()
       await page.waitForTimeout(500) // Wait for menu animation
@@ -47,7 +47,7 @@ export async function clickNavLink(page: Page, href: string): Promise<void> {
  * @param page - The Playwright Page object
  */
 export async function waitForPageReady(page: Page): Promise<void> {
-  await page.waitForLoadState('networkidle')
+  await page.waitForLoadState("networkidle")
   await page.evaluate(() => document.fonts.ready)
   await waitForImagesToLoad(page)
   await page.waitForTimeout(1500) // Wait for lazy-loaded content and animations

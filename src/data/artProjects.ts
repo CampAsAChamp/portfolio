@@ -1,89 +1,88 @@
-import { ArtProject } from 'types/project.types'
-
-import ThreeDimensionalBlendTextPic from 'assets/Projects/Art/3D_Blend_Text.svg'
-import AlohaPic from 'assets/Projects/Art/Aloha.webp'
-import BeeLogoPic from 'assets/Projects/Art/Bee_Logo.svg'
-import FloralTextPic from 'assets/Projects/Art/Floral_Text.webp'
-import GradientFluidPosterPic from 'assets/Projects/Art/Gradient_Fluid_Poster.svg'
-import LineArtLogoPic from 'assets/Projects/Art/Line_Art_Logo.svg'
-import LineFillLetteringPic from 'assets/Projects/Art/Line_Fill_Lettering.svg'
-import LosAngelesPostCardPic from 'assets/Projects/Art/Los_Angeles_Post_Card.webp'
-import RetroStripeLetteringPic from 'assets/Projects/Art/Retro_Stripe_Lettering.svg'
-import TriFergPic from 'assets/Projects/Art/Tri_Ferg.svg'
-import WaterColorPopsiclesPic from 'assets/Projects/Art/Water_Color_Popsicles.svg'
-import WellPic from 'assets/Projects/Art/Well.webp'
+import ThreeDimensionalBlendTextPic from "assets/Projects/Art/3D_Blend_Text.svg"
+import AlohaPic from "assets/Projects/Art/Aloha.webp"
+import BeeLogoPic from "assets/Projects/Art/Bee_Logo.svg"
+import FloralTextPic from "assets/Projects/Art/Floral_Text.webp"
+import GradientFluidPosterPic from "assets/Projects/Art/Gradient_Fluid_Poster.svg"
+import LineArtLogoPic from "assets/Projects/Art/Line_Art_Logo.svg"
+import LineFillLetteringPic from "assets/Projects/Art/Line_Fill_Lettering.svg"
+import LosAngelesPostCardPic from "assets/Projects/Art/Los_Angeles_Post_Card.webp"
+import RetroStripeLetteringPic from "assets/Projects/Art/Retro_Stripe_Lettering.svg"
+import TriFergPic from "assets/Projects/Art/Tri_Ferg.svg"
+import WaterColorPopsiclesPic from "assets/Projects/Art/Water_Color_Popsicles.svg"
+import WellPic from "assets/Projects/Art/Well.webp"
+import { ArtProject } from "types/project.types"
 
 export const artProjects: ArtProject[] = [
   {
-    id: 'aloha',
-    name: 'Aloha',
+    id: "aloha",
+    name: "Aloha",
     imageSrc: AlohaPic,
-    altText: 'Aloha Pic',
+    altText: "Aloha Pic",
   },
   {
-    id: 'los-angeles-post-card',
-    name: 'Los Angeles Post Card',
+    id: "los-angeles-post-card",
+    name: "Los Angeles Post Card",
     imageSrc: LosAngelesPostCardPic,
-    altText: 'LA',
+    altText: "LA",
   },
   {
-    id: 'gradient-fluid-poster',
-    name: 'Gradient Fluid Poster',
+    id: "gradient-fluid-poster",
+    name: "Gradient Fluid Poster",
     imageSrc: GradientFluidPosterPic,
-    altText: 'Gradient Poster',
+    altText: "Gradient Poster",
   },
   {
-    id: 'tri-ferg',
-    name: 'Tri Ferg',
+    id: "tri-ferg",
+    name: "Tri Ferg",
     imageSrc: TriFergPic,
-    altText: 'Tri Ferg Poster',
+    altText: "Tri Ferg Poster",
   },
   {
-    id: 'line-art-logo',
-    name: 'Line Art Logo',
+    id: "line-art-logo",
+    name: "Line Art Logo",
     imageSrc: LineArtLogoPic,
-    altText: 'Line Art Logo Poster',
+    altText: "Line Art Logo Poster",
   },
   {
-    id: '3d-blend-text',
-    name: '3D Blend Text',
+    id: "3d-blend-text",
+    name: "3D Blend Text",
     imageSrc: ThreeDimensionalBlendTextPic,
-    altText: '3D Blend Text',
+    altText: "3D Blend Text",
   },
   {
-    id: 'floral-text',
-    name: 'Floral Text',
+    id: "floral-text",
+    name: "Floral Text",
     imageSrc: FloralTextPic,
-    altText: 'Floral Text',
+    altText: "Floral Text",
   },
   {
-    id: 'retro-stripe-lettering',
-    name: 'Retro Stripe Lettering',
+    id: "retro-stripe-lettering",
+    name: "Retro Stripe Lettering",
     imageSrc: RetroStripeLetteringPic,
-    altText: 'Retro Stripe Lettering',
+    altText: "Retro Stripe Lettering",
   },
   {
-    id: 'bee-logo',
-    name: 'Bee Logo',
+    id: "bee-logo",
+    name: "Bee Logo",
     imageSrc: BeeLogoPic,
-    altText: 'Bee Logo',
+    altText: "Bee Logo",
   },
   {
-    id: 'line-fill-lettering',
-    name: 'Line Fill Lettering',
+    id: "line-fill-lettering",
+    name: "Line Fill Lettering",
     imageSrc: LineFillLetteringPic,
-    altText: 'Line Fill Lettering',
+    altText: "Line Fill Lettering",
   },
   {
-    id: 'well',
-    name: 'Well',
+    id: "well",
+    name: "Well",
     imageSrc: WellPic,
-    altText: 'Well',
+    altText: "Well",
   },
   {
-    id: 'water-color-popsicles',
-    name: 'Water Color Popsicles',
+    id: "water-color-popsicles",
+    name: "Water Color Popsicles",
     imageSrc: WaterColorPopsiclesPic,
-    altText: 'Water Color Popsicles',
+    altText: "Water Color Popsicles",
   },
 ]

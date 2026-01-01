@@ -1,5 +1,5 @@
 // Utility functions for creating structured content
-import { Link } from 'types/content.types'
+import { Link } from "types/content.types"
 
 export function createLink(text: string, href: string, options?: { target?: string; rel?: string }): Link {
   return {
@@ -10,5 +10,5 @@ export function createLink(text: string, href: string, options?: { target?: stri
 }
 
 export function createExternalLink(text: string, href: string): Link {
-  return createLink(text, href, { target: '_blank', rel: 'noopener noreferrer' })
+  return createLink(text, href, { target: "_blank", rel: "noopener noreferrer" })
 }

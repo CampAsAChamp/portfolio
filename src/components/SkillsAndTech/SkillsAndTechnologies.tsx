@@ -1,10 +1,8 @@
-import ScrollAnimation from 'react-animate-on-scroll'
+import { SkillsRow } from "components/SkillsAndTech/SkillsRow"
+import * as technologies from "data/technologies"
+import ScrollAnimation from "react-animate-on-scroll"
 
-import { SkillsRow } from 'components/SkillsAndTech/SkillsRow'
-
-import * as technologies from 'data/technologies'
-
-import 'styles/SkillsAndTech/SkillsAndTechnologies.css'
+import "styles/SkillsAndTech/SkillsAndTechnologies.css"
 
 export function SkillsAndTechnologies(): React.ReactElement {
   return (

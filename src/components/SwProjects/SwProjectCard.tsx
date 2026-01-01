@@ -1,19 +1,14 @@
-import { useState } from 'react'
-
-import ScrollAnimation from 'react-animate-on-scroll'
-import { SoftwareProject } from 'types/project.types'
-
-import { BulletPointList } from 'components/Common/BulletPointList'
-import { Svg } from 'components/Common/Svg'
-import { TechnologiesBar } from 'components/Common/TechnologiesBar'
-import { SwProjectImage } from 'components/SwProjects/SwProjectImage'
-import { SwProjectVideo } from 'components/SwProjects/SwProjectVideo'
-
-import GitHubIcon from 'assets/Dev_Icons/GitHub.svg'
-
-import { COLORS } from 'data/colors'
-
-import { useBrowserDetection } from 'hooks/useBrowserDetection'
+import { useState } from "react"
+import GitHubIcon from "assets/Dev_Icons/GitHub.svg"
+import { BulletPointList } from "components/Common/BulletPointList"
+import { Svg } from "components/Common/Svg"
+import { TechnologiesBar } from "components/Common/TechnologiesBar"
+import { SwProjectImage } from "components/SwProjects/SwProjectImage"
+import { SwProjectVideo } from "components/SwProjects/SwProjectVideo"
+import { COLORS } from "data/colors"
+import { useBrowserDetection } from "hooks/useBrowserDetection"
+import ScrollAnimation from "react-animate-on-scroll"
+import { SoftwareProject } from "types/project.types"
 
 interface SwProjectCardProps {
   project: SoftwareProject
@@ -61,7 +56,7 @@ export function SwProjectCard({ project, index }: SwProjectCardProps): React.Rea
                   if (!event || !event.isTrusted) {
                     return
                   }
-                  window.open(project.link, '_blank')
+                  window.open(project.link, "_blank")
                 }}
                 onTouchStart={(e) => e.stopPropagation()} // Prevent touch interference
               >

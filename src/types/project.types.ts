@@ -1,5 +1,5 @@
 // Project types for software and art projects
-import { BulletPoint } from './content.types'
+import { BulletPoint } from "./content.types"
 
 export interface SoftwareProject {
   name: string

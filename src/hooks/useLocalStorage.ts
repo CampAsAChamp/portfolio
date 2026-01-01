@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from "react"
 
 /**
  * Setter function type that accepts either a direct value or an updater function.
@@ -52,8 +52,8 @@ export function useLocalStorage<T>(key: string, defaultValue: T): [T, SetValue<T
       }
     }
 
-    window.addEventListener('storage', handleStorageChange)
-    return (): void => window.removeEventListener('storage', handleStorageChange)
+    window.addEventListener("storage", handleStorageChange)
+    return (): void => window.removeEventListener("storage", handleStorageChange)
   }, [key])
 
   return [value, setStoredValue]

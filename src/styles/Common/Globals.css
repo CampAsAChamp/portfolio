@@ -1,4 +1,4 @@
-@import 'styles/Common/hover.css';
+@import "styles/Common/hover.css";
 
 /* Custom spring animation for cards */
 @keyframes spring-in {
@@ -63,7 +63,7 @@
 }
 
 /* Light Mode */
-:root[color-mode='light'] {
+:root[color-mode="light"] {
   --color-background: var(--color-white);
   --color-scrollbar-background: #d9d9d9;
   --color-body-text: var(--color-off-grey);
@@ -81,7 +81,7 @@
 }
 
 /* Dark Mode */
-:root[color-mode='dark'] {
+:root[color-mode="dark"] {
   --color-background: #1e272e;
   --color-scrollbar-background: #2b343b;
   --color-body-text: var(--color-white);
@@ -115,7 +115,7 @@ html {
 body {
   margin: 0;
   color: var(--color-body-text);
-  font-family: 'Nunito', sans-serif;
+  font-family: "Nunito", sans-serif;
 }
 
 html,
@@ -175,7 +175,7 @@ ul ul {
 
   color: white;
   font:
-    900 large 'Nunito',
+    900 large "Nunito",
     sans-serif;
   font-size: 1.125rem;
   text-align: center;

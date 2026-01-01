@@ -1,13 +1,11 @@
-import { Svg } from 'components/Common/Svg'
-import { ContactMeBar } from 'components/LandingPage/ContactMeBar'
-import { MouseScrollIndicator } from 'components/LandingPage/MouseScrollIndicator'
+import ArtProfilePic from "assets/Art_Profile_Pic.svg"
+import HeroImageBlobShape from "assets/Organic_Shapes/Hero_Image_Blob_Shape.svg"
+import { Svg } from "components/Common/Svg"
+import { ContactMeBar } from "components/LandingPage/ContactMeBar"
+import { MouseScrollIndicator } from "components/LandingPage/MouseScrollIndicator"
+import { useModal } from "hooks/useModal"
 
-import ArtProfilePic from 'assets/Art_Profile_Pic.svg'
-import HeroImageBlobShape from 'assets/Organic_Shapes/Hero_Image_Blob_Shape.svg'
-
-import { useModal } from 'hooks/useModal'
-
-import 'styles/LandingPage/LandingPage.css'
+import "styles/LandingPage/LandingPage.css"
 
 export function LandingPage(): React.ReactElement {
   const { isOpen, open, close } = useModal()

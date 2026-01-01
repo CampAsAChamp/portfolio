@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from "react"
 
 interface BrowserInfo {
   isInstagramBrowser: boolean
@@ -14,8 +14,8 @@ interface BrowserInfo {
 export function useBrowserDetection(): BrowserInfo {
   const [browserInfo] = useState<BrowserInfo>(() => {
     const userAgent = navigator.userAgent
-    const isInstagram = userAgent.includes('Instagram')
-    const isFacebook = userAgent.includes('FBAN') || userAgent.includes('FBAV')
+    const isInstagram = userAgent.includes("Instagram")
+    const isFacebook = userAgent.includes("FBAN") || userAgent.includes("FBAV")
     const isIOS = /iPad|iPhone|iPod/.test(userAgent)
     const isAndroid = /Android/.test(userAgent)
 

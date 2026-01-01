@@ -19,8 +19,8 @@
  * and doesn't include TypeScript type definitions. Without this declaration, TypeScript
  * would show an error: "Could not find a declaration file for module 'react-animate-on-scroll'"
  */
-declare module 'react-animate-on-scroll' {
-  import { Component, ReactNode } from 'react'
+declare module "react-animate-on-scroll" {
+  import { Component, ReactNode } from "react"
 
   export interface ScrollAnimationProps {
     // Core animation properties (most commonly used)

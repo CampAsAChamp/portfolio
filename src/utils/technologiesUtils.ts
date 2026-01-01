@@ -1,6 +1,5 @@
-import { Technology } from 'types/technology.types'
-
-import { technologiesMap } from 'data/technologies'
+import { technologiesMap } from "data/technologies"
+import { Technology } from "types/technology.types"
 
 /**
  * Maps technology names to their full Technology objects from the technologies map.

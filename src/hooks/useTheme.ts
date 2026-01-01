@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from "react"
+import { Theme } from "types/common.types"
 
-import { supportsViewTransitions } from '@/utils/viewTransitionsUtils'
-import { Theme } from 'types/common.types'
+import { supportsViewTransitions } from "@/utils/viewTransitionsUtils"
 
-const DARK: Theme = 'dark'
-const LIGHT: Theme = 'light'
-const COLOR_MODE_KEY = 'color-mode'
+const DARK: Theme = "dark"
+const LIGHT: Theme = "light"
+const COLOR_MODE_KEY = "color-mode"
 
 interface UseThemeReturn {
   isDarkMode: boolean
@@ -20,7 +20,7 @@ const getInitialTheme = (): Theme => {
 
   // Check for the OS theme if no localStorage theme
   if (!localStorageTheme) {
-    const osDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const osDarkTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
     return osDarkTheme ? DARK : LIGHT
   }
 
@@ -66,15 +66,15 @@ export function useTheme(): UseThemeReturn {
       const endRadius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y))
 
       // Set CSS custom properties BEFORE starting transition
-      document.documentElement.style.setProperty('--x', `${x}px`)
-      document.documentElement.style.setProperty('--y', `${y}px`)
-      document.documentElement.style.setProperty('--r', `${endRadius}px`)
+      document.documentElement.style.setProperty("--x", `${x}px`)
+      document.documentElement.style.setProperty("--y", `${y}px`)
+      document.documentElement.style.setProperty("--r", `${endRadius}px`)
 
       // Enable circle wipe animation for theme transitions only
-      document.documentElement.style.setProperty('--theme-transition-animation', 'reveal-theme')
+      document.documentElement.style.setProperty("--theme-transition-animation", "reveal-theme")
 
       // Mark that we're transitioning theme (for debugging/reference)
-      document.documentElement.setAttribute('data-theme-transitioning', 'true')
+      document.documentElement.setAttribute("data-theme-transitioning", "true")
 
       // Update React state immediately to prevent icon flash
       setIsDarkMode(newTheme === DARK)
@@ -89,8 +89,8 @@ export function useTheme(): UseThemeReturn {
       // Note: We intentionally don't await these cleanup operations - they run asynchronously in the background
       if (transition) {
         void transition.finished?.finally(() => {
-          document.documentElement.removeAttribute('data-theme-transitioning')
-          document.documentElement.style.removeProperty('--theme-transition-animation')
+          document.documentElement.removeAttribute("data-theme-transitioning")
+          document.documentElement.style.removeProperty("--theme-transition-animation")
         })
 
         // Ensure transition completes properly (if ready promise exists)
@@ -98,8 +98,8 @@ export function useTheme(): UseThemeReturn {
           // If transition fails, ensure theme is still fully applied
           document.documentElement.setAttribute(COLOR_MODE_KEY, newTheme)
           localStorage.setItem(COLOR_MODE_KEY, newTheme)
-          document.documentElement.removeAttribute('data-theme-transitioning')
-          document.documentElement.style.removeProperty('--theme-transition-animation')
+          document.documentElement.removeAttribute("data-theme-transitioning")
+          document.documentElement.style.removeProperty("--theme-transition-animation")
         })
       }
     },

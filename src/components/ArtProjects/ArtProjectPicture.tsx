@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useState } from 'react'
-
-import { CloseIcon } from 'components/Common/Icons/CloseIcon'
+import { useCallback, useEffect, useState } from "react"
+import { CloseIcon } from "components/Common/Icons/CloseIcon"
 
 interface ArtProjectPictureProps {
   imgSrc: string
@@ -11,14 +10,14 @@ export function ArtProjectPicture({ imgSrc, altText }: ArtProjectPictureProps): 
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const showModal = useCallback(() => {
-    const modalBackground = document.getElementById('art-modal-background')
-    const modalImg = document.getElementById('art-modal-img') as HTMLImageElement | null
+    const modalBackground = document.getElementById("art-modal-background")
+    const modalImg = document.getElementById("art-modal-img") as HTMLImageElement | null
 
     if (!modalBackground || !modalImg) return
 
-    modalBackground.classList.add('show')
-    modalImg.classList.add('show')
-    document.body.classList.add('art-modal-open')
+    modalBackground.classList.add("show")
+    modalImg.classList.add("show")
+    document.body.classList.add("art-modal-open")
 
     modalImg.src = imgSrc
     modalImg.title = altText
@@ -26,20 +25,20 @@ export function ArtProjectPicture({ imgSrc, altText }: ArtProjectPictureProps): 
   }, [imgSrc, altText])
 
   const hideModal = useCallback(() => {
-    const modalBackground = document.getElementById('art-modal-background')
-    const modalImg = document.getElementById('art-modal-img')
+    const modalBackground = document.getElementById("art-modal-background")
+    const modalImg = document.getElementById("art-modal-img")
 
     if (!modalBackground || !modalImg) return
 
     // Add closing animation class
-    modalImg.classList.add('closing')
+    modalImg.classList.add("closing")
 
     // Wait for animation to complete before hiding
     setTimeout(() => {
-      modalBackground.classList.remove('show')
-      modalImg.classList.remove('show')
-      modalImg.classList.remove('closing')
-      document.body.classList.remove('art-modal-open')
+      modalBackground.classList.remove("show")
+      modalImg.classList.remove("show")
+      modalImg.classList.remove("closing")
+      document.body.classList.remove("art-modal-open")
       setIsModalOpen(false)
     }, 600) // Match the animation duration (0.6s)
   }, [])
@@ -49,17 +48,17 @@ export function ArtProjectPicture({ imgSrc, altText }: ArtProjectPictureProps): 
     if (!isModalOpen) return
 
     const handleEscape = (event: KeyboardEvent): void => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         hideModal()
       }
     }
 
-    document.addEventListener('keydown', handleEscape)
-    return (): void => document.removeEventListener('keydown', handleEscape)
+    document.addEventListener("keydown", handleEscape)
+    return (): void => document.removeEventListener("keydown", handleEscape)
   }, [isModalOpen, hideModal])
 
   const handleKeyDown = (event: React.KeyboardEvent, callback: () => void): void => {
-    if (event.key === 'Enter' || event.key === ' ') {
+    if (event.key === "Enter" || event.key === " ") {
       event.preventDefault()
       callback()
     }
@@ -70,7 +69,7 @@ export function ArtProjectPicture({ imgSrc, altText }: ArtProjectPictureProps): 
       <button
         onClick={showModal}
         onKeyDown={(e) => handleKeyDown(e, showModal)}
-        style={{ border: 'none', padding: 0, background: 'none', cursor: 'pointer', display: 'block' }}
+        style={{ border: "none", padding: 0, background: "none", cursor: "pointer", display: "block" }}
         aria-label={`View ${altText}`}
       >
         <img src={imgSrc} className="art-grid-img" alt={altText} title={altText} loading="lazy" />

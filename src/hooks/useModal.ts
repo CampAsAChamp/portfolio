@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from "react"
 
-import { supportsViewTransitions } from '@/utils/viewTransitionsUtils'
+import { supportsViewTransitions } from "@/utils/viewTransitionsUtils"
 
 interface UseModalReturn {
   isOpen: boolean
@@ -23,10 +23,10 @@ export function useModal(initialState = false): UseModalReturn {
     const updateState = (): void => {
       setIsOpen(true)
       // Lock body scroll and compensate for scrollbar width
-      document.body.style.position = 'fixed'
+      document.body.style.position = "fixed"
       document.body.style.paddingRight = `${scrollbarWidth}px`
       // Set CSS variable for elements that need scrollbar compensation
-      document.documentElement.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`)
+      document.documentElement.style.setProperty("--scrollbar-width", `${scrollbarWidth}px`)
     }
 
     // Use View Transitions API if available, otherwise fall back to instant change
@@ -41,10 +41,10 @@ export function useModal(initialState = false): UseModalReturn {
     const updateState = (): void => {
       setIsOpen(false)
       // Restore body scroll and remove padding
-      document.body.style.position = ''
-      document.body.style.paddingRight = ''
+      document.body.style.position = ""
+      document.body.style.paddingRight = ""
       // Remove CSS variable
-      document.documentElement.style.removeProperty('--scrollbar-width')
+      document.documentElement.style.removeProperty("--scrollbar-width")
     }
 
     // Use View Transitions API if available, otherwise fall back to instant change
@@ -68,13 +68,13 @@ export function useModal(initialState = false): UseModalReturn {
     if (!isOpen) return
 
     const handleEscape = (event: KeyboardEvent): void => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         close()
       }
     }
 
-    document.addEventListener('keydown', handleEscape)
-    return (): void => document.removeEventListener('keydown', handleEscape)
+    document.addEventListener("keydown", handleEscape)
+    return (): void => document.removeEventListener("keydown", handleEscape)
   }, [isOpen, close])
 
   return { isOpen, open, close, toggle }
