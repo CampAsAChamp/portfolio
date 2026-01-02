@@ -98,3 +98,77 @@ async function waitForPageHeightStable(page: Page, maxIterations = 20): Promise<
     iterations++
   }
 }
+
+/**
+ * Waits for an element's animation to complete.
+ * Uses animation completion detection instead of fixed timeouts.
+ *
+ * @param page - The Playwright Page object
+ * @param selector - CSS selector of the animated element
+ * @param maxTimeout - Maximum time to wait in milliseconds (default: 5000)
+ */
+export async function waitForAnimation(page: Page, selector: string, maxTimeout = 5000): Promise<void> {
+  try {
+    await page.waitForFunction(
+      (sel) => {
+        const element = document.querySelector(sel)
+        if (!element) return false
+        const styles = window.getComputedStyle(element)
+        // Check if animation has finished (opacity = 1, no running animations)
+        return styles.opacity === "1" && styles.animationPlayState !== "running"
+      },
+      selector,
+      { timeout: maxTimeout },
+    )
+  } catch (error) {
+    // Fallback: if animation detection fails, wait for generous timeout
+    await page.waitForTimeout(maxTimeout / 2)
+  }
+}
+
+/**
+ * Gets computed animation CSS properties for an element.
+ *
+ * @param page - The Playwright Page object
+ * @param selector - CSS selector of the element
+ * @returns Object containing animation properties
+ */
+export async function getAnimationProperties(
+  page: Page,
+  selector: string,
+): Promise<{
+  duration: string
+  delay: string
+  fillMode: string
+  playState: string
+  opacity: string
+}> {
+  return await page.locator(selector).evaluate((el) => {
+    const styles = window.getComputedStyle(el)
+    return {
+      duration: styles.animationDuration,
+      delay: styles.animationDelay,
+      fillMode: styles.animationFillMode,
+      playState: styles.animationPlayState,
+      opacity: styles.opacity,
+    }
+  })
+}
+
+/**
+ * Verifies that an element has the expected animation classes.
+ *
+ * @param page - The Playwright Page object
+ * @param selector - CSS selector of the element
+ * @param expectedClasses - Array of class names that should be present
+ */
+export async function verifyAnimationClasses(page: Page, selector: string, expectedClasses: string[]): Promise<void> {
+  const element = page.locator(selector)
+  for (const className of expectedClasses) {
+    await element.waitFor({ state: "attached" })
+    const hasClass = await element.evaluate((el, cls) => el.classList.contains(cls), className)
+    if (!hasClass) {
+      throw new Error(`Element ${selector} does not have class ${className}`)
+    }
+  }
+}

@@ -31,3 +31,15 @@ export function expectModalClosed(modalElement: HTMLElement | null, bodyClass?: 
     expect(document.body.classList.contains(bodyClass)).toBe(false)
   }
 }
+
+/**
+ * Asserts that an element has the specified animate.css animation class.
+ *
+ * @param element - The element to check
+ * @param animationClass - The animate.css class name (e.g., 'animate__fadeIn')
+ */
+export function expectElementHasAnimation(element: HTMLElement | null, animationClass: string): void {
+  expect(element).toBeTruthy()
+  expect(element!.classList.contains("animate__animated")).toBe(true)
+  expect(element!.classList.contains(animationClass)).toBe(true)
+}
