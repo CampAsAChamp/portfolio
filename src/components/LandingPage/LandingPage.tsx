@@ -12,22 +12,31 @@ export function LandingPage(): React.ReactElement {
 
   return (
     <>
-      <img id="landing-blob" src={HeroImageBlobShape} alt="" />
+      <img id="landing-blob" src={HeroImageBlobShape} alt="" className="animate__animated animate__fadeIn" />
       <section id="landing-page-container" className="page-container">
         <div id="name-intro-container">
-          <h1 id="name">
+          <h1 id="name" className="animate__animated animate__bounceIn">
             NICK
             <br />
             SCHNEIDER
           </h1>
-          <div id="software-engineer">Software Engineer</div>
+          <div id="software-engineer" className="animate__animated animate__bounceIn">
+            Software Engineer
+          </div>
           <br />
-          <div id="subtitle">If you&apos;re going to make something, why not make it pretty?</div>
+          <div id="subtitle" className="animate__animated animate__fadeInUp">
+            If you&apos;re going to make something, why not make it pretty?
+          </div>
           <ContactMeBar isOpen={isOpen} open={open} close={close} />
           <MouseScrollIndicator />
         </div>
         <div id="profile-pic-container">
-          <Svg id="profile-pic" src={ArtProfilePic} title="Flat Profile Pic" className="center" />
+          <Svg
+            id="profile-pic"
+            src={ArtProfilePic}
+            title="Flat Profile Pic"
+            className="center animate__animated animate__bounceIn"
+          />
         </div>
       </section>
     </>

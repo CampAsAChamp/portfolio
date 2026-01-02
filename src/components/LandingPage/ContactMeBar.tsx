@@ -43,11 +43,17 @@ export function ContactMeBar({ isOpen, open, close }: ContactMeBarProps): React.
 
   return (
     <div id="contact-me-bar">
-      <button type="button" className="button" id="contact-me-button" ref={buttonRef} onClick={handleContactMeClick}>
+      <button
+        type="button"
+        className="button animate__animated animate__fadeInUp"
+        id="contact-me-button"
+        ref={buttonRef}
+        onClick={handleContactMeClick}
+      >
         <span>Contact Me</span>
       </button>
       <ContactMeModal isOpen={isOpen} close={close} />
-      <div id="contact-me-socials">
+      <div id="contact-me-socials" className="animate__animated animate__fadeInUp">
         <a href="https://github.com/CampAsAChamp/" target="_blank" rel="noopener noreferrer">
           <Svg className="contact-me-item" id="github-logo" src={GitHubLogo} title="Github Icon" />
         </a>

@@ -1,3 +1,60 @@
+/* Landing page entrance animations */
+#landing-blob {
+  animation-duration: 1s;
+  animation-delay: 0s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+#name {
+  animation-duration: 0.9s;
+  animation-delay: 0.1s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+#software-engineer {
+  animation-duration: 0.9s;
+  animation-delay: 0.2s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+#subtitle {
+  animation-duration: 0.8s;
+  animation-delay: 0.3s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+#contact-me-button {
+  animation-duration: 0.8s;
+  animation-delay: 0.4s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+#contact-me-socials {
+  animation-duration: 0.8s;
+  animation-delay: 0.5s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+#profile-pic {
+  animation-duration: 1s;
+  animation-delay: 0.3s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+#mouse-scroll-indicator {
+  animation-duration: 0.8s;
+  animation-delay: 0.6s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
 #landing-page-container {
   display: grid;
 
@@ -27,8 +84,6 @@
   margin: 2rem auto;
   max-width: 80%;
   padding: 0 2rem;
-  transform: unset;
-  -webkit-transform: unset;
 }
 
 #software-engineer {

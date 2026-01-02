@@ -9,5 +9,9 @@ export function MouseScrollIndicator(): React.ReactElement {
 
   const className = showMouse ? "show" : ""
 
-  return <div className={className} id="mouse-scroll-indicator" />
+  return (
+    <div id="mouse-scroll-indicator-wrapper">
+      <div className={`${className} animate__animated animate__fadeInUp`} id="mouse-scroll-indicator" />
+    </div>
+  )
 }

@@ -1,3 +1,41 @@
+/* Navbar entrance animations */
+nav a:has(#logo) {
+  animation-duration: 0.5s;
+  animation-delay: 0s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.nav-link-entrance {
+  animation-duration: 0.5s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.nav-link-entrance:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.nav-link-entrance:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.nav-link-entrance:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.nav-link-entrance:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.nav-link-entrance:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+.nav-link-entrance:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
 nav {
   align-items: center;
   display: flex;

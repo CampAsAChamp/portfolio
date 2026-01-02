@@ -53,34 +53,34 @@ export function Navbar(): React.ReactElement {
 
   return (
     <nav>
-      <a href="/">
+      <a href="/" className="animate__animated animate__fadeInDown">
         <Svg id="logo" src={S_Logo} title="Home" />
       </a>
       <ul>
-        <li>
+        <li className="nav-link-entrance animate__animated animate__fadeInDown">
           <ThemeSwitcher />
         </li>
-        <li>
+        <li className="nav-link-entrance animate__animated animate__fadeInDown">
           <a href="#about-me-images" onClick={close}>
             About Me
           </a>
         </li>
-        <li>
+        <li className="nav-link-entrance animate__animated animate__fadeInDown">
           <a href="#experience-header" onClick={close}>
             Experience
           </a>
         </li>
-        <li>
+        <li className="nav-link-entrance animate__animated animate__fadeInDown">
           <a href="#skills-header" onClick={close}>
             Skills
           </a>
         </li>
-        <li>
+        <li className="nav-link-entrance animate__animated animate__fadeInDown">
           <a href="#sw-projects-header" onClick={close}>
             Projects
           </a>
         </li>
-        <li>
+        <li className="nav-link-entrance animate__animated animate__fadeInDown">
           <a href="#graphic-design-header" onClick={close}>
             Art & Design
           </a>

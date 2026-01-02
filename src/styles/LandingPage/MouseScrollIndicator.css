@@ -1,10 +1,12 @@
-#mouse-scroll-indicator {
+#mouse-scroll-indicator-wrapper {
   position: absolute;
   bottom: 0%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  opacity: 1;
+}
+
+#mouse-scroll-indicator {
   transition: opacity 1s ease;
   view-transition-name: mouse-scroll;
 
@@ -37,7 +39,7 @@
 }
 
 /* Compensate for scrollbar when modal is open */
-body[style*="position: fixed"] #mouse-scroll-indicator {
+body[style*="position: fixed"] #mouse-scroll-indicator-wrapper {
   left: calc(50% - var(--scrollbar-width, 0px) / 2);
 }
 
