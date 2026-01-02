@@ -1,3 +1,15 @@
+## 1.1.0 (2026-01-02)
+
+* docs: update .cursorrules with correct React version ([12f763d](https://github.com/CampAsAChamp/portfolio/commit/12f763d))
+* docs: update README with releases section ([aaec1d8](https://github.com/CampAsAChamp/portfolio/commit/aaec1d8))
+* fix: branch mismatch for semantic-release ([7639f8e](https://github.com/CampAsAChamp/portfolio/commit/7639f8e))
+* fix: reorder Prettier overrides to ensure package.json uses json-stringify parser ([00d2280](https://github.com/CampAsAChamp/portfolio/commit/00d2280))
+* style: reformat with new prettier and lint rules ([bf97063](https://github.com/CampAsAChamp/portfolio/commit/bf97063))
+* refactor: clean up tests to have more reuse ([f1c8152](https://github.com/CampAsAChamp/portfolio/commit/f1c8152))
+* refactor: update to match amslaw configs and setup ([85b1c00](https://github.com/CampAsAChamp/portfolio/commit/85b1c00))
+* feat: unify linting configs ([14ab4ee](https://github.com/CampAsAChamp/portfolio/commit/14ab4ee))
+* ci: update workflows to use main branch instead of master ([76b1e0b](https://github.com/CampAsAChamp/portfolio/commit/76b1e0b))
+
 ## 1.0.0 (2026-01-01)
 
 * fix: add yarn to skill icons ([e55bb53](https://github.com/CampAsAChamp/portfolio/commit/e55bb53))
@@ -780,4 +792,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]: https://github.com/CampAsAChamp/portfolio/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/CampAsAChamp/portfolio/releases/tag/v0.1.0
-
