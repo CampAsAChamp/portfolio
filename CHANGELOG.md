@@ -1,3 +1,9 @@
+## 1.2.0 (2026-01-02)
+
+* chore: fix linting issues and make linting run on test files ([6f90118](https://github.com/CampAsAChamp/portfolio/commit/6f90118))
+* test: unit and e2e tests for new landing page animations ([165389c](https://github.com/CampAsAChamp/portfolio/commit/165389c))
+* feat: add landing page entrance animations ([764af18](https://github.com/CampAsAChamp/portfolio/commit/764af18))
+
 ## 1.1.0 (2026-01-02)
 
 * docs: update .cursorrules with correct React version ([12f763d](https://github.com/CampAsAChamp/portfolio/commit/12f763d))
