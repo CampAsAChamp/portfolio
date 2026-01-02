@@ -4,6 +4,11 @@
   animation-delay: 0s;
   opacity: 0;
   animation-fill-mode: forwards;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 50%;
+  z-index: -1;
 }
 
 #name {
@@ -11,6 +16,7 @@
   animation-delay: 0.1s;
   opacity: 0;
   animation-fill-mode: forwards;
+  color: var(--color-name);
 }
 
 #software-engineer {
@@ -18,6 +24,9 @@
   animation-delay: 0.2s;
   opacity: 0;
   animation-fill-mode: forwards;
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-block: 0;
 }
 
 #subtitle {
@@ -25,6 +34,8 @@
   animation-delay: 0.3s;
   opacity: 0;
   animation-fill-mode: forwards;
+  font-size: 1.5rem;
+  font-weight: 400;
 }
 
 #contact-me-button {
@@ -32,6 +43,14 @@
   animation-delay: 0.4s;
   opacity: 0;
   animation-fill-mode: forwards;
+  align-items: center;
+  color: white;
+  display: flex;
+  font-size: 1.625rem;
+  justify-content: center;
+  line-height: 1;
+  padding: 15px 20px;
+  view-transition-name: contact-button;
 }
 
 #contact-me-socials {
@@ -39,6 +58,8 @@
   animation-delay: 0.5s;
   opacity: 0;
   animation-fill-mode: forwards;
+  margin: 0 50px;
+  view-transition-name: contact-socials;
 }
 
 #profile-pic {
@@ -46,6 +67,10 @@
   animation-delay: 0.3s;
   opacity: 0;
   animation-fill-mode: forwards;
+  display: block;
+  margin: 2rem auto;
+  max-width: 80%;
+  padding: 0 2rem;
 }
 
 #mouse-scroll-indicator {
@@ -71,30 +96,8 @@
   padding-top: 5%;
 }
 
-#name {
-  color: var(--color-name);
-}
-
 #profile-pic-container {
   grid-area: profile-pic-container;
-}
-
-#profile-pic {
-  display: block;
-  margin: 2rem auto;
-  max-width: 80%;
-  padding: 0 2rem;
-}
-
-#software-engineer {
-  font-size: 2.25rem;
-  font-weight: 700;
-  margin-block: 0;
-}
-
-#subtitle {
-  font-size: 1.5rem;
-  font-weight: 400;
 }
 
 #contact-me-container {
@@ -106,17 +109,6 @@
   align-items: center;
   display: flex;
   margin-top: 75px;
-}
-
-#contact-me-button {
-  align-items: center;
-  color: white;
-  display: flex;
-  font-size: 1.625rem;
-  justify-content: center;
-  line-height: 1;
-  padding: 15px 20px;
-  view-transition-name: contact-button;
 }
 
 /* Disable view-transition-name during theme transitions to prevent premature color changes */
@@ -158,11 +150,6 @@
   right: 0;
 }
 
-#contact-me-socials {
-  margin: 0 50px;
-  view-transition-name: contact-socials;
-}
-
 /* Compensate for scrollbar when modal is open */
 body[style*="position: fixed"] #contact-me-socials {
   margin-right: calc(50px + var(--scrollbar-width, 0px));
@@ -196,14 +183,6 @@ body[style*="position: fixed"] #contact-me-socials {
   height: 50px;
   margin-right: 25px;
   width: 50px;
-}
-
-#landing-blob {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 50%;
-  z-index: -1;
 }
 
 /* Compensate for scrollbar when modal is open (desktop only) */

@@ -1,11 +1,4 @@
 /* Navbar entrance animations */
-nav a:has(#logo) {
-  animation-duration: 0.5s;
-  animation-delay: 0s;
-  opacity: 0;
-  animation-fill-mode: forwards;
-}
-
 .nav-link-entrance {
   animation-duration: 0.5s;
   opacity: 0;
@@ -69,6 +62,13 @@ nav li a {
 
 nav li a:hover {
   color: var(--color-yellow);
+}
+
+nav a:has(#logo) {
+  animation-duration: 0.5s;
+  animation-delay: 0s;
+  opacity: 0;
+  animation-fill-mode: forwards;
 }
 
 /* Bottom bar under for on hover */

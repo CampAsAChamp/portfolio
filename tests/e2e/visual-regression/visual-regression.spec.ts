@@ -108,7 +108,7 @@ test.describe("Animation Visual Regression Tests", () => {
     await page.evaluate(() => {
       try {
         localStorage.clear()
-      } catch (e) {
+      } catch {
         // Ignore if localStorage is not available
       }
     })
@@ -125,7 +125,7 @@ test.describe("Animation Visual Regression Tests", () => {
     })
   })
 
-  test("landing page - post-animation complete", async ({ page, browserName }) => {
+  test("landing page - post-animation complete", async ({ page }) => {
     // Wait for all entrance animations to complete (longest delay is 0.6s + 1s duration = 1.6s)
     await page.waitForTimeout(2000)
 
@@ -148,7 +148,7 @@ test.describe("Animation Visual Regression Tests", () => {
     })
   })
 
-  test("navbar - post-animation complete", async ({ page, browserName }) => {
+  test("navbar - post-animation complete", async ({ page }) => {
     // Wait for all navbar animations to complete (longest delay is 0.6s + 0.5s duration = 1.1s)
     await page.waitForTimeout(1500)
 

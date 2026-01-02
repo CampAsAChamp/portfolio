@@ -120,7 +120,7 @@ export async function waitForAnimation(page: Page, selector: string, maxTimeout 
       selector,
       { timeout: maxTimeout },
     )
-  } catch (error) {
+  } catch {
     // Fallback: if animation detection fails, wait for generous timeout
     await page.waitForTimeout(maxTimeout / 2)
   }

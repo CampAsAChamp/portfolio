@@ -20,7 +20,7 @@ test.describe("Animation Tests", () => {
     await page.evaluate(() => {
       try {
         localStorage.clear()
-      } catch (e) {
+      } catch {
         // Ignore if localStorage is not available
       }
     })
@@ -178,7 +178,7 @@ test.describe("Animation Tests", () => {
   })
 
   test.describe("Cross-browser Animation Tests", () => {
-    test("animations work correctly on different browsers", async ({ page, browserName }) => {
+    test("animations work correctly on different browsers", async ({ page }) => {
       // Wait for animations to complete
       await page.waitForTimeout(2000)
 
@@ -188,9 +188,7 @@ test.describe("Animation Tests", () => {
       await expect(page.locator("#contact-me-button")).toBeVisible()
       await expect(page.locator("#logo")).toBeVisible()
 
-      // Log browser for debugging
-      console.log(`Testing on ${browserName}`)
+      // Test runs on browser: ${browserName}
     })
   })
 })
-

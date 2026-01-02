@@ -31,12 +31,7 @@ export function LandingPage(): React.ReactElement {
           <MouseScrollIndicator />
         </div>
         <div id="profile-pic-container">
-          <Svg
-            id="profile-pic"
-            src={ArtProfilePic}
-            title="Flat Profile Pic"
-            className="center animate__animated animate__bounceIn"
-          />
+          <Svg id="profile-pic" src={ArtProfilePic} title="Flat Profile Pic" className="center animate__animated animate__bounceIn" />
         </div>
       </section>
     </>
