@@ -57,22 +57,37 @@ test.describe("Animation Tests", () => {
     })
 
     test("elements have correct computed animation properties", async ({ page }) => {
+      const isMobile = isMobileViewport(page)
+
       // Check name element animation properties
+      // On mobile (<=1100px), the layout changes and animation delays are different
       const nameProps = await getAnimationProperties(page, "#name")
       expect(nameProps.duration).toMatch(/0.9s|900ms/)
-      expect(nameProps.delay).toMatch(/0.1s|100ms/)
+      if (isMobile) {
+        expect(nameProps.delay).toMatch(/0.3s|300ms/) // Mobile: name animates after profile pic
+      } else {
+        expect(nameProps.delay).toMatch(/0.1s|100ms/) // Desktop: name animates first
+      }
       expect(nameProps.fillMode).toBe("forwards")
 
       // Check profile pic animation properties
       const profilePicProps = await getAnimationProperties(page, "#profile-pic")
       expect(profilePicProps.duration).toMatch(/1s|1000ms/)
-      expect(profilePicProps.delay).toMatch(/0.3s|300ms/)
+      if (isMobile) {
+        expect(profilePicProps.delay).toMatch(/0.1s|100ms/) // Mobile: profile pic animates first
+      } else {
+        expect(profilePicProps.delay).toMatch(/0.3s|300ms/) // Desktop: profile pic animates after name
+      }
       expect(profilePicProps.fillMode).toBe("forwards")
 
       // Check contact button animation properties
       const buttonProps = await getAnimationProperties(page, "#contact-me-button")
       expect(buttonProps.duration).toMatch(/0.8s|800ms/)
-      expect(buttonProps.delay).toMatch(/0.4s|400ms/)
+      if (isMobile) {
+        expect(buttonProps.delay).toMatch(/0.6s|600ms/) // Mobile: different delay
+      } else {
+        expect(buttonProps.delay).toMatch(/0.4s|400ms/) // Desktop: standard delay
+      }
       expect(buttonProps.fillMode).toBe("forwards")
     })
 
