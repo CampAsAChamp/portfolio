@@ -1,3 +1,15 @@
+## 1.6.0 (2026-01-03)
+
+* test: fix e2e tests ([295a4a4](https://github.com/CampAsAChamp/portfolio/commit/295a4a4))
+* chore: uppdate desktop lighthouse to run once ([68e4dae](https://github.com/CampAsAChamp/portfolio/commit/68e4dae))
+* build: optimize Lighthouse test configuration ([09be0f8](https://github.com/CampAsAChamp/portfolio/commit/09be0f8))
+* perf: add critical CSS and optimize font loading ([5f3f53e](https://github.com/CampAsAChamp/portfolio/commit/5f3f53e))
+* perf: implement code splitting for ContactMe modal ([8c165b9](https://github.com/CampAsAChamp/portfolio/commit/8c165b9))
+* perf: optimize images with lazy loading and responsive sizing ([1739c71](https://github.com/CampAsAChamp/portfolio/commit/1739c71)), closes [hi#DPI](https://github.com/hi/issues/DPI)
+* feat: add entrance animation to hamburger menu on mobile ([4864948](https://github.com/CampAsAChamp/portfolio/commit/4864948))
+* feat: optimize mobile landing page animation sequence ([a910cf8](https://github.com/CampAsAChamp/portfolio/commit/a910cf8))
+* refactor: use one script for lighthouse and always print output ([8c5d667](https://github.com/CampAsAChamp/portfolio/commit/8c5d667))
+
 ## 1.5.0 (2026-01-03)
 
 * feat: add mobile lighthouse testing ([3af3edc](https://github.com/CampAsAChamp/portfolio/commit/3af3edc))
