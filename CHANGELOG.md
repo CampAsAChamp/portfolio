@@ -1,3 +1,9 @@
+## 1.7.0 (2026-01-03)
+
+* test: increase tolerance for e2e tests ([2a3fe14](https://github.com/CampAsAChamp/portfolio/commit/2a3fe14))
+* feat: add Anna M Schneider law project card ([8b5b04e](https://github.com/CampAsAChamp/portfolio/commit/8b5b04e))
+* chore: increase stagger amount on skills & technologies items ([2058bea](https://github.com/CampAsAChamp/portfolio/commit/2058bea))
+
 ## 1.6.0 (2026-01-03)
 
 * test: fix e2e tests ([295a4a4](https://github.com/CampAsAChamp/portfolio/commit/295a4a4))
