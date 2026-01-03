@@ -88,6 +88,10 @@
   <!-- Connect to domain of font files -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
+  <!-- Preload critical fonts (700 and 800 used in hero text "NICK SCHNEIDER") -->
+  <link rel="preload" href="https://fonts.gstatic.com/s/nunito/v32/XRXV3I6Li01BKof4N-yGbss.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="https://fonts.gstatic.com/s/nunito/v32/XRXV3I6Li01BKofINeaBTMnFcQ.woff2" as="font" type="font/woff2" crossorigin />
+
   <!-- Optionally increase loading priority -->
   <link rel="preload" as="style"
     href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,600;0,700;0,800;0,900;1,400&display=swap" />
@@ -95,7 +99,7 @@
   <!-- Async CSS -->
   <link
     href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,600;0,700;0,800;0,900;1,400&display=swap"
-    rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');" />
+    rel="stylesheet" media="print" onload="this.media='all';" />
 
   <!-- No-JS fallback -->
   <noscript>
@@ -105,6 +109,90 @@
 
   <link rel="manifest" href="/manifest.json" />
   <title>Nick's Website</title>
+
+  <!-- Inline critical CSS for above-the-fold hero section to speed up LCP -->
+  <style>
+    /* Critical hero section styles - loaded before CSS to prevent render blocking */
+    #landing-page-container {
+      display: grid;
+      grid-template-areas: "nav nav" "name-intro profile-pic-container";
+      grid-template-columns: 1.5fr 1fr;
+      margin-bottom: 150px;
+    }
+
+    #name-intro-container {
+      grid-area: name-intro;
+      padding-left: 10%;
+      padding-top: 5%;
+    }
+
+    #name {
+      font-size: 5rem;
+      font-weight: 800;
+      line-height: 0.9;
+      margin-block: 0;
+      color: var(--color-name, #000);
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    #software-engineer {
+      font-size: 2.25rem;
+      font-weight: 700;
+      margin-block: 0;
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    #subtitle {
+      font-size: 1.5rem;
+      font-weight: 400;
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    #landing-blob {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 50%;
+      height: auto;
+      aspect-ratio: 1078 / 1154;
+      z-index: -1;
+    }
+
+    #profile-pic-container {
+      grid-area: profile-pic-container;
+    }
+
+    #profile-pic {
+      display: block;
+      margin: 2rem auto;
+      max-width: 80%;
+      padding: 0 2rem;
+    }
+
+    /* Prevent flash of unstyled text */
+    body {
+      margin: 0;
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    /* Mobile responsive */
+    @media screen and (max-width: 1100px) {
+      #landing-blob {
+        width: 60%;
+      }
+      #landing-page-container {
+        grid-template-areas: "nav" "profile-pic-container" "name-intro";
+        grid-template-columns: 1fr;
+        margin-bottom: 50px;
+      }
+      #software-engineer {
+        font-size: 2rem;
+      }
+      #name-intro-container {
+        padding-left: 0;
+      }
+    }
+  </style>
 </head>
 
 <body>
