@@ -36,7 +36,7 @@ export function Navbar(): React.ReactElement {
         // Manually apply closing animation to each item
         listItems.forEach((li: HTMLElement, index) => {
           const delay = (listItems.length - 1 - index) * 0.05
-          li.style.animation = `navLinkFadeOut 0.4s ease ${delay}s forwards`
+          li.style.animation = `nav-link-fade-out 0.4s ease ${delay}s forwards`
         })
 
         // Remove closing class and clean up after animation completes
