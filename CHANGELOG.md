@@ -1,3 +1,7 @@
+## 1.5.0 (2026-01-03)
+
+* feat: add mobile lighthouse testing ([3af3edc](https://github.com/CampAsAChamp/portfolio/commit/3af3edc))
+
 ## 1.4.0 (2026-01-03)
 
 * chore: update pre-push hook message to include Lighthouse tests ([cf82bc1](https://github.com/CampAsAChamp/portfolio/commit/cf82bc1))
