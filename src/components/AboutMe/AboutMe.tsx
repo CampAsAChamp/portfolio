@@ -9,13 +9,13 @@ import "styles/AboutMe/AboutMe.css"
 export function AboutMe(): React.ReactElement {
   return (
     <section id="about-me-container" className="page-container">
-      <img id="background-logo" src={S_Logo_Purple} alt="Logo Backdrop" />
+      <img id="background-logo" src={S_Logo_Purple} alt="Logo Backdrop" width="389" height="604" />
       <div id="about-me-images">
         <ScrollAnimation animateIn="animate__springIn" animateOnce style={{ gridArea: "1 / 1 / 2 / 2" }}>
-          <img id="grad-cap-illustration" src={GradCapIllustration} alt="Graduation Cap" />
+          <img id="grad-cap-illustration" src={GradCapIllustration} alt="Graduation Cap" loading="lazy" />
         </ScrollAnimation>
         <ScrollAnimation animateIn="animate__springIn" delay={100} animateOnce style={{ gridArea: "1 / 2 / 2 / 3" }}>
-          <img id="anteater-illustration" src={AnteaterIllustration} alt="Anteater Illustration" />
+          <img id="anteater-illustration" src={AnteaterIllustration} alt="Anteater Illustration" loading="lazy" />
         </ScrollAnimation>
         <ScrollAnimation
           animateIn="animate__springIn"
@@ -23,7 +23,7 @@ export function AboutMe(): React.ReactElement {
           animateOnce
           style={{ gridArea: "2 / 1 / 3 / 3", display: "flex", justifyContent: "center", alignItems: "start", marginTop: "-40px" }}
         >
-          <img id="desk-illustration" src={DeskIllustration} alt="Desk Illustration" />
+          <img id="desk-illustration" src={DeskIllustration} alt="Desk Illustration" loading="lazy" />
         </ScrollAnimation>
       </div>
       <div id="about-me-text">

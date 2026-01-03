@@ -59,6 +59,8 @@
   position: absolute;
   right: 0;
   width: 50%;
+  height: auto;
+  aspect-ratio: 389 / 604;
   z-index: -1;
 }
 
@@ -83,6 +85,7 @@
 
   #background-logo {
     width: 100%;
+    height: auto;
     left: 0;
   }
 }
