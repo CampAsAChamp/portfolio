@@ -36,9 +36,9 @@ run_lighthouse_test() {
   # Run lighthouse tests and capture exit code
   if [ "$config_type" = "mobile" ]; then
     # For mobile, don't rebuild if we just built for desktop
-    lhci autorun --config="$config_file" --no-lighthouserc
+    yarn lhci autorun --config="$config_file" --no-lighthouserc
   else
-    lhci autorun --config="$config_file"
+    yarn lhci autorun --config="$config_file"
   fi
   local exit_code=$?
 
@@ -118,7 +118,7 @@ echo "======================================"
 echo ""
 
 # Always print the scores, even if tests failed
-node scripts/print-lighthouse-scores.js || true
+node scripts/print-lighthouse-scores.mjs || true
 
 # Exit with the lighthouse exit code
 if [ $LHCI_EXIT -ne 0 ]; then

@@ -76,4 +76,4 @@ jobs:
 
       - name: Print Lighthouse scores summary
         if: always()
-        run: node scripts/print-lighthouse-scores.js
+        run: node scripts/print-lighthouse-scores.mjs
