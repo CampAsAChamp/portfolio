@@ -8,7 +8,7 @@
 <h3 align="center">Portfolio</h3>
 
   <p align="center">
-    Portfolio Website to visually show off my work in my career and free time
+    Portfolio Website to visually show off my work in my career and free time.
     <br />
     <a href="https://nickhs.dev/">https://nickhs.dev/</a>
     <br />
