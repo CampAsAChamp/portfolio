@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test"
 
-import { getAnimationProperties, verifyAnimationClasses, waitForAnimation } from "../helpers/utils"
+import { getAnimationProperties, isMobileViewport, verifyAnimationClasses, waitForAnimation } from "../helpers/utils"
 
 // Configure animation tests with more retries and longer timeout
 test.describe.configure({
@@ -174,6 +174,101 @@ test.describe("Animation Tests", () => {
       for (let i = 0; i < count; i++) {
         await expect(navItems.nth(i)).toBeVisible()
       }
+    })
+
+    test("mobile menu opens and closes with correct animations", async ({ page }) => {
+      // Only run on mobile viewports
+      if (!isMobileViewport(page)) {
+        test.skip()
+      }
+
+      // Verify hamburger menu is visible
+      const hamburger = page.locator(".hamburger-menu")
+      await expect(hamburger).toBeVisible()
+
+      // Verify nav is initially hidden (translateX(100%))
+      const nav = page.locator("nav ul")
+      const initialTransform = await nav.evaluate((el) => window.getComputedStyle(el).transform)
+      // Transform matrix for translateX(100%) should move element off-screen
+      expect(initialTransform).not.toBe("none")
+
+      // Open the menu
+      await hamburger.click()
+      await page.waitForTimeout(100) // Brief wait for class to be added
+
+      // Verify nav has nav-active class
+      const hasActiveClass = await nav.evaluate((el) => el.classList.contains("nav-active"))
+      expect(hasActiveClass).toBe(true)
+
+      // Wait for opening animation
+      await page.waitForTimeout(700)
+
+      // Verify nav items are visible (opacity should be 1)
+      const navItems = page.locator("nav ul li")
+      const firstItemOpacity = await navItems.first().evaluate((el) => window.getComputedStyle(el).opacity)
+      expect(parseFloat(firstItemOpacity)).toBeGreaterThan(0.9)
+
+      // Close the menu by clicking hamburger again
+      await hamburger.click()
+      await page.waitForTimeout(100) // Brief wait for class changes
+
+      // Verify nav has nav-closing class
+      const hasClosingClass = await nav.evaluate((el) => el.classList.contains("nav-closing"))
+      expect(hasClosingClass).toBe(true)
+
+      // Verify nav no longer has nav-active class
+      const stillHasActiveClass = await nav.evaluate((el) => el.classList.contains("nav-active"))
+      expect(stillHasActiveClass).toBe(false)
+
+      // Check that closing animation is applied to nav items
+      // The animation should be applied via inline styles
+      const firstItemAnimation = await navItems
+        .first()
+        .evaluate((el) => (el as HTMLElement).style.animation || window.getComputedStyle(el).animation)
+      expect(firstItemAnimation).toContain("nav-link-fade-out")
+
+      // Wait for closing animation to complete
+      await page.waitForTimeout(800)
+
+      // Verify nav is hidden again
+      const finalTransform = await nav.evaluate((el) => window.getComputedStyle(el).transform)
+      expect(finalTransform).not.toBe("none")
+
+      // Verify nav-closing class is removed after animation
+      const hasClosingClassAfter = await nav.evaluate((el) => el.classList.contains("nav-closing"))
+      expect(hasClosingClassAfter).toBe(false)
+    })
+
+    test("mobile menu closes when nav link is clicked", async ({ page }) => {
+      // Only run on mobile viewports
+      if (!isMobileViewport(page)) {
+        test.skip()
+      }
+
+      const hamburger = page.locator(".hamburger-menu")
+      const nav = page.locator("nav ul")
+
+      // Open the menu
+      await hamburger.click()
+      await page.waitForTimeout(700)
+
+      // Click a nav link
+      await page.locator('nav a[href="#about-me-images"]').click()
+      await page.waitForTimeout(100)
+
+      // Verify menu starts closing
+      const hasClosingClass = await nav.evaluate((el) => el.classList.contains("nav-closing"))
+      const hasActiveClass = await nav.evaluate((el) => el.classList.contains("nav-active"))
+
+      // Either closing class is present or active class is removed (depends on timing)
+      expect(hasClosingClass || !hasActiveClass).toBe(true)
+
+      // Wait for animation to complete
+      await page.waitForTimeout(800)
+
+      // Verify menu is closed
+      const finalHasActiveClass = await nav.evaluate((el) => el.classList.contains("nav-active"))
+      expect(finalHasActiveClass).toBe(false)
     })
   })
 
