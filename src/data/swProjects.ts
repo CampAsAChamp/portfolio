@@ -1,3 +1,4 @@
+import AMSLawThumbnail from "assets/Projects/Software/AMS_Law.webp"
 import ChickFilAThumbnail from "assets/Projects/Software/Chick_Fil_A.webp"
 import DiggermanVideoThumbnailMp4 from "assets/Projects/Software/Diggerman.mp4"
 import DiggermanVideoThumbnail from "assets/Projects/Software/Diggerman.webm"
@@ -15,6 +16,28 @@ import { createExternalLink } from "utils/contentUtils"
 import * as technologies from "./technologies"
 
 const projects: SoftwareProject[] = [
+  {
+    name: "Anna M. Schneider Law",
+    technologies: [technologies.REACT, technologies.TYPESCRIPT, technologies.CLOUDFLARE, technologies.FIGMA],
+    bulletPoints: [
+      [
+        "Professional law firm website specializing in estate planning, built with ",
+        createExternalLink("Next.js 15", "https://nextjs.org/"),
+        " and React 19, deployed on ",
+        createExternalLink("Cloudflare Workers", "https://www.cloudflare.com/"),
+        ".",
+      ],
+      [
+        "Features responsive design with dark mode support, contact form with email integration using ",
+        createExternalLink("Resend", "https://resend.com/"),
+        ", Yelp reviews integration, and interactive maps.",
+      ],
+      ["Includes comprehensive FAQ section, attorney profile, services overview, and SEO optimization with structured data."],
+      ["Automated testing with Vitest and Playwright, CI/CD pipeline with GitHub Actions, and semantic versioning for releases."],
+    ],
+    link: "https://annamschneiderlaw.com",
+    thumbnail: AMSLawThumbnail,
+  },
   {
     name: "Los Angeles Sports Chick Fil A Scraper",
     technologies: [technologies.PYTHON, technologies.GITHUB_ACTIONS],
