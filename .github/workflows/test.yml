@@ -70,7 +70,7 @@ jobs:
         with:
           urls: |
             http://localhost:4173
-          configPath: "./.lighthouserc.json"
+          configPath: "./.lighthouserc.desktop.json"
           uploadArtifacts: true
           temporaryPublicStorage: true
 

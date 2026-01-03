@@ -198,7 +198,10 @@ Lighthouse CI verifies the portfolio maintains high performance, accessibility, 
 
 Run Lighthouse audits locally:
 ```sh
-yarn test:lighthouse
+yarn test:lighthouse          # Runs desktop tests (default)
+yarn test:lighthouse:desktop  # Explicitly run desktop tests
+yarn test:lighthouse:mobile   # Run mobile tests with device emulation
+yarn test:lighthouse:both     # Run both desktop and mobile tests
 ```
 
 This command builds the production site and runs 3 Lighthouse audits, then averages the results.
@@ -209,7 +212,11 @@ This command builds the production site and runs 3 Lighthouse audits, then avera
 - **Best Practices** (threshold: 90+): HTTPS, console errors, deprecated APIs, security
 - **SEO** (threshold: 90+): Meta tags, mobile-friendliness, structured data
 
-**Configuration:** Lighthouse settings are defined in [`.lighthouserc.json`](.lighthouserc.json). The configuration uses desktop preset and runs 3 audits to ensure consistent, reliable scores.
+**Configuration:** Lighthouse settings are defined in:
+- [`.lighthouserc.desktop.json`](.lighthouserc.desktop.json) - Desktop preset (1350x940, no throttling)
+- [`.lighthouserc.mobile.json`](.lighthouserc.mobile.json) - Mobile preset (375x667, 4G throttling, 4x CPU slowdown)
+
+Each configuration runs 3 audits to ensure consistent, reliable scores.
 
 **GitHub Integration:** Lighthouse CI is configured with a GitHub token to provide:
 - ✅ Status checks on commits showing pass/fail for each category
@@ -256,7 +263,7 @@ Tests are located in the `tests/` directory, mirroring the structure of `src/`:
 - `tests/e2e/` - End-to-end tests with Playwright
   - `functional/` - User interaction and navigation tests
   - `visual-regression/` - Screenshot comparison tests
-- `.lighthouserc.json` - Lighthouse CI configuration for performance audits
+- `.lighthouserc.desktop.json` / `.lighthouserc.mobile.json` - Lighthouse CI configurations for performance audits
 - All tests use TypeScript for type safety
 - Focus on catching regressions when updating content or refactoring
 
