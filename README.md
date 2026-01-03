@@ -119,7 +119,8 @@
 - `yarn test:e2e` - Run Playwright E2E tests
 - `yarn test:e2e:ui` - Open interactive Playwright UI
 - `yarn test:e2e:headed` - Run E2E tests with visible browser
-- `yarn test:all` - Run all tests (unit + E2E)
+- `yarn test:lighthouse` - Run Lighthouse CI audits (builds and audits production site)
+- `yarn test:all` - Run all tests (unit + Lighthouse + E2E)
 
 ### Code Quality
 
@@ -191,12 +192,43 @@ yarn test:e2e:headed
   - Desktop: Chrome, Firefox, Safari
   - Mobile: Chrome (Pixel 5), Safari (iPhone 12)
 
+### Lighthouse Performance Audits
+
+Lighthouse CI verifies the portfolio maintains high performance, accessibility, best practices, and SEO standards using Google's official Lighthouse tooling.
+
+Run Lighthouse audits locally:
+```sh
+yarn test:lighthouse
+```
+
+This command builds the production site and runs 3 Lighthouse audits, then averages the results.
+
+**Monitored Metrics:**
+- **Performance** (threshold: 85+): Load times, Core Web Vitals (LCP, CLS, FID), bundle optimization
+- **Accessibility** (threshold: 90+): ARIA labels, keyboard navigation, color contrast, semantic HTML
+- **Best Practices** (threshold: 90+): HTTPS, console errors, deprecated APIs, security
+- **SEO** (threshold: 90+): Meta tags, mobile-friendliness, structured data
+
+**Configuration:** Lighthouse settings are defined in [`.lighthouserc.json`](.lighthouserc.json). The configuration uses desktop preset and runs 3 audits to ensure consistent, reliable scores.
+
+**GitHub Integration:** Lighthouse CI is configured with a GitHub token to provide:
+- ✅ Status checks on commits showing pass/fail for each category
+- 💬 PR comments with score comparisons when changes affect performance
+- 📊 Integration with GitHub's checks interface
+
+**Local Development:** To run Lighthouse locally without token warnings:
+1. Copy `.env.example` to `.env.local`: `cp .env.example .env.local`
+2. Add your GitHub token to `.env.local`
+3. The token will be automatically loaded when running `yarn test:lighthouse`
+
 ### Run All Tests
 
-Run both unit and E2E tests:
+Run unit tests, Lighthouse audits, and E2E tests:
 ```sh
 yarn test:all
 ```
+
+This command runs all three test suites in sequence: unit tests with Vitest, Lighthouse performance audits, and E2E tests with Playwright. Tests are ordered from fastest to slowest for quicker feedback.
 
 ### Continuous Integration
 
@@ -207,8 +239,11 @@ The CI pipeline runs automatically on every push and pull request via GitHub Act
 3. **Test**: Run unit tests with Vitest
 4. **Build**: Create production build
 5. **Analyze**: Check bundle sizes
+6. **Lighthouse**: Run performance, accessibility, best practices, and SEO audits
 
-**Note:** E2E tests run locally via the pre-push hook but are not part of the CI pipeline to keep build times fast. Pull requests must pass all CI checks before merging.
+The Lighthouse job runs after all other tests pass and uploads detailed reports to temporary public storage. You can view interactive reports directly from the GitHub Actions run output, and artifacts are also saved for detailed review.
+
+**Note:** E2E visual regression and functional tests run locally via the pre-push hook but are not part of the CI pipeline to keep build times fast. Pull requests must pass all CI checks before merging.
 
 ### Test Structure
 
@@ -221,6 +256,7 @@ Tests are located in the `tests/` directory, mirroring the structure of `src/`:
 - `tests/e2e/` - End-to-end tests with Playwright
   - `functional/` - User interaction and navigation tests
   - `visual-regression/` - Screenshot comparison tests
+- `.lighthouserc.json` - Lighthouse CI configuration for performance audits
 - All tests use TypeScript for type safety
 - Focus on catching regressions when updating content or refactoring
 
@@ -314,7 +350,7 @@ This project uses [Husky](https://typicode.github.io/husky/) to enforce quality 
   - Prettier formats code
   - Stylelint fixes CSS issues
 - **commit-msg**: Validates commit message format with `commitlint` (rejects invalid commits)
-- **pre-push**: Runs `yarn test:all` (both unit and E2E tests) before pushing
+- **pre-push**: Runs `yarn test:all` (unit tests, Lighthouse audits, and E2E tests) before pushing
 
 **Note:** If tests fail during pre-push, the push will be blocked. Ensure all tests pass locally before pushing.
 
@@ -390,7 +426,7 @@ This will serve the production build at `localhost:4173`.
 
 - Follow [conventional commit format](#contributing) for all commits
 - Pre-commit hooks automatically format code and validate commits
-- Pre-push hook runs all tests (unit + E2E) before pushing to remote
+- Pre-push hook runs all tests (unit + Lighthouse + E2E) before pushing to remote
 - Cloudflare Pages deployments typically complete in 1-2 minutes
 - Preview deployments are automatically created for pull requests
 - Cloudflare provides automatic HTTPS, CDN, and DDoS protection
