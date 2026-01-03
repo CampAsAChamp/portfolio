@@ -1,3 +1,7 @@
+## 1.3.0 (2026-01-03)
+
+* feat: readme change to trigger new build ([2e2c120](https://github.com/CampAsAChamp/portfolio/commit/2e2c120))
+
 ## 1.2.0 (2026-01-02)
 
 * chore: fix linting issues and make linting run on test files ([6f90118](https://github.com/CampAsAChamp/portfolio/commit/6f90118))
