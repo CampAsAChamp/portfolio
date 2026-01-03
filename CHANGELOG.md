@@ -1,3 +1,10 @@
+## 1.4.0 (2026-01-03)
+
+* chore: update pre-push hook message to include Lighthouse tests ([cf82bc1](https://github.com/CampAsAChamp/portfolio/commit/cf82bc1))
+* test: add comprehensive mobile menu animation tests ([6d688b0](https://github.com/CampAsAChamp/portfolio/commit/6d688b0))
+* fix: correct mobile menu closing animation name ([9436345](https://github.com/CampAsAChamp/portfolio/commit/9436345))
+* feat: add Lighthouse CI for automated performance audits ([42bd3e2](https://github.com/CampAsAChamp/portfolio/commit/42bd3e2))
+
 ## 1.3.0 (2026-01-03)
 
 * feat: readme change to trigger new build ([2e2c120](https://github.com/CampAsAChamp/portfolio/commit/2e2c120))
