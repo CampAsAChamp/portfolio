@@ -1,7 +1,7 @@
 echo "🔍 Running all tests before push..."
 echo ""
 
-echo "🧪 Running unit tests and E2E tests..."
+echo "🧪 Running unit tests, Lighthouse audits, and E2E tests..."
 yarn test:all
 
 if [ $? -ne 0 ]; then
