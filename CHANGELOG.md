@@ -1,3 +1,15 @@
+## <small>1.7.1 (2026-01-04)</small>
+
+* fix: dependabot intervals ([8914202](https://github.com/CampAsAChamp/portfolio/commit/8914202))
+* fix(navigation): enhance URL hash handling and streamline E2E tests ([98b9828](https://github.com/CampAsAChamp/portfolio/commit/98b9828))
+* fix(navigation): improve mobile menu navigation and scroll behavior ([0ce3314](https://github.com/CampAsAChamp/portfolio/commit/0ce3314))
+* style: add trailing newlines to config and public files ([bc41ad0](https://github.com/CampAsAChamp/portfolio/commit/bc41ad0))
+* ci(dependabot): change update schedule from weekly to monthly ([832e92c](https://github.com/CampAsAChamp/portfolio/commit/832e92c))
+* build(scripts): add node version checks to all development commands ([7fded22](https://github.com/CampAsAChamp/portfolio/commit/7fded22))
+* refactor(lighthouse): make score display flexible with configurable runs ([511e608](https://github.com/CampAsAChamp/portfolio/commit/511e608))
+* docs: update README ([143a103](https://github.com/CampAsAChamp/portfolio/commit/143a103))
+* chore: add new lines ([0821f75](https://github.com/CampAsAChamp/portfolio/commit/0821f75))
+
 ## 1.7.0 (2026-01-03)
 
 * test: increase tolerance for e2e tests ([2a3fe14](https://github.com/CampAsAChamp/portfolio/commit/2a3fe14))
@@ -831,6 +843,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]: https://github.com/CampAsAChamp/portfolio/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/CampAsAChamp/portfolio/releases/tag/v0.1.0
-
-
-
