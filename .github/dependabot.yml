@@ -1,79 +1,28 @@
-# Dependabot configuration for automated dependency updates
-# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
-
 version: 2
 updates:
-  # Maintain npm/yarn dependencies for the portfolio
-  - package-ecosystem: 'npm'
-    directory: '/'
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
-      interval: 'monthly'
-      day: 'monday'
-      time: '09:00'
-      timezone: 'America/Los_Angeles'
-    # Allow up to 5 open pull requests for npm dependencies
-    open-pull-requests-limit: 5
-    # Automatically rebase PRs when they become out of date
-    rebase-strategy: 'auto'
-    # Assign reviewers to PRs
-    reviewers:
-      - 'CampAsAChamp'
-    # Group related updates
+      interval: "weekly"
+    commit-message:
+      # Production dependencies will use "fix(deps):" which triggers patch releases
+      prefix: "fix"
+      # Dev dependencies will use "chore(deps):" which won't trigger releases
+      prefix-development: "chore"
+      # Include the dependency name in scope
+      include: "scope"
+    # Group all updates into a single PR to reduce noise
     groups:
-      # Group React and related packages together
-      react:
-        patterns:
-          - 'react*'
-          - '@types/react*'
-      # Group testing libraries together
-      testing:
-        patterns:
-          - '@testing-library/*'
-          - 'vitest'
-          - '@vitest/*'
-          - '@playwright/test'
-      # Group TypeScript and ESLint together
-      linting:
-        patterns:
-          - 'eslint*'
-          - '@typescript-eslint/*'
-          - 'typescript'
-          - 'prettier*'
-          - 'stylelint*'
-      # Group build tools together
-      build-tools:
-        patterns:
-          - 'vite*'
-          - '@vitejs/*'
-          - 'rollup*'
-      # Group other dev dependencies
-      dev-dependencies:
-        dependency-type: 'development'
-    # Add labels to PRs
-    labels:
-      - 'dependencies'
-      - 'automated'
-    # Commit message prefix
-    commit-message:
-      prefix: 'chore'
-      include: 'scope'
-
-  # Maintain GitHub Actions
-  - package-ecosystem: 'github-actions'
-    directory: '/'
-    schedule:
-      interval: 'monthly'
-      day: 'monday'
-      time: '09:00'
-      timezone: 'America/Los_Angeles'
-    open-pull-requests-limit: 3
-    # Assign reviewers to PRs
-    reviewers:
-      - 'CampAsAChamp'
-    labels:
-      - 'dependencies'
-      - 'github-actions'
-    commit-message:
-      prefix: 'ci'
-
-
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
+      development-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+    # Auto-merge minor and patch updates (optional - remove if you prefer manual review)
+    # Note: This requires GitHub's auto-merge feature to be enabled
+    open-pull-requests-limit: 10
