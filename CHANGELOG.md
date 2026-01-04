@@ -1,3 +1,9 @@
+## <small>1.7.3 (2026-01-04)</small>
+
+* fix: make ci lighthouse tests run 3 times instead of 1 ([2842708](https://github.com/CampAsAChamp/portfolio/commit/2842708))
+* refactor: split github actions jobs into separate files ([852da54](https://github.com/CampAsAChamp/portfolio/commit/852da54))
+* chore: add new job ([03e7b4b](https://github.com/CampAsAChamp/portfolio/commit/03e7b4b))
+
 ## <small>1.7.2 (2026-01-04)</small>
 
 * fix: add releases for dependabot ([e35ecd0](https://github.com/CampAsAChamp/portfolio/commit/e35ecd0))
