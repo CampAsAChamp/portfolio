@@ -16,9 +16,44 @@ import { fileURLToPath } from "url"
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+/**
+ * Read the number of runs from lighthouse config files
+ * @returns {object} Object with desktop and mobile numberOfRuns
+ */
+function getNumberOfRuns() {
+  const desktopConfigPath = path.join(__dirname, "..", ".lighthouserc.desktop.json")
+  const mobileConfigPath = path.join(__dirname, "..", ".lighthouserc.mobile.json")
+
+  let desktopRuns = 3 // Default fallback
+  let mobileRuns = 3 // Default fallback
+
+  try {
+    if (fs.existsSync(desktopConfigPath)) {
+      const desktopConfig = JSON.parse(fs.readFileSync(desktopConfigPath, "utf8"))
+      desktopRuns = desktopConfig.ci?.collect?.numberOfRuns || 3
+    }
+  } catch (e) {
+    // Use default if we can't read desktop config
+  }
+
+  try {
+    if (fs.existsSync(mobileConfigPath)) {
+      const mobileConfig = JSON.parse(fs.readFileSync(mobileConfigPath, "utf8"))
+      mobileRuns = mobileConfig.ci?.collect?.numberOfRuns || 3
+    }
+  } catch (e) {
+    // Use default if we can't read mobile config
+  }
+
+  return { desktop: desktopRuns, mobile: mobileRuns }
+}
+
 try {
   // Find the lighthouse directory (copied to test_results after running)
   const lighthouseDir = path.join(__dirname, "..", "test_results", "lighthouse")
+
+  // Get number of runs from config files
+  const numberOfRuns = getNumberOfRuns()
 
   // Check if the directory exists
   if (!fs.existsSync(lighthouseDir)) {
@@ -55,26 +90,28 @@ try {
     }
   }
 
-  // Check if we have both desktop and mobile results (6 files)
-  const isBothTests = files.length === 6
+  // Check if we have both desktop and mobile results
+  const totalExpectedFiles = numberOfRuns.desktop + numberOfRuns.mobile
+  const isBothTests = files.length === totalExpectedFiles
 
   if (isBothTests) {
-    // Split into desktop (first 3) and mobile (last 3) based on timestamp
-    const desktopFiles = files.slice(3, 6) // Older timestamps (desktop ran first)
-    const mobileFiles = files.slice(0, 3) // Newer timestamps (mobile ran second)
+    // Split into desktop and mobile based on timestamp
+    // Desktop runs first (older timestamps), mobile runs second (newer timestamps)
+    const desktopFiles = files.slice(numberOfRuns.mobile, totalExpectedFiles)
+    const mobileFiles = files.slice(0, numberOfRuns.mobile)
 
     console.log("\n📊 Lighthouse Scores Comparison:")
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
-    // Display desktop scores
+    // Display desktop scores (use middle file for median)
     const desktopReport = JSON.parse(fs.readFileSync(desktopFiles[Math.floor(desktopFiles.length / 2)].path, "utf8"))
-    displayScores("🖥️  Desktop", desktopReport)
+    displayScores("🖥️  Desktop", desktopReport, numberOfRuns.desktop)
 
     console.log("")
 
-    // Display mobile scores
+    // Display mobile scores (use middle file for median)
     const mobileReport = JSON.parse(fs.readFileSync(mobileFiles[Math.floor(mobileFiles.length / 2)].path, "utf8"))
-    displayScores("📱 Mobile", mobileReport)
+    displayScores("📱 Mobile", mobileReport, numberOfRuns.mobile)
 
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n")
 
@@ -90,17 +127,19 @@ try {
       showDetailedDiagnostics("Mobile", mobileReport, reportLinks)
     }
   } else {
-    // Single test (3 files) - detect if desktop or mobile
+    // Single test - detect if desktop or mobile
     const report = JSON.parse(fs.readFileSync(files[Math.floor(files.length / 2)].path, "utf8"))
 
     // Detect platform based on formFactor in configSettings
     const formFactor = report.configSettings?.formFactor || "desktop"
     const isMobile = formFactor === "mobile"
     const platformLabel = isMobile ? "📱 Mobile" : "🖥️  Desktop"
+    const runsCount = isMobile ? numberOfRuns.mobile : numberOfRuns.desktop
 
-    console.log(`\n📊 Lighthouse Scores - ${platformLabel} (averaged over 3 runs):`)
+    const runsText = runsCount > 1 ? ` (averaged over ${runsCount} runs)` : ""
+    console.log(`\n📊 Lighthouse Scores - ${platformLabel}${runsText}:`)
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-    displayScores(null, report)
+    displayScores(null, report, runsCount)
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n")
 
     const passed = checkThresholds(platformLabel, report, reportLinks)
@@ -121,8 +160,9 @@ try {
  * Display scores for a report
  * @param {string|null} label - Label for the scores (e.g., "Desktop", "Mobile", or null for no label)
  * @param {object} report - Lighthouse report object
+ * @param {number} numberOfRuns - Number of runs for this report
  */
-function displayScores(label, report) {
+function displayScores(label, report, numberOfRuns = 1) {
   const categories = report.categories
   const performance = Math.round(categories.performance.score * 100)
   const accessibility = Math.round(categories.accessibility.score * 100)
@@ -130,7 +170,8 @@ function displayScores(label, report) {
   const seo = Math.round(categories.seo.score * 100)
 
   if (label) {
-    console.log(`${label} (averaged over 3 runs):`)
+    const runsText = numberOfRuns > 1 ? ` (averaged over ${numberOfRuns} runs)` : ""
+    console.log(`${label}${runsText}:`)
   }
 
   console.log(`  🚀 Performance:     ${performance.toString().padStart(3)} / 100  ${getScoreEmoji(performance)}`)
