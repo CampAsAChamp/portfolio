@@ -14,23 +14,8 @@ jobs:
     permissions:
       deployments: write
       contents: read
-      statuses: write
 
     steps:
-      - name: Create pending status
-        uses: actions/github-script@v7
-        with:
-          script: |
-            await github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: '${{ github.event.workflow_run.head_sha }}',
-              state: 'pending',
-              target_url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}',
-              description: 'Deployment in progress...',
-              context: 'Deploy / Production Deployment'
-            });
-
       - name: Start deployment
         id: deployment
         uses: actions/github-script@v7
@@ -67,36 +52,6 @@ jobs:
               environment_url: 'https://nickhs.dev',
               description: 'Deployment completed successfully',
               auto_inactive: true
-            });
-
-      - name: Update commit status - Success
-        if: success()
-        uses: actions/github-script@v7
-        with:
-          script: |
-            await github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: '${{ github.event.workflow_run.head_sha }}',
-              state: 'success',
-              target_url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}',
-              description: 'Deployed successfully to production',
-              context: 'Deploy / Production Deployment'
-            });
-
-      - name: Update commit status - Failure
-        if: failure()
-        uses: actions/github-script@v7
-        with:
-          script: |
-            await github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: '${{ github.event.workflow_run.head_sha }}',
-              state: 'failure',
-              target_url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}',
-              description: 'Deployment failed',
-              context: 'Deploy / Production Deployment'
             });
 
       - name: Create deployment summary
