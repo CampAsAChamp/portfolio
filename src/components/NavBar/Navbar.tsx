@@ -19,6 +19,9 @@ export function Navbar(): React.ReactElement {
     // Close the menu first
     close()
 
+    // Update URL hash immediately for browser history
+    window.history.pushState(null, "", href)
+
     // Wait for the menu close animation to complete (700ms as per line 48)
     // and for body position to be restored before scrolling
     setTimeout(() => {
