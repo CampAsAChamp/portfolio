@@ -267,6 +267,9 @@ test.describe("Animation Tests", () => {
       await hamburger.click()
       await page.waitForTimeout(700)
 
+      // Get initial scroll position
+      const initialScrollY = await page.evaluate(() => window.scrollY)
+
       // Click a nav link
       await page.locator('nav a[href="#about-me-images"]').click()
       await page.waitForTimeout(100)
@@ -278,12 +281,20 @@ test.describe("Animation Tests", () => {
       // Either closing class is present or active class is removed (depends on timing)
       expect(hasClosingClass || !hasActiveClass).toBe(true)
 
-      // Wait for animation to complete
-      await page.waitForTimeout(800)
+      // Wait for animation to complete and scroll to happen (750ms + smooth scroll time)
+      await page.waitForTimeout(1500)
 
       // Verify menu is closed
       const finalHasActiveClass = await nav.evaluate((el) => el.classList.contains("nav-active"))
       expect(finalHasActiveClass).toBe(false)
+
+      // Verify page has scrolled to the target section
+      const finalScrollY = await page.evaluate(() => window.scrollY)
+      expect(finalScrollY).toBeGreaterThan(initialScrollY)
+
+      // Verify target element is in viewport
+      const targetElement = page.locator("#about-me-images")
+      await expect(targetElement).toBeInViewport()
     })
   })
 

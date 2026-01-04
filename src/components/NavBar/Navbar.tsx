@@ -10,6 +10,26 @@ import "styles/NavBar/Navbar.css"
 export function Navbar(): React.ReactElement {
   const { isOpen, close, toggle } = useModal()
 
+  // Handle navigation link clicks - close menu first, then scroll to target
+  const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>): void => {
+    e.preventDefault()
+    const href = e.currentTarget.getAttribute("href")
+    if (!href) return
+
+    // Close the menu first
+    close()
+
+    // Wait for the menu close animation to complete (700ms as per line 48)
+    // and for body position to be restored before scrolling
+    setTimeout(() => {
+      const targetId = href.replace("#", "")
+      const targetElement = document.getElementById(targetId)
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: "smooth", block: "start" })
+      }
+    }, 750)
+  }
+
   // Sync modal state with nav classes
   useEffect(() => {
     const burger = document.querySelector(".hamburger-menu")
@@ -61,27 +81,27 @@ export function Navbar(): React.ReactElement {
           <ThemeSwitcher />
         </li>
         <li className="nav-link-entrance animate__animated animate__fadeInDown">
-          <a href="#about-me-images" onClick={close}>
+          <a href="#about-me-images" onClick={handleNavLinkClick}>
             About Me
           </a>
         </li>
         <li className="nav-link-entrance animate__animated animate__fadeInDown">
-          <a href="#experience-header" onClick={close}>
+          <a href="#experience-header" onClick={handleNavLinkClick}>
             Experience
           </a>
         </li>
         <li className="nav-link-entrance animate__animated animate__fadeInDown">
-          <a href="#skills-header" onClick={close}>
+          <a href="#skills-header" onClick={handleNavLinkClick}>
             Skills
           </a>
         </li>
         <li className="nav-link-entrance animate__animated animate__fadeInDown">
-          <a href="#sw-projects-header" onClick={close}>
+          <a href="#sw-projects-header" onClick={handleNavLinkClick}>
             Projects
           </a>
         </li>
         <li className="nav-link-entrance animate__animated animate__fadeInDown">
-          <a href="#graphic-design-header" onClick={close}>
+          <a href="#graphic-design-header" onClick={handleNavLinkClick}>
             Art & Design
           </a>
         </li>
