@@ -1,3 +1,10 @@
+## <small>1.7.2 (2026-01-04)</small>
+
+* fix: add releases for dependabot ([e35ecd0](https://github.com/CampAsAChamp/portfolio/commit/e35ecd0))
+* Merge branch 'main' into dependabot/npm_and_yarn/dev-dependencies-aad018be24 ([eb61413](https://github.com/CampAsAChamp/portfolio/commit/eb61413))
+* Merge pull request #9 from CampAsAChamp/dependabot/npm_and_yarn/dev-dependencies-aad018be24 ([9163459](https://github.com/CampAsAChamp/portfolio/commit/9163459)), closes [#9](https://github.com/CampAsAChamp/portfolio/issues/9)
+* chore(deps-dev): bump the dev-dependencies group across 1 directory with 7 updates ([cf4b22c](https://github.com/CampAsAChamp/portfolio/commit/cf4b22c))
+
 ## <small>1.7.1 (2026-01-04)</small>
 
 * fix: dependabot intervals ([8914202](https://github.com/CampAsAChamp/portfolio/commit/8914202))
