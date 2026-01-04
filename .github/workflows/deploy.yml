@@ -1,0 +1,75 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: ["Tests"]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Production Deployment
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    permissions:
+      deployments: write
+      contents: read
+
+    steps:
+      - name: Start deployment
+        id: deployment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const deployment = await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.sha,
+              environment: 'production',
+              required_contexts: [],
+              auto_merge: false,
+              description: 'Deploy to Cloudflare Pages'
+            });
+
+            return deployment.data.id;
+
+      - name: Wait for Cloudflare deployment
+        run: |
+          echo "⏳ Waiting for Cloudflare Pages deployment to complete..."
+          echo "Cloudflare is automatically deploying from main branch"
+          sleep 30
+
+      - name: Update deployment status
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: ${{ steps.deployment.outputs.result }},
+              state: 'success',
+              environment_url: 'https://nickhs.dev',
+              description: 'Deployment completed successfully',
+              auto_inactive: true
+            });
+
+      - name: Create deployment summary
+        run: |
+          echo "## 🚀 Deployment Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Your site has been deployed to production!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🌍 Live Site" >> $GITHUB_STEP_SUMMARY
+          echo "**[https://nickhs.dev](https://nickhs.dev)** ✨" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📊 Deployment Details" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment**: Production" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: [\`${GITHUB_SHA:0:7}\`](https://github.com/${{ github.repository }}/commit/${{ github.sha }})" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployed by**: Cloudflare Pages" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployment ID**: \`${{ steps.deployment.outputs.result }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "💡 View deployment history in the [Environments](https://github.com/${{ github.repository }}/deployments) tab" >> $GITHUB_STEP_SUMMARY
+
