@@ -7,8 +7,8 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
-      interval: 'weekly'
-      day: 'monday'
+      interval: 'monthly'
+      day: 1
       time: '09:00'
       timezone: 'America/Los_Angeles'
     # Allow up to 5 open pull requests for npm dependencies
@@ -62,8 +62,8 @@ updates:
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
-      interval: 'weekly'
-      day: 'monday'
+      interval: 'monthly'
+      day: 1
       time: '09:00'
       timezone: 'America/Los_Angeles'
     open-pull-requests-limit: 3
