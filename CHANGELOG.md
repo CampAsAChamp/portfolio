@@ -1,3 +1,44 @@
+## <small>1.7.1 (2026-01-04)</small>
+
+* fix: dependabot intervals ([8914202](https://github.com/CampAsAChamp/portfolio/commit/8914202))
+* fix(navigation): enhance URL hash handling and streamline E2E tests ([98b9828](https://github.com/CampAsAChamp/portfolio/commit/98b9828))
+* fix(navigation): improve mobile menu navigation and scroll behavior ([0ce3314](https://github.com/CampAsAChamp/portfolio/commit/0ce3314))
+* style: add trailing newlines to config and public files ([bc41ad0](https://github.com/CampAsAChamp/portfolio/commit/bc41ad0))
+* ci(dependabot): change update schedule from weekly to monthly ([832e92c](https://github.com/CampAsAChamp/portfolio/commit/832e92c))
+* build(scripts): add node version checks to all development commands ([7fded22](https://github.com/CampAsAChamp/portfolio/commit/7fded22))
+* refactor(lighthouse): make score display flexible with configurable runs ([511e608](https://github.com/CampAsAChamp/portfolio/commit/511e608))
+* docs: update README ([143a103](https://github.com/CampAsAChamp/portfolio/commit/143a103))
+* chore: add new lines ([0821f75](https://github.com/CampAsAChamp/portfolio/commit/0821f75))
+
+## 1.7.0 (2026-01-03)
+
+* test: increase tolerance for e2e tests ([2a3fe14](https://github.com/CampAsAChamp/portfolio/commit/2a3fe14))
+* feat: add Anna M Schneider law project card ([8b5b04e](https://github.com/CampAsAChamp/portfolio/commit/8b5b04e))
+* chore: increase stagger amount on skills & technologies items ([2058bea](https://github.com/CampAsAChamp/portfolio/commit/2058bea))
+
+## 1.6.0 (2026-01-03)
+
+* test: fix e2e tests ([295a4a4](https://github.com/CampAsAChamp/portfolio/commit/295a4a4))
+* chore: uppdate desktop lighthouse to run once ([68e4dae](https://github.com/CampAsAChamp/portfolio/commit/68e4dae))
+* build: optimize Lighthouse test configuration ([09be0f8](https://github.com/CampAsAChamp/portfolio/commit/09be0f8))
+* perf: add critical CSS and optimize font loading ([5f3f53e](https://github.com/CampAsAChamp/portfolio/commit/5f3f53e))
+* perf: implement code splitting for ContactMe modal ([8c165b9](https://github.com/CampAsAChamp/portfolio/commit/8c165b9))
+* perf: optimize images with lazy loading and responsive sizing ([1739c71](https://github.com/CampAsAChamp/portfolio/commit/1739c71)), closes [hi#DPI](https://github.com/hi/issues/DPI)
+* feat: add entrance animation to hamburger menu on mobile ([4864948](https://github.com/CampAsAChamp/portfolio/commit/4864948))
+* feat: optimize mobile landing page animation sequence ([a910cf8](https://github.com/CampAsAChamp/portfolio/commit/a910cf8))
+* refactor: use one script for lighthouse and always print output ([8c5d667](https://github.com/CampAsAChamp/portfolio/commit/8c5d667))
+
+## 1.5.0 (2026-01-03)
+
+* feat: add mobile lighthouse testing ([3af3edc](https://github.com/CampAsAChamp/portfolio/commit/3af3edc))
+
+## 1.4.0 (2026-01-03)
+
+* chore: update pre-push hook message to include Lighthouse tests ([cf82bc1](https://github.com/CampAsAChamp/portfolio/commit/cf82bc1))
+* test: add comprehensive mobile menu animation tests ([6d688b0](https://github.com/CampAsAChamp/portfolio/commit/6d688b0))
+* fix: correct mobile menu closing animation name ([9436345](https://github.com/CampAsAChamp/portfolio/commit/9436345))
+* feat: add Lighthouse CI for automated performance audits ([42bd3e2](https://github.com/CampAsAChamp/portfolio/commit/42bd3e2))
+
 ## 1.3.0 (2026-01-03)
 
 * feat: readme change to trigger new build ([2e2c120](https://github.com/CampAsAChamp/portfolio/commit/2e2c120))

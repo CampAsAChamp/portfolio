@@ -16,7 +16,13 @@ export function ExperienceCard({ experience, index }: ExperienceCardProps): Reac
           <div className="employer card-title" style={{ color: experience.color }}>
             {experience.company_name}
           </div>
-          <img className="experience-thumbnail" src={experience.logo} alt={experience.company_name} title={experience.company_name} />
+          <img
+            className="experience-thumbnail"
+            src={experience.logo}
+            alt={experience.company_name}
+            title={experience.company_name}
+            loading="lazy"
+          />
         </div>
         <div className="location">{experience.location}</div>
         <div className="secondary-title">

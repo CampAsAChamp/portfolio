@@ -1,8 +1,9 @@
-import { useEffect, useRef } from "react"
+import { lazy, Suspense, useEffect, useRef } from "react"
 import GitHubLogo from "assets/Dev_Icons/GitHub.svg"
 import LinkedInLogo from "assets/Dev_Icons/LinkedIn.svg"
 import { Svg } from "components/Common/Svg"
-import { ContactMeModal } from "components/ContactMeModal/ContactMeModal"
+
+const ContactMeModal = lazy(() => import("components/ContactMeModal/ContactMeModal").then((module) => ({ default: module.ContactMeModal })))
 
 interface ContactMeBarProps {
   isOpen: boolean
@@ -52,7 +53,9 @@ export function ContactMeBar({ isOpen, open, close }: ContactMeBarProps): React.
       >
         <span>Contact Me</span>
       </button>
-      <ContactMeModal isOpen={isOpen} close={close} />
+      <Suspense fallback={null}>
+        <ContactMeModal isOpen={isOpen} close={close} />
+      </Suspense>
       <div id="contact-me-socials" className="animate__animated animate__fadeInUp">
         <a href="https://github.com/CampAsAChamp/" target="_blank" rel="noopener noreferrer">
           <Svg className="contact-me-item" id="github-logo" src={GitHubLogo} title="Github Icon" />

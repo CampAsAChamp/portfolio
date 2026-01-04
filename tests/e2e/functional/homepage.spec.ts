@@ -21,62 +21,21 @@ test.describe("Homepage", () => {
     // Wait for lazy-loaded components to be available
     await page.waitForTimeout(1000)
 
-    const isMobile = isMobileViewport(page)
-
     // Test navigation to About section
-    if (isMobile) {
-      await openMobileMenu(page)
-    }
+    await clickNavLink(page, "#about-me-images")
 
-    await page.locator('a[href="#about-me-images"]').click()
-
-    // Verify the URL hash changed (this should happen immediately)
-    await page.waitForTimeout(200)
+    // Verify the URL hash changed
     expect(page.url()).toContain("#about-me-images")
-
-    // On mobile, wait for menu to close, then manually scroll if needed
-    if (isMobile) {
-      await page.waitForTimeout(1000) // Wait for menu close animation
-      // Manually scroll to the target since hash navigation can be flaky with mobile menu
-      await page.evaluate(() => {
-        const target = document.querySelector("#about-me-images")
-        if (target) {
-          target.scrollIntoView({ behavior: "smooth", block: "start" })
-        }
-      })
-      await page.waitForTimeout(500) // Wait for smooth scroll
-    } else {
-      await page.waitForTimeout(800)
-    }
 
     // Check that About section is at least partially visible
     const aboutSection = page.locator("#about-me-container")
     await expect(aboutSection).toBeInViewport({ ratio: 0.1 })
 
     // Test navigation to Experience section
-    if (isMobile) {
-      await openMobileMenu(page)
-    }
-
-    await page.locator('a[href="#experience-header"]').click()
+    await clickNavLink(page, "#experience-header")
 
     // Verify the URL hash changed
-    await page.waitForTimeout(200)
     expect(page.url()).toContain("#experience-header")
-
-    if (isMobile) {
-      await page.waitForTimeout(1000)
-      // Manually scroll to the target
-      await page.evaluate(() => {
-        const target = document.querySelector("#experience-header")
-        if (target) {
-          target.scrollIntoView({ behavior: "smooth", block: "start" })
-        }
-      })
-      await page.waitForTimeout(500)
-    } else {
-      await page.waitForTimeout(800)
-    }
 
     const experienceSection = page.locator("#experience-container")
     await expect(experienceSection).toBeInViewport({ ratio: 0.1 })

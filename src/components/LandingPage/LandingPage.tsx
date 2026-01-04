@@ -12,7 +12,7 @@ export function LandingPage(): React.ReactElement {
 
   return (
     <>
-      <img id="landing-blob" src={HeroImageBlobShape} alt="" className="animate__animated animate__fadeIn" />
+      <img id="landing-blob" src={HeroImageBlobShape} alt="" className="animate__animated animate__fadeIn" width="1078" height="1154" />
       <section id="landing-page-container" className="page-container">
         <div id="name-intro-container">
           <h1 id="name" className="animate__animated animate__bounceIn">

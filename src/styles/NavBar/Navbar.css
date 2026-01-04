@@ -223,6 +223,13 @@ nav li a:hover::after {
     z-index: 1;
   }
 
+  .hamburger-entrance {
+    animation-duration: 0.6s;
+    animation-delay: 0.3s;
+    opacity: 0;
+    animation-fill-mode: forwards;
+  }
+
   .toggle #hamburger-menu-line1 {
     transform: rotate(-45deg) translate(-8px, 6px);
   }

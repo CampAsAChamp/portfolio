@@ -1,7 +1,8 @@
 import { useEffect } from "react"
 import GitHubLogo from "assets/Dev_Icons/GitHub.svg"
 import LinkedInLogo from "assets/Dev_Icons/LinkedIn.svg"
-import RealProfilePic from "assets/Real_Profile_Pic.webp"
+import RealProfilePic120w from "assets/Real_Profile_Pic_120w.webp"
+import RealProfilePic240w from "assets/Real_Profile_Pic_240w.webp"
 import { CloseIcon } from "components/Common/Icons/CloseIcon"
 import { EmailIcon } from "components/Common/Icons/EmailIcon"
 import { Svg } from "components/Common/Svg"
@@ -51,7 +52,14 @@ export function ContactMeModal({ isOpen, close }: ContactMeModalProps): React.Re
           <CloseIcon />
         </button>
         <div id="contact-me-modal-header">
-          <img id="contact-me-modal-profile-pic" src={RealProfilePic} alt="Nick Schneider" />
+          <img
+            id="contact-me-modal-profile-pic"
+            src={RealProfilePic120w}
+            srcSet={`${RealProfilePic120w} 1x, ${RealProfilePic240w} 2x`}
+            alt="Nick Schneider"
+            width="120"
+            height="120"
+          />
           <h3 id="contact-me-modal-title">Let&apos;s Connect!</h3>
           <p id="contact-me-modal-subtitle">I&apos;d love to hear from you</p>
         </div>

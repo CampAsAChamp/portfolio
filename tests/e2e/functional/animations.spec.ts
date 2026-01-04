@@ -57,22 +57,37 @@ test.describe("Animation Tests", () => {
     })
 
     test("elements have correct computed animation properties", async ({ page }) => {
+      const isMobile = isMobileViewport(page)
+
       // Check name element animation properties
+      // On mobile (<=1100px), the layout changes and animation delays are different
       const nameProps = await getAnimationProperties(page, "#name")
       expect(nameProps.duration).toMatch(/0.9s|900ms/)
-      expect(nameProps.delay).toMatch(/0.1s|100ms/)
+      if (isMobile) {
+        expect(nameProps.delay).toMatch(/0.3s|300ms/) // Mobile: name animates after profile pic
+      } else {
+        expect(nameProps.delay).toMatch(/0.1s|100ms/) // Desktop: name animates first
+      }
       expect(nameProps.fillMode).toBe("forwards")
 
       // Check profile pic animation properties
       const profilePicProps = await getAnimationProperties(page, "#profile-pic")
       expect(profilePicProps.duration).toMatch(/1s|1000ms/)
-      expect(profilePicProps.delay).toMatch(/0.3s|300ms/)
+      if (isMobile) {
+        expect(profilePicProps.delay).toMatch(/0.1s|100ms/) // Mobile: profile pic animates first
+      } else {
+        expect(profilePicProps.delay).toMatch(/0.3s|300ms/) // Desktop: profile pic animates after name
+      }
       expect(profilePicProps.fillMode).toBe("forwards")
 
       // Check contact button animation properties
       const buttonProps = await getAnimationProperties(page, "#contact-me-button")
       expect(buttonProps.duration).toMatch(/0.8s|800ms/)
-      expect(buttonProps.delay).toMatch(/0.4s|400ms/)
+      if (isMobile) {
+        expect(buttonProps.delay).toMatch(/0.6s|600ms/) // Mobile: different delay
+      } else {
+        expect(buttonProps.delay).toMatch(/0.4s|400ms/) // Desktop: standard delay
+      }
       expect(buttonProps.fillMode).toBe("forwards")
     })
 
@@ -252,6 +267,9 @@ test.describe("Animation Tests", () => {
       await hamburger.click()
       await page.waitForTimeout(700)
 
+      // Get initial scroll position
+      const initialScrollY = await page.evaluate(() => window.scrollY)
+
       // Click a nav link
       await page.locator('nav a[href="#about-me-images"]').click()
       await page.waitForTimeout(100)
@@ -263,12 +281,20 @@ test.describe("Animation Tests", () => {
       // Either closing class is present or active class is removed (depends on timing)
       expect(hasClosingClass || !hasActiveClass).toBe(true)
 
-      // Wait for animation to complete
-      await page.waitForTimeout(800)
+      // Wait for animation to complete and scroll to happen (750ms + smooth scroll time)
+      await page.waitForTimeout(1500)
 
       // Verify menu is closed
       const finalHasActiveClass = await nav.evaluate((el) => el.classList.contains("nav-active"))
       expect(finalHasActiveClass).toBe(false)
+
+      // Verify page has scrolled to the target section
+      const finalScrollY = await page.evaluate(() => window.scrollY)
+      expect(finalScrollY).toBeGreaterThan(initialScrollY)
+
+      // Verify target element is in viewport
+      const targetElement = page.locator("#about-me-images")
+      await expect(targetElement).toBeInViewport()
     })
   })
 

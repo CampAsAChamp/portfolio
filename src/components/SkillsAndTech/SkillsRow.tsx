@@ -16,7 +16,7 @@ export function SkillsRow({ technologyNames, rowDelay = 0 }: SkillsRowProps): Re
     <div className="skills-row">
       {technologies.map((tech, index) => {
         return (
-          <ScrollAnimation animateIn="animate__fadeInUp" delay={rowDelay + index * 50} animateOnce key={tech.name}>
+          <ScrollAnimation animateIn="animate__fadeInUp" delay={rowDelay + index * 100} animateOnce key={tech.name}>
             <div className="skills-icon-container">
               <a href={tech.link}>
                 <Svg className="skills-icon hvr-grow" src={tech.image} fill={COLORS.PURPLE} title={`${tech.name} Icon`} />

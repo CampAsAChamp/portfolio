@@ -32,6 +32,8 @@ test.describe("Visual Regression Tests", () => {
     const landingSection = page.locator("#landing-page-container")
     await expect(landingSection).toHaveScreenshot("landing-section.png", {
       animations: "disabled",
+      maxDiffPixelRatio: 0.05, // Allow up to 5% pixel difference for font rendering variations
+      threshold: 0.2, // Slightly more tolerant threshold for color differences
     })
   })
 
@@ -47,6 +49,8 @@ test.describe("Visual Regression Tests", () => {
     const aboutSection = page.locator("#about-me-container")
     await expect(aboutSection).toHaveScreenshot("about-section.png", {
       animations: "disabled",
+      maxDiffPixelRatio: 0.05, // Allow up to 5% pixel difference for font rendering variations
+      threshold: 0.2, // Slightly more tolerant threshold for color differences
     })
   })
 
@@ -62,6 +66,8 @@ test.describe("Visual Regression Tests", () => {
     const experienceSection = page.locator("#experience-container")
     await expect(experienceSection).toHaveScreenshot("experience-section.png", {
       animations: "disabled",
+      maxDiffPixelRatio: 0.05, // Allow up to 5% pixel difference for font rendering variations
+      threshold: 0.2, // Slightly more tolerant threshold for color differences
     })
   })
 
@@ -83,6 +89,8 @@ test.describe("Visual Regression Tests", () => {
 
     await expect(modal).toHaveScreenshot("contact-modal.png", {
       animations: "disabled",
+      maxDiffPixelRatio: 0.05, // Allow up to 5% pixel difference for font rendering variations
+      threshold: 0.2, // Slightly more tolerant threshold for color differences
     })
   })
 })

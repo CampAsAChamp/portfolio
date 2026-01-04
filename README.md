@@ -198,10 +198,13 @@ Lighthouse CI verifies the portfolio maintains high performance, accessibility, 
 
 Run Lighthouse audits locally:
 ```sh
-yarn test:lighthouse
+yarn test:lighthouse          # Runs desktop tests (default)
+yarn test:lighthouse:desktop  # Explicitly run desktop tests
+yarn test:lighthouse:mobile   # Run mobile tests with device emulation
+yarn test:lighthouse:both     # Run both desktop and mobile tests
 ```
 
-This command builds the production site and runs 3 Lighthouse audits, then averages the results.
+This command builds the production site and runs a Lighthouse audit to verify performance and quality standards.
 
 **Monitored Metrics:**
 - **Performance** (threshold: 85+): Load times, Core Web Vitals (LCP, CLS, FID), bundle optimization
@@ -209,7 +212,9 @@ This command builds the production site and runs 3 Lighthouse audits, then avera
 - **Best Practices** (threshold: 90+): HTTPS, console errors, deprecated APIs, security
 - **SEO** (threshold: 90+): Meta tags, mobile-friendliness, structured data
 
-**Configuration:** Lighthouse settings are defined in [`.lighthouserc.json`](.lighthouserc.json). The configuration uses desktop preset and runs 3 audits to ensure consistent, reliable scores.
+**Configuration:** Lighthouse settings are defined in:
+- [`.lighthouserc.desktop.json`](.lighthouserc.desktop.json) - Desktop preset (no throttling)
+- [`.lighthouserc.mobile.json`](.lighthouserc.mobile.json) - Mobile preset (375x667, 4G throttling, 4x CPU slowdown)
 
 **GitHub Integration:** Lighthouse CI is configured with a GitHub token to provide:
 - ✅ Status checks on commits showing pass/fail for each category
@@ -234,14 +239,20 @@ This command runs all three test suites in sequence: unit tests with Vitest, Lig
 
 The CI pipeline runs automatically on every push and pull request via GitHub Actions ([`.github/workflows/test.yml`](.github/workflows/test.yml)):
 
+**Test Job:**
 1. **Setup**: Install Node.js 22 and dependencies
 2. **Lint**: Run ESLint, Stylelint, and TypeScript type checking
 3. **Test**: Run unit tests with Vitest
 4. **Build**: Create production build
 5. **Analyze**: Check bundle sizes
-6. **Lighthouse**: Run performance, accessibility, best practices, and SEO audits
 
-The Lighthouse job runs after all other tests pass and uploads detailed reports to temporary public storage. You can view interactive reports directly from the GitHub Actions run output, and artifacts are also saved for detailed review.
+**Lighthouse Job** (runs after Test job passes):
+1. **Build**: Create production build
+2. **Audit**: Run desktop Lighthouse audits for performance, accessibility, best practices, and SEO
+3. **Upload**: Save reports to temporary public storage and GitHub artifacts
+4. **Status**: Post GitHub status check with pass/fail results
+
+You can view interactive Lighthouse reports directly from the GitHub Actions run output via the temporary public storage link.
 
 **Note:** E2E visual regression and functional tests run locally via the pre-push hook but are not part of the CI pipeline to keep build times fast. Pull requests must pass all CI checks before merging.
 
@@ -256,7 +267,7 @@ Tests are located in the `tests/` directory, mirroring the structure of `src/`:
 - `tests/e2e/` - End-to-end tests with Playwright
   - `functional/` - User interaction and navigation tests
   - `visual-regression/` - Screenshot comparison tests
-- `.lighthouserc.json` - Lighthouse CI configuration for performance audits
+- `.lighthouserc.desktop.json` / `.lighthouserc.mobile.json` - Lighthouse CI configurations for performance audits
 - All tests use TypeScript for type safety
 - Focus on catching regressions when updating content or refactoring
 

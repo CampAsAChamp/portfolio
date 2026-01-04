@@ -37,7 +37,8 @@ export async function openMobileMenu(page: Page): Promise<void> {
 export async function clickNavLink(page: Page, href: string): Promise<void> {
   await openMobileMenu(page)
   await page.locator(`a[href="${href}"]`).click()
-  await page.waitForTimeout(500) // Wait for scroll/navigation
+  // Wait for mobile menu close animation (750ms) + smooth scroll to complete + rendering to stabilize
+  await page.waitForTimeout(2000)
 }
 
 /**

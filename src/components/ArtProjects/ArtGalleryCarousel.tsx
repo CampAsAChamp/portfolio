@@ -24,7 +24,7 @@ export function ArtGalleryCarousel({ projects }: ArtGalleryCarouselProps): React
     >
       {projects.map((project) => (
         <SwiperSlide key={project.id}>
-          <img src={project.imageSrc} alt={project.altText} />
+          <img src={project.imageSrc} alt={project.altText} loading="lazy" />
         </SwiperSlide>
       ))}
     </Swiper>

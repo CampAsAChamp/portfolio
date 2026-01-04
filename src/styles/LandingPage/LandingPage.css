@@ -8,6 +8,8 @@
   right: 0;
   top: 0;
   width: 50%;
+  height: auto;
+  aspect-ratio: 1078 / 1154;
   z-index: -1;
 }
 
@@ -198,6 +200,7 @@ body[style*="position: fixed"] #contact-me-socials {
 @media screen and (max-width: 1100px) {
   #landing-blob {
     width: 60%;
+    height: auto;
   }
 
   #landing-page-container {
@@ -211,6 +214,7 @@ body[style*="position: fixed"] #contact-me-socials {
 
   #software-engineer {
     font-size: 2rem;
+    animation-delay: 0.4s;
   }
 
   #contact-me-bar {
@@ -219,6 +223,7 @@ body[style*="position: fixed"] #contact-me-socials {
 
   #contact-me-socials {
     margin: 0;
+    animation-delay: 0.7s;
   }
 
   .contact-me-item {
@@ -227,6 +232,7 @@ body[style*="position: fixed"] #contact-me-socials {
 
   #contact-me-button {
     padding: 10px 15px;
+    animation-delay: 0.6s;
   }
 
   #contact-me-socials img:hover {
@@ -239,5 +245,21 @@ body[style*="position: fixed"] #contact-me-socials {
 
   #profile-pic {
     max-width: 80%;
+    animation-delay: 0.1s;
+  }
+
+  /* Adjust animation delays for mobile layout order */
+
+  /* Profile pic is now at the top, so it should animate first */
+  #name {
+    animation-delay: 0.3s;
+  }
+
+  #subtitle {
+    animation-delay: 0.5s;
+  }
+
+  #mouse-scroll-indicator {
+    animation-delay: 0.8s;
   }
 }
