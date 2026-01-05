@@ -57,6 +57,8 @@
 .sw-projects-button-row {
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .sw-projects-button {
@@ -65,12 +67,22 @@
   justify-content: space-around;
   line-height: 1;
   padding: 10px 15px;
+  transition: var(--animation-duration);
+}
+
+.sw-projects-button:hover {
+  color: var(--color-yellow);
 }
 
 .github-button-icon {
   height: 21px;
   margin-right: 10px;
+  transition: var(--animation-duration);
   width: 21px;
+}
+
+.sw-projects-button:hover .github-button-icon {
+  fill: var(--color-yellow);
 }
 
 .sw-projects-button span {
@@ -78,27 +90,7 @@
   cursor: pointer;
   display: flex;
   line-height: 1;
-  position: relative;
-  transition: 0.5s;
-}
-
-.sw-projects-button span::after {
-  color: var(--color-yellow);
-  content: "\00ab"; /* Makes an arrow >> */
-  opacity: 0;
-  position: absolute;
-  right: -20px;
-  top: 0;
-  transition: 0.5s;
-}
-
-.sw-projects-button:hover span {
-  padding-right: 20px;
-}
-
-.sw-projects-button:hover span::after {
-  opacity: 1;
-  right: 0;
+  transition: var(--animation-duration);
 }
 
 /* Animated play button styles */
@@ -239,7 +231,59 @@
   grid-area: sw-projects-card6;
 }
 
-@media screen and (max-width: 1100px) {
+/* Tablet styles (769px - 1100px) */
+@media screen and (max-width: 1100px) and (min-width: 769px) {
+  #sw-projects-container {
+    padding-bottom: 50px;
+  }
+
+  .sw-projects-content {
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .sw-projects-info-container {
+    margin-left: 0;
+    margin-top: 15px;
+  }
+
+  /* Intentional design: Technologies bar appears on a separate row below the title in tablet view */
+  .sw-projects-title-container {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .sw-projects-card .languages-bar {
+    margin-top: 1rem;
+  }
+
+  .sw-project-title {
+    font-size: 1.875rem;
+  }
+
+  .sw-projects-thumbnail-container {
+    height: auto;
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .sw-projects-thumbnail {
+    height: auto;
+    max-width: 100%;
+    width: auto;
+  }
+
+  .sw-projects-text {
+    margin-bottom: 1rem;
+  }
+
+  .sw-projects-button {
+    font-size: 1rem;
+  }
+}
+
+/* Mobile styles (0 - 768px) */
+@media screen and (max-width: 768px) {
   #sw-projects-container {
     padding-bottom: 0;
   }
@@ -254,6 +298,7 @@
     margin-top: 10px;
   }
 
+  /* Intentional design: Technologies bar appears on a separate row below the title in mobile view */
   .sw-projects-title-container {
     align-items: flex-start;
     flex-direction: column;
@@ -280,5 +325,21 @@
 
   .sw-projects-text {
     margin-bottom: 1rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .sw-projects-button-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sw-projects-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .sw-project-title {
+    font-size: 1.5rem;
   }
 }

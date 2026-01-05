@@ -1,5 +1,6 @@
 import { useState } from "react"
 import GitHubIcon from "assets/Dev_Icons/GitHub.svg"
+import ExternalLinkIcon from "assets/External_Link.svg"
 import { BulletPointList } from "components/Common/BulletPointList"
 import { Svg } from "components/Common/Svg"
 import { TechnologiesBar } from "components/Common/TechnologiesBar"
@@ -34,6 +35,50 @@ export function SwProjectCard({ project, index }: SwProjectCardProps): React.Rea
     return <SwProjectImage project={project} />
   }
 
+  const handleButtonClick = (url: string, event: React.MouseEvent<HTMLButtonElement>): void => {
+    // Prevent unwanted triggers from Instagram or other injected scripts
+    if (!event || !event.isTrusted) {
+      return
+    }
+    window.open(url, "_blank")
+  }
+
+  const renderButtons = (): React.ReactElement | null => {
+    const hasGithub = !!project.githubLink
+    const hasSite = !!project.siteLink
+
+    if (!hasGithub && !hasSite) {
+      return null
+    }
+
+    return (
+      <div className="sw-projects-button-row">
+        {hasSite && (
+          <button
+            type="button"
+            className="button sw-projects-button"
+            onClick={(event) => handleButtonClick(project.siteLink!, event)}
+            onTouchStart={(e) => e.stopPropagation()}
+          >
+            <Svg className="github-button-icon" src={ExternalLinkIcon} fill="white" title="External Link Icon" />
+            <span>Visit Site</span>
+          </button>
+        )}
+        {hasGithub && (
+          <button
+            type="button"
+            className="button sw-projects-button"
+            onClick={(event) => handleButtonClick(project.githubLink!, event)}
+            onTouchStart={(e) => e.stopPropagation()}
+          >
+            <Svg className="github-button-icon" src={GitHubIcon} fill="white" title="Github Icon" />
+            <span>View Code</span>
+          </button>
+        )}
+      </div>
+    )
+  }
+
   return (
     <ScrollAnimation animateIn="animate__springIn" animateOnce>
       <div className="card sw-projects-card" id={`sw-projects-card${index}`}>
@@ -47,23 +92,7 @@ export function SwProjectCard({ project, index }: SwProjectCardProps): React.Rea
             <div className="sw-projects-text">
               <BulletPointList bulletPoints={project.bulletPoints} />
             </div>
-            <div className="sw-projects-button-row">
-              <button
-                type="button"
-                className="button sw-projects-button"
-                onClick={(event) => {
-                  // Prevent unwanted triggers from Instagram or other injected scripts
-                  if (!event || !event.isTrusted) {
-                    return
-                  }
-                  window.open(project.link, "_blank")
-                }}
-                onTouchStart={(e) => e.stopPropagation()} // Prevent touch interference
-              >
-                <Svg className="github-button-icon" src={GitHubIcon} fill="white" title="Github Icon" />
-                <span>View Code</span>
-              </button>
-            </div>
+            {renderButtons()}
           </div>
         </div>
       </div>
