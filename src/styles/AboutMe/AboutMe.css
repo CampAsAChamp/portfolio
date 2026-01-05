@@ -64,7 +64,59 @@
   z-index: -1;
 }
 
-@media screen and (max-width: 1100px) {
+/* Tablet styles (769px - 1100px) */
+@media screen and (max-width: 1100px) and (min-width: 769px) {
+  #about-me-container {
+    aspect-ratio: auto;
+    background-image: url("assets/Organic_Shapes/About_Me_Blob_Shape.svg");
+    background-size: contain;
+    background-position: center;
+    grid-template:
+      "about-me-images" auto
+      "about-me-text" auto / 1fr;
+    margin-bottom: 50px;
+    padding-bottom: 50px;
+    padding-top: 50px;
+  }
+
+  #about-me-text {
+    font-size: 1.375rem;
+    line-height: 28px;
+    padding-right: 5%;
+    padding-left: 5%;
+    padding-top: 25px;
+  }
+
+  #background-logo {
+    width: 80%;
+    height: auto;
+    left: 10%;
+  }
+
+  #about-me-images {
+    padding-top: 40px;
+    padding-bottom: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  #grad-cap-illustration {
+    width: 75%;
+    justify-self: center;
+  }
+
+  #anteater-illustration {
+    width: 75%;
+    justify-self: center;
+  }
+
+  #desk-illustration {
+    width: 40%;
+  }
+}
+
+/* Mobile styles (0 - 768px) */
+@media screen and (max-width: 768px) {
   #about-me-container {
     aspect-ratio: 9/16;
     background-image: url("assets/Organic_Shapes/Phone_About_Me_Blob_Shape.svg");

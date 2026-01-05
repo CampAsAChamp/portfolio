@@ -86,7 +86,33 @@
   margin: 0;
 }
 
-@media screen and (max-width: 1100px) {
+/* Tablet styles (769px - 1100px) */
+@media screen and (max-width: 1100px) and (min-width: 769px) {
+  .card-title {
+    font-size: 1.375rem;
+  }
+
+  .location {
+    margin-bottom: 28px;
+  }
+
+  .position {
+    font-size: 1.125rem;
+  }
+
+  .languages-item {
+    margin-right: 16px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .languages-item:last-child {
+    margin: 0;
+  }
+}
+
+/* Mobile styles (0 - 768px) */
+@media screen and (max-width: 768px) {
   .card-title {
     font-size: 1.5rem;
   }

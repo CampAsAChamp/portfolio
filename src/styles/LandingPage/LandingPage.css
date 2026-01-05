@@ -197,7 +197,72 @@ body[style*="position: fixed"] #contact-me-socials {
   }
 }
 
-@media screen and (max-width: 1100px) {
+/* Tablet styles (769px - 1100px) */
+@media screen and (max-width: 1100px) and (min-width: 769px) {
+  #landing-blob {
+    width: 55%;
+    height: auto;
+  }
+
+  #landing-page-container {
+    grid-template-areas:
+      "nav"
+      "profile-pic-container"
+      "name-intro";
+    grid-template-columns: 1fr;
+    margin-bottom: 50px;
+  }
+
+  #software-engineer {
+    font-size: 2rem;
+    animation-delay: 0.4s;
+  }
+
+  #contact-me-bar {
+    justify-content: space-between;
+  }
+
+  #contact-me-socials {
+    margin: 0;
+    animation-delay: 0.7s;
+  }
+
+  .contact-me-item {
+    margin: 0 10px;
+  }
+
+  #contact-me-button {
+    padding: 10px 15px;
+    animation-delay: 0.6s;
+    font-size: 1.375rem;
+  }
+
+  #name-intro-container {
+    padding-left: 0;
+  }
+
+  #profile-pic {
+    max-width: 50%;
+    animation-delay: 0.1s;
+  }
+
+  #subtitle {
+    font-size: 1.25rem;
+    animation-delay: 0.5s;
+  }
+
+  /* Adjust animation delays for tablet layout order */
+  #name {
+    animation-delay: 0.3s;
+  }
+
+  #mouse-scroll-indicator {
+    animation-delay: 0.8s;
+  }
+}
+
+/* Mobile styles (0 - 768px) */
+@media screen and (max-width: 768px) {
   #landing-blob {
     width: 60%;
     height: auto;
