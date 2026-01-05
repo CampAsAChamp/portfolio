@@ -16,21 +16,31 @@ export function Navbar(): React.ReactElement {
     const href = e.currentTarget.getAttribute("href")
     if (!href) return
 
-    // Close the menu first
-    close()
+    const targetId = href.replace("#", "")
+    const targetElement = document.getElementById(targetId)
+    if (!targetElement) return
 
-    // Update URL hash immediately for browser history
-    window.history.pushState(null, "", href)
+    // Check if we're on mobile/tablet (hamburger menu visible)
+    const isMobile = window.innerWidth <= 1100
 
-    // Wait for the menu close animation to complete (700ms as per line 48)
-    // and for body position to be restored before scrolling
-    setTimeout(() => {
-      const targetId = href.replace("#", "")
-      const targetElement = document.getElementById(targetId)
-      if (targetElement) {
+    if (isMobile) {
+      // Close the menu first
+      close()
+      // On mobile/tablet, wait for the menu close animation to complete (700ms)
+      // and for body position to be restored before scrolling
+      setTimeout(() => {
         targetElement.scrollIntoView({ behavior: "smooth", block: "start" })
-      }
-    }, 750)
+        // Update URL hash after scroll starts
+        window.history.pushState(null, "", href)
+      }, 750)
+    } else {
+      // On desktop, scroll immediately using requestAnimationFrame for clean rendering
+      requestAnimationFrame(() => {
+        targetElement.scrollIntoView({ behavior: "smooth", block: "start" })
+        // Update URL hash after scroll starts
+        window.history.pushState(null, "", href)
+      })
+    }
   }
 
   // Sync modal state with nav classes
