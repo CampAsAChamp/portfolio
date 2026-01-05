@@ -5,7 +5,8 @@ export interface SoftwareProject {
   name: string
   technologies: string[]
   bulletPoints: BulletPoint[]
-  link: string
+  githubLink?: string
+  siteLink?: string
   thumbnail: string
   videoThumbnail?: string
   videoThumbnailMp4?: string
