@@ -1,3 +1,14 @@
+## 1.8.0 (2026-01-05)
+
+* test: update SwProjects tests for dual button structure ([c8dce85](https://github.com/CampAsAChamp/portfolio/commit/c8dce85))
+* style: add comprehensive tablet responsive design (769-1100px) ([7448796](https://github.com/CampAsAChamp/portfolio/commit/7448796))
+* style: center contact modal items for better alignment ([38330cd](https://github.com/CampAsAChamp/portfolio/commit/38330cd))
+* fix: improve navigation scroll timing for mobile vs desktop ([e7d0c72](https://github.com/CampAsAChamp/portfolio/commit/e7d0c72))
+* fix: preserve scroll position when toggling modals ([f4db3ce](https://github.com/CampAsAChamp/portfolio/commit/f4db3ce))
+* feat: add support for dual project links (GitHub and site) ([bd268ff](https://github.com/CampAsAChamp/portfolio/commit/bd268ff))
+* feat: enhance project cards with dual action buttons ([3e25480](https://github.com/CampAsAChamp/portfolio/commit/3e25480))
+* build: enforce Node 22 requirement across all scripts ([563bfdf](https://github.com/CampAsAChamp/portfolio/commit/563bfdf))
+
 ## <small>1.7.3 (2026-01-04)</small>
 
 * fix: make ci lighthouse tests run 3 times instead of 1 ([2842708](https://github.com/CampAsAChamp/portfolio/commit/2842708))
