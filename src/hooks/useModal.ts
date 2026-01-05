@@ -19,12 +19,16 @@ export function useModal(initialState = false): UseModalReturn {
   const open = useCallback(() => {
     // Calculate scrollbar width to prevent layout shift
     const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+    // Save current scroll position before locking
+    const scrollY = window.scrollY
 
     const updateState = (): void => {
       setIsOpen(true)
       // Lock body scroll and compensate for scrollbar width
       document.body.style.position = "fixed"
+      document.body.style.top = `-${scrollY}px`
       document.body.style.paddingRight = `${scrollbarWidth}px`
+      document.body.style.width = "100%"
       // Set CSS variable for elements that need scrollbar compensation
       document.documentElement.style.setProperty("--scrollbar-width", `${scrollbarWidth}px`)
     }
@@ -38,13 +42,26 @@ export function useModal(initialState = false): UseModalReturn {
   }, [])
 
   const close = useCallback(() => {
+    // Get the scroll position that was saved (convert negative top value back to positive scroll position)
+    const scrollY = document.body.style.top
+    const scrollPosition = parseInt(scrollY || "0") * -1
+
     const updateState = (): void => {
       setIsOpen(false)
-      // Restore body scroll and remove padding
+      // Remove fixed positioning and styles
       document.body.style.position = ""
+      document.body.style.top = ""
       document.body.style.paddingRight = ""
+      document.body.style.width = ""
       // Remove CSS variable
       document.documentElement.style.removeProperty("--scrollbar-width")
+      // Restore scroll position immediately in the same frame
+      // Use scrollTo with instant behavior to prevent smooth scrolling
+      window.scrollTo({
+        top: scrollPosition,
+        left: 0,
+        behavior: "instant" as ScrollBehavior,
+      })
     }
 
     // Use View Transitions API if available, otherwise fall back to instant change
