@@ -56,12 +56,17 @@ export function ContactMeBar({ isOpen, open, close }: ContactMeBarProps): React.
       <Suspense fallback={null}>
         <ContactMeModal isOpen={isOpen} close={close} />
       </Suspense>
-      <div id="contact-me-socials" className="animate__animated animate__fadeInUp">
+      <div id="contact-me-socials">
         <a href="https://github.com/CampAsAChamp/" target="_blank" rel="noopener noreferrer">
-          <Svg className="contact-me-item" id="github-logo" src={GitHubLogo} title="Github Icon" />
+          <Svg className="contact-me-item animate__animated animate__fadeInUp" id="github-logo" src={GitHubLogo} title="Github Icon" />
         </a>
         <a href="https://www.linkedin.com/in/nick-schneider-swe/" target="_blank" rel="noopener noreferrer">
-          <Svg className="contact-me-item" id="linkedin-logo" src={LinkedInLogo} title="LinkedIn Icon" />
+          <Svg
+            className="contact-me-item animate__animated animate__fadeInUp"
+            id="linkedin-logo"
+            src={LinkedInLogo}
+            title="LinkedIn Icon"
+          />
         </a>
       </div>
     </div>

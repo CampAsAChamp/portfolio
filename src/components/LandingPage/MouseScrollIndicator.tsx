@@ -5,13 +5,14 @@ import "styles/LandingPage/MouseScrollIndicator.css"
 export function MouseScrollIndicator(): React.ReactElement {
   const scrollPosition = useScrollPosition()
 
-  const showMouse = scrollPosition.y > 400
+  // Hide the indicator once user has scrolled down a bit (opposite of ScrollToTopButton)
+  const hideMouseIndicator = scrollPosition.y > 100
 
-  const className = showMouse ? "show" : ""
+  const className = hideMouseIndicator ? "hide" : ""
 
   return (
     <div id="mouse-scroll-indicator-wrapper">
-      <div className={`${className} animate__animated animate__fadeInUp`} id="mouse-scroll-indicator" />
+      <div className={className} id="mouse-scroll-indicator" />
     </div>
   )
 }

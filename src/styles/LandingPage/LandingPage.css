@@ -42,7 +42,7 @@
 
 #contact-me-button {
   animation-duration: 0.8s;
-  animation-delay: 0.4s;
+  animation-delay: 0.6s;
   opacity: 0;
   animation-fill-mode: forwards;
   align-items: center;
@@ -56,10 +56,6 @@
 }
 
 #contact-me-socials {
-  animation-duration: 0.8s;
-  animation-delay: 0.5s;
-  opacity: 0;
-  animation-fill-mode: forwards;
   margin: 0 50px;
   view-transition-name: contact-socials;
 }
@@ -75,12 +71,7 @@
   padding: 0 2rem;
 }
 
-#mouse-scroll-indicator {
-  animation-duration: 0.8s;
-  animation-delay: 0.6s;
-  opacity: 0;
-  animation-fill-mode: forwards;
-}
+/* Mouse scroll indicator animation styles removed - now handled by MouseScrollIndicator.css */
 
 #landing-page-container {
   display: grid;
@@ -174,10 +165,18 @@ body[style*="position: fixed"] #contact-me-socials {
 }
 
 #github-logo {
+  animation-duration: 0.8s;
+  animation-delay: 0.7s;
+  opacity: 0;
+  animation-fill-mode: forwards;
   fill: var(--color-socials-github);
 }
 
 #linkedin-logo {
+  animation-duration: 0.8s;
+  animation-delay: 0.8s;
+  opacity: 0;
+  animation-fill-mode: forwards;
   fill: var(--color-socials-linkedin);
 }
 
@@ -224,7 +223,6 @@ body[style*="position: fixed"] #contact-me-socials {
 
   #contact-me-socials {
     margin: 0;
-    animation-delay: 0.7s;
   }
 
   .contact-me-item {
@@ -233,8 +231,16 @@ body[style*="position: fixed"] #contact-me-socials {
 
   #contact-me-button {
     padding: 10px 15px;
-    animation-delay: 0.6s;
+    animation-delay: 0.8s;
     font-size: 1.375rem;
+  }
+
+  #github-logo {
+    animation-delay: 0.9s;
+  }
+
+  #linkedin-logo {
+    animation-delay: 1s;
   }
 
   #name-intro-container {
@@ -256,9 +262,7 @@ body[style*="position: fixed"] #contact-me-socials {
     animation-delay: 0.3s;
   }
 
-  #mouse-scroll-indicator {
-    animation-delay: 0.8s;
-  }
+  /* Mouse scroll indicator animation removed */
 }
 
 /* Mobile styles (0 - 768px) */
@@ -288,7 +292,6 @@ body[style*="position: fixed"] #contact-me-socials {
 
   #contact-me-socials {
     margin: 0;
-    animation-delay: 0.7s;
   }
 
   .contact-me-item {
@@ -297,7 +300,15 @@ body[style*="position: fixed"] #contact-me-socials {
 
   #contact-me-button {
     padding: 10px 15px;
-    animation-delay: 0.6s;
+    animation-delay: 0.8s;
+  }
+
+  #github-logo {
+    animation-delay: 0.9s;
+  }
+
+  #linkedin-logo {
+    animation-delay: 1s;
   }
 
   #contact-me-socials img:hover {
@@ -324,7 +335,5 @@ body[style*="position: fixed"] #contact-me-socials {
     animation-delay: 0.5s;
   }
 
-  #mouse-scroll-indicator {
-    animation-delay: 0.8s;
-  }
+  /* Mouse scroll indicator animation removed */
 }

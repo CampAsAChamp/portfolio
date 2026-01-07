@@ -24,7 +24,7 @@ export function LandingPage(): React.ReactElement {
             Software Engineer
           </div>
           <br />
-          <div id="subtitle" className="animate__animated animate__fadeInUp">
+          <div id="subtitle" className="animate__animated animate__bounceIn">
             If you&apos;re going to make something, why not make it pretty?
           </div>
           <ContactMeBar isOpen={isOpen} open={open} close={close} />

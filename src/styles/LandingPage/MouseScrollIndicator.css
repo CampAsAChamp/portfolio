@@ -7,6 +7,7 @@
 }
 
 #mouse-scroll-indicator {
+  opacity: 1;
   transition: opacity 1s ease;
   view-transition-name: mouse-scroll;
 
@@ -14,6 +15,10 @@
   border-radius: var(--rounded-button-corners-size);
   width: 40px;
   height: 60px;
+}
+
+#mouse-scroll-indicator.hide {
+  opacity: 0;
 }
 
 /* Add the little scroll wheel animation */
@@ -32,10 +37,6 @@
   width: 4px;
   height: 4px;
   content: "";
-}
-
-#mouse-scroll-indicator.show {
-  opacity: 0;
 }
 
 /* Compensate for scrollbar when modal is open */
