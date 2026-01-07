@@ -1,3 +1,10 @@
+## 1.9.0 (2026-01-07)
+
+* chore: update pre-push hook and add trailing newlines to config files ([7626d0e](https://github.com/CampAsAChamp/portfolio/commit/7626d0e))
+* test: update tests for landing page animation changes ([0a20fda](https://github.com/CampAsAChamp/portfolio/commit/0a20fda))
+* refactor: improve landing page animations and timing ([b4b092b](https://github.com/CampAsAChamp/portfolio/commit/b4b092b))
+* feat: add new technology icons and update Anna M. Schneider Law project tech stack ([f5fbc21](https://github.com/CampAsAChamp/portfolio/commit/f5fbc21))
+
 ## 1.8.0 (2026-01-05)
 
 * test: update SwProjects tests for dual button structure ([c8dce85](https://github.com/CampAsAChamp/portfolio/commit/c8dce85))
@@ -867,6 +874,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]: https://github.com/CampAsAChamp/portfolio/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/CampAsAChamp/portfolio/releases/tag/v0.1.0
-
-
-
