@@ -18,7 +18,17 @@ import * as technologies from "./technologies"
 const projects: SoftwareProject[] = [
   {
     name: "Anna M. Schneider Law",
-    technologies: [technologies.REACT, technologies.TYPESCRIPT, technologies.CLOUDFLARE, technologies.FIGMA],
+    technologies: [
+      technologies.NEXTJS,
+      technologies.REACT,
+      technologies.TYPESCRIPT,
+      technologies.TAILWIND,
+      technologies.FRAMER_MOTION,
+      technologies.VITEST,
+      technologies.PLAYWRIGHT,
+      technologies.ESLINT,
+      technologies.CLOUDFLARE,
+    ],
     bulletPoints: [
       [
         "Professional law firm website specializing in estate planning, built with ",

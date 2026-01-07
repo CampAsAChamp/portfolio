@@ -9,8 +9,10 @@ import ColdFusion_Icon from "assets/Dev_Icons/ColdFusion.svg"
 import CPP_Icon from "assets/Dev_Icons/CPP.svg"
 import CSS3_Icon from "assets/Dev_Icons/CSS3.svg"
 import Docker_Icon from "assets/Dev_Icons/Docker.svg"
+import Eslint_Icon from "assets/Dev_Icons/Eslint.svg"
 import Express_Icon from "assets/Dev_Icons/Express.svg"
 import Figma_Icon from "assets/Dev_Icons/Figma.svg"
+import FramerMotion_Icon from "assets/Dev_Icons/FramerMotion.svg"
 import GCP_Icon from "assets/Dev_Icons/GCP.svg"
 import Git_Icon from "assets/Dev_Icons/Git.svg"
 import GitHub_Actions_Icon from "assets/Dev_Icons/GitHub_Actions.svg"
@@ -24,18 +26,22 @@ import Kubernetes_Icon from "assets/Dev_Icons/Kubernetes.svg"
 import Linux_Icon from "assets/Dev_Icons/Linux.svg"
 import MongoDB_Icon from "assets/Dev_Icons/MongoDB.svg"
 import MySQL_Icon from "assets/Dev_Icons/MySQL.svg"
+import NextJS_Icon from "assets/Dev_Icons/NextJS.svg"
 import Nginx_Icon from "assets/Dev_Icons/Nginx.svg"
 import NodeJS_Icon from "assets/Dev_Icons/NodeJS.svg"
 import NumPy_Icon from "assets/Dev_Icons/NumPy.svg"
 import OpenGL_Icon from "assets/Dev_Icons/OpenGL.svg"
+import Playwright_Icon from "assets/Dev_Icons/Playwright.svg"
 import Postgres_Icon from "assets/Dev_Icons/Postgres.svg"
 import Python_Icon from "assets/Dev_Icons/Python.svg"
 import React_Icon from "assets/Dev_Icons/React.svg"
 import Redis_Icon from "assets/Dev_Icons/Redis.svg"
 import Redux_Icon from "assets/Dev_Icons/Redux.svg"
 import Spring_Icon from "assets/Dev_Icons/Spring.svg"
+import Tailwind_Icon from "assets/Dev_Icons/Tailwind.svg"
 import TypeScript_Icon from "assets/Dev_Icons/TypeScript.svg"
 import Ubuntu_Icon from "assets/Dev_Icons/Ubuntu.svg"
+import Vite_Test_Icon from "assets/Dev_Icons/Vite_Test.svg"
 import { Technology, TechnologyMap } from "types/technology.types"
 
 export const ADOBE_ILLUSTRATOR = "Adobe Illustrator"
@@ -49,8 +55,10 @@ export const COLDFUSION = "ColdFusion"
 export const CPP = "C++"
 export const CSS3 = "CSS3"
 export const DOCKER = "Docker"
+export const ESLINT = "ESLint"
 export const EXPRESS = "Express"
 export const FIGMA = "Figma"
+export const FRAMER_MOTION = "Framer Motion"
 export const GCP = "Google Cloud Platform"
 export const GIT = "Git"
 export const GITHUB = "GitHub"
@@ -64,18 +72,23 @@ export const KUBERNETES = "Kubernetes"
 export const LINUX = "Linux"
 export const MONGODB = "MongoDB"
 export const MYSQL = "MySQL"
+export const NEXTJS = "Next.js"
 export const NGINX = "Nginx"
 export const NODEJS = "NodeJS"
 export const NUMPY = "NumPy"
 export const OPEN_GL = "OpenGL"
+export const PLAYWRIGHT = "Playwright"
 export const POSTGRES = "Postgres"
+export const POSTCSS = "PostCSS"
 export const PYTHON = "Python"
 export const REACT = "React"
 export const REDIS = "Redis"
 export const REDUX = "Redux"
 export const SPRING = "Spring"
+export const TAILWIND = "Tailwind CSS"
 export const TYPESCRIPT = "TypeScript"
 export const UBUNTU = "Ubuntu"
+export const VITEST = "Vitest"
 
 const technologies: Technology[] = [
   {
@@ -134,6 +147,11 @@ const technologies: Technology[] = [
     link: "https://www.docker.com/",
   },
   {
+    name: ESLINT,
+    image: Eslint_Icon,
+    link: "https://eslint.org/",
+  },
+  {
     name: EXPRESS,
     image: Express_Icon,
     link: "https://expressjs.com/",
@@ -142,6 +160,11 @@ const technologies: Technology[] = [
     name: FIGMA,
     image: Figma_Icon,
     link: "https://www.figma.com/",
+  },
+  {
+    name: FRAMER_MOTION,
+    image: FramerMotion_Icon,
+    link: "https://www.framer.com/motion/",
   },
   {
     name: GCP,
@@ -209,6 +232,11 @@ const technologies: Technology[] = [
     link: "https://www.mysql.com/",
   },
   {
+    name: NEXTJS,
+    image: NextJS_Icon,
+    link: "https://nextjs.org/",
+  },
+  {
     name: NGINX,
     image: Nginx_Icon,
     link: "https://nginx.org/en/",
@@ -227,6 +255,11 @@ const technologies: Technology[] = [
     name: OPEN_GL,
     image: OpenGL_Icon,
     link: "https://www.opengl.org/",
+  },
+  {
+    name: PLAYWRIGHT,
+    image: Playwright_Icon,
+    link: "https://playwright.dev/",
   },
   {
     name: POSTGRES,
@@ -259,6 +292,11 @@ const technologies: Technology[] = [
     link: "https://spring.io/",
   },
   {
+    name: TAILWIND,
+    image: Tailwind_Icon,
+    link: "https://tailwindcss.com/",
+  },
+  {
     name: TYPESCRIPT,
     image: TypeScript_Icon,
     link: "https://www.typescriptlang.org/",
@@ -267,6 +305,11 @@ const technologies: Technology[] = [
     name: UBUNTU,
     image: Ubuntu_Icon,
     link: "https://ubuntu.com/",
+  },
+  {
+    name: VITEST,
+    image: Vite_Test_Icon,
+    link: "https://vitest.dev/",
   },
 ]
 
