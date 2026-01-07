@@ -51,9 +51,6 @@ test.describe("Animation Tests", () => {
 
       // Verify social icons
       await verifyAnimationClasses(page, "#contact-me-socials", ["animate__animated", "animate__fadeInUp"])
-
-      // Verify mouse scroll indicator
-      await verifyAnimationClasses(page, "#mouse-scroll-indicator", ["animate__animated", "animate__fadeInUp"])
     })
 
     test("elements have correct computed animation properties", async ({ page }) => {

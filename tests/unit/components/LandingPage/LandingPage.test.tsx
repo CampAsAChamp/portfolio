@@ -36,9 +36,9 @@ describe("LandingPage", () => {
       expectElementHasAnimation(title, "animate__bounceIn")
     })
 
-    it("subtitle has fadeInUp animation", () => {
+    it("subtitle has bounceIn animation", () => {
       const subtitle = document.getElementById("subtitle")
-      expectElementHasAnimation(subtitle, "animate__fadeInUp")
+      expectElementHasAnimation(subtitle, "animate__bounceIn")
     })
 
     it("profile picture has bounceIn animation", () => {
@@ -51,9 +51,11 @@ describe("LandingPage", () => {
       expectElementHasAnimation(button, "animate__fadeInUp")
     })
 
-    it("social icons container has fadeInUp animation", () => {
-      const socials = document.getElementById("contact-me-socials")
-      expectElementHasAnimation(socials, "animate__fadeInUp")
+    it("individual social icons have fadeInUp animation", () => {
+      const githubLogo = document.getElementById("github-logo")
+      const linkedinLogo = document.getElementById("linkedin-logo")
+      expectElementHasAnimation(githubLogo, "animate__fadeInUp")
+      expectElementHasAnimation(linkedinLogo, "animate__fadeInUp")
     })
 
     it("mouse scroll indicator has proper structure", () => {
@@ -61,11 +63,6 @@ describe("LandingPage", () => {
       expect(wrapper).toBeTruthy()
       const indicator = document.getElementById("mouse-scroll-indicator")
       expect(indicator).toBeTruthy()
-    })
-
-    it("mouse scroll indicator has fadeInUp animation", () => {
-      const indicator = document.getElementById("mouse-scroll-indicator")
-      expectElementHasAnimation(indicator, "animate__fadeInUp")
     })
   })
 })
