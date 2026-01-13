@@ -1,3 +1,7 @@
+## <small>1.9.1 (2026-01-13)</small>
+
+* fix: spacing in check node version script ([0118964](https://github.com/CampAsAChamp/portfolio/commit/0118964))
+
 ## 1.9.0 (2026-01-07)
 
 * chore: update pre-push hook and add trailing newlines to config files ([7626d0e](https://github.com/CampAsAChamp/portfolio/commit/7626d0e))
