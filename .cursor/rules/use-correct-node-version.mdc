@@ -1,0 +1,8 @@
+---
+name: use-correct-node-version
+description: Use the correct Node version by using nvm use
+---
+
+# Overview
+
+Use the correct Node version for this repo (v22.21.1) that is found in the .nvmrc file. Switch to it with the command `nvm use` which will look for a `.nvmrc` file in the repo and use the Node version defined in it.
