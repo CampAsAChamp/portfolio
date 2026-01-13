@@ -146,7 +146,7 @@ body.art-modal-open .column img:hover {
   .swiper-button-prev {
     background: var(--color-art-swiper-buttons);
     border-radius: var(--rounded-component-corners-size);
-    color: var(--color-purple);
+    color: var(--color-yellow);
     display: flex;
     padding: 0.75rem;
     height: 3rem;
@@ -177,6 +177,6 @@ body.art-modal-open .column img:hover {
   }
 
   .swiper-pagination-bullet-active {
-    background-color: var(--color-purple);
+    background-color: var(--color-yellow);
   }
 }
