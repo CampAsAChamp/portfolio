@@ -1,3 +1,8 @@
+## 1.11.0 (2026-01-13)
+
+* feat: change color of carousel next/prev buttons & dots ([e9d2a6d](https://github.com/CampAsAChamp/portfolio/commit/e9d2a6d))
+* chore: remove e2e tests ([185a15a](https://github.com/CampAsAChamp/portfolio/commit/185a15a))
+
 ## 1.10.0 (2026-01-13)
 
 * feat: fix swiper button sizing/background and add animations ([cdd994d](https://github.com/CampAsAChamp/portfolio/commit/cdd994d))
