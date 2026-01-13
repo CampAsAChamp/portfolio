@@ -123,7 +123,7 @@ export function SwProjectVideo({ project, canAutoPlay, onVideoPlay, onVideoPause
     return baseClass
   }
 
-  const shouldShowPlayButton = !canAutoPlay || !isVideoPlaying
+  const shouldShowPlayButton = !isVideoPlaying || isPlayButtonFading
 
   return (
     <div className="video-container">
