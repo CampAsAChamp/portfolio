@@ -1,3 +1,7 @@
+## 1.10.0 (2026-01-13)
+
+* feat: fix swiper button sizing/background and add animations ([cdd994d](https://github.com/CampAsAChamp/portfolio/commit/cdd994d))
+
 ## <small>1.9.2 (2026-01-13)</small>
 
 * fix: instagram browser sw projects video thumbnail play button fix ([4ea927e](https://github.com/CampAsAChamp/portfolio/commit/4ea927e))
