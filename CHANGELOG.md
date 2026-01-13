@@ -1,3 +1,8 @@
+## <small>1.9.2 (2026-01-13)</small>
+
+* fix: instagram browser sw projects video thumbnail play button fix ([4ea927e](https://github.com/CampAsAChamp/portfolio/commit/4ea927e))
+* chore: add use-correct-node-version rule to repo ([a2aa2b6](https://github.com/CampAsAChamp/portfolio/commit/a2aa2b6))
+
 ## <small>1.9.1 (2026-01-13)</small>
 
 * fix: spacing in check node version script ([0118964](https://github.com/CampAsAChamp/portfolio/commit/0118964))
