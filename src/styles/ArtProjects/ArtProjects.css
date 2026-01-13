@@ -147,15 +147,36 @@ body.art-modal-open .column img:hover {
     background: var(--color-art-swiper-buttons);
     border-radius: var(--rounded-component-corners-size);
     color: var(--color-purple);
+    display: flex;
+    padding: 0.75rem;
+    height: 3rem;
+    width: 3rem;
+    transition: transform 0.15s ease-out;
+    cursor: pointer;
   }
 
-  .swiper-button-next::after,
-  .swiper-button-prev::after {
-    font-size: 2rem;
-    font-weight: 900;
+  .swiper-button-next:active,
+  .swiper-button-prev:active {
+    transform: scale(0.9);
+  }
+
+  .swiper-button-next.swiper-button-disabled,
+  .swiper-button-prev.swiper-button-disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .swiper-button-next.swiper-button-disabled:active,
+  .swiper-button-prev.swiper-button-disabled:active {
+    transform: none;
   }
 
   .swiper-pagination-bullet {
     background-color: var(--color-art-swiper-bullets);
+    transition: transform 0.15s ease-out;
+  }
+
+  .swiper-pagination-bullet-active {
+    background-color: var(--color-purple);
   }
 }
