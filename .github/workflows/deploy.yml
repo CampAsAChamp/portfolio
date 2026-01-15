@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Start deployment
         id: deployment
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const deployment = await github.rest.repos.createDeployment({
@@ -41,7 +41,7 @@ jobs:
 
       - name: Update deployment status
         if: always()
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             await github.rest.repos.createDeploymentStatus({
