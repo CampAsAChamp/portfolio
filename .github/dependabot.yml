@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     commit-message:
       # Production dependencies will use "fix(deps):" which triggers patch releases
       prefix: "fix"
