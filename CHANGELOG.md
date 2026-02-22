@@ -1,3 +1,10 @@
+## 1.12.0 (2026-01-18)
+
+* feat: add entrance animation to mouse scroll indicator ([7efefa0](https://github.com/CampAsAChamp/portfolio/commit/7efefa0))
+* Update dependabot.yml ([ab8406c](https://github.com/CampAsAChamp/portfolio/commit/ab8406c))
+* chore: update dependabot to scan monthly ([13f3658](https://github.com/CampAsAChamp/portfolio/commit/13f3658))
+* docs: add e2e test requirements ([13d18ad](https://github.com/CampAsAChamp/portfolio/commit/13d18ad))
+
 ## 1.11.0 (2026-01-13)
 
 * feat: change color of carousel next/prev buttons & dots ([e9d2a6d](https://github.com/CampAsAChamp/portfolio/commit/e9d2a6d))
