@@ -1,0 +1,46 @@
+---
+description: GitHub Actions CI/CD workflow conventions
+globs: ".github/**/*.{yml,yaml}"
+alwaysApply: false
+---
+
+# CI/CD Workflows
+
+## Pipeline chain (main branch)
+
+```
+push/PR → Tests → (on success) → Release + Deploy + Lighthouse
+```
+
+| Workflow | Trigger | Purpose |
+|----------|---------|---------|
+| `test.yml` | push/PR to `main` | lint → unit tests → build → E2E |
+| `release.yml` | Tests success on `main` | semantic-release (skips if `[skip ci]`) |
+| `deploy.yml` | Tests success on `main` | GitHub deployment status for Cloudflare Pages |
+| `lighthouse.yml` | Tests success on `main` | LHCI against preview server |
+
+Actual hosting is **Cloudflare Pages** (auto-deploy from `main`). The Deploy workflow tracks status in GitHub Environments — it does not push artifacts itself.
+
+## Conventions
+
+- **Node 22** everywhere (`setup-node` + `.nvmrc`)
+- **Yarn 4**: use `yarn install --immutable` (or `--frozen-lockfile` in release.yml)
+- E2E: `npx playwright install --with-deps` before `yarn test:e2e`
+- E2E failures upload artifacts from `test_results/e2e/`
+- Playwright config starts dev server at `http://localhost:5173` via `webServer`
+
+## When modifying workflows
+
+1. Keep the Tests workflow as the single gate — downstream workflows depend on it via `workflow_run`
+2. Do not remove artifact uploads on E2E failure (needed for debugging)
+3. Match Node/Yarn versions with `package.json` engines
+4. Lighthouse uses `yarn build` + `.lighthouserc.desktop.ci.json` — config lives at repo root
+5. Dependabot config is in `.github/dependabot.yml` (npm + github-actions, monthly)
+
+## Local parity
+
+Before pushing CI changes, verify locally:
+
+```bash
+nvm use && yarn lint && yarn test && yarn build && yarn test:e2e
+```

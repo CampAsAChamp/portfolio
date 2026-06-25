@@ -1,0 +1,18 @@
+# Build and dependency artifacts
+node_modules/
+build/
+dist/
+.yarn/cache/
+.yarn/unplugged/
+.yarn/install-state.gz
+
+# Test output (not source)
+test_results/
+coverage/
+
+# Lighthouse reports
+.lighthouseci/
+
+# OS and editor
+.DS_Store
+*.log

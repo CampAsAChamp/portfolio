@@ -1,0 +1,42 @@
+---
+description: Playwright E2E testing conventions
+globs: "tests/e2e/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# E2E Testing (Playwright)
+
+Config: `playwright.config.ts` — base URL `http://localhost:5173`, 30s timeout.
+
+## Structure
+
+- `fixtures/` — page objects (`LandingPage`, `NavbarPage`, `ModalPage`, `SectionPage`)
+- `helpers/` — animation, screenshot, video, viewport, wait utilities
+- `desktop/` and `mobile/` — spec files by viewport
+
+## Anti-flaky rules
+
+**Do:** `expect().toBeVisible()`, `waitForLoadState`, helpers in `wait-helpers.ts` and `animation-helpers.ts`, semantic/`data-testid` locators.
+
+**Don't:** `page.waitForTimeout()`, CSS-class-only selectors, test interdependencies, hard-coded delays.
+
+## Visual regression
+
+Use `takeStableScreenshot` from `screenshot-helpers.ts`. Update baselines:
+
+```bash
+npx playwright test --update-snapshots
+npx playwright test landing-page.spec.ts --update-snapshots
+```
+
+Snapshots live beside specs in `*-snapshots/` folders. Tolerant diff settings are in `playwright.config.ts`.
+
+## Commands
+
+```bash
+yarn test:e2e              # All E2E
+yarn test:e2e:ui           # Interactive UI
+npx playwright test --project=chromium
+```
+
+See `tests/e2e/README.md` for full guide.

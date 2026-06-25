@@ -1,8 +1,10 @@
 ---
-name: use-correct-node-version
-description: Use the correct Node version by using nvm use
+description: Use Node 22+ via nvm before running yarn commands
+alwaysApply: true
 ---
 
-# Overview
+# Node Version
 
-Use the correct Node version for this repo (v22.21.1) that is found in the .nvmrc file. Switch to it with the command `nvm use` which will look for a `.nvmrc` file in the repo and use the Node version defined in it.
+This repo requires **Node 22+** (see `.nvmrc`). Run `nvm use` before any `yarn` command.
+
+All npm scripts call `scripts/check-node-version.mjs` as a guard, but switching first avoids confusing errors.

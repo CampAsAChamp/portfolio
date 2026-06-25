@@ -1,0 +1,51 @@
+---
+description: TypeScript and React component conventions
+globs: "{src,tests}/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# TypeScript & React
+
+## Components
+
+```tsx
+export function AboutMe(): React.ReactElement {
+  return <section id="about-me-container" className="page-container">...</section>
+}
+```
+
+- Named exports, functional components with hooks
+- `React.ReactElement` return type (not `JSX.Element`)
+- Interfaces for props (prefer over type aliases)
+- Strict null checks; avoid `any`
+
+## Imports (Prettier-enforced order)
+
+1. External packages
+2. `components/...`
+3. `assets/...`
+4. `data/...`
+5. `types/...`
+6. `styles/...css`
+
+Use absolute imports from `src` — configured in `tsconfig.json` and `vite.config.ts`.
+
+## Formatting
+
+Single quotes, no semicolons, 140 char lines, 2-space indent, LF endings.
+
+## Accessibility
+
+- Semantic HTML (`<section>`, `<button>`, etc.)
+- ARIA labels on custom interactive elements
+- `onKeyDown` handlers when using non-button click targets
+- Keyboard focus management for modals/menus
+
+## File naming
+
+| Kind | Convention | Example |
+|------|------------|---------|
+| Components | PascalCase | `AboutMe.tsx` |
+| Data | camelCase | `experiences.ts` |
+| Types | `*.types.ts` | `project.types.ts` |
+| Hooks | `use*.ts` | `useTheme.ts` |

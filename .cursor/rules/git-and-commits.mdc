@@ -1,0 +1,28 @@
+---
+description: Git commit style and release conventions for this personal repo
+alwaysApply: true
+---
+
+# Git & Releases
+
+## Commit messages (personal repo)
+
+Use plain imperative subjects — **not** conventional commits unless explicitly requested.
+
+```
+Add E2E tests for contact modal
+Fix theme switcher flash on load
+Update experience section copy
+```
+
+## Releases
+
+- semantic-release on `main` after CI passes
+- `feat:` → minor, `fix:`/`perf:`/`revert:` → patch, `BREAKING CHANGE:` → major
+- Do **not** manually edit `CHANGELOG.md`
+
+## Deployment
+
+- Cloudflare Pages: `yarn build` → `build/`
+- Preview deploys on PRs; production on push to `main`
+- Only commit when the user explicitly asks

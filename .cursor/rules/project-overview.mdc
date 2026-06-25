@@ -1,0 +1,35 @@
+---
+description: Portfolio project overview and development workflow
+alwaysApply: true
+---
+
+# Portfolio Website
+
+React 19 + TypeScript (strict) portfolio at https://nickhs.dev. Vite build, Cloudflare Pages deploy.
+
+## Before committing
+
+1. `nvm use` then `yarn lint:fix`
+2. `yarn test` (and `yarn test:e2e` if UI changed)
+3. Pre-commit hooks run ESLint, Stylelint, Prettier, and `tsc --noEmit` on staged files
+
+## Adding features
+
+1. Component in `src/components/ComponentName/`
+2. CSS in `src/styles/ComponentName/ComponentName.css`
+3. Types in `src/types/*.types.ts`
+4. Content in `src/data/` when applicable
+5. Wire up in `App.tsx` or parent; add section `id` for navbar scroll targets
+
+## Key libraries
+
+- `react-animate-on-scroll` — scroll animations (`animateOnce` on sections)
+- `animate.css` — animation classes
+- `swiper` — carousels
+- `react-inlinesvg` — inline SVG manipulation
+
+## Do not
+
+- Edit `CHANGELOG.md` manually (semantic-release)
+- Use Tailwind or CSS-in-JS
+- Use class components (except `ErrorBoundary`)

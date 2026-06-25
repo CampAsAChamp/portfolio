@@ -1,0 +1,25 @@
+---
+description: CSS styling conventions for components
+globs: "src/styles/**/*.css"
+alwaysApply: false
+---
+
+# CSS Styling
+
+- Plain CSS only — one file per component in `src/styles/ComponentName/`
+- Use CSS variables from `src/styles/Common/Globals.css` for colors and shared values
+- Mobile-first responsive design with media queries
+- BEM-like or semantic class/ID names (existing code uses IDs heavily — match surrounding style)
+- Import `animate.css` classes via components, not in CSS files directly
+
+## Theming
+
+Dark/light theme via CSS variables toggled by `useTheme` hook. Check `Globals.css` before adding hard-coded colors.
+
+## Shared styles
+
+- `Globals.css` — variables, resets, base typography
+- `hover.css` — shared hover effects
+- `Scrollbar.css` — custom scrollbar styling
+
+Run `yarn lint:css:fix` to auto-fix Stylelint issues.

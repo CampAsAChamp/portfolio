@@ -1,0 +1,22 @@
+---
+description: Content data file conventions
+globs: "src/data/**/*.ts"
+alwaysApply: false
+---
+
+# Content Data
+
+Keep all display content in `src/data/` — components should import, not hardcode.
+
+| File | Purpose |
+|------|---------|
+| `experiences.ts` | Work history |
+| `swProjects.ts` | Software projects |
+| `artProjects.ts` | Art portfolio items |
+| `technologies.ts` | Skills/tech stack icons |
+| `navigation.ts` | Navbar links |
+| `colors.ts` | Color constants |
+
+Define TypeScript types in `src/types/` (e.g., `experience.types.ts`, `project.types.ts`). Export named constants with full metadata (company, duration, technologies, URLs, etc.).
+
+Assets referenced from data go in `src/assets/` (SVG for icons/logos, WebP for photos).
