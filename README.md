@@ -168,7 +168,7 @@ yarn test:coverage
 
 ### E2E Tests
 
-End-to-end tests verify the application works correctly in real browsers using Playwright.
+End-to-end tests verify the application works correctly in real browsers using Playwright. These tests ensure no regressions occur when making changes to the codebase.
 
 Run all E2E tests:
 ```sh
@@ -186,11 +186,65 @@ yarn test:e2e:headed
 ```
 
 **Test Coverage:**
-- Functional tests verify user interactions and navigation
-- Visual regression tests catch unintended UI changes
+
+The E2E test suite comprehensively validates all features documented in [`tests/e2e/E2E Test Requirements.md`](tests/e2e/E2E%20Test%20Requirements.md):
+
+**Desktop Tests:**
+- **Landing Page**: Element visibility, navbar navigation, smooth scrolling, animations
+- **Theme Switcher**: Dark/light mode toggle, localStorage persistence, visual regression
+- **Mouse Scroll Indicator**: Animations, visibility thresholds, fade out behavior
+- **Contact Me**: Button hover effects, modal interactions (open/close/ESC/backdrop), social links
+- **Scroll To Top**: Visibility threshold, smooth scrolling, hover effects
+- **About Me**: Layout, image animations with stagger, organic blob background
+- **Experience**: Company cards, colors, technologies, clickable links, animations
+- **Skills & Technologies**: Grid layout, hover effects, color wipe animations, stagger
+- **SW Projects**: Project cards, video autoplay, technologies, buttons, links
+- **Art Projects**: Grid layout, hover effects, fullscreen modal, modal interactions
+- **Footer**: Page layout integrity
+
+**Mobile Tests:**
+- **Landing Page Mobile**: Hamburger menu, drawer animations, nav link behavior, profile pic centering
+- **About Me Mobile**: Single column layout, element order (Images → Title → Description)
+- **SW Projects Mobile**: Single column cards, video handling, Instagram browser detection
+- **Art Projects Mobile**: Carousel instead of grid, swipe gestures, pagination dots
+- **General Mobile**: No scroll indicator, no scroll-to-top button, touch interactions
+
+**Test Reliability:**
+- All tests follow anti-flaky practices (no arbitrary timeouts, proper waiting strategies)
+- Visual regression testing with screenshot comparison
 - Tests run against 5 browser configurations:
   - Desktop: Chrome, Firefox, Safari
   - Mobile: Chrome (Pixel 5), Safari (iPhone 12)
+- Automatic retries in CI (2 retries on failure)
+- Test results and screenshots uploaded as artifacts on failure
+
+**Running Specific Test Suites:**
+```sh
+# Run only desktop tests
+npx playwright test tests/e2e/desktop
+
+# Run only mobile tests  
+npx playwright test tests/e2e/mobile
+
+# Run specific test file
+npx playwright test tests/e2e/desktop/landing-page.spec.ts
+
+# Run tests in specific browser
+npx playwright test --project=chromium
+npx playwright test --project="Mobile Safari"
+```
+
+**Debugging Failed Tests:**
+```sh
+# Run in debug mode with Playwright Inspector
+npx playwright test --debug
+
+# Run with visible browser
+yarn test:e2e:headed
+
+# View test report after run
+npx playwright show-report test_results/e2e/html-report
+```
 
 ### Lighthouse Performance Audits
 

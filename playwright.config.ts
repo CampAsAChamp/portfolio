@@ -5,6 +5,7 @@ import { defineConfig, devices } from "@playwright/test"
  */
 export default defineConfig({
   testDir: "./tests/e2e",
+  timeout: 60_000,
   /* Output directory for test artifacts */
   outputDir: "./test_results/e2e/results",
   /* Run tests in files in parallel */
@@ -13,8 +14,8 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : 10,
+  /* Opt out of parallel tests on CI. Fewer workers locally keeps WebKit stable. */
+  workers: process.env.CI ? 1 : 2,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [["html", { outputFolder: "test_results/e2e/html-report", open: "never" }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -52,26 +53,31 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
+      testMatch: "**/desktop/**/*.spec.ts",
       use: { ...devices["Desktop Chrome"] },
     },
 
     {
       name: "firefox",
+      testMatch: "**/desktop/**/*.spec.ts",
       use: { ...devices["Desktop Firefox"] },
     },
 
     {
       name: "webkit",
+      testMatch: "**/desktop/**/*.spec.ts",
       use: { ...devices["Desktop Safari"] },
     },
 
     /* Test against mobile viewports. */
     {
       name: "Mobile Chrome",
+      testMatch: "**/mobile/**/*.spec.ts",
       use: { ...devices["Pixel 5"] },
     },
     {
       name: "Mobile Safari",
+      testMatch: "**/mobile/**/*.spec.ts",
       use: { ...devices["iPhone 12"] },
     },
   ],
