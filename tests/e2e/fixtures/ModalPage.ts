@@ -10,22 +10,26 @@ export class ModalPage extends BasePage {
   readonly modalBackdrop: Locator
   readonly closeButton: Locator
   readonly modalContent: Locator
+  private readonly backgroundId: string
 
-  constructor(page: Page) {
+  constructor(page: Page, backgroundId: string = "contact-me-modal-background") {
     super(page)
+    this.backgroundId = backgroundId
 
-    // Modal elements
-    this.modal = page.locator('[class*="modal"][class*="open"], [role="dialog"]').first()
-    this.modalBackdrop = page.locator('[class*="backdrop"], [class*="overlay"]').first()
-    this.closeButton = page.locator('[class*="modal"] button[class*="close"], [class*="modal"] [aria-label*="close" i]').first()
-    this.modalContent = page.locator('[class*="modal-content"], [class*="modal-body"]').first()
+    // Modal elements — use stable IDs from the actual component markup
+    this.modal = page.locator(`#${backgroundId}`)
+    this.modalBackdrop = page.locator(`#${backgroundId}`)
+    this.closeButton = page.locator(`#${backgroundId} button.modal-close`)
+    this.modalContent = page.locator("#contact-me-modal-content")
   }
 
   /**
    * Wait for modal to open with animation
    */
   async waitForModalOpen(): Promise<void> {
-    await this.modal.waitFor({ state: "visible" })
+    // Modal is always in the DOM; open state is indicated by the "show" class
+    const id = this.backgroundId
+    await this.page.waitForFunction((bgId) => document.getElementById(bgId)?.classList.contains("show"), id, { timeout: 10000 })
     // Wait for opening animation
     await this.page.waitForTimeout(300)
   }
@@ -34,14 +38,16 @@ export class ModalPage extends BasePage {
    * Wait for modal to close with animation
    */
   async waitForModalClose(): Promise<void> {
-    await this.modal.waitFor({ state: "hidden" })
+    const id = this.backgroundId
+    await this.page.waitForFunction((bgId) => !document.getElementById(bgId)?.classList.contains("show"), id, { timeout: 10000 })
   }
 
   /**
    * Check if modal is open
    */
   async isModalOpen(): Promise<boolean> {
-    return await this.modal.isVisible()
+    const classes = await this.modal.getAttribute("class")
+    return classes?.includes("show") ?? false
   }
 
   /**

@@ -1,6 +1,6 @@
 import { Locator, Page } from "@playwright/test"
 
-import { pollForCondition, waitForScrollComplete, waitForSectionInViewport } from "../helpers/wait-helpers"
+import { waitForScrollComplete, waitForSectionInViewport } from "../helpers/wait-helpers"
 import { BasePage } from "./BasePage"
 
 /**
@@ -85,33 +85,33 @@ export class NavbarPage extends BasePage {
    * Open hamburger menu (mobile)
    */
   async openHamburgerMenu(): Promise<void> {
-    const menuIsOpen = async (): Promise<boolean> =>
-      this.page.evaluate(() => document.querySelector("nav ul")?.classList.contains("nav-active") ?? false)
-
-    if (await menuIsOpen()) {
+    if (await this.isHamburgerMenuOpen()) {
       return
     }
 
-    await this.hamburgerButton.scrollIntoViewIfNeeded()
-    await this.hamburgerButton.click({ force: true })
+    // Use evaluate click — more reliable on WebKit than locator.click() on div[role=button]
+    await this.page.evaluate(() => {
+      const btn = document.querySelector<HTMLElement>(".hamburger-menu")
+      btn?.click()
+    })
 
-    await pollForCondition(menuIsOpen, (open) => open === true, { timeout: 15000, interval: 100 })
+    await this.page.waitForFunction(() => document.querySelector("nav ul")?.classList.contains("nav-active"), { timeout: 15000 })
   }
 
   /**
    * Close hamburger menu (mobile)
    */
   async closeHamburgerMenu(): Promise<void> {
-    const menuIsOpen = async (): Promise<boolean> =>
-      this.page.evaluate(() => document.querySelector("nav ul")?.classList.contains("nav-active") ?? false)
-
-    if (!(await menuIsOpen())) {
+    if (!(await this.isHamburgerMenuOpen())) {
       return
     }
 
     // Same control toggles open and closed; the X state uses the .toggle class.
-    await this.hamburgerButton.scrollIntoViewIfNeeded()
-    await this.hamburgerButton.click({ force: true })
+    await this.page.evaluate(() => {
+      const btn = document.querySelector<HTMLElement>(".hamburger-menu")
+      btn?.click()
+    })
+
     await this.page.waitForFunction(() => !document.querySelector("nav ul")?.classList.contains("nav-active"), { timeout: 15000 })
   }
 
