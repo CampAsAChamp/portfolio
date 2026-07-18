@@ -221,12 +221,21 @@ test.describe("Experience Section - Desktop", () => {
     const employer = firstCard.locator(".employer")
     await expect(employer).toBeVisible()
 
-    // Should have position
-    const position = firstCard.locator(".position")
+    // Should have at least one position
+    const position = firstCard.locator(".position").first()
     await expect(position).toBeVisible()
 
-    // Should have list
-    const list = firstCard.locator("ul")
+    // Should have at least one list
+    const list = firstCard.locator("ul").first()
     await expect(list).toBeVisible()
+  })
+
+  test("should display stacked roles on the Intuit card", async () => {
+    const firstCard = sectionPage.getSectionCard("experience-container", 0)
+    const positions = firstCard.locator(".position")
+
+    await expect(positions).toHaveCount(2)
+    await expect(positions.nth(0)).toHaveText("Senior Software Engineer")
+    await expect(positions.nth(1)).toHaveText("Software Engineer 2 - Full Stack")
   })
 })

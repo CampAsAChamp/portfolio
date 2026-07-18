@@ -25,13 +25,17 @@ export function ExperienceCard({ experience, index }: ExperienceCardProps): Reac
           />
         </div>
         <div className="location">{experience.location}</div>
-        <div className="secondary-title">
-          <div className="position">{experience.position}</div>
-          <div className="duration">{experience.duration}</div>
-        </div>
-        <div className="supporting-text">
-          <BulletPointList bulletPoints={experience.bulletPoints} />
-        </div>
+        {experience.roles.map((role) => (
+          <div key={`${role.position}-${role.duration}`} className="experience-role">
+            <div className="secondary-title">
+              <div className="position">{role.position}</div>
+              <div className="duration">{role.duration}</div>
+            </div>
+            <div className="supporting-text">
+              <BulletPointList bulletPoints={role.bulletPoints} />
+            </div>
+          </div>
+        ))}
         <TechnologiesBar technologyNames={experience.technologies} fillColor={experience.color} />
       </div>
     </ScrollAnimation>

@@ -18,26 +18,36 @@ export const experiences: Experience[] = [
   {
     company_name: INTUIT,
     location: "San Diego, CA",
-    position: "Software Engineer 2",
-    duration: "Oct 2023 - Present",
-    bulletPoints: [
-      [
-        "Currently working as a full stack software engineer on the appointment scheduling team for TurboTax's ",
-        createExternalLink("Virtual Expert Platform", "https://www.intuit.com/strategy/#bigbet-2"),
-        ".",
-      ],
-      [
-        "Launched Attribute Based Routing to match customers to tax experts at a more granular level, driving a 11% reduction in TurboTax Live customer service time without impact to quality and 6% increase in same-day tax filings (contributing to $5.3M savings).",
-      ],
-      [
-        "Created service with accompanying web app for syncing expert skills and creating routing plans in AWS, enabling Attribute Based Routing.",
-      ],
-      [
-        "Developed service for scheduling expert appointments and fulfilling them at their scheduled time, handling over 500,000 appointments a year.",
-      ],
-      [
-        "Decoupled TurboTax Live from Amazon Connect, saving 1100 hours per year by eliminating the need for personal queues and licenses to be created by Ops team.",
-      ],
+    roles: [
+      {
+        position: "Senior Software Engineer",
+        duration: "Aug 2026 - Present",
+        bulletPoints: [
+          [
+            "Currently working as a full stack software engineer on the appointment scheduling team for TurboTax's ",
+            createExternalLink("Virtual Expert Platform", "https://www.intuit.com/strategy/#bigbet-2"),
+            ".",
+          ],
+        ],
+      },
+      {
+        position: "Software Engineer 2 - Full Stack",
+        duration: "Oct 2023 - Jul 2026 (2 yr 10 mos)",
+        bulletPoints: [
+          [
+            "Launched Attribute Based Routing to match customers to tax experts at a more granular level, driving a 11% reduction in TurboTax Live customer service time without impact to quality and 6% increase in same-day tax filings (contributing to $5.3M savings).",
+          ],
+          [
+            "Created service with accompanying web app for syncing expert skills and creating routing plans in AWS, enabling Attribute Based Routing.",
+          ],
+          [
+            "Developed service for scheduling expert appointments and fulfilling them at their scheduled time, handling over 500,000 appointments a year.",
+          ],
+          [
+            "Decoupled TurboTax Live from Amazon Connect, saving 1100 hours per year by eliminating the need for personal queues and licenses to be created by Ops team.",
+          ],
+        ],
+      },
     ],
     technologies: [
       technologies.JAVA,
@@ -54,26 +64,30 @@ export const experiences: Experience[] = [
   {
     company_name: ARCULES,
     location: "Irvine, CA",
-    position: "Software Engineer",
-    duration: "Jan 2022 - Oct 2023 (1 yr 10 mos)",
-    bulletPoints: [
-      [
-        "Worked on the ",
-        createExternalLink("product", "https://manage.arcules.com/login/"),
-        " (video surveillance as a service) team across the whole stack.",
-      ],
-      [
-        "Developed and maintained a service and scheduler for creating detailed customer device usage reports for further analysis and insights using Go, Postgres, and Google Cloud Platform.",
-      ],
-      [
-        "Designed and implemented set of microservices for our Back Office portal, which streamlined the quote/order creation process for the Sales Ops team, resulting in a significantly faster sales pipeline.",
-      ],
-      [
-        "Created a Kubernetes CronJob to generate and distribute hourly device health status reports for 10,000+ devices, per request from our largest customer.",
-      ],
-      [
-        "Enhanced user experience of the app by revamping the application flow, adding localization infrastructure and quality-of-life features using React, Redux, and react-intl.",
-      ],
+    roles: [
+      {
+        position: "Software Engineer",
+        duration: "Jan 2022 - Oct 2023 (1 yr 10 mos)",
+        bulletPoints: [
+          [
+            "Worked on the ",
+            createExternalLink("product", "https://manage.arcules.com/login/"),
+            " (video surveillance as a service) team across the whole stack.",
+          ],
+          [
+            "Developed and maintained a service and scheduler for creating detailed customer device usage reports for further analysis and insights using Go, Postgres, and Google Cloud Platform.",
+          ],
+          [
+            "Designed and implemented set of microservices for our Back Office portal, which streamlined the quote/order creation process for the Sales Ops team, resulting in a significantly faster sales pipeline.",
+          ],
+          [
+            "Created a Kubernetes CronJob to generate and distribute hourly device health status reports for 10,000+ devices, per request from our largest customer.",
+          ],
+          [
+            "Enhanced user experience of the app by revamping the application flow, adding localization infrastructure and quality-of-life features using React, Redux, and react-intl.",
+          ],
+        ],
+      },
     ],
     technologies: [
       technologies.GO,
@@ -90,34 +104,38 @@ export const experiences: Experience[] = [
   {
     company_name: RAYTHEON,
     location: "Los Angeles, CA",
-    position: "Software Engineer 1",
-    duration: "Jan 2020 - Dec 2021 (2 yrs)",
-    bulletPoints: [
-      [
-        "Worked on ",
-        createExternalLink(
-          "Space Based Early Missile Warning Satellite",
-          "https://www.raytheon.com/capabilities/products/space-based-early-warning",
-        ),
-        " on the Ground Software team",
-      ],
-      [
-        "Developed Space Mission Data Processing ",
-        createExternalLink(
-          "Framework",
-          "https://www.raytheonintelligenceandspace.com/what-we-do/space-solutions/missile-warning-and-defense/forge",
-        ),
-        " in C++ 11 and Google Protobufs to stream and process terabytes of real-time satellite data each day with extremely high reliability, performance, and fault tolerance.",
-      ],
-      [
-        "Implemented modules in Space to Earth message simulation with Python & C++, allowing for extensive development and testing without needing Space hardware.",
-      ],
-      [
-        "Optimized statistical feature generation algorithm from systems engineers leading to a 90% improvement in runtime (~200 μs to ~20 μs).",
-      ],
-      [
-        "Received program-wide performance recognition award for outstanding and impressive performance (July 2020, June 2021, Sept 2021); Recognition Awards for collaboration (June 2020, Aug 2020, Jan 2021).",
-      ],
+    roles: [
+      {
+        position: "Software Engineer 1",
+        duration: "Jan 2020 - Dec 2021 (2 yrs)",
+        bulletPoints: [
+          [
+            "Worked on ",
+            createExternalLink(
+              "Space Based Early Missile Warning Satellite",
+              "https://www.raytheon.com/capabilities/products/space-based-early-warning",
+            ),
+            " on the Ground Software team",
+          ],
+          [
+            "Developed Space Mission Data Processing ",
+            createExternalLink(
+              "Framework",
+              "https://www.raytheonintelligenceandspace.com/what-we-do/space-solutions/missile-warning-and-defense/forge",
+            ),
+            " in C++ 11 and Google Protobufs to stream and process terabytes of real-time satellite data each day with extremely high reliability, performance, and fault tolerance.",
+          ],
+          [
+            "Implemented modules in Space to Earth message simulation with Python & C++, allowing for extensive development and testing without needing Space hardware.",
+          ],
+          [
+            "Optimized statistical feature generation algorithm from systems engineers leading to a 90% improvement in runtime (~200 μs to ~20 μs).",
+          ],
+          [
+            "Received program-wide performance recognition award for outstanding and impressive performance (July 2020, June 2021, Sept 2021); Recognition Awards for collaboration (June 2020, Aug 2020, Jan 2021).",
+          ],
+        ],
+      },
     ],
     technologies: [technologies.CPP, technologies.C, technologies.PYTHON, technologies.DOCKER],
     logo: RaytheonLogo,
@@ -126,23 +144,27 @@ export const experiences: Experience[] = [
   {
     company_name: ID_TECH,
     location: "Cypress, CA",
-    position: "Software Engineer Co-op",
-    duration: "Sept 2018 - Dec 2018 (4 mos)",
-    bulletPoints: [
-      [
-        "Created responsive mobile web app ",
-        createExternalLink("ViVOstate Terminal Management System (TMS)", "https://www.vivostate.com/"),
-        " with Node, Express, and Angular for viewing credit card reader device information and performing remote firmware updates in the field.",
-      ],
-      [
-        "Built a web based barcode scanner to allow easy lookup of a device's status and specs using a smartphone/laptop camera, resulting in a 44% faster average task time.",
-      ],
-      [
-        "Added GPS location tracking for quickly viewing devices on a map, utilizing the ",
-        createExternalLink("Google Maps API", "https://developers.google.com/maps/documentation"),
-        ".",
-      ],
-      ["Designed wireframes, mockups and UX flows with Figma for rapidly prototyping designs to stakeholders."],
+    roles: [
+      {
+        position: "Software Engineer Co-op",
+        duration: "Sept 2018 - Dec 2018 (4 mos)",
+        bulletPoints: [
+          [
+            "Created responsive mobile web app ",
+            createExternalLink("ViVOstate Terminal Management System (TMS)", "https://www.vivostate.com/"),
+            " with Node, Express, and Angular for viewing credit card reader device information and performing remote firmware updates in the field.",
+          ],
+          [
+            "Built a web based barcode scanner to allow easy lookup of a device's status and specs using a smartphone/laptop camera, resulting in a 44% faster average task time.",
+          ],
+          [
+            "Added GPS location tracking for quickly viewing devices on a map, utilizing the ",
+            createExternalLink("Google Maps API", "https://developers.google.com/maps/documentation"),
+            ".",
+          ],
+          ["Designed wireframes, mockups and UX flows with Figma for rapidly prototyping designs to stakeholders."],
+        ],
+      },
     ],
     technologies: [technologies.NODEJS, technologies.EXPRESS, technologies.ANGULAR, technologies.FIGMA],
     logo: IDTechLogo,
@@ -151,17 +173,21 @@ export const experiences: Experience[] = [
   {
     company_name: REAZON,
     location: "Santa Ana, CA",
-    position: "Software Engineer Intern",
-    duration: "Jan 2018 - Mar 2018 (3 mos)",
-    bulletPoints: [
-      [
-        "Implemented RCampus online classroom learning tools and RESTful APIs with Java and MySQL for universities such as University of Virginia and Indiana University to use in courses.",
-      ],
-      [
-        "Created Google Sheets parsing tool using the ",
-        createExternalLink("Google Sheets API", "https://developers.google.com/sheets/api"),
-        " for personalized site designs.",
-      ],
+    roles: [
+      {
+        position: "Software Engineer Intern",
+        duration: "Jan 2018 - Mar 2018 (3 mos)",
+        bulletPoints: [
+          [
+            "Implemented RCampus online classroom learning tools and RESTful APIs with Java and MySQL for universities such as University of Virginia and Indiana University to use in courses.",
+          ],
+          [
+            "Created Google Sheets parsing tool using the ",
+            createExternalLink("Google Sheets API", "https://developers.google.com/sheets/api"),
+            " for personalized site designs.",
+          ],
+        ],
+      },
     ],
     technologies: [technologies.JAVA, technologies.MYSQL, technologies.JAVASCRIPT, technologies.HTML5, technologies.CSS3],
     logo: ReazonLogo,
