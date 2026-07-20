@@ -1,9 +1,10 @@
 // Work experience types
 import type { TechnologyName } from "data/technologies"
+import type { MonthAbbrev } from "utils/durationUtils"
 
 import { BulletPoint } from "./content.types"
 
-export type MonthAbbrev = "Jan" | "Feb" | "Mar" | "Apr" | "May" | "Jun" | "Jul" | "Aug" | "Sept" | "Oct" | "Nov" | "Dec"
+export type { MonthAbbrev }
 
 export interface RoleDate {
   month: MonthAbbrev

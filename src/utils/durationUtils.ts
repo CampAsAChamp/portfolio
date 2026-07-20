@@ -1,7 +1,9 @@
-import type { MonthAbbrev, RoleDate } from "types/experience.types"
+import type { RoleDate } from "types/experience.types"
 
 /** Month abbreviations matching experience duration copy (Sept, not Sep). */
-const MONTH_ABBREVS: readonly MonthAbbrev[] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"]
+export const MONTH_ABBREVS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"] as const
+
+export type MonthAbbrev = (typeof MONTH_ABBREVS)[number]
 
 /** Numeric order for a role date (higher = more recent). */
 export function roleDateOrder({ month, year }: RoleDate): number {
