@@ -29,7 +29,14 @@ export function SkillsAndTechnologies(): React.ReactElement {
           rowDelay={100}
         />
         <SkillsRow
-          technologyNames={[technologies.POSTGRES, technologies.KUBERNETES, technologies.DOCKER, technologies.GCP]}
+          technologyNames={[
+            technologies.POSTGRES,
+            technologies.KUBERNETES,
+            technologies.DOCKER,
+            technologies.AWS,
+            technologies.GCP,
+            technologies.GRAPHQL,
+          ]}
           rowDelay={200}
         />
         <SkillsRow technologyNames={[technologies.GIT, technologies.LINUX, technologies.FIGMA]} rowDelay={300} />

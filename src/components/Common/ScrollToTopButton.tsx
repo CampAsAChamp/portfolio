@@ -15,7 +15,14 @@ export function ScrollToTopButton(): React.ReactElement {
   const showScrollToTopButton = scrollPosition.y > 400
 
   return (
-    <button onClick={scrollToTop} className={`button ${showScrollToTopButton ? "show" : ""}`} id="scroll-to-top-button" title="Go to top">
+    <button
+      onClick={scrollToTop}
+      className={`button ${showScrollToTopButton ? "show" : ""}`}
+      id="scroll-to-top-button"
+      title="Go to top"
+      aria-label="Go to top"
+      type="button"
+    >
       ↑
     </button>
   )

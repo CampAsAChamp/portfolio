@@ -1,12 +1,13 @@
 interface NavLinkProps {
   href: string
   label: string
-  onClick?: () => void
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void
+  className?: string
 }
 
-export function NavLink({ href, label, onClick }: NavLinkProps): React.ReactElement {
+export function NavLink({ href, label, onClick, className }: NavLinkProps): React.ReactElement {
   return (
-    <li>
+    <li className={className}>
       <a href={href} onClick={onClick}>
         {label}
       </a>

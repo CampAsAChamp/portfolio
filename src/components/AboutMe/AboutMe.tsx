@@ -36,8 +36,8 @@ export function AboutMe(): React.ReactElement {
           <p>Hey I&apos;m Nick, a software engineer based in San Diego ☀️🌮</p>
           <p>
             I graduated from the 🎓 <strong>University of California, Irvine</strong> in 2019 with a{" "}
-            <strong>B.S. in Computer Science</strong> and am currently working full time as a Software Engineer at <strong>Intuit</strong>{" "}
-            🧾
+            <strong>B.S. in Computer Science</strong> and am currently working full time as a Senior Software Engineer at{" "}
+            <strong>Intuit</strong> 🧾
           </p>
         </ScrollAnimation>
       </div>

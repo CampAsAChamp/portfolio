@@ -39,8 +39,9 @@ describe("ContactMeModal", () => {
   })
 
   it("calls close when background is clicked", () => {
-    const background = screen.getByRole("button", { name: /Close modal/i })
-    fireEvent.click(background)
+    const background = document.getElementById("contact-me-modal-background")
+    expect(background).toBeTruthy()
+    fireEvent.click(background!)
 
     expect(mockClose).toHaveBeenCalledTimes(1)
   })
@@ -51,5 +52,11 @@ describe("ContactMeModal", () => {
     fireEvent.click(modalContent!)
 
     expect(mockClose).not.toHaveBeenCalled()
+  })
+
+  it("exposes dialog semantics when open", () => {
+    const dialog = screen.getByRole("dialog", { name: /Let's Connect!/i })
+    expect(dialog).toBeInTheDocument()
+    expect(dialog).toHaveAttribute("aria-modal", "true")
   })
 })

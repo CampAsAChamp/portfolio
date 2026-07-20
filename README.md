@@ -308,7 +308,7 @@ The CI pipeline runs automatically on every push and pull request via GitHub Act
 
 You can view interactive Lighthouse reports directly from the GitHub Actions run output via the temporary public storage link.
 
-**Note:** E2E visual regression and functional tests run locally via the pre-push hook but are not part of the CI pipeline to keep build times fast. Pull requests must pass all CI checks before merging.
+**Note:** E2E tests run in CI as part of the Test workflow (`test.yml`). The pre-push hook runs unit tests and desktop Lighthouse audits (not the full `yarn test:all` suite). Pull requests must pass all CI checks before merging.
 
 ### Test Structure
 
@@ -319,8 +319,10 @@ Tests are located in the `tests/` directory, mirroring the structure of `src/`:
   - `hooks/` - Custom hook tests
   - `utils/` - Utility function tests
 - `tests/e2e/` - End-to-end tests with Playwright
-  - `functional/` - User interaction and navigation tests
-  - `visual-regression/` - Screenshot comparison tests
+  - `desktop/` - Desktop browser specs
+  - `mobile/` - Mobile browser specs
+  - `fixtures/` - Page object models
+  - `helpers/` - Shared E2E helpers
 - `.lighthouserc.desktop.json` / `.lighthouserc.mobile.json` - Lighthouse CI configurations for performance audits
 - All tests use TypeScript for type safety
 - Focus on catching regressions when updating content or refactoring
@@ -333,14 +335,13 @@ Tests are located in the `tests/` directory, mirroring the structure of `src/`:
 
 This project uses [Dependabot](https://docs.github.com/en/code-security/dependabot) to automatically keep dependencies up to date:
 
-- Runs weekly on Mondays at 9:00 AM PST
+- Runs monthly (npm ecosystem and GitHub Actions)
 - Creates grouped pull requests for related dependencies:
   - React ecosystem packages
   - Testing libraries (Vitest, Playwright, Testing Library)
   - Linting tools (ESLint, TypeScript, Prettier, Stylelint)
-  - Build tools (Vite, Rollup)
-- Also updates GitHub Actions weekly
-- Maximum of 5 open dependency PRs at a time
+  - Build/styling tools (Vite, PostCSS, Autoprefixer)
+- Maximum of 10 open npm dependency PRs at a time (3 for Actions)
 - All PRs follow [conventional commit format](#contributing)
 
 Configuration can be found in [`.github/dependabot.yml`](.github/dependabot.yml).
@@ -415,9 +416,9 @@ This project uses [Husky](https://typicode.github.io/husky/) to enforce quality 
   - Prettier formats code
   - Stylelint fixes CSS issues
 - **commit-msg**: Validates commit message format with `commitlint` (rejects invalid commits)
-- **pre-push**: Runs `yarn test:all` (unit tests, Lighthouse audits, and E2E tests) before pushing
+- **pre-push**: Runs `yarn test && yarn test:lighthouse` (unit tests and desktop Lighthouse) before pushing
 
-**Note:** If tests fail during pre-push, the push will be blocked. Ensure all tests pass locally before pushing.
+**Note:** If tests fail during pre-push, the push will be blocked. Ensure unit and Lighthouse checks pass locally before pushing. Run `yarn test:e2e` (or `yarn test:all`) when UI changes warrant full E2E coverage.
 
 **Node Version:** All tests require Node.js version 22 or higher (specified in `.nvmrc`). If you use nvm, run `nvm use` to switch to the correct version.
 
@@ -491,7 +492,7 @@ This will serve the production build at `localhost:4173`.
 
 - Follow [conventional commit format](#contributing) for all commits
 - Pre-commit hooks automatically format code and validate commits
-- Pre-push hook runs all tests (unit + Lighthouse + E2E) before pushing to remote
+- Pre-push hook runs unit tests and desktop Lighthouse before pushing to remote
 - Cloudflare Pages deployments typically complete in 1-2 minutes
 - Preview deployments are automatically created for pull requests
 - Cloudflare provides automatic HTTPS, CDN, and DDoS protection

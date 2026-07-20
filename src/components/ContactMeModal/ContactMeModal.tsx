@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import GitHubLogo from "assets/Dev_Icons/GitHub.svg"
 import LinkedInLogo from "assets/Dev_Icons/LinkedIn.svg"
 import RealProfilePic120w from "assets/Real_Profile_Pic_120w.webp"
@@ -15,8 +15,10 @@ interface ContactMeModalProps {
   close: () => void
 }
 
+const FOCUSABLE_SELECTOR = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+
 export function ContactMeModal({ isOpen, close }: ContactMeModalProps): React.ReactElement {
-  const modalBackgroundKeyboardProps = useKeyboardAccessibility(close)
+  const dialogRef = useRef<HTMLDivElement>(null)
   const modalCloseKeyboardProps = useKeyboardAccessibility(close)
 
   // Sync modal state with CSS classes
@@ -35,19 +37,59 @@ export function ContactMeModal({ isOpen, close }: ContactMeModalProps): React.Re
     }
   }, [isOpen])
 
+  // Focus trap and initial focus when dialog opens
+  useEffect(() => {
+    if (!isOpen) return
+
+    const dialog = dialogRef.current
+    if (!dialog) return
+
+    const getFocusableElements = (): HTMLElement[] =>
+      Array.from(dialog.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
+        (element) => !element.hasAttribute("disabled") && element.getAttribute("aria-hidden") !== "true",
+      )
+
+    const focusable = getFocusableElements()
+    focusable[0]?.focus()
+
+    const handleKeyDown = (event: KeyboardEvent): void => {
+      if (event.key !== "Tab") return
+
+      const elements = getFocusableElements()
+      if (elements.length === 0) return
+
+      const first = elements[0]
+      const last = elements[elements.length - 1]
+      if (!first || !last) return
+
+      if (event.shiftKey) {
+        if (document.activeElement === first) {
+          event.preventDefault()
+          last.focus()
+        }
+      } else if (document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown)
+    return (): void => document.removeEventListener("keydown", handleKeyDown)
+  }, [isOpen])
+
   return (
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events
-    <div
-      className="modal-bg"
-      id="contact-me-modal-background"
-      onClick={close}
-      {...modalBackgroundKeyboardProps}
-      role="button"
-      tabIndex={0}
-      aria-label="Close modal"
-    >
-      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
-      <div id="contact-me-modal-content" onClick={(e) => e.stopPropagation()}>
+    // Backdrop click dismisses; keyboard users close via Escape (useModal) or the Close button
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+    <div className="modal-bg" id="contact-me-modal-background" onClick={close} aria-hidden={!isOpen}>
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
+      <div
+        id="contact-me-modal-content"
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="contact-me-modal-title"
+        onClick={(e) => e.stopPropagation()}
+      >
         <button className="modal-close" onClick={close} {...modalCloseKeyboardProps} type="button" aria-label="Close">
           <CloseIcon />
         </button>
@@ -70,7 +112,7 @@ export function ContactMeModal({ isOpen, close }: ContactMeModalProps): React.Re
             </div>
             <div className="contact-me-modal-info">
               <div className="contact-me-modal-label">Email</div>
-              <a href="mailto:nickschneider101@gmail.com" target="_blank" rel="noopener noreferrer" className="contact-me-modal-link">
+              <a href="mailto:nickschneider101@gmail.com" className="contact-me-modal-link">
                 nickschneider101@gmail.com
               </a>
             </div>
@@ -86,7 +128,7 @@ export function ContactMeModal({ isOpen, close }: ContactMeModalProps): React.Re
                 className="contact-me-modal-social-link"
                 aria-label="GitHub Profile"
               >
-                <Svg className="contact-me-modal-social-icon" src={GitHubLogo} title="Github" />
+                <Svg className="contact-me-modal-social-icon" src={GitHubLogo} title="GitHub" />
                 <span>GitHub</span>
               </a>
               <a

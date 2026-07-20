@@ -2,7 +2,9 @@ import { useEffect } from "react"
 import S_Logo from "assets/S_Logo.svg"
 import { Svg } from "components/Common/Svg"
 import { HamburgerMenu } from "components/NavBar/HamburgerMenu"
+import { NavLink } from "components/NavBar/NavLink"
 import { ThemeSwitcher } from "components/NavBar/ThemeSwitcher"
+import { navigationLinks } from "data/navigation"
 import { useModal } from "hooks/useModal"
 
 import "styles/NavBar/Navbar.css"
@@ -93,31 +95,15 @@ export function Navbar(): React.ReactElement {
         <li className="nav-link-entrance animate__animated animate__fadeInDown">
           <ThemeSwitcher />
         </li>
-        <li className="nav-link-entrance animate__animated animate__fadeInDown">
-          <a href="#about-me-images" onClick={handleNavLinkClick}>
-            About Me
-          </a>
-        </li>
-        <li className="nav-link-entrance animate__animated animate__fadeInDown">
-          <a href="#experience-header" onClick={handleNavLinkClick}>
-            Experience
-          </a>
-        </li>
-        <li className="nav-link-entrance animate__animated animate__fadeInDown">
-          <a href="#skills-header" onClick={handleNavLinkClick}>
-            Skills
-          </a>
-        </li>
-        <li className="nav-link-entrance animate__animated animate__fadeInDown">
-          <a href="#sw-projects-header" onClick={handleNavLinkClick}>
-            Projects
-          </a>
-        </li>
-        <li className="nav-link-entrance animate__animated animate__fadeInDown">
-          <a href="#graphic-design-header" onClick={handleNavLinkClick}>
-            Art & Design
-          </a>
-        </li>
+        {navigationLinks.map((link) => (
+          <NavLink
+            key={link.id}
+            href={link.href}
+            label={link.label}
+            onClick={handleNavLinkClick}
+            className="nav-link-entrance animate__animated animate__fadeInDown"
+          />
+        ))}
       </ul>
       <HamburgerMenu navSlide={toggle} />
     </nav>

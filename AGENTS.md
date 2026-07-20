@@ -40,9 +40,8 @@ tests/
 
 ## Git & releases
 
-- **Personal repo** — plain imperative commit messages (not conventional commits)
+- Use conventional commits (`feat:`, `fix:`, etc.) — enforced by commitlint; semantic-release versions from them on `main`
 - Do not manually edit `CHANGELOG.md` (semantic-release generates it)
-- Conventional commits on `main` drive semver releases via CI
 
 ## Where to look
 

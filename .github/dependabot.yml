@@ -22,11 +22,6 @@ updates:
         patterns:
           - "react*"
           - "@types/react*"
-      # Group Next.js packages together
-      nextjs:
-        patterns:
-          - "next"
-          - "@next/*"
       # Group testing libraries together
       testing:
         patterns:
@@ -42,17 +37,13 @@ updates:
           - "typescript"
           - "prettier*"
           - "stylelint*"
-      # Group Tailwind and PostCSS
-      styling:
+      # Group Vite and PostCSS
+      build:
         patterns:
-          - "tailwindcss"
+          - "vite"
+          - "@vitejs/*"
           - "postcss*"
           - "autoprefixer"
-      # Group email libraries
-      email:
-        patterns:
-          - "resend"
-          - "@react-email/*"
       # Group other dev dependencies
       dev-dependencies:
         dependency-type: "development"

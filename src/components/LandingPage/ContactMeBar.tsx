@@ -13,54 +13,46 @@ interface ContactMeBarProps {
 
 export function ContactMeBar({ isOpen, open, close }: ContactMeBarProps): React.ReactElement {
   const buttonRef = useRef<HTMLButtonElement>(null)
+  const wasOpenRef = useRef(false)
 
-  const handleContactMeClick = (): void => {
-    open()
-    // Blur the button after opening to remove focus
-    setTimeout(() => {
-      buttonRef.current?.blur()
-    }, 100)
-  }
-
-  // Manage button state and view transitions
+  // Manage button state, view transitions, and restore focus when the modal closes
   useEffect(() => {
     const button = buttonRef.current
     if (!button) return
+
+    if (wasOpenRef.current && !isOpen) {
+      button.focus()
+    }
+    wasOpenRef.current = isOpen
 
     if (isOpen) {
       // Keep arrow visible while modal is open
       button.classList.add("modal-open")
       button.style.viewTransitionName = "none"
       return
-    } else {
-      // Start button exit animation slightly before modal fully disappears
-      const timeoutId = setTimeout(() => {
-        button.classList.remove("modal-open")
-      }, 300)
-      button.style.viewTransitionName = "contact-button"
-      return (): void => clearTimeout(timeoutId)
     }
+
+    // Start button exit animation slightly before modal fully disappears
+    const timeoutId = setTimeout(() => {
+      button.classList.remove("modal-open")
+    }, 300)
+    button.style.viewTransitionName = "contact-button"
+    return (): void => clearTimeout(timeoutId)
   }, [isOpen])
 
   return (
     <div id="contact-me-bar">
-      <button
-        type="button"
-        className="button animate__animated animate__fadeInUp"
-        id="contact-me-button"
-        ref={buttonRef}
-        onClick={handleContactMeClick}
-      >
+      <button type="button" className="button animate__animated animate__fadeInUp" id="contact-me-button" ref={buttonRef} onClick={open}>
         <span>Contact Me</span>
       </button>
       <Suspense fallback={null}>
         <ContactMeModal isOpen={isOpen} close={close} />
       </Suspense>
       <div id="contact-me-socials">
-        <a href="https://github.com/CampAsAChamp/" target="_blank" rel="noopener noreferrer">
-          <Svg className="contact-me-item animate__animated animate__fadeInUp" id="github-logo" src={GitHubLogo} title="Github Icon" />
+        <a href="https://github.com/CampAsAChamp/" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
+          <Svg className="contact-me-item animate__animated animate__fadeInUp" id="github-logo" src={GitHubLogo} title="GitHub Icon" />
         </a>
-        <a href="https://www.linkedin.com/in/nick-schneider-swe/" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.linkedin.com/in/nick-schneider-swe/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
           <Svg
             className="contact-me-item animate__animated animate__fadeInUp"
             id="linkedin-logo"

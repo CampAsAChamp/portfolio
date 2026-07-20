@@ -76,6 +76,9 @@
   --color-socials-github: var(--color-off-grey);
   --color-socials-linkedin: var(--color-off-grey);
   --color-socials-hover: var(--color-purple);
+  --color-logo: var(--color-purple);
+  --color-nav-link: var(--color-purple);
+  --color-hamburger: var(--color-purple);
   --color-name: var(--color-purple);
   --color-section-header: var(--color-purple);
 }
@@ -95,6 +98,8 @@
   --color-socials-linkedin: var(--color-white);
   --color-socials-hover: var(--color-yellow);
   --color-logo: var(--color-purple);
+  --color-nav-link: var(--color-white);
+  --color-hamburger: var(--color-white);
   --color-name: var(--color-yellow);
   --color-section-header: var(--color-yellow);
 }

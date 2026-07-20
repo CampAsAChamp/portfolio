@@ -56,10 +56,10 @@ Pre-commit hooks (Husky) run automatically, but verify first:
 
 ## Git
 
-Plain imperative commit messages — **not** conventional commits:
+Use conventional commits (enforced by commitlint; required for semantic-release):
 ```
-Add dark mode toggle to navbar
-Fix scroll animation on mobile
+feat: add dark mode toggle to navbar
+fix: resolve scroll animation on mobile
 ```
 Do **not** manually edit `CHANGELOG.md` — semantic-release generates it from commits on `main`.
 

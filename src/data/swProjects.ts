@@ -66,12 +66,21 @@ const projects: SoftwareProject[] = [
   },
   {
     name: "Portfolio Website",
-    technologies: [technologies.REACT, technologies.JAVASCRIPT, technologies.HTML5, technologies.CSS3, technologies.FIGMA],
+    technologies: [
+      technologies.REACT,
+      technologies.TYPESCRIPT,
+      technologies.VITEST,
+      technologies.PLAYWRIGHT,
+      technologies.CLOUDFLARE,
+      technologies.HTML5,
+      technologies.CSS3,
+      technologies.FIGMA,
+    ],
     bulletPoints: [
       [
-        "Static React, Javascript, HTML and CSS website built to showcase my design skills along with experience and projects I've had over the years.",
+        "Static React + TypeScript portfolio built with Vite, deployed on Cloudflare Pages, showcasing design skills along with experience and projects I've had over the years.",
       ],
-      ["Created mockup design with Figma."],
+      ["Covered with Vitest unit tests and Playwright end-to-end tests; mockup design created in Figma."],
     ],
     githubLink: "https://github.com/CampAsAChamp/portfolio",
     siteLink: "https://nickhs.dev",
