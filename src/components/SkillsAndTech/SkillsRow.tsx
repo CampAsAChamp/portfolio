@@ -1,11 +1,12 @@
 import { Svg } from "components/Common/Svg"
 import { COLORS } from "data/colors"
+import type { TechnologyName } from "data/technologies"
 import ScrollAnimation from "react-animate-on-scroll"
 
 import { getTechnologies } from "@/utils/technologiesUtils"
 
 interface SkillsRowProps {
-  technologyNames: string[]
+  technologyNames: TechnologyName[]
   rowDelay?: number
 }
 

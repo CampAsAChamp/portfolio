@@ -90,7 +90,7 @@ export const TYPESCRIPT = "TypeScript"
 export const UBUNTU = "Ubuntu"
 export const VITEST = "Vitest"
 
-const technologies: Technology[] = [
+const technologies = [
   {
     name: ADOBE_ILLUSTRATOR,
     image: Adobe_Illustrator_Icon,
@@ -311,7 +311,9 @@ const technologies: Technology[] = [
     image: Vite_Test_Icon,
     link: "https://vitest.dev/",
   },
-]
+] as const satisfies ReadonlyArray<Technology>
+
+export type TechnologyName = (typeof technologies)[number]["name"]
 
 const technologiesMap: TechnologyMap = new Map()
 

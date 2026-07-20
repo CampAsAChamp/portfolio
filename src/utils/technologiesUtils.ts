@@ -1,4 +1,4 @@
-import { technologiesMap } from "data/technologies"
+import { technologiesMap, type TechnologyName } from "data/technologies"
 import { Technology } from "types/technology.types"
 
 /**
@@ -8,6 +8,6 @@ import { Technology } from "types/technology.types"
  * @param technologyNames - Array of technology name strings to look up
  * @returns Array of Technology objects, excluding any undefined entries
  */
-export function getTechnologies(technologyNames: string[]): Technology[] {
+export function getTechnologies(technologyNames: TechnologyName[]): Technology[] {
   return technologyNames.map((name) => technologiesMap.get(name)).filter((tech): tech is Technology => tech !== undefined)
 }
