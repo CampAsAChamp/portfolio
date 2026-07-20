@@ -56,7 +56,7 @@
 
 ### Built With
 
-[![My Skills](https://skills.syvixor.com/api/icons?perline=7&i=reactjs,typescript,nodejs,yarn,vite,vitest,playwright,eslint,prettier,commitlint,dependabot,git,github,cloudflare)](https://builder.syvixor.com/)
+[![My Skills](https://skills.syvixor.com/api/icons?perline=7&i=reactjs,typescript,nodejs,yarn,vite,vitest,playwright,eslint,prettier,commitlint,git,github,cloudflare)](https://builder.syvixor.com/)
 
 <!-- GETTING STARTED -->
 
@@ -330,21 +330,6 @@ Tests are located in the `tests/` directory, mirroring the structure of `src/`:
 <!-- PROJECT MAINTENANCE -->
 
 ## Project Maintenance
-
-### Automated Dependency Updates
-
-This project uses [Dependabot](https://docs.github.com/en/code-security/dependabot) to automatically keep dependencies up to date:
-
-- Runs monthly (npm ecosystem and GitHub Actions)
-- Creates grouped pull requests for related dependencies:
-  - React ecosystem packages
-  - Testing libraries (Vitest, Playwright, Testing Library)
-  - Linting tools (ESLint, TypeScript, Prettier, Stylelint)
-  - Build/styling tools (Vite, PostCSS, Autoprefixer)
-- Maximum of 10 open npm dependency PRs at a time (3 for Actions)
-- All PRs follow [conventional commit format](#contributing)
-
-Configuration can be found in [`.github/dependabot.yml`](.github/dependabot.yml).
 
 ### Security
 

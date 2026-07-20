@@ -45,8 +45,6 @@ When reporting a vulnerability, please include:
 
 This project follows these security practices:
 
-- Regular dependency updates via Dependabot
-- Automated security scanning via GitHub's Dependabot alerts
 - Strict TypeScript configuration to catch potential issues at compile time
 - Comprehensive linting and code quality checks
 - Pre-commit and pre-push hooks to prevent insecure code from being committed
