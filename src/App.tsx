@@ -9,6 +9,7 @@ import { Navbar } from "components/NavBar/Navbar"
 
 import "styles/Common/Globals.css"
 import "styles/Common/Scrollbar.css"
+import "styles/Common/SectionSkeleton.css"
 
 // Lazy load below-fold components for better initial page load performance
 const Experience = lazy(() => import("components/Experience/Experience").then((module) => ({ default: module.Experience })))
@@ -18,7 +19,17 @@ const SkillsAndTechnologies = lazy(() =>
 const SWProjects = lazy(() => import("components/SwProjects/SwProjects").then((module) => ({ default: module.SWProjects })))
 const ArtProjects = lazy(() => import("components/ArtProjects/ArtProjects").then((module) => ({ default: module.ArtProjects })))
 
-function App(): React.ReactElement {
+function SectionSkeleton(): React.ReactElement {
+  return (
+    <div className="section-skeleton" aria-hidden="true">
+      <div className="section-skeleton-header" />
+      <div className="section-skeleton-card" />
+      <div className="section-skeleton-card" />
+    </div>
+  )
+}
+
+export function App(): React.ReactElement {
   return (
     <>
       <a href="#landing-page-container" className="skip-link">
@@ -28,7 +39,7 @@ function App(): React.ReactElement {
       <ScrollToTopButton />
       <LandingPage />
       <AboutMe />
-      <Suspense fallback={<div style={{ minHeight: "400px" }} />}>
+      <Suspense fallback={<SectionSkeleton />}>
         <Experience />
         <SkillsAndTechnologies />
         <SWProjects />
@@ -37,5 +48,3 @@ function App(): React.ReactElement {
     </>
   )
 }
-
-export default App

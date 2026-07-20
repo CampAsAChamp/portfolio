@@ -1,5 +1,5 @@
 import { useState } from "react"
-import useScrollPosition from "hooks/useScrollPosition"
+import { useScrollPosition } from "hooks/useScrollPosition"
 
 import "styles/LandingPage/MouseScrollIndicator.css"
 

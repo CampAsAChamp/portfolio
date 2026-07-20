@@ -1,34 +1,8 @@
 #experience-container {
   display: grid;
   grid-template-columns: 1fr;
-
-  grid-template-areas:
-    "experience-header"
-    "card1"
-    "card2"
-    "card3"
-    "card4";
+  grid-auto-rows: auto;
   margin-top: 50px;
-}
-
-#experience-header {
-  grid-area: experience-header;
-}
-
-#card1 {
-  grid-area: card1;
-}
-
-#card2 {
-  grid-area: card2;
-}
-
-#card3 {
-  grid-area: card3;
-}
-
-#card4 {
-  grid-area: card4;
 }
 
 .experience-thumbnail {

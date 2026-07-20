@@ -26,24 +26,24 @@ describe("LandingPage", () => {
       expectElementHasAnimation(blob, "animate__fadeIn")
     })
 
-    it("name heading has bounceIn animation", () => {
+    it("name heading has fadeInDown animation", () => {
       const name = document.getElementById("name")
-      expectElementHasAnimation(name, "animate__bounceIn")
+      expectElementHasAnimation(name, "animate__fadeInDown")
     })
 
-    it("software engineer title has bounceIn animation", () => {
+    it("software engineer title has fadeInUp animation", () => {
       const title = document.getElementById("software-engineer")
-      expectElementHasAnimation(title, "animate__bounceIn")
+      expectElementHasAnimation(title, "animate__fadeInUp")
     })
 
-    it("subtitle has bounceIn animation", () => {
+    it("subtitle has fadeInUp animation", () => {
       const subtitle = document.getElementById("subtitle")
-      expectElementHasAnimation(subtitle, "animate__bounceIn")
+      expectElementHasAnimation(subtitle, "animate__fadeInUp")
     })
 
-    it("profile picture has bounceIn animation", () => {
+    it("profile picture has fadeIn animation", () => {
       const profilePic = document.getElementById("profile-pic")
-      expectElementHasAnimation(profilePic, "animate__bounceIn")
+      expectElementHasAnimation(profilePic, "animate__fadeIn")
     })
 
     it("contact me button has fadeInUp animation", () => {

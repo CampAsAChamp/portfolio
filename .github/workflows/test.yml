@@ -23,6 +23,10 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
+      - name: Dependency audit (non-blocking)
+        continue-on-error: true
+        run: yarn npm audit --severity high
+
       - name: Run linter
         run: yarn lint
 

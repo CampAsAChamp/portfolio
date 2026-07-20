@@ -3,15 +3,17 @@ import "swiper/css/effect-cards"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
 
+import type { ArtLightboxItem } from "components/ArtProjects/ArtLightbox"
 import { Navigation, Pagination } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { ArtProject } from "types/project.types"
 
 interface ArtGalleryCarouselProps {
   projects: ArtProject[]
+  onOpen: (item: ArtLightboxItem) => void
 }
 
-export function ArtGalleryCarousel({ projects }: ArtGalleryCarouselProps): React.ReactElement {
+export function ArtGalleryCarousel({ projects, onOpen }: ArtGalleryCarouselProps): React.ReactElement {
   return (
     <Swiper
       spaceBetween={50}
@@ -24,7 +26,14 @@ export function ArtGalleryCarousel({ projects }: ArtGalleryCarouselProps): React
     >
       {projects.map((project) => (
         <SwiperSlide key={project.id}>
-          <img src={project.imageSrc} alt={project.altText} loading="lazy" />
+          <button
+            type="button"
+            className="art-carousel-open"
+            onClick={() => onOpen({ imgSrc: project.imageSrc, altText: project.altText })}
+            aria-label={`View ${project.altText}`}
+          >
+            <img src={project.imageSrc} alt={project.altText} loading="lazy" />
+          </button>
         </SwiperSlide>
       ))}
     </Swiper>

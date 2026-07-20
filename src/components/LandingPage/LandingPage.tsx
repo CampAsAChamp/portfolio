@@ -15,23 +15,23 @@ export function LandingPage(): React.ReactElement {
       <img id="landing-blob" src={HeroImageBlobShape} alt="" className="animate__animated animate__fadeIn" width="1078" height="1154" />
       <section id="landing-page-container" className="page-container">
         <div id="name-intro-container">
-          <h1 id="name" className="animate__animated animate__bounceIn">
+          <h1 id="name" className="animate__animated animate__fadeInDown">
             NICK
             <br />
             SCHNEIDER
           </h1>
-          <div id="software-engineer" className="animate__animated animate__bounceIn">
+          <div id="software-engineer" className="animate__animated animate__fadeInUp">
             Software Engineer
           </div>
           <br />
-          <div id="subtitle" className="animate__animated animate__bounceIn">
+          <div id="subtitle" className="animate__animated animate__fadeInUp">
             If you&apos;re going to make something, why not make it pretty?
           </div>
           <ContactMeBar isOpen={isOpen} open={open} close={close} />
           <MouseScrollIndicator />
         </div>
         <div id="profile-pic-container">
-          <Svg id="profile-pic" src={ArtProfilePic} title="Flat Profile Pic" className="center animate__animated animate__bounceIn" />
+          <Svg id="profile-pic" src={ArtProfilePic} title="Flat Profile Pic" className="center animate__animated animate__fadeIn" />
         </div>
       </section>
     </>

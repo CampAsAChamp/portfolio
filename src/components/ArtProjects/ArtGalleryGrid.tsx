@@ -1,12 +1,14 @@
+import type { ArtLightboxItem } from "components/ArtProjects/ArtLightbox"
 import { ArtProjectPicture } from "components/ArtProjects/ArtProjectPicture"
 import ScrollAnimation from "react-animate-on-scroll"
 import { ArtProject } from "types/project.types"
 
 interface ArtGalleryGridProps {
   projects: ArtProject[]
+  onOpen: (item: ArtLightboxItem) => void
 }
 
-export function ArtGalleryGrid({ projects }: ArtGalleryGridProps): React.ReactElement {
+export function ArtGalleryGrid({ projects, onOpen }: ArtGalleryGridProps): React.ReactElement {
   // Organize projects into 4 columns
   const columns: ArtProject[][] = [[], [], [], []]
   projects.forEach((project, index) => {
@@ -28,7 +30,7 @@ export function ArtGalleryGrid({ projects }: ArtGalleryGridProps): React.ReactEl
             const delay = (columnDelays[columnIndex] ?? 0) + projectIndex * 100
             return (
               <ScrollAnimation key={project.id} animateIn="animate__fadeInUp" delay={delay} animateOnce>
-                <ArtProjectPicture imgSrc={project.imageSrc} altText={project.altText} />
+                <ArtProjectPicture imgSrc={project.imageSrc} altText={project.altText} onOpen={onOpen} />
               </ScrollAnimation>
             )
           })}

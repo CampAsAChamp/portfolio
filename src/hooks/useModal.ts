@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
-
-import { supportsViewTransitions } from "@/utils/viewTransitionsUtils"
+import { supportsViewTransitions } from "utils/viewTransitionsUtils"
 
 interface UseModalReturn {
   isOpen: boolean

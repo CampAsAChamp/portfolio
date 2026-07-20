@@ -1,7 +1,6 @@
 import { Svg } from "components/Common/Svg"
 import type { TechnologyName } from "data/technologies"
-
-import { getTechnologies } from "@/utils/technologiesUtils"
+import { getTechnologies } from "utils/technologiesUtils"
 
 interface TechnologiesBarProps {
   technologyNames: TechnologyName[]

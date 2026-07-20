@@ -108,6 +108,21 @@ body.art-modal-open .column img:hover {
   animation-name: zoom-out;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  #art-modal-img,
+  #art-modal-img.closing {
+    animation: none;
+  }
+
+  .column img {
+    transition: none;
+  }
+
+  .column img:hover {
+    transform: none;
+  }
+}
+
 .swiper {
   display: none;
 }
@@ -134,6 +149,15 @@ body.art-modal-open .column img:hover {
   .swiper-slide img {
     border-radius: var(--rounded-component-corners-size);
     height: 100%;
+    width: 100%;
+  }
+
+  .art-carousel-open {
+    border: none;
+    padding: 0;
+    background: none;
+    cursor: pointer;
+    display: block;
     width: 100%;
   }
 

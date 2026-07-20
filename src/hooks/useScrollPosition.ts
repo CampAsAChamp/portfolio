@@ -23,5 +23,3 @@ export function useScrollPosition(): ScrollPosition {
 
   return scrollPosition
 }
-
-export default useScrollPosition

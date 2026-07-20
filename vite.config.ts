@@ -39,7 +39,7 @@ export default defineConfig({
   },
   build: {
     outDir: "build", // Cloudflare Pages expects 'build'
-    sourcemap: true, // Generate source maps for debugging
+    sourcemap: "hidden", // Generate maps for tooling without exposing them to browsers
     // CSS code splitting
     cssCodeSplit: true,
     rollupOptions: {

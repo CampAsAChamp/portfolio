@@ -44,28 +44,19 @@ test.describe("Art Projects Section - Mobile", () => {
     expect(activeCount).toBeLessThanOrEqual(2)
   })
 
-  test("should not open fullscreen modal when tapping photos", async ({ page }) => {
+  test("should open lightbox modal when tapping photos", async ({ page }) => {
     const carousel = page.locator('#graphic-design-content [class*="carousel"], #graphic-design-content .swiper')
 
     if ((await carousel.count()) > 0) {
-      const firstImage = carousel.locator("img").first()
+      const openButton = carousel.locator("button.art-carousel-open").first()
 
-      if (await firstImage.isVisible()) {
-        // Tap image
-        await firstImage.tap()
+      if (await openButton.isVisible()) {
+        await openButton.tap()
         await page.waitForTimeout(500)
 
-        // Modal should not open
-        const modal = page.locator('[class*="modal"][class*="fullscreen"], [role="dialog"]')
-        const modalCount = await modal.count()
-
-        if (modalCount > 0) {
-          const isVisible = await modal
-            .first()
-            .isVisible()
-            .catch(() => false)
-          expect(isVisible).toBe(false)
-        }
+        const modal = page.locator("#art-modal-background")
+        await expect(modal).toBeVisible()
+        await expect(page.locator("#art-modal-img")).toBeVisible()
       }
     }
   })

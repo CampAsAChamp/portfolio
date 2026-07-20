@@ -33,28 +33,46 @@ jobs:
 
             return deployment.data.id;
 
-      - name: Wait for Cloudflare deployment
+      - name: Verify Cloudflare Pages deployment
+        id: verify
         run: |
-          echo "⏳ Waiting for Cloudflare Pages deployment to complete..."
-          echo "Cloudflare is automatically deploying from main branch"
-          sleep 30
+          echo "⏳ Polling https://nickhs.dev until it responds successfully..."
+          ATTEMPTS=24
+          DELAY=10
+          for i in $(seq 1 "$ATTEMPTS"); do
+            STATUS=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 15 "https://nickhs.dev/" || echo "000")
+            echo "Attempt $i/$ATTEMPTS — HTTP $STATUS"
+            if [ "$STATUS" = "200" ]; then
+              echo "✅ Production site is reachable"
+              echo "deploy_ok=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            sleep "$DELAY"
+          done
+          echo "❌ Production site did not return HTTP 200 within $((ATTEMPTS * DELAY))s"
+          echo "deploy_ok=false" >> "$GITHUB_OUTPUT"
+          exit 1
 
       - name: Update deployment status
         if: always()
         uses: actions/github-script@v7
         with:
           script: |
+            const ok = '${{ steps.verify.outcome }}' === 'success';
             await github.rest.repos.createDeploymentStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
               deployment_id: ${{ steps.deployment.outputs.result }},
-              state: 'success',
+              state: ok ? 'success' : 'failure',
               environment_url: 'https://nickhs.dev',
-              description: 'Deployment completed successfully',
+              description: ok
+                ? 'Production site verified reachable'
+                : 'Production site verification failed',
               auto_inactive: true
             });
 
       - name: Create deployment summary
+        if: success()
         run: |
           echo "## 🚀 Deployment Complete" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -69,7 +87,7 @@ jobs:
           echo "- **Commit**: [\`${GITHUB_SHA:0:7}\`](https://github.com/${{ github.repository }}/commit/${{ github.sha }})" >> $GITHUB_STEP_SUMMARY
           echo "- **Deployed by**: Cloudflare Pages" >> $GITHUB_STEP_SUMMARY
           echo "- **Deployment ID**: \`${{ steps.deployment.outputs.result }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Verification**: HTTP 200 from https://nickhs.dev" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "---" >> $GITHUB_STEP_SUMMARY
           echo "💡 View deployment history in the [Environments](https://github.com/${{ github.repository }}/deployments) tab" >> $GITHUB_STEP_SUMMARY
-

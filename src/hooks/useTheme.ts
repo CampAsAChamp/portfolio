@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react"
 import { Theme } from "types/common.types"
-
-import { supportsViewTransitions } from "@/utils/viewTransitionsUtils"
+import { supportsViewTransitions } from "utils/viewTransitionsUtils"
 
 const DARK: Theme = "dark"
 const LIGHT: Theme = "light"

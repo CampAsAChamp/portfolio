@@ -14,10 +14,10 @@ push/PR → Tests → (on success) → Release + Deploy + Lighthouse
 
 | Workflow | Trigger | Purpose |
 |----------|---------|---------|
-| `test.yml` | push/PR to `main` | lint → unit tests → build → E2E |
+| `test.yml` | push/PR to `main` | audit (non-blocking) → lint → unit tests → build → E2E |
 | `release.yml` | Tests success on `main` | semantic-release (skips if `[skip ci]`) |
-| `deploy.yml` | Tests success on `main` | GitHub deployment status for Cloudflare Pages |
-| `lighthouse.yml` | Tests success on `main` | LHCI against preview server |
+| `deploy.yml` | Tests success on `main` | GitHub deployment status; verifies https://nickhs.dev returns HTTP 200 |
+| `lighthouse.yml` | Tests success on `main` | LHCI desktop + mobile against preview server |
 
 Actual hosting is **Cloudflare Pages** (auto-deploy from `main`). The Deploy workflow tracks status in GitHub Environments — it does not push artifacts itself.
 
@@ -34,7 +34,7 @@ Actual hosting is **Cloudflare Pages** (auto-deploy from `main`). The Deploy wor
 1. Keep the Tests workflow as the single gate — downstream workflows depend on it via `workflow_run`
 2. Do not remove artifact uploads on E2E failure (needed for debugging)
 3. Match Node/Yarn versions with `package.json` engines
-4. Lighthouse uses `yarn build` + `.lighthouserc.desktop.ci.json` — config lives at repo root
+4. Lighthouse runs desktop and mobile CI configs (`.lighthouserc.desktop.ci.json`, `.lighthouserc.mobile.ci.json`)
 5. Dependabot config is in `.github/dependabot.yml` (npm + github-actions, monthly)
 
 ## Local parity
