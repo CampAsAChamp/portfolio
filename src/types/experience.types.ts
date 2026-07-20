@@ -1,19 +1,29 @@
 // Work experience types
+import type { TechnologyName } from "data/technologies"
+
 import { BulletPoint } from "./content.types"
+
+export type MonthAbbrev = "Jan" | "Feb" | "Mar" | "Apr" | "May" | "Jun" | "Jul" | "Aug" | "Sept" | "Oct" | "Nov" | "Dec"
+
+export interface RoleDate {
+  month: MonthAbbrev
+  year: number
+}
 
 export interface ExperienceRole {
   position: string
-  duration: string
+  /** Start month/year of the role. */
+  start: RoleDate
+  /** End month/year; omit for the current/ongoing role. */
+  end?: RoleDate
   bulletPoints: BulletPoint[]
 }
 
 export interface Experience {
-  company_name: string
+  companyName: string
   location: string
   roles: ExperienceRole[]
-  technologies: string[]
+  technologies: TechnologyName[]
   logo: string
   color: string
 }
-
-export type ExperienceMap = Map<string, Experience>

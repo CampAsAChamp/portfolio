@@ -5,23 +5,17 @@ import RaytheonLogo from "assets/Company_Logos/Raytheon.svg"
 import ReazonLogo from "assets/Company_Logos/Reazon.svg"
 import { COLORS } from "data/colors"
 import * as technologies from "data/technologies"
-import { Experience, ExperienceMap } from "types/experience.types"
+import { Experience } from "types/experience.types"
 import { createExternalLink } from "utils/contentUtils"
-
-export const RAYTHEON = "Raytheon Intelligence & Space"
-export const ARCULES = "Arcules"
-export const ID_TECH = "ID Tech"
-export const INTUIT = "Intuit"
-export const REAZON = "Reazon Systems"
 
 export const experiences: Experience[] = [
   {
-    company_name: INTUIT,
+    companyName: "Intuit",
     location: "San Diego, CA",
     roles: [
       {
         position: "Senior Software Engineer",
-        duration: "Aug 2026 - Present",
+        start: { month: "Aug", year: 2026 },
         bulletPoints: [
           [
             "Currently working as a full stack software engineer on the appointment scheduling team for TurboTax's ",
@@ -32,7 +26,8 @@ export const experiences: Experience[] = [
       },
       {
         position: "Software Engineer 2 - Full Stack",
-        duration: "Oct 2023 - Jul 2026 (2 yr 10 mos)",
+        start: { month: "Oct", year: 2023 },
+        end: { month: "Jul", year: 2026 },
         bulletPoints: [
           [
             "Launched Attribute Based Routing to match customers to tax experts at a more granular level, driving a 11% reduction in TurboTax Live customer service time without impact to quality and 6% increase in same-day tax filings (contributing to $5.3M savings).",
@@ -62,12 +57,13 @@ export const experiences: Experience[] = [
     color: COLORS.INTUIT,
   },
   {
-    company_name: ARCULES,
+    companyName: "Arcules",
     location: "Irvine, CA",
     roles: [
       {
         position: "Software Engineer",
-        duration: "Jan 2022 - Oct 2023 (1 yr 10 mos)",
+        start: { month: "Jan", year: 2022 },
+        end: { month: "Oct", year: 2023 },
         bulletPoints: [
           [
             "Worked on the ",
@@ -102,12 +98,13 @@ export const experiences: Experience[] = [
     color: COLORS.ARCULES,
   },
   {
-    company_name: RAYTHEON,
+    companyName: "Raytheon Intelligence & Space",
     location: "Los Angeles, CA",
     roles: [
       {
         position: "Software Engineer 1",
-        duration: "Jan 2020 - Dec 2021 (2 yrs)",
+        start: { month: "Jan", year: 2020 },
+        end: { month: "Dec", year: 2021 },
         bulletPoints: [
           [
             "Worked on ",
@@ -142,12 +139,13 @@ export const experiences: Experience[] = [
     color: COLORS.RAYTHEON,
   },
   {
-    company_name: ID_TECH,
+    companyName: "ID Tech",
     location: "Cypress, CA",
     roles: [
       {
         position: "Software Engineer Co-op",
-        duration: "Sept 2018 - Dec 2018 (4 mos)",
+        start: { month: "Sept", year: 2018 },
+        end: { month: "Dec", year: 2018 },
         bulletPoints: [
           [
             "Created responsive mobile web app ",
@@ -171,12 +169,13 @@ export const experiences: Experience[] = [
     color: COLORS.ID_TECH,
   },
   {
-    company_name: REAZON,
+    companyName: "Reazon Systems",
     location: "Santa Ana, CA",
     roles: [
       {
         position: "Software Engineer Intern",
-        duration: "Jan 2018 - Mar 2018 (3 mos)",
+        start: { month: "Jan", year: 2018 },
+        end: { month: "Mar", year: 2018 },
         bulletPoints: [
           [
             "Implemented RCampus online classroom learning tools and RESTful APIs with Java and MySQL for universities such as University of Virginia and Indiana University to use in courses.",
@@ -194,11 +193,3 @@ export const experiences: Experience[] = [
     color: COLORS.REAZON,
   },
 ]
-
-const experienceMap: ExperienceMap = new Map()
-
-experiences.forEach((item) => {
-  experienceMap.set(item.company_name, item)
-})
-
-export { experienceMap }

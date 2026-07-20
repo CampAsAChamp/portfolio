@@ -14,7 +14,7 @@ export function Experience(): React.ReactElement {
           </ScrollAnimation>
         </div>
         {experiences.map((exp, index) => {
-          return <ExperienceCard key={exp.company_name} index={index + 1} experience={exp} />
+          return <ExperienceCard key={exp.companyName} index={index + 1} experience={exp} />
         })}
       </section>
     </>
