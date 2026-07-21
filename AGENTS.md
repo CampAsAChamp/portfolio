@@ -12,6 +12,8 @@ yarn lint:fix              # Auto-fix lint/format issues
 yarn test                  # Vitest unit tests
 yarn test:e2e              # Playwright E2E (starts dev server automatically)
 yarn build                 # Production build → build/
+yarn career:ui             # Local career content editor (YAML sync)
+yarn career:sync           # Generate portfolio + LinkedIn/resume exports
 ```
 
 ## Project layout
@@ -25,6 +27,7 @@ src/
   assets/         # SVG, WebP, logos, icons
   hooks/          # Custom React hooks
   utils/            # Shared utilities
+career/           # Experience sync source of truth + local editor (see career/README.md)
 tests/
   unit/           # Vitest + Testing Library (mirrors src/)
   e2e/            # Playwright (desktop/, mobile/, fixtures/, helpers/)
@@ -52,6 +55,7 @@ tests/
 | CSS / theming | `.cursor/rules/css-styling.mdc`, `src/styles/Common/Globals.css` |
 | Unit tests | `.cursor/rules/unit-testing.mdc`, `tests/unit/` |
 | E2E tests | `.cursor/rules/e2e-testing.mdc`, `tests/e2e/README.md` |
+| Career content sync | `career/README.md` (`yarn career:ui`) |
 | CI/CD workflows | `.cursor/rules/ci-workflows.mdc` |
 | Full conventions | `.cursor/rules/` (replaces legacy `.cursorrules`) |
 

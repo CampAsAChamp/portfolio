@@ -1,0 +1,281 @@
+companies:
+  - id: intuit
+    companyName: Intuit
+    location: San Diego, CA
+    colorKey: INTUIT
+    logoFile: Intuit.svg
+    technologies:
+      - JAVA
+      - SPRING
+      - REACT
+      - REDUX
+      - TYPESCRIPT
+      - GRAPHQL
+      - AWS
+    roles:
+      - id: intuit-sse
+        position: Senior Software Engineer
+        start:
+          month: Aug
+          year: 2026
+        accomplishments:
+          - id: intuit-sse-vep
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Currently working as a full stack software engineer on the appointment
+                scheduling team for TurboTax's [Virtual Expert
+                Platform](https://www.intuit.com/strategy/#bigbet-2).
+      - id: intuit-swe2
+        position: Software Engineer 2 - Full Stack
+        start:
+          month: Oct
+          year: 2023
+        end:
+          month: Jul
+          year: 2026
+        accomplishments:
+          - id: intuit-abr-launch
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Launched Attribute Based Routing to match customers to tax experts at a
+                more granular level, driving a 11% reduction in TurboTax Live customer
+                service time without impact to quality and 6% increase in same-day tax
+                filings (contributing to $5.3M savings).
+          - id: intuit-abr-admin
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Created service with accompanying web app for syncing expert skills and
+                creating routing plans in AWS, enabling Attribute Based Routing.
+          - id: intuit-scheduling
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Developed service for scheduling expert appointments and fulfilling them
+                at their scheduled time, handling over 500,000 appointments a year.
+          - id: intuit-amazon-connect
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Decoupled TurboTax Live from Amazon Connect, saving 1100 hours per year by
+                eliminating the need for personal queues and licenses to be created by Ops
+                team.
+  - id: arcules
+    companyName: Arcules
+    location: Irvine, CA
+    colorKey: ARCULES
+    logoFile: Arcules.svg
+    technologies:
+      - GO
+      - POSTGRES
+      - REACT
+      - REDUX
+      - GCP
+      - DOCKER
+      - KUBERNETES
+    roles:
+      - id: arcules-swe
+        position: Software Engineer
+        start:
+          month: Jan
+          year: 2022
+        end:
+          month: Oct
+          year: 2023
+        accomplishments:
+          - id: arcules-product
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Worked on the [product](https://manage.arcules.com/login/) (video
+                surveillance as a service) team across the whole stack.
+          - id: arcules-usage-reports
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Developed and maintained a service and scheduler for creating detailed
+                customer device usage reports for further analysis and insights using Go,
+                Postgres, and Google Cloud Platform.
+          - id: arcules-back-office
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Designed and implemented set of microservices for our Back Office portal,
+                which streamlined the quote/order creation process for the Sales Ops team,
+                resulting in a significantly faster sales pipeline.
+          - id: arcules-health-cron
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Created a Kubernetes CronJob to generate and distribute hourly device
+                health status reports for 10,000+ devices, per request from our largest
+                customer.
+          - id: arcules-ux
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Enhanced user experience of the app by revamping the application flow,
+                adding localization infrastructure and quality-of-life features using
+                React, Redux, and react-intl.
+  - id: raytheon
+    companyName: Raytheon Intelligence & Space
+    location: Los Angeles, CA
+    colorKey: RAYTHEON
+    logoFile: Raytheon.svg
+    technologies:
+      - CPP
+      - C
+      - PYTHON
+      - DOCKER
+    roles:
+      - id: raytheon-swe1
+        position: Software Engineer 1
+        start:
+          month: Jan
+          year: 2020
+        end:
+          month: Dec
+          year: 2021
+        accomplishments:
+          - id: raytheon-sbirs
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Worked on [Space Based Early Missile Warning
+                Satellite](https://www.raytheon.com/capabilities/products/space-based-early-warning)
+                on the Ground Software team
+          - id: raytheon-forge
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Developed Space Mission Data Processing
+                [Framework](https://www.raytheonintelligenceandspace.com/what-we-do/space-solutions/missile-warning-and-defense/forge)
+                in C++ 11 and Google Protobufs to stream and process terabytes of
+                real-time satellite data each day with extremely high reliability,
+                performance, and fault tolerance.
+          - id: raytheon-simulation
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Implemented modules in Space to Earth message simulation with Python &
+                C++, allowing for extensive development and testing without needing Space
+                hardware.
+          - id: raytheon-feature-gen
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Optimized statistical feature generation algorithm from systems engineers
+                leading to a 90% improvement in runtime (~200 μs to ~20 μs).
+          - id: raytheon-awards
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Received program-wide performance recognition award for outstanding and
+                impressive performance (July 2020, June 2021, Sept 2021); Recognition
+                Awards for collaboration (June 2020, Aug 2020, Jan 2021).
+  - id: id-tech
+    companyName: ID Tech
+    location: Cypress, CA
+    colorKey: ID_TECH
+    logoFile: ID_Tech.svg
+    technologies:
+      - NODEJS
+      - EXPRESS
+      - ANGULAR
+      - FIGMA
+    roles:
+      - id: id-tech-coop
+        position: Software Engineer Co-op
+        start:
+          month: Sept
+          year: 2018
+        end:
+          month: Dec
+          year: 2018
+        accomplishments:
+          - id: id-tech-tms
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Created responsive mobile web app [ViVOstate Terminal Management System
+                (TMS)](https://www.vivostate.com/) with Node, Express, and Angular for
+                viewing credit card reader device information and performing remote
+                firmware updates in the field.
+          - id: id-tech-barcode
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Built a web based barcode scanner to allow easy lookup of a device's
+                status and specs using a smartphone/laptop camera, resulting in a 44%
+                faster average task time.
+          - id: id-tech-gps
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Added GPS location tracking for quickly viewing devices on a map,
+                utilizing the [Google Maps
+                API](https://developers.google.com/maps/documentation).
+          - id: id-tech-figma
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Designed wireframes, mockups and UX flows with Figma for rapidly
+                prototyping designs to stakeholders.
+  - id: reazon
+    companyName: Reazon Systems
+    location: Santa Ana, CA
+    colorKey: REAZON
+    logoFile: Reazon.svg
+    technologies:
+      - JAVA
+      - MYSQL
+      - JAVASCRIPT
+      - HTML5
+      - CSS3
+    roles:
+      - id: reazon-intern
+        position: Software Engineer Intern
+        start:
+          month: Jan
+          year: 2018
+        end:
+          month: Mar
+          year: 2018
+        accomplishments:
+          - id: reazon-rcampus
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Implemented RCampus online classroom learning tools and RESTful APIs with
+                Java and MySQL for universities such as University of Virginia and Indiana
+                University to use in courses.
+          - id: reazon-sheets
+            destinations:
+              - portfolio
+            variants:
+              portfolio: >-
+                Created Google Sheets parsing tool using the [Google Sheets
+                API](https://developers.google.com/sheets/api) for personalized site
+                designs.

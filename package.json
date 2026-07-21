@@ -57,7 +57,14 @@
     "test:lighthouse": "./scripts/run-lighthouse.sh desktop",
     "test:ui": "node scripts/check-node-version.mjs && vitest --ui",
     "test:watch": "node scripts/check-node-version.mjs && vitest",
-    "test": "node scripts/check-node-version.mjs && vitest run"
+    "test": "node scripts/check-node-version.mjs && vitest run",
+    "career:generate": "node scripts/check-node-version.mjs && tsx career/cli/generate.ts",
+    "career:linkedin": "node scripts/check-node-version.mjs && tsx career/cli/linkedin.ts",
+    "career:resume": "node scripts/check-node-version.mjs && tsx career/cli/resume.ts",
+    "career:sync": "node scripts/check-node-version.mjs && tsx career/cli/sync.ts",
+    "career:check": "node scripts/check-node-version.mjs && tsx career/cli/check.ts",
+    "career:ui": "node scripts/check-node-version.mjs && vite --config career/ui/vite.config.ts",
+    "career:api": "node scripts/check-node-version.mjs && tsx career/api/server.ts"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -129,10 +136,13 @@
     "source-map-explorer": "^2.5.2",
     "stylelint": "^16.0.0",
     "stylelint-config-standard": "^39.0.1",
+    "tsx": "^4.23.1",
     "typescript": "^5.9.3",
     "vite": "^7.3.1",
     "vite-plugin-compression": "^0.5.1",
-    "vitest": "^4.1.0"
+    "vitest": "^4.1.0",
+    "yaml": "^2.9.0",
+    "zod": "^4.4.3"
   },
   "browserslist": {
     "production": [
