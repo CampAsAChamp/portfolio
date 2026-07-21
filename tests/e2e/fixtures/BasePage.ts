@@ -31,12 +31,22 @@ export class BasePage {
    */
   async scrollToPosition(y: number): Promise<void> {
     // "auto" is reliable across Chromium/Firefox/WebKit; "instant" can no-op on WebKit.
+    // Clamp to the max scrollable offset — callers often overshoot (e.g. last section - 100).
     await this.page.evaluate((yPos) => {
-      window.scrollTo({ top: yPos, behavior: "auto" })
-      // Ensure listeners see the final position even if the browser coalesces the event.
+      const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
+      const target = Math.min(Math.max(0, yPos), maxScroll)
+      window.scrollTo({ top: target, behavior: "auto" })
       window.dispatchEvent(new Event("scroll"))
     }, y)
-    await this.page.waitForFunction((yPos) => Math.abs(window.scrollY - yPos) < 2, y, { timeout: 5000 })
+    await this.page.waitForFunction(
+      (yPos) => {
+        const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
+        const target = Math.min(Math.max(0, yPos), maxScroll)
+        return Math.abs(window.scrollY - target) < 2
+      },
+      y,
+      { timeout: 5000 },
+    )
   }
 
   /**

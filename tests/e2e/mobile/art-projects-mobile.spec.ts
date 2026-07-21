@@ -3,9 +3,9 @@ import { expect, test } from "@playwright/test"
 import { SectionPage } from "../fixtures/SectionPage"
 import {
   getActiveSlideIndex,
+  getSwiperRealIndex,
   swiperSlideNext,
   swiperSlidePrev,
-  waitForSlideIndex,
   waitForSlideIndexChange,
 } from "../helpers/swiper-helpers"
 
@@ -80,15 +80,17 @@ test.describe("Art Projects Section - Mobile", () => {
   test("should navigate to previous slide when previous arrow is tapped", async ({ page }) => {
     const carousel = page.locator(`${CAROUSEL_ROOT} .swiper`)
 
-    const firstSlideId = await getActiveSlideIndex(page, CAROUSEL_ROOT)
-    expect(firstSlideId).not.toBeNull()
+    // realIndex is stable under loop:true; data-swiper-slide-index can stick on duplicates.
+    const startReal = await getSwiperRealIndex(page, CAROUSEL_ROOT)
+    expect(startReal).toBeGreaterThanOrEqual(0)
 
-    // Use Swiper API with speed 0 — loop + animation made prev-arrow taps flaky in CI.
     await swiperSlideNext(page, CAROUSEL_ROOT)
-    await waitForSlideIndexChange(page, CAROUSEL_ROOT, firstSlideId)
+    await expect
+      .poll(async () => getSwiperRealIndex(page, CAROUSEL_ROOT), { timeout: 10000, intervals: [50, 100, 200] })
+      .not.toBe(startReal)
 
     await swiperSlidePrev(page, CAROUSEL_ROOT)
-    await waitForSlideIndex(page, CAROUSEL_ROOT, firstSlideId)
+    await expect.poll(async () => getSwiperRealIndex(page, CAROUSEL_ROOT), { timeout: 10000, intervals: [50, 100, 200] }).toBe(startReal)
     await expect(carousel).toBeVisible()
   })
 

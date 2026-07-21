@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test"
+import { expect, Locator, Page } from "@playwright/test"
 
 import { waitForScrollComplete, waitForSectionInViewport } from "../helpers/wait-helpers"
 import { BasePage } from "./BasePage"
@@ -85,6 +85,9 @@ export class NavbarPage extends BasePage {
    * Open hamburger menu (mobile)
    */
   async openHamburgerMenu(): Promise<void> {
+    await expect(this.hamburgerButton).toBeVisible({ timeout: 15000 })
+    await expect(this.mobileDrawer).toBeAttached({ timeout: 15000 })
+
     if (await this.isHamburgerMenuOpen()) {
       return
     }
@@ -119,8 +122,13 @@ export class NavbarPage extends BasePage {
    * Check if hamburger menu is open
    */
   async isHamburgerMenuOpen(): Promise<boolean> {
-    const classes = await this.mobileDrawer.getAttribute("class")
-    return classes?.includes("nav-active") ?? false
+    // Short timeout — missing drawer should mean "closed", not hang the whole test.
+    try {
+      const classes = await this.mobileDrawer.getAttribute("class", { timeout: 2000 })
+      return classes?.includes("nav-active") ?? false
+    } catch {
+      return false
+    }
   }
 
   /**

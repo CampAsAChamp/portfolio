@@ -96,23 +96,14 @@ test.describe("Landing Page - Mobile", () => {
     await expect(page.locator("#about-me-images")).toBeInViewport()
   })
 
-  test("should keep theme switcher functional", async ({ page }) => {
-    // Open menu
+  test("should keep theme switcher functional", async () => {
     await navbarPage.openHamburgerMenu()
-
-    // Theme switcher should be visible
     await expect(navbarPage.themeSwitcher).toBeVisible()
 
-    // Get initial theme
     const initialTheme = await navbarPage.getCurrentTheme()
-
-    // Toggle theme
     await navbarPage.toggleTheme()
-    await page.waitForTimeout(500)
 
-    // Theme should have changed
-    const newTheme = await navbarPage.getCurrentTheme()
-    expect(newTheme).not.toBe(initialTheme)
+    await expect.poll(async () => navbarPage.getCurrentTheme(), { timeout: 5000, intervals: [50, 100, 200] }).not.toBe(initialTheme)
   })
 
   test("should have profile pic as center element", async ({ page }) => {

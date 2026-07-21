@@ -161,7 +161,6 @@ test.describe("General Mobile Behaviors", () => {
   })
 
   test("should load all sections on mobile", async ({ page }) => {
-    // Scroll through all sections
     const sections = [
       "#landing-page-container",
       "#about-me-container",
@@ -172,16 +171,8 @@ test.describe("General Mobile Behaviors", () => {
     ]
 
     for (const sectionId of sections) {
-      await basePage.scrollToPosition(
-        await page.evaluate((id) => {
-          const el = document.querySelector(id)
-          return el ? el.getBoundingClientRect().top + window.scrollY - 100 : 0
-        }, sectionId),
-      )
-
-      await page.waitForTimeout(300)
-
       const section = page.locator(sectionId)
+      await section.scrollIntoViewIfNeeded()
       await expect(section).toBeVisible()
     }
   })
