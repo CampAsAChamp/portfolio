@@ -99,6 +99,7 @@ function playAccomplishmentFlip(root: HTMLElement | null, firstTops: Map<string,
 
 export function App(): ReactElement {
   const [doc, setDoc] = useState<ExperiencesDocument | null>(null)
+  const [baselineJson, setBaselineJson] = useState<string | null>(null)
   const [companyIdx, setCompanyIdx] = useState(0)
   const [roleIdx, setRoleIdx] = useState(0)
   const [loadError, setLoadError] = useState<string | null>(null)
@@ -119,6 +120,10 @@ export function App(): ReactElement {
     setToasts((current) => current.filter((toast) => toast.id !== id))
   }, [])
 
+  const markBaseline = useCallback((data: ExperiencesDocument): void => {
+    setBaselineJson(JSON.stringify(data))
+  }, [])
+
   const refreshPreviews = useCallback(async () => {
     try {
       const [li, resume] = await Promise.all([exportLinkedIn(), exportResume()])
@@ -135,6 +140,7 @@ export function App(): ReactElement {
       try {
         const data = await loadExperiences()
         setDoc(data)
+        markBaseline(data)
         setCompanyIdx(0)
         setRoleIdx(0)
         setLoadError(null)
@@ -151,15 +157,27 @@ export function App(): ReactElement {
         setBusy(false)
       }
     },
-    [refreshPreviews, showToast],
+    [markBaseline, refreshPreviews, showToast],
   )
 
   useEffect(() => {
     void load()
   }, [load])
 
+  const dirty = doc != null && baselineJson != null && JSON.stringify(doc) !== baselineJson
+
+  useEffect(() => {
+    if (!dirty) return
+    const onBeforeUnload = (event: BeforeUnloadEvent): void => {
+      event.preventDefault()
+      event.returnValue = ""
+    }
+    window.addEventListener("beforeunload", onBeforeUnload)
+    return () => window.removeEventListener("beforeunload", onBeforeUnload)
+  }, [dirty])
+
   async function handleDiscard(): Promise<void> {
-    if (reloading) return
+    if (reloading || !dirty) return
     setReloading(true)
     const started = performance.now()
     try {
@@ -178,6 +196,8 @@ export function App(): ReactElement {
 
   const company = doc?.companies[companyIdx]
   const role = company?.roles[roleIdx]
+  const canDeleteCompany = (doc?.companies.length ?? 0) > 1
+  const canDeleteRole = (company?.roles.length ?? 0) > 1
 
   const roleDateError = useMemo(() => {
     if (!role?.end) return null
@@ -201,12 +221,13 @@ export function App(): ReactElement {
     setDoc((current) => (current ? updater(structuredClone(current)) : current))
   }
 
-  async function handleSave(): Promise<void> {
-    if (!doc) return
+  const handleSave = useCallback(async (): Promise<void> => {
+    if (!doc || busy) return
     setBusy(true)
     try {
       const result = await saveExperiences(doc)
       setIssues(result.issues ?? [])
+      markBaseline(doc)
       showToast("Saved experiences.yaml")
       await refreshPreviews()
     } catch (err) {
@@ -217,13 +238,24 @@ export function App(): ReactElement {
     } finally {
       setBusy(false)
     }
-  }
+  }, [busy, doc, markBaseline, refreshPreviews, showToast])
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent): void => {
+      if (!(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== "s") return
+      event.preventDefault()
+      void handleSave()
+    }
+    window.addEventListener("keydown", onKeyDown)
+    return () => window.removeEventListener("keydown", onKeyDown)
+  }, [handleSave])
 
   async function handleGenerate(): Promise<void> {
     setBusy(true)
     try {
       if (doc) {
         await saveExperiences(doc)
+        markBaseline(doc)
       }
       const out = await generatePortfolio()
       showToast(`Generated ${out}`)
@@ -240,6 +272,7 @@ export function App(): ReactElement {
     try {
       if (doc) {
         await saveExperiences(doc)
+        markBaseline(doc)
       }
       const text = await exportLinkedIn()
       await navigator.clipboard.writeText(text)
@@ -257,6 +290,7 @@ export function App(): ReactElement {
     try {
       if (doc) {
         await saveExperiences(doc)
+        markBaseline(doc)
       }
       const text = await exportResume()
       setResumePreview(text)
@@ -295,6 +329,24 @@ export function App(): ReactElement {
     setRoleIdx(0)
   }
 
+  function removeCompany(ci: number): void {
+    if (!doc || doc.companies.length <= 1) return
+    const name = doc.companies[ci]?.companyName || "this company"
+    if (!window.confirm(`Delete ${name} and all its roles?`)) return
+
+    updateDoc((d) => {
+      d.companies.splice(ci, 1)
+      return d
+    })
+    setCompanyIdx((prev) => {
+      const nextLen = doc.companies.length - 1
+      if (ci < prev) return prev - 1
+      if (ci === prev) return Math.min(prev, nextLen - 1)
+      return prev
+    })
+    setRoleIdx(0)
+  }
+
   function addRole(): void {
     if (!company) return
     updateDoc((d) => {
@@ -309,6 +361,26 @@ export function App(): ReactElement {
       return d
     })
     setRoleIdx(company.roles.length)
+  }
+
+  function removeRole(ci: number, ri: number): void {
+    const target = doc?.companies[ci]
+    if (!target || target.roles.length <= 1) return
+    const name = target.roles[ri]?.position || "this role"
+    if (!window.confirm(`Delete role "${name}"?`)) return
+
+    updateDoc((d) => {
+      d.companies[ci]!.roles.splice(ri, 1)
+      return d
+    })
+    if (ci === companyIdx) {
+      setRoleIdx((prev) => {
+        const nextLen = target.roles.length - 1
+        if (ri < prev) return prev - 1
+        if (ri === prev) return Math.min(prev, nextLen - 1)
+        return prev
+      })
+    }
   }
 
   function addAccomplishment(): void {
@@ -349,18 +421,25 @@ export function App(): ReactElement {
   }, [doc])
 
   function toggleDestination(accIdx: number, dest: Destination): void {
+    const acc = doc?.companies[companyIdx]?.roles[roleIdx]?.accomplishments[accIdx]
+    if (!acc) return
+    if (acc.destinations.includes(dest) && acc.destinations.length === 1) {
+      showToast("At least one destination is required", "error")
+      return
+    }
+
     updateDoc((d) => {
-      const acc = d.companies[companyIdx]!.roles[roleIdx]!.accomplishments[accIdx]!
-      const set = new Set(acc.destinations)
+      const current = d.companies[companyIdx]!.roles[roleIdx]!.accomplishments[accIdx]!
+      const set = new Set(current.destinations)
       if (set.has(dest)) {
         set.delete(dest)
       } else {
         set.add(dest)
-        if (!acc.variants[dest]) {
-          acc.variants[dest] = ""
+        if (!current.variants[dest]) {
+          current.variants[dest] = ""
         }
       }
-      acc.destinations = DESTINATIONS.filter((x) => set.has(x))
+      current.destinations = DESTINATIONS.filter((x) => set.has(x))
       return d
     })
   }
@@ -393,6 +472,11 @@ export function App(): ReactElement {
       <header className="topbar">
         <div className="topbar-meta">
           <h1>Career Content Editor</h1>
+          {dirty && (
+            <span className="unsaved-badge" aria-live="polite">
+              Unsaved
+            </span>
+          )}
         </div>
         <div className="topbar-actions">
           <div className="topbar-file-actions">
@@ -404,7 +488,7 @@ export function App(): ReactElement {
               <button
                 type="button"
                 className={`ghost icon-action discard-btn${reloading ? " spinning" : ""}`}
-                disabled={busy || reloading}
+                disabled={busy || reloading || !dirty}
                 onClick={() => void handleDiscard()}
               >
                 <UndoIcon />
@@ -520,7 +604,7 @@ export function App(): ReactElement {
 
           {displayIssues.length > 0 && (
             <>
-              <h2 style={{ marginTop: "1.5rem" }}>Validation</h2>
+              <h2 className="sidebar-validation-heading">Validation</h2>
               <ul className="issues">
                 {displayIssues.map((issue) => (
                   <li key={`${issue.path}-${issue.message}`} className={issue.severity}>
@@ -538,6 +622,16 @@ export function App(): ReactElement {
               <section className="card">
                 <div className="card-header">
                   <h3>Company</h3>
+                  <button
+                    type="button"
+                    className="icon-action danger"
+                    aria-label="Delete company"
+                    title={canDeleteCompany ? "Delete company" : "At least one company is required"}
+                    disabled={!canDeleteCompany}
+                    onClick={() => removeCompany(companyIdx)}
+                  >
+                    <TrashIcon />
+                  </button>
                 </div>
                 <div className="grid-2">
                   <label>
@@ -597,6 +691,16 @@ export function App(): ReactElement {
               <section className="card">
                 <div className="card-header">
                   <h3>Role</h3>
+                  <button
+                    type="button"
+                    className="icon-action danger"
+                    aria-label="Delete role"
+                    title={canDeleteRole ? "Delete role" : "At least one role is required"}
+                    disabled={!canDeleteRole}
+                    onClick={() => removeRole(companyIdx, roleIdx)}
+                  >
+                    <TrashIcon />
+                  </button>
                 </div>
                 <label>
                   Position
@@ -708,91 +812,93 @@ export function App(): ReactElement {
                   </button>
                 </div>
 
-                <div className="accomplishments-list" ref={accomplishmentsListRef}>
-                  {role.accomplishments.map((acc, ai) => (
-                    <section className="accomplishment-card" data-accomplishment-id={acc.id} key={acc.id}>
-                      <div>
-                        <div className="card-header" style={{ marginBottom: "0.4rem" }}>
-                          <p className="muted" style={{ margin: 0 }}>
-                            Destinations
-                          </p>
-                          <div className="row-actions">
-                            <button
-                              type="button"
-                              className="icon-action move-up"
-                              aria-label="Move accomplishment up"
-                              title="Move up"
-                              onClick={() => moveAccomplishment(ai, -1)}
-                              disabled={ai === 0}
-                            >
-                              <ArrowUpIcon />
-                            </button>
-                            <button
-                              type="button"
-                              className="icon-action move-down"
-                              aria-label="Move accomplishment down"
-                              title="Move down"
-                              onClick={() => moveAccomplishment(ai, 1)}
-                              disabled={ai === role.accomplishments.length - 1}
-                            >
-                              <ArrowDownIcon />
-                            </button>
-                            <button
-                              type="button"
-                              className="icon-action danger"
-                              aria-label="Delete accomplishment"
-                              title="Delete"
-                              onClick={() => removeAccomplishment(ai)}
-                            >
-                              <TrashIcon />
-                            </button>
+                {role.accomplishments.length === 0 ? (
+                  <p className="muted accomplishments-empty">No bullets yet. Use + Bullet to add one.</p>
+                ) : (
+                  <div className="accomplishments-list" ref={accomplishmentsListRef}>
+                    {role.accomplishments.map((acc, ai) => (
+                      <section className="accomplishment-card" data-accomplishment-id={acc.id} key={acc.id}>
+                        <div>
+                          <div className="card-header accomplishment-destinations-header">
+                            <p className="muted">Destinations</p>
+                            <div className="row-actions">
+                              <button
+                                type="button"
+                                className="icon-action move-up"
+                                aria-label="Move accomplishment up"
+                                title="Move up"
+                                onClick={() => moveAccomplishment(ai, -1)}
+                                disabled={ai === 0}
+                              >
+                                <ArrowUpIcon />
+                              </button>
+                              <button
+                                type="button"
+                                className="icon-action move-down"
+                                aria-label="Move accomplishment down"
+                                title="Move down"
+                                onClick={() => moveAccomplishment(ai, 1)}
+                                disabled={ai === role.accomplishments.length - 1}
+                              >
+                                <ArrowDownIcon />
+                              </button>
+                              <button
+                                type="button"
+                                className="icon-action danger"
+                                aria-label="Delete accomplishment"
+                                title="Delete"
+                                onClick={() => removeAccomplishment(ai)}
+                              >
+                                <TrashIcon />
+                              </button>
+                            </div>
+                          </div>
+                          <div className="destinations">
+                            {DESTINATIONS.map((dest) => {
+                              const meta = DESTINATION_META[dest]
+                              return (
+                                <label key={dest}>
+                                  <input
+                                    type="checkbox"
+                                    checked={acc.destinations.includes(dest)}
+                                    onChange={() => toggleDestination(ai, dest)}
+                                  />
+                                  <span className="destination-option">
+                                    {meta.icon}
+                                    {meta.label}
+                                  </span>
+                                </label>
+                              )
+                            })}
                           </div>
                         </div>
-                        <div className="destinations">
-                          {DESTINATIONS.map((dest) => {
-                            const meta = DESTINATION_META[dest]
-                            return (
-                              <label key={dest}>
-                                <input
-                                  type="checkbox"
-                                  checked={acc.destinations.includes(dest)}
-                                  onChange={() => toggleDestination(ai, dest)}
-                                />
+
+                        {DESTINATIONS.filter((d) => acc.destinations.includes(d)).map((dest) => {
+                          const meta = DESTINATION_META[dest]
+                          return (
+                            <VariantField
+                              key={dest}
+                              label={
                                 <span className="destination-option">
                                   {meta.icon}
-                                  {meta.label}
+                                  {meta.label} variant
                                 </span>
-                              </label>
-                            )
-                          })}
-                        </div>
-                      </div>
-
-                      {DESTINATIONS.filter((d) => acc.destinations.includes(d)).map((dest) => {
-                        const meta = DESTINATION_META[dest]
-                        return (
-                          <VariantField
-                            key={dest}
-                            label={
-                              <span className="destination-option">
-                                {meta.icon}
-                                {meta.label} variant
-                              </span>
-                            }
-                            value={acc.variants[dest] ?? ""}
-                            supportsMarkdownLinks={dest === "portfolio"}
-                            onChange={(next) =>
-                              updateDoc((d) => {
-                                d.companies[companyIdx]!.roles[roleIdx]!.accomplishments[ai]!.variants[dest] = next
-                                return d
-                              })
-                            }
-                          />
-                        )
-                      })}
-                    </section>
-                  ))}
-                </div>
+                              }
+                              value={acc.variants[dest] ?? ""}
+                              supportsMarkdownLinks={dest === "portfolio"}
+                              onChange={(next) =>
+                                updateDoc((d) => {
+                                  d.companies[companyIdx]!.roles[roleIdx]!.accomplishments[ai]!.variants[dest] = next
+                                  return d
+                                })
+                              }
+                            />
+                          )
+                        })}
+                      </section>
+                    ))}
+                  </div>
+                )}
               </section>
 
               {companyIssues.length > 0 && (
@@ -815,7 +921,7 @@ export function App(): ReactElement {
           <div className="preview">
             <pre>{linkedinPreview || "No LinkedIn-tagged bullets yet."}</pre>
           </div>
-          <h2 style={{ marginTop: "1.25rem" }}>Resume preview</h2>
+          <h2 className="preview-heading-spaced">Resume preview</h2>
           <div className="preview">
             <pre>{resumePreview || "No resume-tagged bullets yet."}</pre>
           </div>

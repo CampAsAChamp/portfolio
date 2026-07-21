@@ -38,7 +38,22 @@
 }
 
 .topbar-meta {
+  display: flex;
+  gap: 0.65rem;
+  align-items: baseline;
   min-width: 0;
+}
+
+.unsaved-badge {
+  border: 1px solid rgb(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: rgb(255, 255, 255, 0.14);
+  padding: 0.12rem 0.55rem;
+  color: rgb(255, 255, 255, 0.92);
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .topbar h1 {
@@ -251,6 +266,14 @@
 
 .sidebar-section-header h2 {
   margin: 0;
+}
+
+.sidebar h2.sidebar-validation-heading {
+  margin-top: 1.5rem;
+}
+
+.preview-pane h2.preview-heading-spaced {
+  margin-top: 1.25rem;
 }
 
 .app button.sidebar-add-btn {
@@ -680,6 +703,18 @@ label {
 .accomplishments-list {
   display: grid;
   gap: 0.85rem;
+}
+
+.accomplishments-empty {
+  margin: 0;
+}
+
+.accomplishment-destinations-header {
+  margin-bottom: 0.4rem;
+}
+
+.accomplishment-destinations-header .muted {
+  margin: 0;
 }
 
 .accomplishment-card {
