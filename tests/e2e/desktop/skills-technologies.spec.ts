@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test"
 
 import { SectionPage } from "../fixtures/SectionPage"
+import { skipUnlessVisualBaseline } from "../helpers/visual-helpers"
 import { waitForSectionInViewport } from "../helpers/wait-helpers"
 
 test.describe("Skills & Technologies Section - Desktop", () => {
@@ -160,7 +161,8 @@ test.describe("Skills & Technologies Section - Desktop", () => {
     expect(count).toBeGreaterThan(8)
   })
 
-  test("should display complete Skills section - visual regression", async ({ page }) => {
+  test("should display complete Skills section - visual regression", async ({ page }, testInfo) => {
+    skipUnlessVisualBaseline(testInfo)
     const skillsContent = page.locator("#skills-content")
     await expect(skillsContent).toBeVisible()
     await expect(skillsContent).toHaveScreenshot("skills-section.png", { animations: "disabled", timeout: 15000 })

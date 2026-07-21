@@ -56,6 +56,15 @@ export class BasePage {
   }
 
   /**
+   * Clear client storage and reload via navigation (avoids WebKit `page.reload` crashes).
+   */
+  async clearStorageAndGoto(url: string = "/"): Promise<void> {
+    await this.goto(url)
+    await this.clearLocalStorage()
+    await this.goto(url)
+  }
+
+  /**
    * Get localStorage item
    */
   async getLocalStorageItem(key: string): Promise<string | null> {

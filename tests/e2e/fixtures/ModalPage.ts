@@ -25,9 +25,18 @@ export class ModalPage extends BasePage {
    * Wait for modal to open with animation
    */
   async waitForModalOpen(): Promise<void> {
-    // Modal is always in the DOM; open state is indicated by the "show" class
+    // Modal mounts lazily; open state is the "show" class
     await expect(this.modal).toHaveClass(/show/, { timeout: 10000 })
     await expect(this.modalContent).toBeVisible()
+    await expect(this.closeButton).toBeVisible()
+  }
+
+  /**
+   * Focus an element via the DOM API — more reliable than Playwright's locator.focus() on WebKit.
+   */
+  async focusElement(locator: Locator): Promise<void> {
+    await locator.evaluate((el: HTMLElement) => el.focus())
+    await expect(locator).toBeFocused()
   }
 
   /**

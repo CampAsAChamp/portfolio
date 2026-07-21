@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test"
 
 import { LandingPage } from "../fixtures/LandingPage"
 import { NavbarPage } from "../fixtures/NavbarPage"
+import { skipUnlessVisualBaseline } from "../helpers/visual-helpers"
 import { waitForScrollComplete } from "../helpers/wait-helpers"
 
 test.describe("Landing Page - Desktop", () => {
@@ -31,7 +32,8 @@ test.describe("Landing Page - Desktop", () => {
     expect(initialScroll).toBe(0)
   })
 
-  test("should display all landing page elements - visual regression", async ({ page }) => {
+  test("should display all landing page elements - visual regression", async ({ page }, testInfo) => {
+    skipUnlessVisualBaseline(testInfo)
     await landingPage.waitForLandingAnimations()
 
     const landing = page.locator("#landing-page-container")

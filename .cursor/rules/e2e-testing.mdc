@@ -22,14 +22,18 @@ Config: `playwright.config.ts` — base URL `http://localhost:5173`, 30s timeout
 
 ## Visual regression
 
-Use `takeStableScreenshot` from `screenshot-helpers.ts`. Update baselines:
+- Visual baselines are **Chromium / Mobile Chrome only** (`skipUnlessVisualBaseline`).
+- Functional coverage still runs in Firefox, WebKit, and Mobile Safari.
+- Use `takeStableScreenshot` from `screenshot-helpers.ts` when adding new captures.
+- Update baselines after intentional UI changes:
 
 ```bash
-npx playwright test --update-snapshots
-npx playwright test landing-page.spec.ts --update-snapshots
+npx playwright test --update-snapshots --project=chromium
+npx playwright test --update-snapshots --project="Mobile Chrome"
 ```
 
 Snapshots live beside specs in `*-snapshots/` folders. Tolerant diff settings are in `playwright.config.ts`.
+**Always update Linux (`*-linux.png`) snapshots for CI** — Darwin snapshots are local-only.
 
 ## Commands
 

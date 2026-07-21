@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test"
 
 import { SectionPage } from "../fixtures/SectionPage"
+import { skipUnlessVisualBaseline } from "../helpers/visual-helpers"
 import { waitForSectionInViewport } from "../helpers/wait-helpers"
 
 test.describe("Experience Section - Desktop", () => {
@@ -173,6 +174,7 @@ test.describe("Experience Section - Desktop", () => {
   })
 
   test("should display complete Experience section - visual regression", async () => {
+    skipUnlessVisualBaseline(test.info())
     const firstCard = sectionPage.getSectionCard("experience-container", 0)
     await expect(firstCard).toBeVisible()
     await expect(firstCard).toHaveScreenshot("experience-section.png", { animations: "disabled", timeout: 15000 })

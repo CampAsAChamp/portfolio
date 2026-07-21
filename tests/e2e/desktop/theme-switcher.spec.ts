@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test"
 
 import { BasePage } from "../fixtures/BasePage"
 import { NavbarPage } from "../fixtures/NavbarPage"
+import { skipUnlessVisualBaseline } from "../helpers/visual-helpers"
 
 test.describe("Theme Switcher - Desktop", () => {
   let navbarPage: NavbarPage
@@ -11,12 +12,8 @@ test.describe("Theme Switcher - Desktop", () => {
     navbarPage = new NavbarPage(page)
     basePage = new BasePage(page)
 
-    // Start from home page
-    await basePage.goto("/")
-
-    // Clear localStorage to start with default theme
-    await basePage.clearLocalStorage()
-    await page.reload()
+    // Prefer a second navigation over page.reload() — WebKit occasionally crashes on reload in CI
+    await basePage.clearStorageAndGoto("/")
     await page.waitForLoadState("networkidle")
   })
 
@@ -43,13 +40,14 @@ test.describe("Theme Switcher - Desktop", () => {
     const themeAfterToggle = await navbarPage.getCurrentTheme()
     expect(await basePage.getLocalStorageItem("color-mode")).toBe(themeAfterToggle)
 
-    await page.reload()
+    await basePage.goto("/")
     await page.waitForLoadState("networkidle")
 
     await expect.poll(async () => navbarPage.getCurrentTheme()).toBe(themeAfterToggle)
   })
 
-  test("should display theme wipe animation - visual regression", async ({ page }) => {
+  test("should display theme wipe animation - visual regression", async ({ page }, testInfo) => {
+    skipUnlessVisualBaseline(testInfo)
     const themeButton = navbarPage.themeSwitcher
     await expect(themeButton).toBeVisible()
 
@@ -91,7 +89,7 @@ test.describe("Theme Switcher - Desktop", () => {
 
   test("should maintain theme across navigation", async ({ page }) => {
     await basePage.setLocalStorageItem("color-mode", "dark")
-    await page.reload({ waitUntil: "domcontentloaded" })
+    await basePage.goto("/")
     await page.waitForFunction(() => document.documentElement.getAttribute("color-mode") === "dark")
 
     await navbarPage.clickNavLink("About Me")

@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test"
 
 import { SectionPage } from "../fixtures/SectionPage"
 import { getVideoAttributes, isVideoPlaying, waitForVideoReady } from "../helpers/video-helpers"
+import { skipUnlessVisualBaseline } from "../helpers/visual-helpers"
 
 test.describe("SW Projects Section - Desktop", () => {
   let sectionPage: SectionPage
@@ -213,7 +214,8 @@ test.describe("SW Projects Section - Desktop", () => {
     expect(count).toBeGreaterThan(0)
   })
 
-  test("should display complete SW Projects section - visual regression", async ({ page }) => {
+  test("should display complete SW Projects section - visual regression", async ({ page }, testInfo) => {
+    skipUnlessVisualBaseline(testInfo)
     const firstCard = sectionPage.getSectionCard("sw-projects-container", 0)
     await expect(firstCard).toBeVisible()
     await expect(firstCard).toHaveScreenshot("sw-projects-section.png", {

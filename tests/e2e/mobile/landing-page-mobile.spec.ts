@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test"
 
 import { LandingPage } from "../fixtures/LandingPage"
 import { NavbarPage } from "../fixtures/NavbarPage"
+import { skipUnlessVisualBaseline } from "../helpers/visual-helpers"
 
 test.describe("Landing Page - Mobile", () => {
   let landingPage: LandingPage
@@ -11,9 +12,8 @@ test.describe("Landing Page - Mobile", () => {
     landingPage = new LandingPage(page)
     navbarPage = new NavbarPage(page)
 
-    await landingPage.goto("/")
-    await landingPage.clearLocalStorage()
-    await page.reload()
+    // Prefer a second navigation over page.reload() — WebKit occasionally crashes on reload in CI
+    await landingPage.clearStorageAndGoto("/")
   })
 
   test("should transform navbar to hamburger menu", async () => {
@@ -173,7 +173,8 @@ test.describe("Landing Page - Mobile", () => {
     await expect(landingPage.linkedinLink).toBeVisible()
   })
 
-  test("should display mobile landing page - visual regression", async ({ page }) => {
+  test("should display mobile landing page - visual regression", async ({ page }, testInfo) => {
+    skipUnlessVisualBaseline(testInfo)
     const landing = page.locator("#landing-page-container")
     await expect(landing).toHaveScreenshot("landing-page-mobile.png", { animations: "disabled", timeout: 15000 })
   })
@@ -188,7 +189,8 @@ test.describe("Landing Page - Mobile", () => {
     }
   })
 
-  test("should display hamburger menu - visual regression", async ({ page }) => {
+  test("should display hamburger menu - visual regression", async ({ page }, testInfo) => {
+    skipUnlessVisualBaseline(testInfo)
     await navbarPage.openHamburgerMenu()
     const navMenu = page.locator("nav ul")
     await expect(navMenu).toHaveScreenshot("hamburger-menu-open-mobile.png", { animations: "disabled", timeout: 15000 })

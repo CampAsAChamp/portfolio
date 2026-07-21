@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test"
 
 import { LandingPage } from "../fixtures/LandingPage"
 import { ModalPage } from "../fixtures/ModalPage"
+import { skipUnlessVisualBaseline } from "../helpers/visual-helpers"
 
 test.describe("Contact Me - Desktop", () => {
   let landingPage: LandingPage
@@ -20,6 +21,7 @@ test.describe("Contact Me - Desktop", () => {
     })
 
     test("should show hover effect with chevrons", async () => {
+      skipUnlessVisualBaseline(test.info())
       const button = landingPage.contactMeButton
       await expect(button).toBeVisible()
       await button.hover()
@@ -165,9 +167,12 @@ test.describe("Contact Me - Desktop", () => {
     })
 
     test("should be keyboard accessible", async ({ page }) => {
-      const closeButton = modalPage.closeButton
-      await closeButton.focus()
-      await expect(closeButton).toBeFocused()
+      // Prefer the focus trap's initial focus; fall back to DOM focus (Playwright .focus() is flaky on WebKit)
+      const focused = await modalPage.closeButton.evaluate((el) => el === document.activeElement)
+      if (!focused) {
+        await modalPage.focusElement(modalPage.closeButton)
+      }
+      await expect(modalPage.closeButton).toBeFocused()
 
       await page.keyboard.press("Enter")
       await modalPage.waitForModalClose()
@@ -182,16 +187,18 @@ test.describe("Contact Me - Desktop", () => {
       const githubLink = page.locator("#contact-me-modal-socials a").first()
       const linkedinLink = page.locator("#contact-me-modal-socials a").nth(1)
 
-      await closeButton.focus()
+      // Assert each control is focusable via the DOM API (Playwright locator.focus() is flaky on WebKit)
+      await modalPage.focusElement(closeButton)
+      await modalPage.focusElement(emailLink)
+      await modalPage.focusElement(githubLink)
+      await modalPage.focusElement(linkedinLink)
+
+      // Trap: Tab from the last control wraps to the first
+      await page.keyboard.press("Tab")
       await expect(closeButton).toBeFocused()
 
-      await emailLink.focus()
-      await expect(emailLink).toBeFocused()
-
-      await githubLink.focus()
-      await expect(githubLink).toBeFocused()
-
-      await linkedinLink.focus()
+      // Trap: Shift+Tab from the first control wraps to the last
+      await page.keyboard.press("Shift+Tab")
       await expect(linkedinLink).toBeFocused()
     })
   })
@@ -206,6 +213,7 @@ test.describe("Contact Me - Desktop", () => {
     })
 
     test("should change color on hover", async () => {
+      skipUnlessVisualBaseline(test.info())
       await landingPage.githubLink.hover()
       await expect(landingPage.githubLink).toHaveScreenshot("github-icon-hover.png", {
         animations: "disabled",

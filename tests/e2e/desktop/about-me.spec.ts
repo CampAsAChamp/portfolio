@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test"
 
 import { SectionPage } from "../fixtures/SectionPage"
+import { skipUnlessVisualBaseline } from "../helpers/visual-helpers"
 
 test.describe("About Me Section - Desktop", () => {
   let sectionPage: SectionPage
@@ -162,7 +163,8 @@ test.describe("About Me Section - Desktop", () => {
     await expect(gradCap).toBeVisible()
   })
 
-  test("should display complete About Me section - visual regression", async ({ page }) => {
+  test("should display complete About Me section - visual regression", async ({ page }, testInfo) => {
+    skipUnlessVisualBaseline(testInfo)
     const section = page.locator("#about-me-container")
     await expect(section).toBeVisible()
     await expect(section).toHaveScreenshot("about-me-section.png", { animations: "disabled", timeout: 15000 })

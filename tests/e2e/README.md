@@ -138,15 +138,27 @@ test('should display landing page', async ({ page }) => {
 
 ### Visual Regression Testing
 
+Baselines are maintained for **Chromium** and **Mobile Chrome** only (see `skipUnlessVisualBaseline`). Other browsers still run functional checks.
+
 ```typescript
 import { takeStableScreenshot } from '../helpers/screenshot-helpers'
+import { skipUnlessVisualBaseline } from '../helpers/visual-helpers'
 
-test('should match visual snapshot', async ({ page }) => {
+test('should match visual snapshot', async ({ page }, testInfo) => {
+  skipUnlessVisualBaseline(testInfo)
   await page.goto('/')
   await takeStableScreenshot(page, 'landing-page', {
     fullPage: false,
   })
 })
+```
+
+After intentional UI changes, update Linux snapshots (what CI uses):
+
+```bash
+npx playwright test --update-snapshots --project=chromium
+npx playwright test --update-snapshots --project="Mobile Chrome"
+# Or regenerate via Docker / CI artifacts if local OS rendering differs
 ```
 
 ### Video Testing
