@@ -30,7 +30,13 @@ export class BasePage {
    * Scroll to a specific Y position
    */
   async scrollToPosition(y: number): Promise<void> {
-    await this.page.evaluate((yPos) => window.scrollTo({ top: yPos, behavior: "instant" }), y)
+    // "auto" is reliable across Chromium/Firefox/WebKit; "instant" can no-op on WebKit.
+    await this.page.evaluate((yPos) => {
+      window.scrollTo({ top: yPos, behavior: "auto" })
+      // Ensure listeners see the final position even if the browser coalesces the event.
+      window.dispatchEvent(new Event("scroll"))
+    }, y)
+    await this.page.waitForFunction((yPos) => Math.abs(window.scrollY - yPos) < 2, y, { timeout: 5000 })
   }
 
   /**

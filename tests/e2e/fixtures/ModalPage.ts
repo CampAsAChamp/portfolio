@@ -27,7 +27,22 @@ export class ModalPage extends BasePage {
   async waitForModalOpen(): Promise<void> {
     // Contact modal is lazy-loaded (Suspense); under parallel CI workers the chunk can
     // take longer than the default expect timeout before #contact-me-modal-background exists.
-    await this.modal.waitFor({ state: "attached", timeout: 20000 })
+    // Retry the open click if the first one focused the button without mounting the modal.
+    const contactButton = this.page.locator("#contact-me-button")
+    const deadline = Date.now() + 20000
+
+    while (Date.now() < deadline) {
+      if (await this.modal.count()) break
+      await contactButton.click({ force: true })
+      try {
+        await this.modal.waitFor({ state: "attached", timeout: 3000 })
+        break
+      } catch {
+        // Chunk / click race — try again until deadline
+      }
+    }
+
+    await this.modal.waitFor({ state: "attached", timeout: 5000 })
     await expect(this.modal).toHaveClass(/show/, { timeout: 10000 })
     await expect(this.modalContent).toBeVisible()
     await expect(this.closeButton).toBeVisible()

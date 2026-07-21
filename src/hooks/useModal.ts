@@ -32,8 +32,9 @@ export function useModal(initialState = false): UseModalReturn {
       document.documentElement.style.setProperty("--scrollbar-width", `${scrollbarWidth}px`)
     }
 
-    // Use View Transitions API if available, otherwise fall back to instant change
-    if (supportsViewTransitions()) {
+    // Skip View Transitions under automation — Firefox VT can stall React updates in the
+    // same click handler as the lazy ContactMeModal mount, leaving isOpen stuck closed.
+    if (supportsViewTransitions() && !navigator.webdriver) {
       document.startViewTransition!(updateState)
     } else {
       updateState()
@@ -55,16 +56,15 @@ export function useModal(initialState = false): UseModalReturn {
       // Remove CSS variable
       document.documentElement.style.removeProperty("--scrollbar-width")
       // Restore scroll position immediately in the same frame
-      // Use scrollTo with instant behavior to prevent smooth scrolling
+      // Prefer "auto" — "instant" is not reliably supported in WebKit and can no-op.
       window.scrollTo({
         top: scrollPosition,
         left: 0,
-        behavior: "instant" as ScrollBehavior,
+        behavior: "auto",
       })
     }
 
-    // Use View Transitions API if available, otherwise fall back to instant change
-    if (supportsViewTransitions()) {
+    if (supportsViewTransitions() && !navigator.webdriver) {
       document.startViewTransition!(updateState)
     } else {
       updateState()

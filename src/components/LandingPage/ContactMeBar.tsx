@@ -16,6 +16,8 @@ export function ContactMeBar({ isOpen, open, close }: ContactMeBarProps): React.
   const wasOpenRef = useRef(false)
   // Defer loading the modal chunk until the user opens it (keeps initial mobile TBT down)
   const [hasOpened, setHasOpened] = useState(false)
+  // Keep the boundary mounted if parent isOpen survives a remount that resets hasOpened
+  const showModal = hasOpened || isOpen
 
   // Manage button state, view transitions, and restore focus when the modal closes
   useEffect(() => {
@@ -58,7 +60,7 @@ export function ContactMeBar({ isOpen, open, close }: ContactMeBarProps): React.
       >
         <span>Contact Me</span>
       </button>
-      {hasOpened && (
+      {showModal && (
         <Suspense fallback={null}>
           <ContactMeModal isOpen={isOpen} close={close} />
         </Suspense>

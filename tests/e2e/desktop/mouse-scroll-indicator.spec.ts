@@ -48,14 +48,24 @@ test.describe("Mouse Scroll Indicator - Desktop", () => {
     await landingPage.scrollToPosition(150)
     await waitForScrollComplete(page)
 
-    await expect(landingPage.mouseScrollIndicator).toHaveClass(/hide/)
+    await expect
+      .poll(async () => landingPage.mouseScrollIndicator.getAttribute("class"), {
+        timeout: 5000,
+        intervals: [50, 100, 200],
+      })
+      .toMatch(/hide/)
   })
 
   test("should disappear much sooner than Scroll To Top button", async ({ page }) => {
     await landingPage.scrollToPosition(150)
     await waitForScrollComplete(page)
 
-    await expect(landingPage.mouseScrollIndicator).toHaveClass(/hide/)
+    await expect
+      .poll(async () => landingPage.mouseScrollIndicator.getAttribute("class"), {
+        timeout: 5000,
+        intervals: [50, 100, 200],
+      })
+      .toMatch(/hide/)
 
     // Scroll To Top button should NOT appear yet (appears at >400px per ScrollToTopButton.tsx)
     const scrollToTopButton = page.locator("#scroll-to-top-button")
@@ -66,7 +76,12 @@ test.describe("Mouse Scroll Indicator - Desktop", () => {
     await landingPage.scrollToPosition(200)
     await waitForScrollComplete(page)
 
-    await expect(landingPage.mouseScrollIndicator).toHaveClass(/hide/)
+    await expect
+      .poll(async () => landingPage.mouseScrollIndicator.getAttribute("class"), {
+        timeout: 5000,
+        intervals: [50, 100, 200],
+      })
+      .toMatch(/hide/)
 
     await landingPage.scrollToPosition(0)
     await waitForScrollComplete(page)
@@ -79,7 +94,12 @@ test.describe("Mouse Scroll Indicator - Desktop", () => {
     await landingPage.scrollToPosition(150)
     await waitForScrollComplete(page)
 
-    await expect(landingPage.mouseScrollIndicator).toHaveClass(/hide/)
+    await expect
+      .poll(async () => landingPage.mouseScrollIndicator.getAttribute("class"), {
+        timeout: 5000,
+        intervals: [50, 100, 200],
+      })
+      .toMatch(/hide/)
   })
 
   test("should be positioned correctly in the landing page", async ({ page }) => {

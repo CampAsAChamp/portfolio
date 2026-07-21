@@ -155,12 +155,23 @@ export async function clickVideo(locator: Locator): Promise<void> {
  * Fires the real play() API so media events sync React onPlay state.
  */
 export async function ensureVideoPlaying(locator: Locator, timeout = 10000): Promise<void> {
-  await locator.evaluate(async (video: HTMLVideoElement) => {
-    if (video.paused || video.ended) {
-      await video.play()
+  const deadline = Date.now() + timeout
+
+  while (Date.now() < deadline) {
+    try {
+      await locator.evaluate(async (video: HTMLVideoElement) => {
+        if (video.paused || video.ended) {
+          await video.play()
+        }
+      })
+      if (await isVideoPlaying(locator)) return
+    } catch {
+      // WebKit may AbortError play() when the element is briefly detached / interrupted.
     }
-  })
-  await waitForVideoPlaying(locator, timeout)
+    await new Promise((resolve) => setTimeout(resolve, 100))
+  }
+
+  await waitForVideoPlaying(locator, Math.max(0, deadline - Date.now()))
 }
 
 /**

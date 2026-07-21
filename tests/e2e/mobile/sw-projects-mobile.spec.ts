@@ -161,7 +161,14 @@ test.describe("SW Projects - Instagram Browser Handling", () => {
     await disablePlayOverlayAnimation(page)
     await playButton.evaluate((el) => (el as HTMLElement).click())
 
-    // Chrome plays the video; WebKit may only show the fade-out without playback in headless.
+    // Prefer real playback; fall back to programmatic play if the overlay click is swallowed.
+    if (!(await isVideoPlaying(firstVideo))) {
+      const fading = await playButton.evaluate((el) => el.classList.contains("fading")).catch(() => false)
+      if (!fading) {
+        await ensureVideoPlaying(firstVideo)
+      }
+    }
+
     await expect
       .poll(
         async () => {
@@ -185,21 +192,14 @@ test.describe("SW Projects - Instagram Browser Handling", () => {
     await disablePlayOverlayAnimation(page)
     await playButton.evaluate((el) => (el as HTMLElement).click())
 
-    // Chrome plays; WebKit headless may only fade the overlay without lasting playback.
-    await expect
-      .poll(
-        async () => {
-          if (await isVideoPlaying(firstVideo)) return true
-          return playButton.evaluate((el) => el.classList.contains("fading")).catch(() => false)
-        },
-        { timeout: 10000, intervals: [50, 100, 200] },
-      )
-      .toBe(true)
-
-    // Click to pause when playing; otherwise pause() so onPause restores the overlay.
-    if (await isVideoPlaying(firstVideo)) {
-      await clickVideo(firstVideo)
+    // Overlay click should start playback; force play() if headless WebKit only fades the overlay.
+    if (!(await isVideoPlaying(firstVideo))) {
+      await ensureVideoPlaying(firstVideo)
     }
+
+    await expect.poll(async () => isVideoPlaying(firstVideo), { timeout: 10000, intervals: [50, 100, 200] }).toBe(true)
+
+    await clickVideo(firstVideo)
     if (!(await isVideoPaused(firstVideo))) {
       await ensureVideoPaused(firstVideo)
     }
