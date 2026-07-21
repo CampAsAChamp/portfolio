@@ -25,18 +25,21 @@ export function inclusiveMonthSpan(start: RoleDate, end: RoleDate): number {
   return (end.year - start.year) * 12 + (endIndex - startIndex) + 1
 }
 
-/** Format a month span as "2 yr 10 mos", "2 yrs", "4 mos", etc. */
+/** Format a month span as "2 yrs 10 mos", "1 yr 1 mo", "2 yrs", "4 mos", etc. */
 export function formatTenure(totalMonths: number): string {
   const years = Math.floor(totalMonths / 12)
   const months = totalMonths % 12
 
+  const yearLabel = years === 1 ? "1 yr" : `${years} yrs`
+  const monthLabel = months === 1 ? "1 mo" : `${months} mos`
+
   if (years === 0) {
-    return `${months} mos`
+    return monthLabel
   }
   if (months === 0) {
-    return years === 1 ? "1 yr" : `${years} yrs`
+    return yearLabel
   }
-  return `${years} yr ${months} mos`
+  return `${yearLabel} ${monthLabel}`
 }
 
 function formatRoleDate({ month, year }: RoleDate): string {

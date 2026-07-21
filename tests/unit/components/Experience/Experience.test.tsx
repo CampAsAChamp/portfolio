@@ -17,7 +17,7 @@ describe("Experience", () => {
   it("formats completed role durations from structured dates", () => {
     render(<Experience />)
 
-    expect(screen.getByText("Oct 2023 - Jul 2026 (2 yr 10 mos)")).toBeInTheDocument()
+    expect(screen.getByText("Oct 2023 - Jul 2026 (2 yrs 10 mos)")).toBeInTheDocument()
     expect(screen.getByText("Jan 2022 - Oct 2023 (1 yr 10 mos)")).toBeInTheDocument()
   })
 
