@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react"
+import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { SwProjectVideo } from "components/SwProjects/SwProjectVideo"
 import { REACT } from "data/technologies"
 import { SoftwareProject } from "types/project.types"
@@ -35,13 +35,18 @@ describe("SwProjectVideo", () => {
     expect(screen.getByRole("button", { name: "Play video" })).toBeInTheDocument()
   })
 
-  it("starts playback when play button is clicked", () => {
+  it("starts playback when play button is clicked", async () => {
     const onVideoPlay = vi.fn()
     render(<SwProjectVideo project={mockProject} canAutoPlay={false} onVideoPlay={onVideoPlay} />)
 
     fireEvent.click(screen.getByRole("button", { name: "Play video" }))
 
     expect(HTMLMediaElement.prototype.play).toHaveBeenCalled()
+
+    // play() resolves asynchronously and then clears the fade overlay after 300ms
+    await waitFor(() => {
+      expect(screen.queryByRole("button", { name: "Play video" })).not.toBeInTheDocument()
+    })
   })
 
   it("calls onVideoError when play rejects", async () => {
