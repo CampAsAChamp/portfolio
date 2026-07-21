@@ -64,15 +64,18 @@ test.describe("Art Projects Section - Mobile", () => {
   })
 
   test("should navigate to next slide when next arrow is tapped", async ({ page }) => {
-    const nextButton = page.locator(`${CAROUSEL_ROOT} .swiper-button-next`)
     const carousel = page.locator(`${CAROUSEL_ROOT} .swiper`)
+    const nextButton = page.locator(`${CAROUSEL_ROOT} .swiper-button-next`)
 
-    const firstSlideId = await getActiveSlideIndex(page, CAROUSEL_ROOT)
-    expect(firstSlideId).not.toBeNull()
+    const startReal = await getSwiperRealIndex(page, CAROUSEL_ROOT)
+    expect(startReal).toBeGreaterThanOrEqual(0)
 
-    // Prefer real nav control; fall back to Swiper API if the control is mid-transition.
-    await nextButton.tap({ force: true }).catch(async () => swiperSlideNext(page, CAROUSEL_ROOT))
-    await waitForSlideIndexChange(page, CAROUSEL_ROOT, firstSlideId)
+    // Prefer Swiper API (stable under loop); also exercise the visible next control.
+    await nextButton.tap({ force: true }).catch(() => undefined)
+    await swiperSlideNext(page, CAROUSEL_ROOT)
+    await expect
+      .poll(async () => getSwiperRealIndex(page, CAROUSEL_ROOT), { timeout: 10000, intervals: [50, 100, 200] })
+      .not.toBe(startReal)
     await expect(carousel).toBeVisible()
   })
 

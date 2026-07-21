@@ -89,25 +89,35 @@ export async function waitForClassRemoved(locator: Locator, className: string, t
 /**
  * Wait for scroll to complete (position stable for consecutive checks)
  */
-export async function waitForScrollComplete(page: Page, timeout = 8000): Promise<void> {
+export async function waitForScrollComplete(page: Page, timeout = 3000): Promise<void> {
+  const readScrollY = async (): Promise<number | null> => {
+    try {
+      return await Promise.race([
+        page.evaluate(() => window.scrollY),
+        new Promise<null>((resolve) => setTimeout(() => resolve(null), 1000)),
+      ])
+    } catch {
+      return null
+    }
+  }
+
   let lastScrollY = -1
   let stableCount = 0
   const startTime = Date.now()
 
   while (Date.now() - startTime < timeout) {
-    const currentScrollY = await page.evaluate(() => window.scrollY)
+    const currentScrollY = await readScrollY()
+    if (currentScrollY === null) return
 
     if (lastScrollY === currentScrollY) {
       stableCount++
-      if (stableCount >= 3) {
-        return
-      }
+      if (stableCount >= 2) return
     } else {
       stableCount = 0
     }
 
     lastScrollY = currentScrollY
-    await page.waitForTimeout(100)
+    await new Promise((resolve) => setTimeout(resolve, 50))
   }
 }
 

@@ -26,6 +26,10 @@ export default defineConfig({
     trace: "on-first-retry",
     /* Screenshot on failure */
     screenshot: "only-on-failure",
+    /* Match site prefers-reduced-motion styles — disables smooth scroll / entrance motion flakiness */
+    contextOptions: {
+      reducedMotion: "reduce",
+    },
   },
 
   /* Visual regression testing configuration */

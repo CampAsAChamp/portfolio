@@ -14,13 +14,13 @@ test.describe("Landing Page - Mobile", () => {
 
     // Prefer a second navigation over page.reload() — WebKit occasionally crashes on reload in CI
     await landingPage.clearStorageAndGoto("/")
+    // Mobile Safari CI can paint a blank frame before React mounts — wait for chrome to exist.
+    await expect(navbarPage.hamburgerButton).toBeVisible({ timeout: 15000 })
   })
 
   test("should transform navbar to hamburger menu", async () => {
-    // Hamburger button should be visible on mobile
     await expect(navbarPage.hamburgerButton).toBeVisible()
 
-    // Desktop nav links should not be visible initially
     const isNavbarMobile = await navbarPage.isNavbarMobile()
     expect(isNavbarMobile).toBe(true)
   })

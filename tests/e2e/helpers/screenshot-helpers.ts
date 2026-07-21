@@ -173,17 +173,20 @@ export function createMask(page: Page, selectors: string[]): Locator[] {
  * Wait for images to load before screenshot
  */
 export async function waitForImages(page: Page): Promise<void> {
+  // waitForFunction(fn, arg?, options?) — options must be the 3rd argument
   await page
     .waitForFunction(
       () => {
         const images = Array.from(document.querySelectorAll("img"))
-        // Filter out lazy-loaded images that haven't started loading yet
-        const visibleImages = images.filter((img) => {
+        // Only require images currently in (or near) the viewport — below-fold lazy
+        // images often have layout size but never complete until scrolled into view.
+        const viewportImages = images.filter((img) => {
           const rect = img.getBoundingClientRect()
-          return rect.width > 0 && rect.height > 0
+          return rect.bottom > 0 && rect.top < window.innerHeight && rect.width > 0 && rect.height > 0
         })
-        return visibleImages.length === 0 || visibleImages.every((img) => img.complete && img.naturalHeight > 0)
+        return viewportImages.length === 0 || viewportImages.every((img) => img.complete && img.naturalHeight > 0)
       },
+      undefined,
       { timeout: 5000 },
     )
     .catch(() => {
@@ -196,7 +199,7 @@ export async function waitForImages(page: Page): Promise<void> {
  */
 export async function waitForFonts(page: Page): Promise<void> {
   await page
-    .waitForFunction(() => document.fonts.ready, { timeout: 5000 })
+    .waitForFunction(() => document.fonts.status === "loaded", undefined, { timeout: 5000 })
     .catch(() => {
       // If fonts don't load in 5s, continue anyway
     })

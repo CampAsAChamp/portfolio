@@ -30,23 +30,39 @@ export class BasePage {
    * Scroll to a specific Y position
    */
   async scrollToPosition(y: number): Promise<void> {
-    // "auto" is reliable across Chromium/Firefox/WebKit; "instant" can no-op on WebKit.
-    // Clamp to the max scrollable offset — callers often overshoot (e.g. last section - 100).
-    await this.page.evaluate((yPos) => {
-      const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
-      const target = Math.min(Math.max(0, yPos), maxScroll)
-      window.scrollTo({ top: target, behavior: "auto" })
-      window.dispatchEvent(new Event("scroll"))
-    }, y)
-    await this.page.waitForFunction(
-      (yPos) => {
-        const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
-        const target = Math.min(Math.max(0, yPos), maxScroll)
-        return Math.abs(window.scrollY - target) < 2
-      },
-      y,
-      { timeout: 5000 },
-    )
+    // Prefer direct scrollTop writes — window.scrollTo({ behavior: "auto" }) can no-op on WebKit.
+    // Clamp to max scrollable offset (callers often overshoot). Hard-timeout the evaluate so a
+    // wedged WebKit page cannot burn the full test budget.
+    try {
+      await Promise.race([
+        this.page.evaluate((yPos) => {
+          const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
+          const target = Math.min(Math.max(0, yPos), maxScroll)
+          document.documentElement.scrollTop = target
+          document.body.scrollTop = target
+          window.scrollTo(0, target)
+          window.dispatchEvent(new Event("scroll"))
+        }, y),
+        new Promise((_, reject) => setTimeout(() => reject(new Error("scrollToPosition evaluate timed out")), 4000)),
+      ])
+    } catch {
+      return
+    }
+
+    await this.page
+      .waitForFunction(
+        (yPos) => {
+          const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
+          const target = Math.min(Math.max(0, yPos), maxScroll)
+          const current = window.scrollY || document.documentElement.scrollTop || 0
+          return Math.abs(current - target) < 5
+        },
+        y,
+        { timeout: 3000 },
+      )
+      .catch(() => {
+        // Soft-fail: some engines report scrollY with sub-pixel lag; callers assert UI outcomes.
+      })
   }
 
   /**

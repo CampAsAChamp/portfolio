@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from "@playwright/test"
 
-import { waitForScrollComplete, waitForSectionInViewport } from "../helpers/wait-helpers"
+import { waitForScrollComplete } from "../helpers/wait-helpers"
 import { BasePage } from "./BasePage"
 
 /**
@@ -51,7 +51,14 @@ export class NavbarPage extends BasePage {
     await link.click()
 
     if (targetId) {
-      await waitForSectionInViewport(this.page, targetId)
+      const target = this.page.locator(`#${targetId}`)
+      // Prefer user-visible outcome over waitForFunction scroll math (Firefox smooth-scroll lag).
+      try {
+        await expect(target).toBeInViewport({ timeout: 10000 })
+      } catch {
+        await target.scrollIntoViewIfNeeded()
+        await expect(target).toBeInViewport({ timeout: 5000 })
+      }
       return
     }
 
@@ -98,7 +105,7 @@ export class NavbarPage extends BasePage {
       btn?.click()
     })
 
-    await this.page.waitForFunction(() => document.querySelector("nav ul")?.classList.contains("nav-active"), { timeout: 15000 })
+    await this.page.waitForFunction(() => document.querySelector("nav ul")?.classList.contains("nav-active"), undefined, { timeout: 15000 })
   }
 
   /**
@@ -115,7 +122,9 @@ export class NavbarPage extends BasePage {
       btn?.click()
     })
 
-    await this.page.waitForFunction(() => !document.querySelector("nav ul")?.classList.contains("nav-active"), { timeout: 15000 })
+    await this.page.waitForFunction(() => !document.querySelector("nav ul")?.classList.contains("nav-active"), undefined, {
+      timeout: 15000,
+    })
   }
 
   /**
