@@ -33,11 +33,7 @@ const projects: SoftwareProject[] = [
     ],
     bulletPoints: [
       [
-        "Professional law firm website specializing in estate planning, built with ",
-        createExternalLink("Next.js 15", "https://nextjs.org/"),
-        " and React 19, deployed on ",
-        createExternalLink("Cloudflare Workers", "https://www.cloudflare.com/"),
-        ".",
+        "Professional law firm website specializing in estate planning, built with Next.js 15 and React 19, deployed on Cloudflare Workers.",
       ],
       [
         "Features responsive design with dark mode support, contact form with email integration using ",
@@ -63,11 +59,7 @@ const projects: SoftwareProject[] = [
       [
         "Tracks PTO and activities, on-call time, and unfinished work from prior sprints; save, load, duplicate, rename, and delete configurations in local storage.",
       ],
-      [
-        "Static export deployed to ",
-        createExternalLink("GitHub Pages", "https://campasachamp.github.io/sprint-planner/"),
-        " with installable PWA support, dark mode, and toast feedback.",
-      ],
+      ["Static export deployed to GitHub Pages with installable PWA support, dark mode, and toast feedback."],
     ],
     githubLink: "https://github.com/CampAsAChamp/sprint-planner",
     siteLink: "https://campasachamp.github.io/sprint-planner/",
@@ -113,12 +105,18 @@ const projects: SoftwareProject[] = [
     technologies: [technologies.PYTHON, technologies.GITHUB_ACTIONS],
     bulletPoints: [
       [
-        "Cron job that checks all of the Los Angeles sports teams scores each morning using Python and GitHub actions (for running the cron job automatically) to see if any of them qualify for free Chick Fil A sandwiches and sends me an email as a reminder to check my app to claim the coupon",
+        "Python scraper (Beautiful Soup + requests) that pulls prior day match results from ",
+        createExternalLink("Baseball-Reference", "https://www.baseball-reference.com/"),
+        ", ",
+        createExternalLink("Hockey-Reference", "https://www.hockey-reference.com/"),
+        ", and ",
+        createExternalLink("FBref", "https://fbref.com/"),
+        " for Angels, Ducks, and LAFC, then checks Chick-fil-A home-game promo thresholds: Angels 7+ runs, Ducks 5+ goals, or an LAFC win.",
       ],
-      ["Free Chick Fil A is available if one of the following criteria for the sports teams are met"],
-      ["Los Angeles Angels score 7 or more runs at home"],
-      ["Anaheim Ducks score 5 or more goals at home"],
-      ["LAFC wins at home"],
+      ["Season-aware scheduling: only evaluates each team while that sport is in season; runs daily at 8 AM PT via GitHub Actions cron."],
+      [
+        "Emails a Gmail SMTP reminder when criteria are met; includes local HTML sample pages so the parsers can be tested without hitting live sites.",
+      ],
     ],
     githubLink: "https://github.com/CampAsAChamp/los-angeles-sports-chick-fil-a-scraper",
     thumbnail: ChickFilAThumbnail,
@@ -137,9 +135,16 @@ const projects: SoftwareProject[] = [
     ],
     bulletPoints: [
       [
-        "Static React + TypeScript portfolio built with Vite, deployed on Cloudflare Pages, showcasing design skills along with experience and projects I've had over the years.",
+        "Personal portfolio SPA (React + TypeScript + Vite) at ",
+        createExternalLink("nickhs.dev", "https://nickhs.dev"),
+        ", with dark/light theme, scroll-driven sections, and Cloudflare Pages deploy.",
       ],
-      ["Covered with Vitest unit tests and Playwright end-to-end tests; mockup design created in Figma."],
+      [
+        "Local career content pipeline: YAML source of truth with a localhost editor that syncs experience copy into the site plus LinkedIn/resume exports.",
+      ],
+      [
+        "Quality bar: Vitest unit tests, Playwright desktop/mobile E2E, Lighthouse CI, Husky/lint-staged hooks, and semantic-release for versioning and changelog.",
+      ],
     ],
     githubLink: "https://github.com/CampAsAChamp/portfolio",
     siteLink: "https://nickhs.dev",
@@ -157,7 +162,17 @@ const projects: SoftwareProject[] = [
       technologies.REDIS,
       technologies.CLOUDFLARE,
     ],
-    bulletPoints: [["My Home Server for file storage, photo, movie, tv management & serving, with many other bells and whistles."]],
+    bulletPoints: [
+      [
+        "Self-hosted Ubuntu lab: Docker Compose stacks behind Nginx Proxy Manager, with Cloudflare-facing hostnames and a Homer dashboard for service discovery.",
+      ],
+      [
+        "Media pipeline: Plex + Sonarr/Radarr/Prowlarr/Jackett, qBittorrent routed through a Gluetun VPN, plus Immich for photos and File Browser for storage.",
+      ],
+      [
+        "Ops extras: Portainer for container management, Scrutiny for drive health, Watchtower for image updates, MergerFS/SnapRAID-backed pool storage, plus optional Spotify analytics and Minecraft stacks.",
+      ],
+    ],
     githubLink: "https://github.com/CampAsAChamp/home-server",
     thumbnail: HomeServerThumbnail,
   },
@@ -166,15 +181,16 @@ const projects: SoftwareProject[] = [
     technologies: [technologies.CPP, technologies.OPEN_GL],
     bulletPoints: [
       [
-        "Designed and implemented a large 2D Dig Dug-like game in C++ driven by ",
+        "Dig Dug–style 2D game in C++ with ",
         createExternalLink("OpenGL", "https://www.opengl.org/"),
-        ", utilizing A.I. enemies and sprites with light animations.",
+        "/freeglut: dig through a dirt grid, avoid falling boulders, collect oil barrels to clear the level.",
       ],
-      ["Coordinated with team members to realize the groups design goals."],
       [
-        "Added logic for digging through the game board, as well as falling boulders to be an obstacle and kill the player if the player wasn't moving.",
+        'Protester AI with state machines (wander, chase, stunned, leave); pathfinding via BFS back to the exit; harder "hardcore" protesters that track the player more aggressively.',
       ],
-      ["Implemented gold nuggets, score system and hidden oil barrels power ups."],
+      [
+        "Player tools and pickups: water squirts, sonar reveal, gold bait to distract enemies, scoring, and irrKlang sound effects; built as a Visual Studio team project.",
+      ],
     ],
     githubLink: "https://github.com/CampAsAChamp/DiggerMan",
     thumbnail: DiggermanThumbnail,
@@ -211,9 +227,11 @@ const projects: SoftwareProject[] = [
     name: "Object & Face Detection System",
     technologies: [technologies.PYTHON, technologies.NUMPY],
     bulletPoints: [
-      ["Python program that uses gradient features of an image for edge detection."],
-      ["Uses sliding window classification for detecting objects based on a template generated from test images."],
-      ["Can detect any object including faces given test data."],
+      ["From-scratch object detector in Python/NumPy: image gradients → HOG descriptors over 8×8 blocks with 9 orientation bins."],
+      [
+        "Learns a template as average positive HOG minus average negative HOG, then finds matches with sliding-window correlation and non-maxima suppression.",
+      ],
+      ["Validated on faces and a second category (traffic signs), including scenes with multiple detections."],
     ],
     githubLink: "https://github.com/CampAsAChamp/ObjectDetection",
     thumbnail: ObjectDetectionThumbnail,
@@ -222,9 +240,12 @@ const projects: SoftwareProject[] = [
     name: "Face Swapping",
     technologies: [technologies.PYTHON, technologies.NUMPY],
     bulletPoints: [
-      ["Piecewise affine warping, computes an affine transformation for triangles placed along the face."],
       [
-        "Morphs a face into another one or can swap parts of a face(eyes, mouth, nose) to another face while still maintaining the facial structure.",
+        "Piecewise affine face warping in Python/NumPy: estimate per-triangle affine transforms from annotated keypoints, then backward-warp with bilinear sampling.",
+      ],
+      ["Builds morph sequences by interpolating correspondences between two faces and cross-dissolving warped frames into a video."],
+      [
+        "Face swap composites a warped face onto another image using a triangle-region mask with Gaussian-feathered alpha blending to reduce seams.",
       ],
     ],
     githubLink: "https://github.com/CampAsAChamp/FaceSwap",
