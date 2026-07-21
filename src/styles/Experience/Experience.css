@@ -23,6 +23,7 @@
 
 .location {
   margin-bottom: 25px;
+  color: var(--color-card-alt-text);
   font-style: italic;
 }
 
@@ -37,9 +38,13 @@
 }
 
 .position {
-  color: var(--color-card-alt-text);
+  color: var(--color-body-text);
   font-weight: 700;
   font-size: 1.15rem;
+}
+
+.duration {
+  color: var(--color-card-alt-text);
 }
 
 .supporting-text {
