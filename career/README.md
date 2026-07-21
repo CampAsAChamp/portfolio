@@ -36,7 +36,7 @@ yarn career:check       # fail if experiences.ts is stale vs YAML
 - Edit companies → roles → accomplishments
 - Toggle destinations and edit per-channel variants
 - **Save YAML** writes the editor to `content/experiences.yaml` (hover for details). Does not update the live site by itself.
-- **Reload** (refresh icon) reloads YAML from disk and discards unsaved edits — use after external file changes or to undo.
+- **Discard** (undo icon) reloads YAML from disk and throws away unsaved edits — use after external file changes or to undo.
 - **Generate portfolio** / **Copy LinkedIn** / **Copy resume** for downstream outputs
 - Right pane shows LinkedIn / resume previews from the saved file
 
