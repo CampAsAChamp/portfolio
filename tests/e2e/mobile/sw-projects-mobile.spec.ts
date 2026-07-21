@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test"
 
 import { SectionPage } from "../fixtures/SectionPage"
-import { getVideoAttributes, isVideoPlaying, setInstagramUserAgent, waitForVideoReady } from "../helpers/video-helpers"
+import { getVideoAttributes, isVideoPaused, isVideoPlaying, setInstagramUserAgent, waitForVideoReady } from "../helpers/video-helpers"
 
 test.describe("SW Projects Section - Mobile", () => {
   let sectionPage: SectionPage
@@ -223,25 +223,33 @@ test.describe("SW Projects - Instagram Browser Handling", () => {
     if (videoCount > 0) {
       const firstVideo = videos.first()
       await expect(firstVideo).toBeVisible()
+      await waitForVideoReady(firstVideo)
+      await firstVideo.scrollIntoViewIfNeeded()
 
-      const playButton = page.locator('[class*="play"], [aria-label*="play" i]').first()
+      const playButton = page.locator(".video-play-overlay").first()
+      await expect(playButton).toBeVisible()
 
-      if ((await playButton.count()) > 0 && (await playButton.isVisible())) {
-        await playButton.click({ force: true })
-        await page.waitForTimeout(500)
+      // Pulse animation makes the overlay unstable for Playwright actions.
+      await page.addStyleTag({ content: ".video-play-overlay { animation: none !important; }" })
+      await playButton.evaluate((el) => (el as HTMLElement).click())
 
-        await firstVideo.tap()
-        await page.waitForTimeout(300)
+      // Chrome plays the video; WebKit may only show the fade-out without playback in headless.
+      await expect
+        .poll(
+          async () => {
+            if (await isVideoPlaying(firstVideo)) return true
+            return playButton.evaluate((el) => el.classList.contains("fading")).catch(() => false)
+          },
+          { timeout: 10000, intervals: [50, 100, 200] },
+        )
+        .toBe(true)
 
-        // Play button should reappear
-        const isVisible = await playButton.isVisible().catch(() => false)
+      // Click via DOM to avoid the fading overlay intercepting pointer events.
+      await firstVideo.evaluate((video: HTMLVideoElement) => video.click())
 
-        // Video should be paused
-        const paused = await firstVideo.evaluate((v: HTMLVideoElement) => v.paused)
+      await expect.poll(async () => isVideoPaused(firstVideo), { timeout: 5000, intervals: [50, 100, 200] }).toBe(true)
 
-        // Either play button visible or video paused
-        expect(isVisible || paused).toBe(true)
-      }
+      await expect(page.locator(".video-play-overlay").first()).toBeVisible()
     }
   })
 })

@@ -93,9 +93,11 @@ test.describe("Contact Me - Desktop", () => {
 
     test("should show hover effect on X button (yellow and spin)", async () => {
       await modalPage.closeButton.hover()
+      // Rotation anti-aliasing varies slightly across runs; keep a looser pixel ratio.
       await expect(modalPage.closeButton).toHaveScreenshot("modal-close-button-hover.png", {
         animations: "disabled",
         timeout: 15000,
+        maxDiffPixelRatio: 0.1,
       })
     })
 

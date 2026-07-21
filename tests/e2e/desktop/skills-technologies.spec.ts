@@ -101,12 +101,10 @@ test.describe("Skills & Technologies Section - Desktop", () => {
     const skillItems = page.locator("#skills-content .skills-icon-container")
     const firstItem = skillItems.first()
     await expect(firstItem).toBeVisible()
+    await firstItem.scrollIntoViewIfNeeded()
 
-    // Hover over item
-    await firstItem.hover()
-    await page.waitForTimeout(300)
-
-    // Item should still be visible with hover effects
+    // Hover over item — use force to avoid WebKit hit-target flakiness mid-animation
+    await firstItem.hover({ force: true })
     await expect(firstItem).toBeVisible()
   })
 

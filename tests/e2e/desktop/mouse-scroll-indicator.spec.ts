@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test"
 
 import { LandingPage } from "../fixtures/LandingPage"
+import { ModalPage } from "../fixtures/ModalPage"
 import { waitForScrollComplete } from "../helpers/wait-helpers"
 
 test.describe("Mouse Scroll Indicator - Desktop", () => {
@@ -150,17 +151,14 @@ test.describe("Mouse Scroll Indicator - Desktop", () => {
   })
 
   test("should not interfere with page interactions", async ({ page }) => {
+    const modalPage = new ModalPage(page)
+
     // Even with indicator present, other elements should be clickable
     await expect(landingPage.contactMeButton).toBeVisible()
     await expect(landingPage.contactMeButton).toBeEnabled()
 
-    // Should be able to click contact me button
-    await landingPage.contactMeButton.click()
-    await page.waitForTimeout(500)
-
-    // Modal should open (we'll verify modal functionality in separate test)
-    const modal = page.locator('[role="dialog"], [class*="modal"]')
-    const modalExists = await modal.count()
-    expect(modalExists).toBeGreaterThan(0)
+    await landingPage.clickContactMe()
+    await modalPage.waitForModalOpen()
+    await expect(modalPage.modal).toHaveClass(/show/)
   })
 })
