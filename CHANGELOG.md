@@ -1,3 +1,8 @@
+## <small>1.15.1 (2026-07-21)</small>
+
+* fix: disable react-animate-on-scroll's pre-scroll check to recover mobile TBT ([9acbbad](https://github.com/CampAsAChamp/portfolio/commit/9acbbad))
+* ci: give desktop/mobile Lighthouse checks distinct status contexts ([9e48392](https://github.com/CampAsAChamp/portfolio/commit/9e48392))
+
 ## 1.15.0 (2026-07-21)
 
 * fix: eliminate root causes of recurring e2e flakiness ([5d25246](https://github.com/CampAsAChamp/portfolio/commit/5d25246))
