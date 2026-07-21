@@ -14,8 +14,22 @@
     "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
-      "@career/*": ["../*"]
+      "@career/*": ["../*"],
+      "assets/*": ["../../src/assets/*"],
+      "components/*": ["../../src/components/*"],
+      "data/*": ["../../src/data/*"],
+      "hooks/*": ["../../src/hooks/*"],
+      "styles/*": ["../../src/styles/*"],
+      "types/*": ["../../src/types/*"],
+      "utils/*": ["../../src/utils/*"]
     }
   },
-  "include": ["./**/*", "../lib/**/*", "../api/**/*"]
+  "include": [
+    "./**/*",
+    "../lib/**/*",
+    "../api/**/*",
+    "../../src/types/assets.d.ts",
+    "../../src/types/global.d.ts",
+    "../../src/types/common.types.ts"
+  ]
 }

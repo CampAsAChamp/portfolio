@@ -13,8 +13,16 @@ export default defineConfig({
   resolve: {
     alias: {
       "@career": path.resolve(__dirname, ".."),
+      assets: path.resolve(__dirname, "../../src/assets"),
+      components: path.resolve(__dirname, "../../src/components"),
+      data: path.resolve(__dirname, "../../src/data"),
+      hooks: path.resolve(__dirname, "../../src/hooks"),
+      styles: path.resolve(__dirname, "../../src/styles"),
+      types: path.resolve(__dirname, "../../src/types"),
+      utils: path.resolve(__dirname, "../../src/utils"),
     },
   },
+  publicDir: path.resolve(__dirname, "../../public"),
   server: {
     host: "127.0.0.1",
     port: 4700,
