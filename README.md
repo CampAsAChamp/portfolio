@@ -39,6 +39,7 @@
     </ul>
   </li>
   <li><a href="#usage">Usage</a></li>
+  <li><a href="#career-content-editor">Career Content Editor</a></li>
   <li><a href="#available-scripts">Available Scripts</a></li>
   <li><a href="#testing">Testing</a></li>
   <li><a href="#project-maintenance">Project Maintenance</a></li>
@@ -102,6 +103,18 @@
 
 1. View the site live at https://nickhs.dev/
 
+## Career Content Editor
+
+Local tooling keeps experience content in sync across the portfolio, LinkedIn, and resume from a YAML source of truth (`career/content/experiences.yaml`).
+
+```sh
+yarn career:ui       # local editor at http://127.0.0.1:4700
+yarn career:sync     # generate portfolio data + LinkedIn/resume exports
+yarn career:check    # fail if src/data/experiences.ts is stale vs YAML
+```
+
+The editor UI is localhost-only and is **not** part of the Cloudflare Pages deploy. Full workflow, schema notes, and layout: [`career/README.md`](career/README.md).
+
 ## Available Scripts
 
 ### Development
@@ -109,6 +122,13 @@
 - `yarn start` or `yarn dev` - Start development server on `localhost:5173`
 - `yarn build` - Create production build in `build/` directory
 - `yarn preview` - Preview production build locally on `localhost:4173`
+
+### Career content
+
+- `yarn career:ui` - Start the local career content editor
+- `yarn career:sync` - Generate portfolio experiences + LinkedIn/resume exports
+- `yarn career:check` - Fail if generated portfolio data is stale vs YAML
+- See [`career/README.md`](career/README.md) for `career:generate`, `career:linkedin`, `career:resume`, and more
 
 ### Testing
 
