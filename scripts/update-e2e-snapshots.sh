@@ -14,7 +14,10 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
 PLAYWRIGHT_VERSION="$(node -e "console.log(require('./node_modules/@playwright/test/package.json').version)")"
-IMAGE="mcr.microsoft.com/playwright:v${PLAYWRIGHT_VERSION}-jammy"
+# noble (Ubuntu 24.04) matches the actual `ubuntu-latest` GitHub Actions runner OS.
+# Baselines generated from jammy (22.04) never match CI — different font/fontconfig
+# defaults produce a small but consistent pixel diff that repeats identically every run.
+IMAGE="mcr.microsoft.com/playwright:v${PLAYWRIGHT_VERSION}-noble"
 
 echo "Updating Linux e2e snapshots with ${IMAGE}"
 
@@ -34,8 +37,13 @@ if [ -n "${CORP_CA_BUNDLE:-}" ]; then
   CA_ENV_ARGS=(-e "NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/corp-ca-bundle.crt")
 fi
 
+# -v /work/node_modules: anonymous volume so the container's `yarn install` (real Linux
+# binaries, e.g. @rollup/rollup-linux-x64-gnu) never overwrites the host's node_modules —
+# this repo uses yarn's node-modules linker, so without this the host's Mac binaries get
+# clobbered and `yarn test`/`yarn start` break until a fresh host-side `yarn install`.
 docker run --rm \
   -v "${ROOT}:/work" \
+  -v /work/node_modules \
   "${CA_MOUNT_ARGS[@]}" \
   "${CA_ENV_ARGS[@]}" \
   -w /work \

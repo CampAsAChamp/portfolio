@@ -51,9 +51,63 @@ yarn test:e2e:update-snapshots   # Docker → Linux *-linux.png (required for CI
 ```
 
 Snapshots live beside specs in `*-snapshots/` folders. Tolerant diff settings are in `playwright.config.ts`.
-**Never rely on Darwin `--update-snapshots` to fix CI.** CI enforces this: a PR that changes
+**Never rely on Darwin `--update-snapshots` to fix CI.** CI enforces this: a commit that changes
 a `*-chromium-darwin.png`/`*-Mobile-Chrome-darwin.png` snapshot without its `*-linux.png`
-sibling fails `scripts/check-visual-baseline-sync.mjs`.
+sibling fails `scripts/check-visual-baseline-sync.mjs` (runs on both PRs and direct pushes to
+`main` — this repo pushes straight to `main`, so the push-event path is the one that matters).
+
+**The Linux baseline-generation container's OS must match the CI runner's OS.** Both
+`scripts/update-e2e-snapshots.sh` and `scripts/run-e2e-ci-parity.sh` use the `-noble` (Ubuntu
+24.04) Playwright image because GitHub's `ubuntu-latest` runner is Ubuntu 24.04. An earlier
+version used `-jammy` (22.04) — two Ubuntu major versions ship different font/fontconfig
+defaults, so baselines generated from jammy never matched CI and produced the *same* pixel
+diff on every run (a real, deterministic environment mismatch, not flakiness). Verify with
+`docker run --rm <image> cat /etc/os-release` before changing either script's image tag.
+
+## Reproducing CI locally
+
+`yarn test:e2e` on a Mac does not reproduce CI: different OS, different Chromium build (font
+rendering, H.264 support), different `retries`/`workers` (CI-only via `CI=1` in
+`playwright.config.ts`), no resource contention. Before pushing, run the same suite CI runs:
+
+```bash
+yarn test:e2e:ci-parity   # scripts/run-e2e-ci-parity.sh — noble container, CI=1, full suite
+```
+
+Set `CORP_CA_BUNDLE=<path-to-pem>` if behind a corporate TLS-intercepting proxy (same as
+`test:e2e:update-snapshots`). Both container scripts mount an anonymous volume over
+`node_modules` (`-v /work/node_modules`) — this repo uses yarn's `node-modules` linker, so
+without that the container's `yarn install` writes Linux-native binaries (e.g.
+`@rollup/rollup-linux-x64-gnu`) directly into the bind-mounted `node_modules` and breaks
+`yarn test`/`yarn start` on the host until a fresh host-side `yarn install`.
+
+## Known flakiness root causes (fixed) — don't reintroduce
+
+History shows 9+ "fix e2e tests" commits that didn't stick because they treated symptoms.
+Confirmed root causes and their permanent fixes, so future sessions don't have to
+re-diagnose from scratch:
+
+1. **Stale Linux baselines from the wrong container OS** — see "Visual regression" above.
+2. **Date-driven layout drift** — `formatRoleDuration()` (`src/utils/durationUtils.ts`)
+   renders tenure text from the real current date by default, so rendered text length (and
+   therefore layout height) silently changes as real time passes, producing visual-regression
+   diffs unrelated to any code change. `fixtures/test.ts` freezes `window.Date` to a fixed
+   instant via `page.addInitScript` for every test — deliberately *not* using Playwright's
+   `page.clock.install()`, which also fakes `requestAnimationFrame`/timers and would interfere
+   with Swiper's ResizeObserver-driven settle logic and CSS transitions this suite already
+   depends on.
+3. **Modal open/close race under CPU contention** — `ModalPage.ts`'s retry-click loops
+   (needed because a click can be lost or mistimed under the resource contention of CI's
+   2-vCPU runner running 5 browser projects in parallel) had two bugs: `waitForModalOpen()`
+   could re-click the trigger button even after the modal had already attached (a second
+   `open()` call racing the lazy-mounted `ContactMeModal` chunk could toggle it closed again),
+   and `closeByButton()` had no retry at all (unlike `closeByBackdrop()`, which already had
+   one) — a single lost click meant a hard 10s timeout with no self-correction. This surfaced
+   as different browsers failing on different runs (Firefox in some CI runs, WebKit when
+   reproduced locally under `--cpus=2 --memory=4g` contention) — it was never actually
+   browser-specific, just whichever engine happened to be slowest under contention that run.
+   Verified fixed with 4 consecutive full-suite runs under contention showing zero modal
+   failures (only the then-stale baseline diffs, since fixed separately).
 
 ## Swiper carousels
 
@@ -67,7 +121,8 @@ settle across two animation frames before and after each nav call.
 ## Commands
 
 ```bash
-yarn test:e2e              # All E2E
+yarn test:e2e              # All E2E (Mac — fast sanity check, NOT a CI-equivalence check)
+yarn test:e2e:ci-parity    # Full suite in a CI-equivalent container — run before pushing
 yarn test:e2e:ui           # Interactive UI
 npx playwright test --project=chromium
 ```

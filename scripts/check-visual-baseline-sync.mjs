@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Fail if a PR updates a Darwin visual-regression snapshot (the file `yarn
+ * Fail if a commit updates a Darwin visual-regression snapshot (the file `yarn
  * test:e2e --update-snapshots` produces locally on a Mac) without updating its Linux
  * sibling (what CI actually compares against, produced by `yarn
  * test:e2e:update-snapshots` via Docker).
@@ -9,6 +9,10 @@
  * regenerating snapshots locally on macOS, which only touches `*-darwin.png` files —
  * CI keeps comparing against the stale `*-linux.png` baseline and fails again next run.
  * This check makes that mistake fail fast instead of silently recurring.
+ *
+ * Runs on both PRs (diff against the PR base) and direct pushes to main (diff against
+ * the previous commit) — this repo pushes straight to main without a PR, so a
+ * PR-only check never actually runs in practice.
  *
  * Only the two projects with maintained baselines (see `VISUAL_BASELINE_PROJECTS` in
  * tests/e2e/helpers/visual-helpers.ts) are checked: chromium and Mobile Chrome.
@@ -22,17 +26,39 @@ function log(message) {
 }
 
 function getChangedSnapshotFiles() {
-  const baseRef = process.env.GITHUB_BASE_REF ? `origin/${process.env.GITHUB_BASE_REF}` : null
+  const baseRef = resolveBaseRef()
   if (!baseRef) {
-    log("Not running on a pull request (no GITHUB_BASE_REF) — skipping.")
+    log("Could not resolve a base ref to diff against (no GITHUB_BASE_REF and no prior commit) — skipping.")
     return null
   }
 
-  execSync(`git fetch origin ${process.env.GITHUB_BASE_REF} --depth=50`, { stdio: "ignore" })
   const diffOutput = execSync(`git diff --name-only ${baseRef}...HEAD -- "tests/e2e/**/*-snapshots/*.png"`, {
     encoding: "utf-8",
   })
   return diffOutput.split("\n").filter(Boolean)
+}
+
+function resolveBaseRef() {
+  if (process.env.GITHUB_BASE_REF) {
+    // Pull request: diff against the PR's base branch.
+    execSync(`git fetch origin ${process.env.GITHUB_BASE_REF} --depth=50`, { stdio: "ignore" })
+    return `origin/${process.env.GITHUB_BASE_REF}`
+  }
+
+  if (process.env.GITHUB_EVENT_NAME === "push") {
+    // Direct push (this repo's actual flow on main): diff against the previous commit.
+    // actions/checkout defaults to a shallow (depth-1) clone, so HEAD~1 isn't fetched yet.
+    execSync("git fetch origin --deepen=1", { stdio: "ignore" })
+    try {
+      execSync("git rev-parse HEAD~1", { stdio: "ignore" })
+      return "HEAD~1"
+    } catch {
+      // First commit in the repo/shallow history — nothing to diff against.
+      return null
+    }
+  }
+
+  return null
 }
 
 function findMismatches(changedFiles) {
@@ -60,7 +86,7 @@ function main() {
     return
   }
   if (changedFiles.length === 0) {
-    log("No visual snapshot changes in this PR.")
+    log("No visual snapshot changes.")
     return
   }
 

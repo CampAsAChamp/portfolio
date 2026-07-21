@@ -49,6 +49,7 @@
     "test:e2e": "node scripts/check-node-version.mjs && playwright test",
     "test:e2e:update-snapshots": "bash scripts/update-e2e-snapshots.sh",
     "test:e2e:update-font-cache": "bash scripts/update-e2e-font-cache.sh",
+    "test:e2e:ci-parity": "bash scripts/run-e2e-ci-parity.sh",
     "test:e2e:desktop": "node scripts/check-node-version.mjs && playwright test tests/e2e/desktop --project=chromium",
     "test:e2e:desktop:webkit": "node scripts/check-node-version.mjs && playwright test tests/e2e/desktop --project=webkit --workers=1",
     "test:e2e:mobile": "node scripts/check-node-version.mjs && playwright test tests/e2e/mobile --project=\"Mobile Chrome\"",
