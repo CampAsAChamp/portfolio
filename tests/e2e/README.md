@@ -100,7 +100,7 @@ Tests are configured in `playwright.config.ts` with:
 - **Base URL**: `http://localhost:5173`
 - **Timeout**: 30 seconds per test
 - **Retries**: 2 retries in CI, 0 locally
-- **Workers**: 10 parallel workers locally, 1 in CI
+- **Workers**: 4 parallel workers locally, 2 in CI
 - **Browsers**: Chrome, Firefox, Safari (desktop + mobile)
 - **Visual Regression**: Enabled with tolerant settings for minor rendering differences
 
@@ -264,7 +264,7 @@ npx playwright install --with-deps
 ## Performance
 
 To keep tests fast:
-- Tests run in parallel (10 workers locally)
+- Tests run in parallel (4 workers locally, 2 in CI)
 - Lazy load page objects
 - Use `test.beforeEach()` for common setup
 - Skip unnecessary navigation
