@@ -28,6 +28,16 @@ jobs:
       - name: Build production site
         run: yarn build
 
+      - name: Install Playwright Chromium (for warm-up)
+        run: npx playwright install --with-deps chromium
+
+      - name: Start and warm up preview server
+        run: |
+          yarn preview &
+          echo $! > preview.pid
+          npx wait-on http://localhost:4173 --timeout 30000
+          node scripts/warm-up-preview-server.mjs http://localhost:4173
+
       - name: Run Lighthouse CI (desktop)
         uses: treosh/lighthouse-ci-action@v12
         env:
@@ -42,6 +52,10 @@ jobs:
       - name: Print Lighthouse scores summary
         if: always()
         run: node scripts/print-lighthouse-scores.mjs
+
+      - name: Stop preview server
+        if: always()
+        run: kill "$(cat preview.pid)" 2>/dev/null || true
 
   lighthouse-mobile:
     name: Mobile Performance Audits
@@ -64,6 +78,16 @@ jobs:
       - name: Build production site
         run: yarn build
 
+      - name: Install Playwright Chromium (for warm-up)
+        run: npx playwright install --with-deps chromium
+
+      - name: Start and warm up preview server
+        run: |
+          yarn preview &
+          echo $! > preview.pid
+          npx wait-on http://localhost:4173 --timeout 30000
+          node scripts/warm-up-preview-server.mjs http://localhost:4173
+
       - name: Run Lighthouse CI (mobile)
         uses: treosh/lighthouse-ci-action@v12
         env:
@@ -78,3 +102,7 @@ jobs:
       - name: Print Lighthouse scores summary
         if: always()
         run: node scripts/print-lighthouse-scores.mjs
+
+      - name: Stop preview server
+        if: always()
+        run: kill "$(cat preview.pid)" 2>/dev/null || true
