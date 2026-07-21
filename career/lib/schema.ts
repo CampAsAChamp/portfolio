@@ -64,10 +64,24 @@ export interface ValidationIssue {
   severity: "error" | "warning"
 }
 
+/** Numeric order for a role date (higher = more recent). */
+function roleDateOrder({ month, year }: RoleDate): number {
+  return year * 12 + MONTH_ABBREVS.indexOf(month)
+}
+
+/** Returns an error message when end is before start; same month is allowed. */
+export function getRoleEndBeforeStartMessage(start: RoleDate, end: RoleDate): string | null {
+  if (roleDateOrder(end) < roleDateOrder(start)) {
+    return `End date (${end.month} ${end.year}) must be on or after start date (${start.month} ${start.year})`
+  }
+  return null
+}
+
 /**
  * Structural Zod parse plus destination/variant consistency rules.
  * Missing variant for a selected destination → error.
  * Orphan variant (present but destination not selected) → warning.
+ * Role end before start → error (same month is allowed).
  */
 export function validateExperiencesDocument(data: unknown): {
   success: boolean
@@ -104,14 +118,26 @@ export function validateExperiencesDocument(data: unknown): {
     seenCompanyIds.add(company.id)
 
     for (const [ri, role] of company.roles.entries()) {
+      const rolePath = `companies.${ci}.roles.${ri}`
       if (seenRoleIds.has(role.id)) {
         issues.push({
-          path: `companies.${ci}.roles.${ri}.id`,
+          path: `${rolePath}.id`,
           message: `Duplicate role id "${role.id}"`,
           severity: "error",
         })
       }
       seenRoleIds.add(role.id)
+
+      if (role.end) {
+        const dateMessage = getRoleEndBeforeStartMessage(role.start, role.end)
+        if (dateMessage) {
+          issues.push({
+            path: `${rolePath}.end`,
+            message: dateMessage,
+            severity: "error",
+          })
+        }
+      }
 
       for (const [ai, accomplishment] of role.accomplishments.entries()) {
         const base = `companies.${ci}.roles.${ri}.accomplishments.${ai}`

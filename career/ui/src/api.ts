@@ -1,4 +1,4 @@
-import { DESTINATIONS, MONTH_ABBREVS, type Destination, type ExperiencesDocument, type ValidationIssue } from "../../lib/schema"
+import { DESTINATIONS, MONTH_ABBREVS, getRoleEndBeforeStartMessage, type Destination, type ExperiencesDocument, type ValidationIssue } from "../../lib/schema"
 
 export class ApiError extends Error {
   issues: ValidationIssue[]
@@ -23,11 +23,6 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
     throw new ApiError(message, data.issues ?? [])
   }
   return data
-}
-
-export async function listFiles(): Promise<string[]> {
-  const data = await request<{ files: string[] }>("/api/files")
-  return data.files
 }
 
 export async function loadExperiences(): Promise<ExperiencesDocument> {
@@ -57,5 +52,5 @@ export async function exportResume(): Promise<string> {
   return data.text
 }
 
-export { DESTINATIONS, MONTH_ABBREVS }
+export { DESTINATIONS, MONTH_ABBREVS, getRoleEndBeforeStartMessage }
 export type { Destination, ExperiencesDocument, ValidationIssue }
