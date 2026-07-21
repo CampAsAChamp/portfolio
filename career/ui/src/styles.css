@@ -322,9 +322,23 @@ textarea {
   transition: border-color var(--animation-duration);
   border: 2px solid rgb(112, 112, 112, 0.25);
   border-radius: 12px;
-  background: var(--color-background);
+  background-color: var(--color-background);
   padding: 0.55rem 0.7rem;
   color: var(--color-body-text);
+}
+
+/* Match custom picker chevrons (tech / color-key): inset ▾, not native flush arrow */
+select {
+  appearance: none;
+  padding-right: 1.85rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath fill='%23707070' d='M0 0h10L5 6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 0.55rem 0.35rem;
+}
+
+html[color-mode="dark"] select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath fill='%23a5a5a5' d='M0 0h10L5 6z'/%3E%3C/svg%3E");
 }
 
 textarea {
@@ -348,7 +362,7 @@ textarea:disabled {
   opacity: 0.55;
   cursor: not-allowed;
   border-color: rgb(112, 112, 112, 0.15);
-  background: rgb(112, 112, 112, 0.08);
+  background-color: rgb(112, 112, 112, 0.08);
   color: var(--color-card-alt-text);
 }
 
