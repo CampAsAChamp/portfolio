@@ -1,8 +1,7 @@
-import { expect, test } from "@playwright/test"
-
 import { BasePage } from "../fixtures/BasePage"
 import { LandingPage } from "../fixtures/LandingPage"
 import { ModalPage } from "../fixtures/ModalPage"
+import { expect, test } from "../fixtures/test"
 import { waitForScrollComplete } from "../helpers/wait-helpers"
 
 test.describe("General Mobile Behaviors", () => {

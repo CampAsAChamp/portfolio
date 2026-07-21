@@ -1,7 +1,6 @@
-import { expect, test } from "@playwright/test"
-
 import { ModalPage } from "../fixtures/ModalPage"
 import { SectionPage } from "../fixtures/SectionPage"
+import { expect, test } from "../fixtures/test"
 import {
   getActiveSlideIndex,
   getSwiperRealIndex,
@@ -70,9 +69,7 @@ test.describe("Art Projects Section - Mobile", () => {
     const startReal = await getSwiperRealIndex(page, CAROUSEL_ROOT)
     expect(startReal).toBeGreaterThanOrEqual(0)
 
-    // Prefer Swiper API (stable under loop); also exercise the visible next control.
-    await nextButton.tap({ force: true }).catch(() => undefined)
-    await swiperSlideNext(page, CAROUSEL_ROOT)
+    await nextButton.tap({ force: true })
     await expect
       .poll(async () => getSwiperRealIndex(page, CAROUSEL_ROOT), { timeout: 10000, intervals: [50, 100, 200] })
       .not.toBe(startReal)

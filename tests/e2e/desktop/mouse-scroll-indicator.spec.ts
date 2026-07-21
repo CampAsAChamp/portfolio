@@ -1,7 +1,6 @@
-import { expect, test } from "@playwright/test"
-
 import { LandingPage } from "../fixtures/LandingPage"
 import { ModalPage } from "../fixtures/ModalPage"
+import { expect, test } from "../fixtures/test"
 import { waitForScrollComplete } from "../helpers/wait-helpers"
 
 test.describe("Mouse Scroll Indicator - Desktop", () => {

@@ -165,6 +165,15 @@ export default [
     },
   },
 
+  // Playwright fixture files use a `use(value)` callback (Playwright's own fixture API) —
+  // the react-hooks rule mistakes it for the React `use()` hook.
+  {
+    files: ["tests/e2e/fixtures/test.ts"],
+    rules: {
+      "react-hooks/rules-of-hooks": "off",
+    },
+  },
+
   // Ban arbitrary sleeps in Playwright specs (helpers may still poll with short delays)
   {
     files: ["tests/e2e/**/*.spec.ts"],

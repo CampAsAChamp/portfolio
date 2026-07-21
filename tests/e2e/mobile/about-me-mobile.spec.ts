@@ -1,6 +1,5 @@
-import { expect, test } from "@playwright/test"
-
 import { SectionPage } from "../fixtures/SectionPage"
+import { expect, test } from "../fixtures/test"
 
 test.describe("About Me Section - Mobile", () => {
   let sectionPage: SectionPage

@@ -1,7 +1,6 @@
-import { expect, test } from "@playwright/test"
-
 import { BasePage } from "../fixtures/BasePage"
 import { NavbarPage } from "../fixtures/NavbarPage"
+import { expect, test } from "../fixtures/test"
 
 test.describe("Theme Switcher - Desktop", () => {
   let navbarPage: NavbarPage

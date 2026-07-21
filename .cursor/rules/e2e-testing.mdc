@@ -10,9 +10,21 @@ Config: `playwright.config.ts` — base URL `http://localhost:5173`, 30s timeout
 
 ## Structure
 
-- `fixtures/` — page objects (`LandingPage`, `NavbarPage`, `ModalPage`, `SectionPage`)
+- `fixtures/` — page objects (`LandingPage`, `NavbarPage`, `ModalPage`, `SectionPage`); `test.ts` is the project's `test`/`expect` — **import from here, not `@playwright/test` directly**, so global setup (font mocking) applies everywhere
 - `helpers/` — animation, screenshot, video, viewport, wait utilities
 - `desktop/` and `mobile/` — spec files by viewport
+
+## Font mocking
+
+The site loads Nunito live from fonts.googleapis.com/fonts.gstatic.com with no caching. CI
+fetching them fresh over the network on every run was the direct cause of recurring
+low-percentage visual-regression pixel diffs. `fixtures/test.ts` intercepts those requests
+and replays a cached response (`fixtures/font-cache/`) so every run renders byte-identical
+fonts. Regenerate the cache after changing the Nunito `<link>` in `index.html`:
+
+```bash
+yarn test:e2e:update-font-cache
+```
 
 ## Anti-flaky rules
 
@@ -39,7 +51,18 @@ yarn test:e2e:update-snapshots   # Docker → Linux *-linux.png (required for CI
 ```
 
 Snapshots live beside specs in `*-snapshots/` folders. Tolerant diff settings are in `playwright.config.ts`.
-**Never rely on Darwin `--update-snapshots` to fix CI.**
+**Never rely on Darwin `--update-snapshots` to fix CI.** CI enforces this: a PR that changes
+a `*-chromium-darwin.png`/`*-Mobile-Chrome-darwin.png` snapshot without its `*-linux.png`
+sibling fails `scripts/check-visual-baseline-sync.mjs`.
+
+## Swiper carousels
+
+Use `swiperSlideNext`/`swiperSlidePrev` from `helpers/swiper-helpers.ts`, not raw
+`el.swiper.slideNext()`. With `loop: true` + `autoHeight: true`, a `ResizeObserver` reacts
+asynchronously to slide-height changes and recomputes the track position Swiper's index math
+reads — firing nav calls back-to-back across separate `page.evaluate()` round-trips can race
+that observer and silently no-op. The helpers wait for the wrapper's transform/height to
+settle across two animation frames before and after each nav call.
 
 ## Commands
 

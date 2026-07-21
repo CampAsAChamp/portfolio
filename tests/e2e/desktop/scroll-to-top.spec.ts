@@ -1,6 +1,7 @@
-import { expect, Locator, test } from "@playwright/test"
+import { Locator } from "@playwright/test"
 
 import { BasePage } from "../fixtures/BasePage"
+import { expect, test } from "../fixtures/test"
 import { waitForScrollComplete } from "../helpers/wait-helpers"
 
 async function expectScrollNearTop(basePage: BasePage): Promise<void> {

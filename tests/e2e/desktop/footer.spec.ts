@@ -1,6 +1,5 @@
-import { expect, test } from "@playwright/test"
-
 import { BasePage } from "../fixtures/BasePage"
+import { expect, test } from "../fixtures/test"
 
 test.describe("Footer - Desktop", () => {
   let basePage: BasePage

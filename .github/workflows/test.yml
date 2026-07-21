@@ -33,6 +33,9 @@ jobs:
       - name: Check career content sync
         run: yarn career:check
 
+      - name: Check visual baseline sync (Darwin vs Linux snapshots)
+        run: node scripts/check-visual-baseline-sync.mjs
+
       - name: Run unit tests
         run: yarn test
 

@@ -1,6 +1,5 @@
-import { expect, test } from "@playwright/test"
-
 import { SectionPage } from "../fixtures/SectionPage"
+import { expect, test } from "../fixtures/test"
 import { takeElementScreenshot } from "../helpers/screenshot-helpers"
 import { skipUnlessVisualBaseline } from "../helpers/visual-helpers"
 

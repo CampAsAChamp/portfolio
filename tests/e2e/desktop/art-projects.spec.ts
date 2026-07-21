@@ -1,7 +1,6 @@
-import { expect, test } from "@playwright/test"
-
 import { ModalPage } from "../fixtures/ModalPage"
 import { SectionPage } from "../fixtures/SectionPage"
+import { expect, test } from "../fixtures/test"
 import { skipUnlessVisualBaseline } from "../helpers/visual-helpers"
 
 test.describe("Art Projects Section - Desktop", () => {

@@ -1,7 +1,6 @@
-import { expect, test } from "@playwright/test"
-
 import { LandingPage } from "../fixtures/LandingPage"
 import { NavbarPage } from "../fixtures/NavbarPage"
+import { expect, test } from "../fixtures/test"
 import { skipUnlessVisualBaseline } from "../helpers/visual-helpers"
 
 test.describe("Landing Page - Mobile", () => {
