@@ -11,7 +11,7 @@ import { CAREER_ROOT, CONTENT_DIR, resolveContentPath } from "../lib/paths"
 import { formatResumeExport } from "../lib/resume"
 import { validateExperiencesDocument } from "../lib/schema"
 
-export const DEFAULT_PORT = 5175
+export const DEFAULT_PORT = 4701
 
 type JsonBody = Record<string, unknown>
 

@@ -21,7 +21,7 @@ Portfolio variants may use markdown links: `[label](https://example.com)`.
 
 ```bash
 nvm use
-yarn career:ui          # local editor at http://127.0.0.1:5174
+yarn career:ui          # local editor at http://127.0.0.1:4700
 yarn career:generate    # write src/data/experiences.ts
 yarn career:linkedin    # print LinkedIn text (add --copy for pbcopy)
 yarn career:resume      # write career/exports/resume.md (add --copy)
