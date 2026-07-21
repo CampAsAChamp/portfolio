@@ -1,7 +1,6 @@
 import AnteaterIllustration from "assets/Illustrations/Anteater_Illustration.webp"
 import DeskIllustration from "assets/Illustrations/Desk_Illustration.svg"
 import GradCapIllustration from "assets/Illustrations/Graduation_Illustration.svg"
-import S_Logo_Purple from "assets/S_Logo_Purple.svg"
 import ScrollAnimation from "react-animate-on-scroll"
 
 import "styles/AboutMe/AboutMe.css"
@@ -9,13 +8,28 @@ import "styles/AboutMe/AboutMe.css"
 export function AboutMe(): React.ReactElement {
   return (
     <section id="about-me-container" className="page-container">
-      <img id="background-logo" src={S_Logo_Purple} alt="Logo Backdrop" width="389" height="604" />
       <div id="about-me-images">
         <ScrollAnimation animateIn="animate__springIn" animateOnce style={{ gridArea: "1 / 1 / 2 / 2" }}>
-          <img id="grad-cap-illustration" src={GradCapIllustration} alt="Graduation Cap" loading="lazy" />
+          <img
+            id="grad-cap-illustration"
+            src={GradCapIllustration}
+            alt="Graduation Cap"
+            width="795"
+            height="574"
+            loading="lazy"
+            decoding="async"
+          />
         </ScrollAnimation>
         <ScrollAnimation animateIn="animate__springIn" delay={100} animateOnce style={{ gridArea: "1 / 2 / 2 / 3" }}>
-          <img id="anteater-illustration" src={AnteaterIllustration} alt="Anteater Illustration" loading="lazy" />
+          <img
+            id="anteater-illustration"
+            src={AnteaterIllustration}
+            alt="Anteater Illustration"
+            width="618"
+            height="618"
+            loading="lazy"
+            decoding="async"
+          />
         </ScrollAnimation>
         <ScrollAnimation
           animateIn="animate__springIn"
@@ -23,7 +37,15 @@ export function AboutMe(): React.ReactElement {
           animateOnce
           style={{ gridArea: "2 / 1 / 3 / 3", display: "flex", justifyContent: "center", alignItems: "start", marginTop: "-40px" }}
         >
-          <img id="desk-illustration" src={DeskIllustration} alt="Desk Illustration" loading="lazy" />
+          <img
+            id="desk-illustration"
+            src={DeskIllustration}
+            alt="Desk Illustration"
+            width="711"
+            height="670"
+            loading="lazy"
+            decoding="async"
+          />
         </ScrollAnimation>
       </div>
       <div id="about-me-text">

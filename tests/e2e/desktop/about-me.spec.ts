@@ -20,18 +20,33 @@ test.describe("About Me Section - Desktop", () => {
   })
 
   test("should display organic blob background", async ({ page }) => {
-    // Check for background logo (S logo overlay)
-    const backgroundLogo = page.locator("#background-logo")
-    await expect(backgroundLogo).toBeVisible()
+    const section = page.locator("#about-me-container")
+    await expect(section).toBeVisible()
+
+    // Decorative S logo is a CSS ::before background (avoids competing for LCP)
+    const hasLogoOverlay = await section.evaluate((el) => {
+      const before = getComputedStyle(el, "::before")
+      return before.content !== "none" && before.backgroundImage.includes("S_Logo")
+    })
+    expect(hasLogoOverlay).toBe(true)
   })
 
   test("should display S logo overlay behind content", async ({ page }) => {
-    const backgroundLogo = page.locator("#background-logo")
-    await expect(backgroundLogo).toBeVisible()
+    const section = page.locator("#about-me-container")
+    const logoStyles = await section.evaluate((el) => {
+      const before = getComputedStyle(el, "::before")
+      return {
+        content: before.content,
+        backgroundImage: before.backgroundImage,
+        opacity: before.opacity,
+        zIndex: before.zIndex,
+      }
+    })
 
-    // Verify it's the S logo
-    const src = await backgroundLogo.getAttribute("src")
-    expect(src).toContain("S_Logo")
+    expect(logoStyles.content).not.toBe("none")
+    expect(logoStyles.backgroundImage).toContain("S_Logo")
+    expect(Number.parseFloat(logoStyles.opacity)).toBeLessThan(1)
+    expect(Number.parseInt(logoStyles.zIndex, 10)).toBeLessThan(0)
   })
 
   test("should display three images in correct layout", async ({ page }) => {
@@ -167,7 +182,7 @@ test.describe("About Me Section - Desktop", () => {
 
   test("should maintain layout integrity", async ({ page }) => {
     // All key elements should be present and visible
-    await expect(page.locator("#background-logo")).toBeVisible()
+    await expect(page.locator("#about-me-container")).toBeVisible()
     await expect(page.locator("#about-me-images")).toBeVisible()
     await expect(page.locator("#about-me-text")).toBeVisible()
     await expect(page.locator("#about-me-header")).toBeVisible()

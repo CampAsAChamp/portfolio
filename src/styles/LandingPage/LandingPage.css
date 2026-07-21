@@ -65,10 +65,13 @@
   animation-delay: 0.3s;
   opacity: 0;
   animation-fill-mode: forwards;
+  aspect-ratio: 418 / 468;
   display: block;
+  height: auto;
   margin: 2rem auto;
   max-width: 80%;
   padding: 0 2rem;
+  width: 100%;
 }
 
 /* Mouse scroll indicator animation styles removed - now handled by MouseScrollIndicator.css */

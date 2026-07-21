@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef } from "react"
+import { lazy, Suspense, useEffect, useRef, useState } from "react"
 import GitHubLogo from "assets/Dev_Icons/GitHub.svg"
 import LinkedInLogo from "assets/Dev_Icons/LinkedIn.svg"
 import { Svg } from "components/Common/Svg"
@@ -14,6 +14,8 @@ interface ContactMeBarProps {
 export function ContactMeBar({ isOpen, open, close }: ContactMeBarProps): React.ReactElement {
   const buttonRef = useRef<HTMLButtonElement>(null)
   const wasOpenRef = useRef(false)
+  // Defer loading the modal chunk until the user opens it (keeps initial mobile TBT down)
+  const [hasOpened, setHasOpened] = useState(false)
 
   // Manage button state, view transitions, and restore focus when the modal closes
   useEffect(() => {
@@ -40,14 +42,27 @@ export function ContactMeBar({ isOpen, open, close }: ContactMeBarProps): React.
     return (): void => clearTimeout(timeoutId)
   }, [isOpen])
 
+  const handleOpen = (): void => {
+    setHasOpened(true)
+    open()
+  }
+
   return (
     <div id="contact-me-bar">
-      <button type="button" className="button animate__animated animate__fadeInUp" id="contact-me-button" ref={buttonRef} onClick={open}>
+      <button
+        type="button"
+        className="button animate__animated animate__fadeInUp"
+        id="contact-me-button"
+        ref={buttonRef}
+        onClick={handleOpen}
+      >
         <span>Contact Me</span>
       </button>
-      <Suspense fallback={null}>
-        <ContactMeModal isOpen={isOpen} close={close} />
-      </Suspense>
+      {hasOpened && (
+        <Suspense fallback={null}>
+          <ContactMeModal isOpen={isOpen} close={close} />
+        </Suspense>
+      )}
       <div id="contact-me-socials">
         <a href="https://github.com/CampAsAChamp/" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
           <Svg className="contact-me-item animate__animated animate__fadeInUp" id="github-logo" src={GitHubLogo} title="GitHub Icon" />

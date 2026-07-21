@@ -1,6 +1,5 @@
 import ArtProfilePic from "assets/Art_Profile_Pic.svg"
 import HeroImageBlobShape from "assets/Organic_Shapes/Hero_Image_Blob_Shape.svg"
-import { Svg } from "components/Common/Svg"
 import { ContactMeBar } from "components/LandingPage/ContactMeBar"
 import { MouseScrollIndicator } from "components/LandingPage/MouseScrollIndicator"
 import { useModal } from "hooks/useModal"
@@ -31,7 +30,18 @@ export function LandingPage(): React.ReactElement {
           <MouseScrollIndicator />
         </div>
         <div id="profile-pic-container">
-          <Svg id="profile-pic" src={ArtProfilePic} title="Flat Profile Pic" className="center animate__animated animate__fadeIn" />
+          {/* Use <img> (not InlineSVG) so width/height reserve space before paint and avoid mobile CLS */}
+          <img
+            id="profile-pic"
+            src={ArtProfilePic}
+            alt="Flat Profile Pic"
+            title="Flat Profile Pic"
+            width="418"
+            height="468"
+            fetchPriority="high"
+            decoding="async"
+            className="center animate__animated animate__fadeIn"
+          />
         </div>
       </section>
     </>
