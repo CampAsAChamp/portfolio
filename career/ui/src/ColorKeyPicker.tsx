@@ -1,5 +1,5 @@
-import { COLORS } from "data/colors"
 import { useEffect, useId, useRef, useState, type ReactElement } from "react"
+import { COLORS } from "data/colors"
 
 export const COLOR_OPTIONS = (Object.keys(COLORS) as Array<keyof typeof COLORS>).map((key) => ({
   key,
@@ -60,11 +60,7 @@ export function ColorKeyPicker({ value, onChange }: ColorKeyPickerProps): ReactE
           aria-controls={listboxId}
           onClick={() => setOpen((prev) => !prev)}
         >
-          <span
-            className={`color-key-swatch${known ? "" : " unknown"}`}
-            style={known ? { backgroundColor: hex } : undefined}
-            aria-hidden
-          />
+          <span className={`color-key-swatch${known ? "" : " unknown"}`} style={known ? { backgroundColor: hex } : undefined} aria-hidden />
           <span className="color-key-trigger-text" style={known ? { color: hex } : undefined}>
             {known ? value : `Unknown: ${value || "—"}`}
           </span>
@@ -80,11 +76,7 @@ export function ColorKeyPicker({ value, onChange }: ColorKeyPickerProps): ReactE
               const selected = opt.key === value
               return (
                 <li key={opt.key} role="option" aria-selected={selected}>
-                  <button
-                    type="button"
-                    className={`color-key-option${selected ? " selected" : ""}`}
-                    onClick={() => selectKey(opt.key)}
-                  >
+                  <button type="button" className={`color-key-option${selected ? " selected" : ""}`} onClick={() => selectKey(opt.key)}>
                     <span className="color-key-swatch" style={{ backgroundColor: opt.hex }} aria-hidden />
                     <span className="color-key-option-label" style={{ color: opt.hex }}>
                       {opt.key}

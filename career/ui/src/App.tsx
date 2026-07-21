@@ -1,5 +1,5 @@
-import { ThemeSwitcher } from "components/NavBar/ThemeSwitcher"
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactElement } from "react"
+import { ThemeSwitcher } from "components/NavBar/ThemeSwitcher"
 
 import {
   ArrowDownIcon,
@@ -13,7 +13,6 @@ import {
   TrashIcon,
   UndoIcon,
 } from "./ActionIcons"
-import { HintedAction } from "./HintedAction"
 import {
   ApiError,
   DESTINATIONS,
@@ -29,6 +28,7 @@ import {
   type ValidationIssue,
 } from "./api"
 import { ColorKeyPicker, getColorHex } from "./ColorKeyPicker"
+import { HintedAction } from "./HintedAction"
 import { LogoFilePicker } from "./LogoFilePicker"
 import { TechnologyPicker } from "./TechnologyPicker"
 import { ToastStack, type ToastKind, type ToastMessage } from "./Toast"
@@ -753,7 +753,11 @@ export function App(): ReactElement {
                             const meta = DESTINATION_META[dest]
                             return (
                               <label key={dest}>
-                                <input type="checkbox" checked={acc.destinations.includes(dest)} onChange={() => toggleDestination(ai, dest)} />
+                                <input
+                                  type="checkbox"
+                                  checked={acc.destinations.includes(dest)}
+                                  onChange={() => toggleDestination(ai, dest)}
+                                />
                                 <span className="destination-option">
                                   {meta.icon}
                                   {meta.label}

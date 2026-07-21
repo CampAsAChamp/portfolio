@@ -2,11 +2,7 @@ import { useId, useLayoutEffect, useRef, type ReactElement, type ReactNode } fro
 
 import { LinkIcon } from "./ActionIcons"
 import { HintedAction } from "./HintedAction"
-import {
-  insertMarkdownLink,
-  isMarkdownLinkShortcut,
-  markdownLinkShortcutLabel,
-} from "./insertMarkdownLink"
+import { insertMarkdownLink, isMarkdownLinkShortcut, markdownLinkShortcutLabel } from "./insertMarkdownLink"
 
 interface VariantFieldProps {
   label: ReactNode
@@ -21,12 +17,7 @@ function autosizeTextarea(textarea: HTMLTextAreaElement): void {
   textarea.style.height = `${textarea.scrollHeight}px`
 }
 
-export function VariantField({
-  label,
-  value,
-  onChange,
-  supportsMarkdownLinks = false,
-}: VariantFieldProps): ReactElement {
+export function VariantField({ label, value, onChange, supportsMarkdownLinks = false }: VariantFieldProps): ReactElement {
   const fieldId = useId()
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const shortcut = markdownLinkShortcutLabel()

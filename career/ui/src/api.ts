@@ -1,4 +1,11 @@
-import { DESTINATIONS, MONTH_ABBREVS, getRoleEndBeforeStartMessage, type Destination, type ExperiencesDocument, type ValidationIssue } from "../../lib/schema"
+import {
+  DESTINATIONS,
+  getRoleEndBeforeStartMessage,
+  MONTH_ABBREVS,
+  type Destination,
+  type ExperiencesDocument,
+  type ValidationIssue,
+} from "../../lib/schema"
 
 export class ApiError extends Error {
   issues: ValidationIssue[]

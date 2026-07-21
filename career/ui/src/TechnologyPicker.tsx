@@ -5,17 +5,13 @@ import {
   useRef,
   useState,
   type DragEvent,
-  type KeyboardEvent as ReactKeyboardEvent,
   type ReactElement,
+  type KeyboardEvent as ReactKeyboardEvent,
 } from "react"
 import InlineSVG from "react-inlinesvg"
 
 import { TrashIcon } from "./ActionIcons"
-import {
-  TECHNOLOGY_OPTIONS_ALPHA,
-  TECHNOLOGY_OPTIONS_BY_KEY,
-  type TechnologyOption,
-} from "./technologyCatalog"
+import { TECHNOLOGY_OPTIONS_ALPHA, TECHNOLOGY_OPTIONS_BY_KEY, type TechnologyOption } from "./technologyCatalog"
 
 interface TechnologyPickerProps {
   value: string[]
@@ -27,16 +23,7 @@ function TechIcon({ option, size = 18 }: { option: TechnologyOption; size?: numb
     return <span className="tech-icon tech-icon-fallback" style={{ width: size, height: size }} />
   }
 
-  return (
-    <InlineSVG
-      className="tech-icon"
-      src={option.icon}
-      width={size}
-      height={size}
-      fill="#6c63ff"
-      title={`${option.label} icon`}
-    />
-  )
+  return <InlineSVG className="tech-icon" src={option.icon} width={size} height={size} fill="#6c63ff" title={`${option.label} icon`} />
 }
 
 function reorder(list: string[], from: number, to: number): string[] {
@@ -61,16 +48,10 @@ export function TechnologyPicker({ value, onChange }: TechnologyPickerProps): Re
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
     if (!q) return TECHNOLOGY_OPTIONS_ALPHA
-    return TECHNOLOGY_OPTIONS_ALPHA.filter(
-      (opt) => opt.label.toLowerCase().includes(q) || opt.key.toLowerCase().includes(q),
-    )
+    return TECHNOLOGY_OPTIONS_ALPHA.filter((opt) => opt.label.toLowerCase().includes(q) || opt.key.toLowerCase().includes(q))
   }, [query])
 
-  const orderedSelected = useMemo(
-    () =>
-      value.map((key) => TECHNOLOGY_OPTIONS_BY_KEY.get(key) ?? { key, label: key, icon: "" }),
-    [value],
-  )
+  const orderedSelected = useMemo(() => value.map((key) => TECHNOLOGY_OPTIONS_BY_KEY.get(key) ?? { key, label: key, icon: "" }), [value])
 
   useEffect(() => {
     if (!open) return
@@ -181,11 +162,7 @@ export function TechnologyPicker({ value, onChange }: TechnologyPickerProps): Re
                 const checked = selectedSet.has(opt.key)
                 return (
                   <li key={opt.key} role="option" aria-selected={checked}>
-                    <button
-                      type="button"
-                      className={`tech-picker-option${checked ? " selected" : ""}`}
-                      onClick={() => toggleKey(opt.key)}
-                    >
+                    <button type="button" className={`tech-picker-option${checked ? " selected" : ""}`} onClick={() => toggleKey(opt.key)}>
                       <span className="tech-picker-check" aria-hidden>
                         {checked ? "✓" : ""}
                       </span>
@@ -195,9 +172,7 @@ export function TechnologyPicker({ value, onChange }: TechnologyPickerProps): Re
                   </li>
                 )
               })}
-              {filtered.length === 0 ? (
-                <li className="tech-picker-empty muted">No matches</li>
-              ) : null}
+              {filtered.length === 0 ? <li className="tech-picker-empty muted">No matches</li> : null}
             </ul>
           </div>
         ) : null}

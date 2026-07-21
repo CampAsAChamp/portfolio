@@ -40,9 +40,7 @@ export function LogoFilePicker({ value, onChange }: LogoFilePickerProps): ReactE
         })}
       </div>
 
-      {LOGO_OPTIONS.length === 0 ? (
-        <p className="muted">No logos found in assets/Company_Logos/</p>
-      ) : null}
+      {LOGO_OPTIONS.length === 0 ? <p className="muted">No logos found in assets/Company_Logos/</p> : null}
     </div>
   )
 }

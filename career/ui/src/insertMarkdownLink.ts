@@ -1,10 +1,7 @@
 import type { KeyboardEvent as ReactKeyboardEvent } from "react"
 
 /** Insert `[text](url)` at the textarea cursor (wraps the current selection when present). */
-export function insertMarkdownLink(
-  textarea: HTMLTextAreaElement,
-  onChange: (next: string) => void,
-): void {
+export function insertMarkdownLink(textarea: HTMLTextAreaElement, onChange: (next: string) => void): void {
   const { selectionStart: start, selectionEnd: end, value } = textarea
   const selected = value.slice(start, end)
   const linkText = selected || "text"
@@ -26,7 +23,6 @@ export function isMarkdownLinkShortcut(event: KeyboardEvent | ReactKeyboardEvent
 }
 
 export function markdownLinkShortcutLabel(): string {
-  const isApple =
-    typeof navigator !== "undefined" && /Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent)
+  const isApple = typeof navigator !== "undefined" && /Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent)
   return isApple ? "⌘K" : "Ctrl+K"
 }

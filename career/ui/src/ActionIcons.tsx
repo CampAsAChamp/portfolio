@@ -1,6 +1,6 @@
 import type { ReactElement } from "react"
-import InlineSVG from "react-inlinesvg"
 import LinkedInLogo from "assets/Dev_Icons/LinkedIn.svg"
+import InlineSVG from "react-inlinesvg"
 
 interface IconProps {
   size?: number
@@ -9,13 +9,7 @@ interface IconProps {
 export function ArrowUpIcon({ size = 16 }: IconProps): ReactElement {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M12 19V5M12 5L5 12M12 5L19 12"
-        stroke="currentColor"
-        strokeWidth="2.25"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M12 19V5M12 5L5 12M12 5L19 12" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
@@ -23,13 +17,7 @@ export function ArrowUpIcon({ size = 16 }: IconProps): ReactElement {
 export function ArrowDownIcon({ size = 16 }: IconProps): ReactElement {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M12 5V19M12 19L5 12M12 19L19 12"
-        stroke="currentColor"
-        strokeWidth="2.25"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
@@ -52,13 +40,7 @@ export function TrashIcon({ size = 16 }: IconProps): ReactElement {
 export function UndoIcon({ size = 18 }: IconProps): ReactElement {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M9 14L4 9L9 4"
-        stroke="currentColor"
-        strokeWidth="2.25"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M9 14L4 9L9 4" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
       <path
         d="M4 9H14.5A5.5 5.5 0 0 1 20 14.5V14.5A5.5 5.5 0 0 1 14.5 20H11"
         stroke="currentColor"
@@ -119,13 +101,7 @@ export function CheckIcon({ size = 18 }: IconProps): ReactElement {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
       <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2.25" />
-      <path
-        d="M8 12.5L10.8 15.2L16.2 9"
-        stroke="currentColor"
-        strokeWidth="2.25"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M8 12.5L10.8 15.2L16.2 9" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
@@ -192,20 +168,8 @@ export function DocumentIcon({ size = 16 }: IconProps): ReactElement {
 export function LinkIcon({ size = 16 }: IconProps): ReactElement {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M9 17H7A5 5 0 0 1 7 7H9"
-        stroke="currentColor"
-        strokeWidth="2.25"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M15 7H17A5 5 0 0 1 17 17H15"
-        stroke="currentColor"
-        strokeWidth="2.25"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M9 17H7A5 5 0 0 1 7 7H9" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M15 7H17A5 5 0 0 1 17 17H15" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M8 12H16" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" />
     </svg>
   )

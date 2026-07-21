@@ -1,11 +1,4 @@
-import {
-  Children,
-  cloneElement,
-  isValidElement,
-  useId,
-  type ReactElement,
-  type ReactNode,
-} from "react"
+import { Children, cloneElement, isValidElement, useId, type ReactElement, type ReactNode } from "react"
 
 interface HintedActionProps {
   label: string
