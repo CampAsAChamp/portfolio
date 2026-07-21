@@ -25,7 +25,9 @@ export class ModalPage extends BasePage {
    * Wait for modal to open with animation
    */
   async waitForModalOpen(): Promise<void> {
-    // Modal mounts lazily; open state is the "show" class
+    // Contact modal is lazy-loaded (Suspense); under parallel CI workers the chunk can
+    // take longer than the default expect timeout before #contact-me-modal-background exists.
+    await this.modal.waitFor({ state: "attached", timeout: 20000 })
     await expect(this.modal).toHaveClass(/show/, { timeout: 10000 })
     await expect(this.modalContent).toBeVisible()
     await expect(this.closeButton).toBeVisible()

@@ -21,22 +21,6 @@ export function ContactMeModal({ isOpen, close }: ContactMeModalProps): React.Re
   const dialogRef = useRef<HTMLDivElement>(null)
   const modalCloseKeyboardProps = useKeyboardAccessibility(close)
 
-  // Sync modal state with CSS classes
-  useEffect(() => {
-    const modalBackground = document.getElementById("contact-me-modal-background")
-    const modalContent = document.getElementById("contact-me-modal-content")
-
-    if (!modalBackground || !modalContent) return
-
-    if (isOpen) {
-      modalBackground.classList.add("show")
-      modalContent.classList.add("show")
-    } else {
-      modalBackground.classList.remove("show")
-      modalContent.classList.remove("show")
-    }
-  }, [isOpen])
-
   // Focus trap and initial focus when dialog opens
   useEffect(() => {
     if (!isOpen) return
@@ -80,10 +64,11 @@ export function ContactMeModal({ isOpen, close }: ContactMeModalProps): React.Re
   return (
     // Backdrop click dismisses; keyboard users close via Escape (useModal) or the Close button
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-    <div className="modal-bg" id="contact-me-modal-background" onClick={close} aria-hidden={!isOpen}>
+    <div className={`modal-bg${isOpen ? " show" : ""}`} id="contact-me-modal-background" onClick={close} aria-hidden={!isOpen}>
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
       <div
         id="contact-me-modal-content"
+        className={isOpen ? "show" : undefined}
         ref={dialogRef}
         role="dialog"
         aria-modal="true"

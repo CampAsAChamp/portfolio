@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react"
+import { cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { ContactMeModal } from "components/ContactMeModal/ContactMeModal"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
@@ -13,6 +13,16 @@ describe("ContactMeModal", () => {
   it("renders when isOpen is true", () => {
     expect(screen.getByText("Let's Connect!")).toBeInTheDocument()
     expect(screen.getByText("I'd love to hear from you")).toBeInTheDocument()
+    expect(document.getElementById("contact-me-modal-background")).toHaveClass("show")
+    expect(document.getElementById("contact-me-modal-content")).toHaveClass("show")
+  })
+
+  it("omits show class when closed", () => {
+    cleanup()
+    render(<ContactMeModal isOpen={false} close={mockClose} />)
+
+    expect(document.getElementById("contact-me-modal-background")).not.toHaveClass("show")
+    expect(document.getElementById("contact-me-modal-content")).not.toHaveClass("show")
   })
 
   it("displays email link", () => {
