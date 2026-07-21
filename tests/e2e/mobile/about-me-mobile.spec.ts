@@ -8,10 +8,7 @@ test.describe("About Me Section - Mobile", () => {
   test.beforeEach(async ({ page }) => {
     sectionPage = new SectionPage(page)
     await sectionPage.goto("/")
-
-    // Scroll to About Me section
     await sectionPage.scrollToSection("about-me-images")
-    await page.waitForTimeout(500)
   })
 
   test("should display About Me section", async () => {
@@ -86,19 +83,5 @@ test.describe("About Me Section - Mobile", () => {
     if (box) {
       expect(box.height).toBeGreaterThan(200)
     }
-  })
-
-  test("should animate elements when scrolled into view", async ({ page }) => {
-    // Scroll to top
-    await sectionPage.scrollToPosition(0)
-    await page.waitForTimeout(300)
-
-    // Scroll to About Me
-    await sectionPage.scrollToSection("about-me-images")
-    await page.waitForTimeout(1000)
-
-    // Elements should be visible
-    const gradCap = page.locator("#grad-cap-illustration")
-    await expect(gradCap).toBeVisible()
   })
 })

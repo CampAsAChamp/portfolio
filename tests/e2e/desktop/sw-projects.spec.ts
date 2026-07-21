@@ -1,7 +1,8 @@
 import { expect, test } from "@playwright/test"
 
 import { SectionPage } from "../fixtures/SectionPage"
-import { getVideoAttributes, isVideoPlaying, waitForVideoReady } from "../helpers/video-helpers"
+import { takeElementScreenshot } from "../helpers/screenshot-helpers"
+import { ensureVideoPlaying, getVideoAttributes, isVideoPlaying, waitForVideoReady } from "../helpers/video-helpers"
 import { skipUnlessVisualBaseline } from "../helpers/visual-helpers"
 
 test.describe("SW Projects Section - Desktop", () => {
@@ -10,10 +11,7 @@ test.describe("SW Projects Section - Desktop", () => {
   test.beforeEach(async ({ page }) => {
     sectionPage = new SectionPage(page)
     await sectionPage.goto("/")
-
-    // Scroll to SW Projects section
     await sectionPage.scrollToSection("sw-projects-header")
-    await page.waitForTimeout(1000)
   })
 
   test("should display SW Projects section", async ({ page }) => {
@@ -103,20 +101,18 @@ test.describe("SW Projects Section - Desktop", () => {
     if (videoCount > 0) {
       const firstVideo = videos.first()
       await expect(firstVideo).toBeVisible()
-
-      // Wait for video to be ready
       await waitForVideoReady(firstVideo)
 
-      // Check if video is playing (may take a moment)
-      await page.waitForTimeout(1000)
+      const attrs = await getVideoAttributes(firstVideo)
+      expect(attrs.muted).toBe(true)
 
-      // Video should be playing or at least ready
-      const playing = await isVideoPlaying(firstVideo)
-      const paused = await firstVideo.evaluate((v: HTMLVideoElement) => v.paused)
-
-      // Either playing or paused is acceptable (autoplay may be blocked)
-      expect(typeof playing).toBe("boolean")
-      expect(typeof paused).toBe("boolean")
+      // Chromium reliably autoplays muted media; Firefox/WebKit headless often block playback.
+      if (test.info().project.name === "chromium") {
+        if (!(await isVideoPlaying(firstVideo))) {
+          await ensureVideoPlaying(firstVideo)
+        }
+        await expect.poll(async () => isVideoPlaying(firstVideo), { timeout: 10000, intervals: [50, 100, 200] }).toBe(true)
+      }
     }
   })
 
@@ -175,20 +171,6 @@ test.describe("SW Projects Section - Desktop", () => {
     }
   })
 
-  test("should animate cards when scrolled into view", async ({ page }) => {
-    // Scroll to top
-    await sectionPage.scrollToPosition(0)
-    await page.waitForTimeout(300)
-
-    // Scroll to SW Projects section to trigger animations
-    await sectionPage.scrollToSection("sw-projects-header")
-    await page.waitForTimeout(1000)
-
-    // Cards should be visible
-    const firstCard = sectionPage.getSectionCard("sw-projects-container", 0)
-    await expect(firstCard).toBeVisible()
-  })
-
   test("should display project thumbnails", async () => {
     const firstCard = sectionPage.getSectionCard("sw-projects-container", 0)
     const thumbnail = firstCard.locator("img, video").first()
@@ -217,10 +199,7 @@ test.describe("SW Projects Section - Desktop", () => {
   test("should display complete SW Projects section - visual regression", async ({ page }, testInfo) => {
     skipUnlessVisualBaseline(testInfo)
     const firstCard = sectionPage.getSectionCard("sw-projects-container", 0)
-    await expect(firstCard).toBeVisible()
-    await expect(firstCard).toHaveScreenshot("sw-projects-section.png", {
-      animations: "disabled",
-      timeout: 15000,
+    await takeElementScreenshot(firstCard, "sw-projects-section", {
       mask: [page.locator("video")],
     })
   })

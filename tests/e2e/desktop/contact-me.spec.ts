@@ -47,16 +47,6 @@ test.describe("Contact Me - Desktop", () => {
       await modalPage.waitForModalOpen()
     })
 
-    test("should animate in when opened", async ({ page }) => {
-      // Modal should be visible
-      expect(await modalPage.isModalOpen()).toBe(true)
-
-      // Check for show class
-      const modalBg = page.locator("#contact-me-modal-background")
-      const classes = await modalBg.getAttribute("class")
-      expect(classes).toContain("show")
-    })
-
     test("should display all modal content", async ({ page }) => {
       // Verify modal content elements
       const modalContent = page.locator("#contact-me-modal-content")
@@ -107,35 +97,15 @@ test.describe("Contact Me - Desktop", () => {
       expect(styles.transform).not.toBe("none")
     })
 
-    test("should close when clicking backdrop", async ({ page }) => {
+    test("should close when clicking backdrop", async () => {
       expect(await modalPage.isModalOpen()).toBe(true)
-
-      const modalBg = page.locator("#contact-me-modal-background")
-      await modalBg.click({ position: { x: 5, y: 5 } })
-
-      await modalPage.waitForModalClose()
+      await modalPage.closeByBackdrop()
       expect(await modalPage.isModalOpen()).toBe(false)
     })
 
     test("should close when pressing ESC key", async () => {
-      // Modal should be open
       expect(await modalPage.isModalOpen()).toBe(true)
-
-      // Press ESC
       await modalPage.closeByEscape()
-
-      // Modal should be closed
-      expect(await modalPage.isModalOpen()).toBe(false)
-    })
-
-    test("should animate out when closing", async () => {
-      // Modal is open
-      expect(await modalPage.isModalOpen()).toBe(true)
-
-      // Close modal
-      await modalPage.closeByButton()
-
-      // Modal should close with animation
       expect(await modalPage.isModalOpen()).toBe(false)
     })
 

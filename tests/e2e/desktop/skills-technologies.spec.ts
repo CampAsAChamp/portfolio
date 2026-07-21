@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test"
 
 import { SectionPage } from "../fixtures/SectionPage"
+import { takeElementScreenshot } from "../helpers/screenshot-helpers"
 import { skipUnlessVisualBaseline } from "../helpers/visual-helpers"
 import { waitForSectionInViewport } from "../helpers/wait-helpers"
 
@@ -60,21 +61,6 @@ test.describe("Skills & Technologies Section - Desktop", () => {
       const text = await caption.textContent()
       expect(text?.trim().length).toBeGreaterThan(0)
     }
-  })
-
-  test("should animate items with stagger when scrolled into view", async ({ page }) => {
-    // Scroll to top
-    await sectionPage.scrollToPosition(0)
-    await page.waitForTimeout(300)
-
-    // Scroll to Skills section to trigger animations
-    await sectionPage.scrollToSection("skills-header")
-    await page.waitForTimeout(1500) // Wait for staggered animations
-
-    // Items should be visible
-    const skillItems = page.locator("#skills-content .skills-icon-container")
-    const firstItem = skillItems.first()
-    await expect(firstItem).toBeVisible()
   })
 
   test("should enlarge icon on hover", async ({ page }) => {
@@ -164,8 +150,7 @@ test.describe("Skills & Technologies Section - Desktop", () => {
   test("should display complete Skills section - visual regression", async ({ page }, testInfo) => {
     skipUnlessVisualBaseline(testInfo)
     const skillsContent = page.locator("#skills-content")
-    await expect(skillsContent).toBeVisible()
-    await expect(skillsContent).toHaveScreenshot("skills-section.png", { animations: "disabled", timeout: 15000 })
+    await takeElementScreenshot(skillsContent, "skills-section")
   })
 
   test("should have proper spacing between items", async ({ page }) => {

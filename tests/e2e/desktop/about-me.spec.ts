@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test"
 
 import { SectionPage } from "../fixtures/SectionPage"
+import { takeElementScreenshot } from "../helpers/screenshot-helpers"
 import { skipUnlessVisualBaseline } from "../helpers/visual-helpers"
 
 test.describe("About Me Section - Desktop", () => {
@@ -9,10 +10,7 @@ test.describe("About Me Section - Desktop", () => {
   test.beforeEach(async ({ page }) => {
     sectionPage = new SectionPage(page)
     await sectionPage.goto("/")
-
-    // Scroll to About Me section
     await sectionPage.scrollToSection("about-me-images")
-    await page.waitForTimeout(500)
   })
 
   test("should display About Me section", async () => {
@@ -84,25 +82,6 @@ test.describe("About Me Section - Desktop", () => {
     expect(deskBox).toBeTruthy()
   })
 
-  test("should animate images with stagger when scrolled into view", async ({ page }) => {
-    // Scroll back to top
-    await sectionPage.scrollToPosition(0)
-    await page.waitForTimeout(300)
-
-    // Scroll to About Me section to trigger animations
-    await sectionPage.scrollToSection("about-me-images")
-    await page.waitForTimeout(1000) // Wait for staggered animations
-
-    // All images should be visible after animations
-    const gradCap = page.locator("#grad-cap-illustration")
-    const anteater = page.locator("#anteater-illustration")
-    const desk = page.locator("#desk-illustration")
-
-    await expect(gradCap).toBeVisible()
-    await expect(anteater).toBeVisible()
-    await expect(desk).toBeVisible()
-  })
-
   test("should display About Me text content", async ({ page }) => {
     const aboutMeText = page.locator("#about-me-text")
     await expect(aboutMeText).toBeVisible()
@@ -150,24 +129,9 @@ test.describe("About Me Section - Desktop", () => {
     }
   })
 
-  test("should animate in when scrolled 10% past element", async ({ page }) => {
-    // Scroll to top
-    await sectionPage.scrollToPosition(0)
-    await page.waitForTimeout(300)
-
-    // Scroll to trigger animations
-    await sectionPage.waitForSectionAnimations("about-me-images")
-
-    // Images should be visible
-    const gradCap = page.locator("#grad-cap-illustration")
-    await expect(gradCap).toBeVisible()
-  })
-
   test("should display complete About Me section - visual regression", async ({ page }, testInfo) => {
     skipUnlessVisualBaseline(testInfo)
-    const section = page.locator("#about-me-container")
-    await expect(section).toBeVisible()
-    await expect(section).toHaveScreenshot("about-me-section.png", { animations: "disabled", timeout: 15000 })
+    await takeElementScreenshot(page.locator("#about-me-container"), "about-me-section")
   })
 
   test("should have proper image loading attributes", async ({ page }) => {

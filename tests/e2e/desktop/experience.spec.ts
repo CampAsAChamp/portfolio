@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test"
 
 import { SectionPage } from "../fixtures/SectionPage"
+import { takeElementScreenshot } from "../helpers/screenshot-helpers"
 import { skipUnlessVisualBaseline } from "../helpers/visual-helpers"
 import { waitForSectionInViewport } from "../helpers/wait-helpers"
 
@@ -129,20 +130,6 @@ test.describe("Experience Section - Desktop", () => {
     }
   })
 
-  test("should animate cards when scrolled into view", async ({ page }) => {
-    // Scroll to top
-    await sectionPage.scrollToPosition(0)
-    await page.waitForTimeout(300)
-
-    // Scroll to Experience section to trigger animations
-    await sectionPage.scrollToSection("experience-header")
-    await page.waitForTimeout(1000)
-
-    // Cards should be visible
-    const firstCard = sectionPage.getSectionCard("experience-container", 0)
-    await expect(firstCard).toBeVisible()
-  })
-
   test("should display company logos", async () => {
     const cards = sectionPage.getSectionCards("experience-container")
     const count = await cards.count()
@@ -176,8 +163,7 @@ test.describe("Experience Section - Desktop", () => {
   test("should display complete Experience section - visual regression", async () => {
     skipUnlessVisualBaseline(test.info())
     const firstCard = sectionPage.getSectionCard("experience-container", 0)
-    await expect(firstCard).toBeVisible()
-    await expect(firstCard).toHaveScreenshot("experience-section.png", { animations: "disabled", timeout: 15000 })
+    await takeElementScreenshot(firstCard, "experience-section")
   })
 
   test("should have proper card spacing", async () => {

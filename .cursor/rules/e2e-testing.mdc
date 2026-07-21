@@ -20,6 +20,12 @@ Config: `playwright.config.ts` — base URL `http://localhost:5173`, 30s timeout
 
 **Don't:** `page.waitForTimeout()`, CSS-class-only selectors, test interdependencies, hard-coded delays.
 
+## Stable assertions
+
+1. **User-visible outcomes** — prefer `toBeVisible` / `toBeInViewport` / theme attribute / dialog open. Avoid asserting `hide`/`show`/`entrance` CSS classes except where that class is the public contract (then one test, not four).
+2. **API-first** — use `scrollIntoViewIfNeeded` / `SectionPage.scrollToSection`, Swiper helpers (`swiperSlideNext(0)`, `getSwiperRealIndex`), video helpers (`ensureVideoPlaying`), `ModalPage` open/close. Do not use `waitForTimeout` to “settle.”
+3. **Chromium-only for animation / pixel / exact-index** — keep `skipUnlessVisualBaseline` for screenshots; gate stagger/`animate__*`/threshold-pixel checks to Chromium, or delete tests that only sleep then assert visibility.
+
 ## Visual regression
 
 - Visual baselines are **Chromium / Mobile Chrome only** (`skipUnlessVisualBaseline`).

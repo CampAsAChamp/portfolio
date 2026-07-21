@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test"
 
+import { ModalPage } from "../fixtures/ModalPage"
 import { SectionPage } from "../fixtures/SectionPage"
 import {
   getActiveSlideIndex,
@@ -45,14 +46,12 @@ test.describe("Art Projects Section - Mobile", () => {
   })
 
   test("should open lightbox modal when tapping photos", async ({ page }) => {
+    const artModal = new ModalPage(page, { backgroundId: "art-modal-background" })
     const openButton = page.locator(`${CAROUSEL_ROOT} button.art-carousel-open`).first()
     await expect(openButton).toBeVisible()
     await openButton.evaluate((el) => (el as HTMLElement).click())
-
-    const modal = page.locator("#art-modal-background")
-    await expect(modal).toBeVisible()
-    await expect(modal).toHaveClass(/show/)
-    await expect(page.locator("#art-modal-img")).toBeVisible()
+    await artModal.waitForModalOpen()
+    expect(await artModal.isModalOpen()).toBe(true)
   })
 
   test("should display next and previous arrows", async ({ page }) => {

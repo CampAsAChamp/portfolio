@@ -123,18 +123,24 @@ test('should display landing page', async ({ page }) => {
 ### Anti-Flaky Practices
 
 **DO:**
-- ✅ Use Playwright's built-in waiting (`waitFor`, `toBeVisible`)
-- ✅ Wait for specific conditions with `expect()`
-- ✅ Use `waitForLoadState('networkidle')` after navigation
-- ✅ Wait for animations with `waitForAnimationsComplete()`
-- ✅ Use proper locators (`data-testid`, semantic selectors)
+- Use Playwright's built-in waiting (`waitFor`, `toBeVisible`)
+- Wait for specific conditions with `expect()` / `expect.poll()`
+- Use `waitForLoadState('networkidle')` after navigation
+- Use helpers (`SectionPage.scrollToSection`, Swiper/video/`ModalPage`)
+- Use proper locators (`data-testid`, semantic selectors, stable IDs)
 
 **DON'T:**
-- ❌ Use `page.waitForTimeout()` (arbitrary waits)
-- ❌ Use CSS classes for element selection
-- ❌ Make assumptions about timing
-- ❌ Create tests that depend on each other
-- ❌ Use hard-coded delays
+- Use `page.waitForTimeout()` in specs (banned by ESLint)
+- Assert `hide`/`show`/`entrance` CSS classes repeatedly
+- Make assumptions about timing
+- Create tests that depend on each other
+- Use hard-coded delays
+
+### Stable assertion principles
+
+1. **User-visible outcomes** — `toBeVisible`, `toBeInViewport`, theme attribute, dialog open/closed. Prefer one contract assertion over four class-name variants.
+2. **API-first** — `scrollIntoViewIfNeeded` / `scrollToSection`, `swiperSlideNext` + `getSwiperRealIndex`, `ensureVideoPlaying`, `ModalPage` — not click/tap races with sleeps.
+3. **Chromium-only for animation / pixel / exact-index** — visual baselines via `skipUnlessVisualBaseline`; delete hollow “stagger animation” tests that only sleep then assert visibility.
 
 ### Visual Regression Testing
 
@@ -164,15 +170,12 @@ npx playwright test --update-snapshots --project="Mobile Chrome"
 ### Video Testing
 
 ```typescript
-import { waitForVideoReady, isVideoPlaying } from '../helpers/video-helpers'
+import { ensureVideoPlaying, waitForVideoReady } from '../helpers/video-helpers'
 
 test('should autoplay video', async ({ page }) => {
   const video = page.locator('video').first()
   await waitForVideoReady(video)
-  await page.waitForTimeout(1000)
-  
-  const playing = await isVideoPlaying(video)
-  expect(playing).toBe(true)
+  await ensureVideoPlaying(video)
 })
 ```
 

@@ -55,19 +55,11 @@ test.describe("Landing Page - Mobile", () => {
       .toBe(true)
   })
 
-  test("should animate nav links with stagger (top first)", async ({ page }) => {
-    // Open menu
+  test("should show nav links when menu is open", async ({ page }) => {
     await navbarPage.openHamburgerMenu()
 
-    // Wait for animations
-    await page.waitForTimeout(1000)
-
-    // Nav links should be visible
     const navLinks = page.locator("nav ul li")
-    const count = await navLinks.count()
-    expect(count).toBeGreaterThan(0)
-
-    // First link should be visible
+    expect(await navLinks.count()).toBeGreaterThan(0)
     await expect(navLinks.first()).toBeVisible()
   })
 
@@ -187,15 +179,12 @@ test.describe("Landing Page - Mobile", () => {
     await expect(navMenu).toHaveScreenshot("hamburger-menu-open-mobile.png", { animations: "disabled", timeout: 15000 })
   })
 
-  test("should handle rapid menu toggles", async ({ page }) => {
-    // Rapidly toggle menu
+  test("should handle rapid menu toggles", async () => {
     for (let i = 0; i < 3; i++) {
-      await navbarPage.hamburgerButton.click()
-      await page.waitForTimeout(200)
+      await navbarPage.openHamburgerMenu()
+      await navbarPage.closeHamburgerMenu()
     }
 
-    // Menu should be in valid state
-    const isOpen = await navbarPage.isHamburgerMenuOpen()
-    expect(typeof isOpen).toBe("boolean")
+    expect(await navbarPage.isHamburgerMenuOpen()).toBe(false)
   })
 })

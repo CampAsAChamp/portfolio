@@ -164,4 +164,18 @@ export default [
       "@typescript-eslint/unbound-method": "off", // Allow Vitest mock assertions
     },
   },
+
+  // Ban arbitrary sleeps in Playwright specs (helpers may still poll with short delays)
+  {
+    files: ["tests/e2e/**/*.spec.ts"],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "CallExpression[callee.property.name='waitForTimeout']",
+          message: "Avoid page.waitForTimeout() in e2e specs — wait for a user-visible condition or use helpers instead.",
+        },
+      ],
+    },
+  },
 ]

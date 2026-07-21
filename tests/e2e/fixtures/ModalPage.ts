@@ -2,47 +2,60 @@ import { expect, Locator, Page } from "@playwright/test"
 
 import { BasePage } from "./BasePage"
 
+export interface ModalPageOptions {
+  backgroundId?: string
+  contentId?: string
+}
+
 /**
  * Page object for Modal interactions (Contact Me, Art Gallery)
  */
 export class ModalPage extends BasePage {
+  readonly backgroundId: string
   readonly modal: Locator
   readonly modalBackdrop: Locator
   readonly closeButton: Locator
   readonly modalContent: Locator
 
-  constructor(page: Page, backgroundId: string = "contact-me-modal-background") {
+  constructor(page: Page, options: ModalPageOptions | string = {}) {
     super(page)
 
-    // Modal elements — use stable IDs from the actual component markup
-    this.modal = page.locator(`#${backgroundId}`)
-    this.modalBackdrop = page.locator(`#${backgroundId}`)
-    this.closeButton = page.locator(`#${backgroundId} button.modal-close`)
-    this.modalContent = page.locator("#contact-me-modal-content")
+    const opts: ModalPageOptions = typeof options === "string" ? { backgroundId: options } : options
+    this.backgroundId = opts.backgroundId ?? "contact-me-modal-background"
+    const contentId = opts.contentId ?? (this.backgroundId === "art-modal-background" ? "art-modal-img" : "contact-me-modal-content")
+
+    this.modal = page.locator(`#${this.backgroundId}`)
+    this.modalBackdrop = page.locator(`#${this.backgroundId}`)
+    this.closeButton = page.locator(`#${this.backgroundId} button.modal-close`)
+    this.modalContent = page.locator(`#${contentId}`)
+  }
+
+  private get isContactModal(): boolean {
+    return this.backgroundId === "contact-me-modal-background"
   }
 
   /**
    * Wait for modal to open with animation
    */
   async waitForModalOpen(): Promise<void> {
-    // Contact modal is lazy-loaded (Suspense); under parallel CI workers the chunk can
-    // take longer than the default expect timeout before #contact-me-modal-background exists.
-    // Retry the open click if the first one focused the button without mounting the modal.
-    const contactButton = this.page.locator("#contact-me-button")
-    const deadline = Date.now() + 20000
+    if (this.isContactModal) {
+      // Contact modal is lazy-loaded; retry open if the first click focused the button without mounting.
+      const contactButton = this.page.locator("#contact-me-button")
+      const deadline = Date.now() + 20000
 
-    while (Date.now() < deadline) {
-      if (await this.modal.count()) break
-      await contactButton.click({ force: true })
-      try {
-        await this.modal.waitFor({ state: "attached", timeout: 3000 })
-        break
-      } catch {
-        // Chunk / click race — try again until deadline
+      while (Date.now() < deadline) {
+        if (await this.modal.count()) break
+        await contactButton.click({ force: true })
+        try {
+          await this.modal.waitFor({ state: "attached", timeout: 3000 })
+          break
+        } catch {
+          // Chunk / click race — try again until deadline
+        }
       }
     }
 
-    await this.modal.waitFor({ state: "attached", timeout: 5000 })
+    await this.modal.waitFor({ state: "attached", timeout: 10000 })
     await expect(this.modal).toHaveClass(/show/, { timeout: 10000 })
     await expect(this.modalContent).toBeVisible()
     await expect(this.closeButton).toBeVisible()
@@ -57,16 +70,26 @@ export class ModalPage extends BasePage {
   }
 
   /**
-   * Wait for modal to close with animation
+   * Wait for modal to close (contact drops "show"; art lightbox unmounts after animation).
    */
   async waitForModalClose(): Promise<void> {
-    await expect(this.modal).not.toHaveClass(/show/, { timeout: 10000 })
+    await expect
+      .poll(
+        async () => {
+          if ((await this.modal.count()) === 0) return true
+          const classes = await this.modal.getAttribute("class")
+          return !classes?.includes("show")
+        },
+        { timeout: 10000, intervals: [50, 100, 200] },
+      )
+      .toBe(true)
   }
 
   /**
    * Check if modal is open
    */
   async isModalOpen(): Promise<boolean> {
+    if ((await this.modal.count()) === 0) return false
     const classes = await this.modal.getAttribute("class")
     return classes?.includes("show") ?? false
   }
@@ -83,12 +106,8 @@ export class ModalPage extends BasePage {
    * Close modal by clicking backdrop
    */
   async closeByBackdrop(): Promise<void> {
-    // Click backdrop outside modal content
-    const box = await this.modal.boundingBox()
-    if (box) {
-      // Click outside the modal content (top-left corner of backdrop)
-      await this.page.mouse.click(10, 10)
-    }
+    // Click the backdrop itself (not page coords) — more reliable across browsers/viewports.
+    await this.modal.click({ position: { x: 5, y: 5 }, force: true })
     await this.waitForModalClose()
   }
 

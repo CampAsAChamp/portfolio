@@ -160,6 +160,7 @@ export async function ensureVideoPlaying(locator: Locator, timeout = 10000): Pro
   while (Date.now() < deadline) {
     try {
       await locator.evaluate(async (video: HTMLVideoElement) => {
+        video.muted = true
         if (video.paused || video.ended) {
           await video.play()
         }
@@ -171,7 +172,7 @@ export async function ensureVideoPlaying(locator: Locator, timeout = 10000): Pro
     await new Promise((resolve) => setTimeout(resolve, 100))
   }
 
-  await waitForVideoPlaying(locator, Math.max(0, deadline - Date.now()))
+  throw new Error(`Video did not start playing within ${timeout}ms`)
 }
 
 /**
