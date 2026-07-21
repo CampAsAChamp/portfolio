@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test"
+import { expect, Locator, Page } from "@playwright/test"
 
 import { BasePage } from "./BasePage"
 
@@ -10,11 +10,9 @@ export class ModalPage extends BasePage {
   readonly modalBackdrop: Locator
   readonly closeButton: Locator
   readonly modalContent: Locator
-  private readonly backgroundId: string
 
   constructor(page: Page, backgroundId: string = "contact-me-modal-background") {
     super(page)
-    this.backgroundId = backgroundId
 
     // Modal elements — use stable IDs from the actual component markup
     this.modal = page.locator(`#${backgroundId}`)
@@ -28,18 +26,15 @@ export class ModalPage extends BasePage {
    */
   async waitForModalOpen(): Promise<void> {
     // Modal is always in the DOM; open state is indicated by the "show" class
-    const id = this.backgroundId
-    await this.page.waitForFunction((bgId) => document.getElementById(bgId)?.classList.contains("show"), id, { timeout: 10000 })
-    // Wait for opening animation
-    await this.page.waitForTimeout(300)
+    await expect(this.modal).toHaveClass(/show/, { timeout: 10000 })
+    await expect(this.modalContent).toBeVisible()
   }
 
   /**
    * Wait for modal to close with animation
    */
   async waitForModalClose(): Promise<void> {
-    const id = this.backgroundId
-    await this.page.waitForFunction((bgId) => !document.getElementById(bgId)?.classList.contains("show"), id, { timeout: 10000 })
+    await expect(this.modal).not.toHaveClass(/show/, { timeout: 10000 })
   }
 
   /**
@@ -80,10 +75,22 @@ export class ModalPage extends BasePage {
   }
 
   /**
-   * Hover over close button to verify hover effect
+   * Hover over close button and wait until yellow + rotated hover styles settle
    */
   async hoverCloseButton(): Promise<void> {
-    await this.closeButton.hover()
-    await this.page.waitForTimeout(200)
+    await this.closeButton.hover({ force: true })
+    await expect
+      .poll(
+        async () =>
+          this.closeButton.evaluate((el) => {
+            const computed = getComputedStyle(el)
+            return { color: computed.color, transform: computed.transform }
+          }),
+        { timeout: 5000, intervals: [50, 100, 150] },
+      )
+      .toMatchObject({
+        // #ffc261
+        color: "rgb(255, 194, 97)",
+      })
   }
 }

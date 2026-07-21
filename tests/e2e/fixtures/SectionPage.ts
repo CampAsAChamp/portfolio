@@ -1,5 +1,6 @@
 import { Locator, Page } from "@playwright/test"
 
+import { waitForElementStable, waitForSectionInViewport } from "../helpers/wait-helpers"
 import { BasePage } from "./BasePage"
 
 /**
@@ -25,12 +26,13 @@ export class SectionPage extends BasePage {
   }
 
   /**
-   * Scroll to section by ID
+   * Scroll to section by ID and wait until it is in view / layout-stable
    */
   async scrollToSection(id: string): Promise<void> {
     const section = this.getSection(id)
     await this.scrollToElement(section)
-    await this.page.waitForTimeout(300)
+    await waitForSectionInViewport(this.page, id)
+    await waitForElementStable(section)
   }
 
   /**
@@ -57,8 +59,10 @@ export class SectionPage extends BasePage {
    */
   async waitForSectionAnimations(sectionId: string): Promise<void> {
     await this.scrollToSection(sectionId)
-    // Wait for scroll animations to trigger (typically 10% viewport intersection)
-    await this.page.waitForTimeout(500)
+    const animated = this.getSectionAnimatedElements(sectionId).first()
+    if ((await animated.count()) > 0) {
+      await waitForElementStable(animated)
+    }
   }
 
   /**
@@ -76,11 +80,11 @@ export class SectionPage extends BasePage {
   }
 
   /**
-   * Hover over element and wait for hover effect
+   * Hover over element and wait for hover effect to apply
    */
   async hoverElement(locator: Locator): Promise<void> {
     await locator.hover()
-    await this.page.waitForTimeout(200)
+    await waitForElementStable(locator)
   }
 
   /**

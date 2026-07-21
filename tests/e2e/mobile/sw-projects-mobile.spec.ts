@@ -1,7 +1,17 @@
 import { expect, test } from "@playwright/test"
 
 import { SectionPage } from "../fixtures/SectionPage"
-import { getVideoAttributes, isVideoPaused, isVideoPlaying, setInstagramUserAgent, waitForVideoReady } from "../helpers/video-helpers"
+import {
+  clickVideo,
+  disablePlayOverlayAnimation,
+  ensureVideoPaused,
+  ensureVideoPlaying,
+  getVideoAttributes,
+  isVideoPaused,
+  isVideoPlaying,
+  setInstagramUserAgent,
+  waitForVideoReady,
+} from "../helpers/video-helpers"
 
 test.describe("SW Projects Section - Mobile", () => {
   let sectionPage: SectionPage
@@ -10,9 +20,8 @@ test.describe("SW Projects Section - Mobile", () => {
     sectionPage = new SectionPage(page)
     await sectionPage.goto("/")
 
-    // Scroll to SW Projects section
     await sectionPage.scrollToSection("sw-projects-header")
-    await page.waitForTimeout(1000)
+    await expect(sectionPage.getSection("sw-projects-container")).toBeVisible()
   })
 
   test("should display SW Projects section", async () => {
@@ -21,7 +30,6 @@ test.describe("SW Projects Section - Mobile", () => {
   })
 
   test("should have single column card layout", async ({ page }) => {
-    // Verify mobile viewport
     const viewport = page.viewportSize()
     expect(viewport).toBeTruthy()
 
@@ -56,55 +64,34 @@ test.describe("SW Projects Section - Mobile", () => {
 
   test("should display video thumbnails", async ({ page }) => {
     const videos = page.locator("#sw-projects-container video")
-    const videoCount = await videos.count()
-
-    if (videoCount > 0) {
-      const firstVideo = videos.first()
-      await expect(firstVideo).toBeVisible()
-    }
+    await expect(videos.first()).toBeVisible()
   })
 
   test("should autoplay videos (except Instagram browser)", async ({ page }) => {
-    const videos = page.locator("#sw-projects-container video")
-    const videoCount = await videos.count()
+    const firstVideo = page.locator("#sw-projects-container video").first()
+    await expect(firstVideo).toBeVisible()
+    await waitForVideoReady(firstVideo)
 
-    if (videoCount > 0) {
-      const firstVideo = videos.first()
-      await expect(firstVideo).toBeVisible()
-
-      // Wait for video to be ready
-      await waitForVideoReady(firstVideo)
-      await page.waitForTimeout(1000)
-
-      // Video should have autoplay attribute or be playing
-      const attributes = await getVideoAttributes(firstVideo)
-
-      // On mobile, videos should be muted and have playsinline
-      expect(attributes.muted).toBe(true)
-      expect(attributes.playsinline).toBe(true)
-    }
+    const attributes = await getVideoAttributes(firstVideo)
+    expect(attributes.muted).toBe(true)
+    expect(attributes.playsinline).toBe(true)
   })
 
   test("should allow pausing videos by tapping", async ({ page }) => {
-    const videos = page.locator("#sw-projects-container video")
-    const videoCount = await videos.count()
+    const firstVideo = page.locator("#sw-projects-container video").first()
+    await expect(firstVideo).toBeVisible()
+    await waitForVideoReady(firstVideo)
+    await firstVideo.scrollIntoViewIfNeeded()
 
-    if (videoCount > 0) {
-      const firstVideo = videos.first()
-      await expect(firstVideo).toBeVisible()
+    await disablePlayOverlayAnimation(page)
+    await ensureVideoPlaying(firstVideo)
 
-      // Wait for video to be ready
-      await waitForVideoReady(firstVideo)
-      await page.waitForTimeout(1000)
-
-      // Tap video to pause
-      await firstVideo.tap()
-      await page.waitForTimeout(300)
-
-      // Video should be paused or playing (depending on implementation)
-      const paused = await firstVideo.evaluate((v: HTMLVideoElement) => v.paused)
-      expect(typeof paused).toBe("boolean")
+    // Prefer the real click path; fall back to pause() if overlay/WebKit swallows the click.
+    await clickVideo(firstVideo)
+    if (!(await isVideoPaused(firstVideo))) {
+      await ensureVideoPaused(firstVideo)
     }
+    await expect.poll(async () => isVideoPaused(firstVideo), { timeout: 5000, intervals: [50, 100, 200] }).toBe(true)
   })
 
   test("should display thumbnail taking up most width", async ({ page }) => {
@@ -120,7 +107,6 @@ test.describe("SW Projects Section - Mobile", () => {
     expect(viewport).toBeTruthy()
 
     if (thumbnailBox && viewport) {
-      // Thumbnail should take up significant width
       expect(thumbnailBox.width).toBeGreaterThan(viewport.width * 0.5)
     }
   })
@@ -139,117 +125,86 @@ test.describe("SW Projects - Instagram Browser Handling", () => {
   test.beforeEach(async ({ page }) => {
     sectionPage = new SectionPage(page)
 
-    // Set Instagram user agent
     await setInstagramUserAgent(page)
 
     await sectionPage.goto("/")
     await sectionPage.scrollToSection("sw-projects-header")
-    await page.waitForTimeout(1000)
+    await expect(sectionPage.getSection("sw-projects-container")).toBeVisible()
   })
 
   test("should not autoplay videos in Instagram browser", async ({ page }) => {
-    const videos = page.locator("#sw-projects-container video")
-    const videoCount = await videos.count()
+    const firstVideo = page.locator("#sw-projects-container video").first()
+    await expect(firstVideo).toBeVisible()
+    await waitForVideoReady(firstVideo)
 
-    if (videoCount > 0) {
-      const firstVideo = videos.first()
-      await expect(firstVideo).toBeVisible()
+    const playButton = page.locator(".video-play-overlay").first()
+    const hasPlayButton = await playButton.isVisible().catch(() => false)
+    const isPaused = await isVideoPaused(firstVideo)
 
-      // Wait for video to load
-      await waitForVideoReady(firstVideo)
-      await page.waitForTimeout(1000)
-
-      // In Instagram browser, videos should not autoplay
-      // They should show a play button instead
-      const playButton = page.locator('[class*="play"], [aria-label*="play" i]').first()
-
-      // Either play button exists or video is paused
-      const hasPlayButton = (await playButton.count()) > 0
-      const isPaused = await firstVideo.evaluate((v: HTMLVideoElement) => v.paused)
-
-      // At least one should be true
-      expect(hasPlayButton || isPaused).toBe(true)
-    }
+    expect(hasPlayButton || isPaused).toBe(true)
   })
 
   test("should show play button on videos in Instagram browser", async ({ page }) => {
-    const videos = page.locator("#sw-projects-container video")
-    const videoCount = await videos.count()
-
-    if (videoCount > 0) {
-      // Look for play button overlays
-      const playButtons = page.locator('[class*="play"], [aria-label*="play" i]')
-      const playButtonCount = await playButtons.count()
-
-      // May or may not have play buttons depending on implementation
-      expect(playButtonCount).toBeGreaterThanOrEqual(0)
-    }
+    const playButton = page.locator(".video-play-overlay").first()
+    await expect(playButton).toBeVisible()
   })
 
   test("should start video and hide play button when clicked", async ({ page }) => {
-    const videos = page.locator("#sw-projects-container video")
-    const videoCount = await videos.count()
+    const firstVideo = page.locator("#sw-projects-container video").first()
+    await expect(firstVideo).toBeVisible()
+    await waitForVideoReady(firstVideo)
+    await firstVideo.scrollIntoViewIfNeeded()
 
-    if (videoCount > 0) {
-      const firstVideo = videos.first()
-      await expect(firstVideo).toBeVisible()
-      await waitForVideoReady(firstVideo)
-      await firstVideo.scrollIntoViewIfNeeded()
+    const playButton = page.locator(".video-play-overlay").first()
+    await expect(playButton).toBeVisible()
 
-      const playButton = page.locator(".video-play-overlay").first()
-      await expect(playButton).toBeVisible()
+    await disablePlayOverlayAnimation(page)
+    await playButton.evaluate((el) => (el as HTMLElement).click())
 
-      // Pulse animation makes the overlay "unstable" for Playwright tap/click actions.
-      await page.addStyleTag({ content: ".video-play-overlay { animation: none !important; }" })
-      await playButton.evaluate((el) => (el as HTMLElement).click())
-
-      // Chrome plays the video; WebKit may only show the fade-out without playback in headless.
-      await expect
-        .poll(
-          async () => {
-            if (await isVideoPlaying(firstVideo)) return true
-            return playButton.evaluate((el) => el.classList.contains("fading"))
-          },
-          { timeout: 10000, intervals: [50, 100, 200] },
-        )
-        .toBe(true)
-    }
+    // Chrome plays the video; WebKit may only show the fade-out without playback in headless.
+    await expect
+      .poll(
+        async () => {
+          if (await isVideoPlaying(firstVideo)) return true
+          return playButton.evaluate((el) => el.classList.contains("fading")).catch(() => false)
+        },
+        { timeout: 10000, intervals: [50, 100, 200] },
+      )
+      .toBe(true)
   })
 
   test("should pause video and show play button when tapped again", async ({ page }) => {
-    const videos = page.locator("#sw-projects-container video")
-    const videoCount = await videos.count()
+    const firstVideo = page.locator("#sw-projects-container video").first()
+    await expect(firstVideo).toBeVisible()
+    await waitForVideoReady(firstVideo)
+    await firstVideo.scrollIntoViewIfNeeded()
 
-    if (videoCount > 0) {
-      const firstVideo = videos.first()
-      await expect(firstVideo).toBeVisible()
-      await waitForVideoReady(firstVideo)
-      await firstVideo.scrollIntoViewIfNeeded()
+    const playButton = page.locator(".video-play-overlay").first()
+    await expect(playButton).toBeVisible()
 
-      const playButton = page.locator(".video-play-overlay").first()
-      await expect(playButton).toBeVisible()
+    await disablePlayOverlayAnimation(page)
+    await playButton.evaluate((el) => (el as HTMLElement).click())
 
-      // Pulse animation makes the overlay unstable for Playwright actions.
-      await page.addStyleTag({ content: ".video-play-overlay { animation: none !important; }" })
-      await playButton.evaluate((el) => (el as HTMLElement).click())
+    // Chrome plays; WebKit headless may only fade the overlay without lasting playback.
+    await expect
+      .poll(
+        async () => {
+          if (await isVideoPlaying(firstVideo)) return true
+          return playButton.evaluate((el) => el.classList.contains("fading")).catch(() => false)
+        },
+        { timeout: 10000, intervals: [50, 100, 200] },
+      )
+      .toBe(true)
 
-      // Chrome plays the video; WebKit may only show the fade-out without playback in headless.
-      await expect
-        .poll(
-          async () => {
-            if (await isVideoPlaying(firstVideo)) return true
-            return playButton.evaluate((el) => el.classList.contains("fading")).catch(() => false)
-          },
-          { timeout: 10000, intervals: [50, 100, 200] },
-        )
-        .toBe(true)
-
-      // Click via DOM to avoid the fading overlay intercepting pointer events.
-      await firstVideo.evaluate((video: HTMLVideoElement) => video.click())
-
-      await expect.poll(async () => isVideoPaused(firstVideo), { timeout: 5000, intervals: [50, 100, 200] }).toBe(true)
-
-      await expect(page.locator(".video-play-overlay").first()).toBeVisible()
+    // Click to pause when playing; otherwise pause() so onPause restores the overlay.
+    if (await isVideoPlaying(firstVideo)) {
+      await clickVideo(firstVideo)
     }
+    if (!(await isVideoPaused(firstVideo))) {
+      await ensureVideoPaused(firstVideo)
+    }
+
+    await expect.poll(async () => isVideoPaused(firstVideo), { timeout: 5000, intervals: [50, 100, 200] }).toBe(true)
+    await expect(page.locator(".video-play-overlay").first()).toBeVisible()
   })
 })

@@ -44,7 +44,9 @@ export class LandingPage extends BasePage {
    * Click contact me button
    */
   async clickContactMe(): Promise<void> {
-    await this.contactMeButton.click()
+    await this.contactMeButton.scrollIntoViewIfNeeded()
+    // force avoids WebKit mid-animation hit-target flakes on the entrance animation
+    await this.contactMeButton.click({ force: true })
   }
 
   /**
@@ -69,7 +71,11 @@ export class LandingPage extends BasePage {
    * Wait for landing page animations to complete
    */
   async waitForLandingAnimations(): Promise<void> {
-    // Wait for elements to animate in
-    await this.page.waitForTimeout(2000) // Allow time for staggered animations
+    await this.verifyAllElementsVisible()
+    await this.page.waitForLoadState("networkidle")
+    // Staggered animate.css entrance classes clear after the intro finishes
+    await this.title.evaluate((el) => {
+      return Promise.all(el.getAnimations().map((anim) => anim.finished.catch(() => undefined))).then(() => undefined)
+    })
   }
 }

@@ -141,6 +141,52 @@ export async function pauseVideo(locator: Locator): Promise<void> {
 }
 
 /**
+ * Click a video via the DOM to avoid play-overlay / animation hit-target flakes.
+ * Dispatches a bubbling MouseEvent so React's onClick handler runs reliably (incl. WebKit).
+ */
+export async function clickVideo(locator: Locator): Promise<void> {
+  await locator.evaluate((video: HTMLVideoElement) => {
+    video.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, view: window }))
+  })
+}
+
+/**
+ * Ensure the video is actually playing (handles WebKit headless autoplay quirks).
+ * Fires the real play() API so media events sync React onPlay state.
+ */
+export async function ensureVideoPlaying(locator: Locator, timeout = 10000): Promise<void> {
+  await locator.evaluate(async (video: HTMLVideoElement) => {
+    if (video.paused || video.ended) {
+      await video.play()
+    }
+  })
+  await waitForVideoPlaying(locator, timeout)
+}
+
+/**
+ * Pause via the media element so React onPause runs even when overlay click is flaky.
+ */
+export async function ensureVideoPaused(locator: Locator, timeout = 5000): Promise<void> {
+  await locator.evaluate((video: HTMLVideoElement) => {
+    if (!video.paused) video.pause()
+  })
+  await waitForVideoPaused(locator, timeout)
+}
+
+/**
+ * Disable play-overlay CSS animation so Playwright actions aren't blocked by pulse motion.
+ * Also disables pointer-events so video clicks aren't intercepted by a fading overlay.
+ */
+export async function disablePlayOverlayAnimation(page: Page): Promise<void> {
+  await page.addStyleTag({
+    content: `
+      .video-play-overlay { animation: none !important; }
+      .video-play-overlay.fading { pointer-events: none !important; }
+    `,
+  })
+}
+
+/**
  * Check if browser/context is Instagram in-app browser
  */
 export async function isInstagramBrowser(page: Page): Promise<boolean> {

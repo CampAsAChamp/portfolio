@@ -25,45 +25,28 @@ test.describe("Theme Switcher - Desktop", () => {
     await expect(navbarPage.themeSwitcher).toBeEnabled()
   })
 
-  test("should toggle between light and dark themes", async ({ page }) => {
-    // Get initial theme
+  test("should toggle between light and dark themes", async () => {
     const initialTheme = await navbarPage.getCurrentTheme()
 
-    // Toggle theme
     await navbarPage.toggleTheme()
-    await page.waitForTimeout(500) // Wait for theme animation
+    await expect.poll(async () => navbarPage.getCurrentTheme()).not.toBe(initialTheme)
 
-    // Verify theme changed
-    const newTheme = await navbarPage.getCurrentTheme()
-    expect(newTheme).not.toBe(initialTheme)
-
-    // Toggle back
     await navbarPage.toggleTheme()
-    await page.waitForTimeout(500)
-
-    // Verify theme changed back
-    const finalTheme = await navbarPage.getCurrentTheme()
-    expect(finalTheme).toBe(initialTheme)
+    await expect.poll(async () => navbarPage.getCurrentTheme()).toBe(initialTheme)
   })
 
   test("should persist theme choice in localStorage", async ({ page }) => {
-    // Set to dark mode
     await navbarPage.toggleTheme()
-    await page.waitForTimeout(500)
+    // View Transitions API writes localStorage in the transition callback — poll for it.
+    await expect.poll(async () => basePage.getLocalStorageItem("color-mode")).toBeTruthy()
 
     const themeAfterToggle = await navbarPage.getCurrentTheme()
+    expect(await basePage.getLocalStorageItem("color-mode")).toBe(themeAfterToggle)
 
-    // Get localStorage value (stored as 'color-mode')
-    const storedTheme = await basePage.getLocalStorageItem("color-mode")
-    expect(storedTheme).toBeTruthy()
-
-    // Reload page
     await page.reload()
     await page.waitForLoadState("networkidle")
 
-    // Theme should persist
-    const themeAfterReload = await navbarPage.getCurrentTheme()
-    expect(themeAfterReload).toBe(themeAfterToggle)
+    await expect.poll(async () => navbarPage.getCurrentTheme()).toBe(themeAfterToggle)
   })
 
   test("should display theme wipe animation - visual regression", async ({ page }) => {
@@ -81,40 +64,27 @@ test.describe("Theme Switcher - Desktop", () => {
     await expect(themeButton).toHaveScreenshot("theme-light-return.png", { animations: "disabled", timeout: 15000 })
   })
 
-  test("should switch icon between sun and moon", async ({ page }) => {
-    // Check for theme toggle button and its SVG content
+  test("should switch icon between sun and moon", async () => {
     const themeButton = navbarPage.themeSwitcher
     await expect(themeButton).toBeVisible()
 
-    // Toggle theme
+    const initialTheme = await navbarPage.getCurrentTheme()
     await navbarPage.toggleTheme()
-    await page.waitForTimeout(500)
-
-    // Icon should still be present after toggle
+    await expect.poll(async () => navbarPage.getCurrentTheme()).not.toBe(initialTheme)
     await expect(themeButton).toBeVisible()
 
-    // Toggle back
     await navbarPage.toggleTheme()
-    await page.waitForTimeout(500)
-
+    await expect.poll(async () => navbarPage.getCurrentTheme()).toBe(initialTheme)
     await expect(themeButton).toBeVisible()
   })
 
   test("should apply theme to entire page", async ({ page }) => {
-    // Get initial theme attribute
     const initialTheme = await navbarPage.getCurrentTheme()
 
-    // Toggle to opposite theme
     await navbarPage.toggleTheme()
-    await page.waitForTimeout(600) // Wait for theme transition
+    await expect.poll(async () => navbarPage.getCurrentTheme()).not.toBe(initialTheme)
 
-    // Get new theme attribute
     const newTheme = await navbarPage.getCurrentTheme()
-
-    // Themes should be different
-    expect(initialTheme).not.toBe(newTheme)
-
-    // Verify theme is applied to html element
     const htmlTheme = await page.locator("html").getAttribute("color-mode")
     expect(htmlTheme).toBe(newTheme)
   })
@@ -132,47 +102,25 @@ test.describe("Theme Switcher - Desktop", () => {
   })
 
   test("should be keyboard accessible", async ({ page }) => {
-    // Focus theme switcher
     await navbarPage.themeSwitcher.focus()
+    await expect(navbarPage.themeSwitcher).toBeFocused()
 
-    // Verify it's focused
-    const isFocused = await navbarPage.themeSwitcher.evaluate((el) => el === document.activeElement)
-    expect(isFocused).toBe(true)
-
-    // Press Enter or Space to toggle
+    const initialTheme = await navbarPage.getCurrentTheme()
     await page.keyboard.press("Enter")
-    await page.waitForTimeout(500)
-
-    // Theme should have changed
-    const themeAfterKeypress = await navbarPage.getCurrentTheme()
-    expect(themeAfterKeypress).toBeTruthy()
+    await expect.poll(async () => navbarPage.getCurrentTheme()).not.toBe(initialTheme)
   })
 
   test("should read system preference initially (when no stored theme)", async () => {
-    // Clear localStorage (already done in beforeEach)
-
-    // Get current theme (should match system preference or default)
     const currentTheme = await navbarPage.getCurrentTheme()
-
-    // Theme should be set (either light or dark)
     expect(["light", "dark"]).toContain(currentTheme)
   })
 
-  test("should handle rapid theme toggles", async ({ page }) => {
-    // Rapidly toggle theme multiple times
+  test("should handle rapid theme toggles", async () => {
     for (let i = 0; i < 5; i++) {
       await navbarPage.toggleTheme()
-      await page.waitForTimeout(100)
     }
 
-    // Wait for final animation
-    await page.waitForTimeout(500)
-
-    // Theme should be in valid state
-    const finalTheme = await navbarPage.getCurrentTheme()
-    expect(["light", "dark"]).toContain(finalTheme)
-
-    // Page should still be functional
+    await expect.poll(async () => navbarPage.getCurrentTheme()).toMatch(/^(light|dark)$/)
     await expect(navbarPage.navbar).toBeVisible()
   })
 })

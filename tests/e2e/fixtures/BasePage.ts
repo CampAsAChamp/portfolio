@@ -1,5 +1,7 @@
 import { Locator, Page } from "@playwright/test"
 
+import { waitForElementStable } from "../helpers/wait-helpers"
+
 /**
  * Base page object with common functionality for all pages
  */
@@ -43,8 +45,7 @@ export class BasePage {
    */
   async waitForStableElement(locator: Locator): Promise<void> {
     await locator.waitFor({ state: "visible" })
-    // Wait for element to stop moving (useful for animations)
-    await this.page.waitForTimeout(100)
+    await waitForElementStable(locator)
   }
 
   /**

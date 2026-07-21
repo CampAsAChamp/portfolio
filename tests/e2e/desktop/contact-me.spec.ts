@@ -92,27 +92,26 @@ test.describe("Contact Me - Desktop", () => {
     })
 
     test("should show hover effect on X button (yellow and spin)", async () => {
-      await modalPage.closeButton.hover()
-      // Rotation anti-aliasing varies slightly across runs; keep a looser pixel ratio.
-      await expect(modalPage.closeButton).toHaveScreenshot("modal-close-button-hover.png", {
-        animations: "disabled",
-        timeout: 15000,
-        maxDiffPixelRatio: 0.1,
+      // Assert CSS hover styles instead of a screenshot — rotation anti-aliasing is flaky across runs/OS.
+      await modalPage.hoverCloseButton()
+
+      const styles = await modalPage.closeButton.evaluate((el) => {
+        const computed = getComputedStyle(el)
+        return { color: computed.color, transform: computed.transform }
       })
+
+      expect(styles.color).toBe("rgb(255, 194, 97)")
+      expect(styles.transform).toMatch(/matrix/)
+      expect(styles.transform).not.toBe("none")
     })
 
     test("should close when clicking backdrop", async ({ page }) => {
-      // Modal should be open
       expect(await modalPage.isModalOpen()).toBe(true)
 
-      // Click directly on backdrop element (force click to avoid obstruction)
       const modalBg = page.locator("#contact-me-modal-background")
       await modalBg.click({ position: { x: 5, y: 5 } })
 
-      // Wait for modal to close
-      await page.waitForTimeout(500)
-
-      // Modal should be closed
+      await modalPage.waitForModalClose()
       expect(await modalPage.isModalOpen()).toBe(false)
     })
 
@@ -139,14 +138,10 @@ test.describe("Contact Me - Desktop", () => {
     })
 
     test("should not close when clicking modal content", async ({ page }) => {
-      // Click on modal content (not backdrop)
       const modalContent = page.locator("#contact-me-modal-content")
       await modalContent.click()
 
-      // Wait a bit
-      await page.waitForTimeout(300)
-
-      // Modal should still be open
+      await expect(modalPage.modal).toHaveClass(/show/)
       expect(await modalPage.isModalOpen()).toBe(true)
     })
 
