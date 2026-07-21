@@ -9,7 +9,7 @@ export function AboutMe(): React.ReactElement {
   return (
     <section id="about-me-container" className="page-container">
       <div id="about-me-images">
-        <ScrollAnimation animateIn="animate__springIn" animateOnce style={{ gridArea: "1 / 1 / 2 / 2" }}>
+        <ScrollAnimation animateIn="animate__springIn" animateOnce animatePreScroll={false} style={{ gridArea: "1 / 1 / 2 / 2" }}>
           <img
             id="grad-cap-illustration"
             src={GradCapIllustration}
@@ -20,7 +20,13 @@ export function AboutMe(): React.ReactElement {
             decoding="async"
           />
         </ScrollAnimation>
-        <ScrollAnimation animateIn="animate__springIn" delay={100} animateOnce style={{ gridArea: "1 / 2 / 2 / 3" }}>
+        <ScrollAnimation
+          animateIn="animate__springIn"
+          delay={100}
+          animateOnce
+          animatePreScroll={false}
+          style={{ gridArea: "1 / 2 / 2 / 3" }}
+        >
           <img
             id="anteater-illustration"
             src={AnteaterIllustration}
@@ -35,6 +41,7 @@ export function AboutMe(): React.ReactElement {
           animateIn="animate__springIn"
           delay={200}
           animateOnce
+          animatePreScroll={false}
           style={{ gridArea: "2 / 1 / 3 / 3", display: "flex", justifyContent: "center", alignItems: "start", marginTop: "-40px" }}
         >
           <img
@@ -50,11 +57,11 @@ export function AboutMe(): React.ReactElement {
       </div>
       <div id="about-me-text">
         <div id="about-me-header">
-          <ScrollAnimation animateIn="animate__springIn" animateOnce>
+          <ScrollAnimation animateIn="animate__springIn" animateOnce animatePreScroll={false}>
             <h2>ABOUT ME</h2>
           </ScrollAnimation>
         </div>
-        <ScrollAnimation animateIn="animate__springIn" delay={100} animateOnce>
+        <ScrollAnimation animateIn="animate__springIn" delay={100} animateOnce animatePreScroll={false}>
           <p>Hey I&apos;m Nick, a software engineer based in San Diego ☀️🌮</p>
           <p>
             I graduated from the 🎓 <strong>University of California, Irvine</strong> in 2019 with a{" "}
