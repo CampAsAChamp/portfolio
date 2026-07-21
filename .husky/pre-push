@@ -1,8 +1,8 @@
 echo "🔍 Running tests before push..."
 echo ""
 
-echo "🧪 Running unit tests and Lighthouse audits..."
-yarn test && yarn test:lighthouse
+echo "🧪 Running unit tests and Lighthouse audits (desktop + mobile)..."
+yarn test && yarn test:lighthouse:both
 
 if [ $? -ne 0 ]; then
   echo "❌ Tests failed! Fix failing tests before pushing."

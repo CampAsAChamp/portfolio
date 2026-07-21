@@ -328,7 +328,7 @@ The CI pipeline runs automatically on every push and pull request via GitHub Act
 
 You can view interactive Lighthouse reports directly from the GitHub Actions run output via the temporary public storage link.
 
-**Note:** E2E tests run in CI as part of the Test workflow (`test.yml`). The pre-push hook runs unit tests and desktop Lighthouse audits (not the full `yarn test:all` suite). Pull requests must pass all CI checks before merging.
+**Note:** E2E tests run in CI as part of the Test workflow (`test.yml`). The pre-push hook runs unit tests and desktop + mobile Lighthouse audits (not the full `yarn test:all` suite). Pull requests must pass all CI checks before merging.
 
 ### Test Structure
 
@@ -421,7 +421,7 @@ This project uses [Husky](https://typicode.github.io/husky/) to enforce quality 
   - Prettier formats code
   - Stylelint fixes CSS issues
 - **commit-msg**: Validates commit message format with `commitlint` (rejects invalid commits)
-- **pre-push**: Runs `yarn test && yarn test:lighthouse` (unit tests and desktop Lighthouse) before pushing
+- **pre-push**: Runs `yarn test && yarn test:lighthouse:both` (unit tests and desktop + mobile Lighthouse) before pushing
 
 **Note:** If tests fail during pre-push, the push will be blocked. Ensure unit and Lighthouse checks pass locally before pushing. Run `yarn test:e2e` (or `yarn test:all`) when UI changes warrant full E2E coverage.
 
