@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { SoftwareProject } from "types/project.types"
 
 interface SwProjectVideoProps {
@@ -12,7 +12,37 @@ interface SwProjectVideoProps {
 export function SwProjectVideo({ project, canAutoPlay, onVideoPlay, onVideoPause, onVideoError }: SwProjectVideoProps): React.ReactElement {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false)
   const [isPlayButtonFading, setIsPlayButtonFading] = useState(false)
+  // Keep videos off the network until near the viewport (mobile Lighthouse bandwidth).
+  // Fall back to immediate preload only when IntersectionObserver is unavailable.
+  const [shouldPreload, setShouldPreload] = useState(() => typeof IntersectionObserver === "undefined")
   const videoRef = useRef<HTMLVideoElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container || shouldPreload || typeof IntersectionObserver === "undefined") return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setShouldPreload(true)
+          observer.disconnect()
+        }
+      },
+      // Start loading slightly before the video scrolls into view
+      { rootMargin: "200px 0px" },
+    )
+
+    observer.observe(container)
+    return (): void => observer.disconnect()
+  }, [shouldPreload])
+
+  useEffect(() => {
+    if (!shouldPreload) return
+    const video = videoRef.current
+    if (!video) return
+    video.load()
+  }, [shouldPreload])
 
   const handleVideoPlay = (e: React.SyntheticEvent<HTMLVideoElement>): void => {
     e.stopPropagation()
@@ -59,9 +89,17 @@ export function SwProjectVideo({ project, canAutoPlay, onVideoPlay, onVideoPause
     onVideoError?.()
   }
 
+  const ensureSourcesLoaded = (): void => {
+    if (!shouldPreload) {
+      setShouldPreload(true)
+    }
+  }
+
   const toggleVideoPlayback = (event: React.MouseEvent<HTMLVideoElement>): void => {
     event.stopPropagation()
     if (!videoRef.current) return
+
+    ensureSourcesLoaded()
 
     if (isVideoPlaying) {
       videoRef.current.pause()
@@ -85,6 +123,7 @@ export function SwProjectVideo({ project, canAutoPlay, onVideoPlay, onVideoPause
 
     if (!videoRef.current) return
 
+    ensureSourcesLoaded()
     setIsPlayButtonFading(true)
 
     videoRef.current
@@ -126,19 +165,19 @@ export function SwProjectVideo({ project, canAutoPlay, onVideoPlay, onVideoPause
   const shouldShowPlayButton = !isVideoPlaying || isPlayButtonFading
 
   return (
-    <div className="video-container">
+    <div className="video-container" ref={containerRef}>
       <video
         ref={videoRef}
         className="sw-projects-thumbnail"
         poster={project.thumbnail}
         title={project.name}
-        autoPlay={canAutoPlay}
+        autoPlay={canAutoPlay && shouldPreload}
         loop={canAutoPlay}
         muted
         playsInline
         disablePictureInPicture
         controls={false}
-        preload="metadata"
+        preload={shouldPreload ? "metadata" : "none"}
         onError={handleVideoError}
         onLoadStart={(e) => e.stopPropagation()}
         onPlay={handleVideoPlay}

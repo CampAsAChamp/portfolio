@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { SwProjectVideo } from "components/SwProjects/SwProjectVideo"
 import { REACT } from "data/technologies"
 import { SoftwareProject } from "types/project.types"
-import { beforeEach, describe, expect, it, vi } from "vitest"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 const mockProject: SoftwareProject = {
   name: "Demo Video Project",
@@ -15,19 +15,67 @@ const mockProject: SoftwareProject = {
 }
 
 describe("SwProjectVideo", () => {
+  let observerCallback: IntersectionObserverCallback | null = null
+  let observeMock: ReturnType<typeof vi.fn>
+  let disconnectMock: ReturnType<typeof vi.fn>
+
   beforeEach(() => {
     HTMLMediaElement.prototype.play = vi.fn().mockResolvedValue(undefined)
     HTMLMediaElement.prototype.pause = vi.fn()
+    HTMLMediaElement.prototype.load = vi.fn()
+
+    observeMock = vi.fn()
+    disconnectMock = vi.fn()
+    observerCallback = null
+
+    vi.stubGlobal(
+      "IntersectionObserver",
+      class {
+        constructor(callback: IntersectionObserverCallback) {
+          observerCallback = callback
+        }
+        observe = observeMock
+        unobserve = vi.fn()
+        disconnect = disconnectMock
+        root = null
+        rootMargin = ""
+        thresholds: number[] = []
+        takeRecords = (): IntersectionObserverEntry[] => []
+      },
+    )
   })
 
-  it("renders video with poster and sources", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
+  it("renders video with poster and sources, deferred preload", () => {
     const { container } = render(<SwProjectVideo project={mockProject} canAutoPlay={false} />)
 
     const video = container.querySelector("video")
     expect(video).toBeTruthy()
     expect(video).toHaveAttribute("poster", mockProject.thumbnail)
+    expect(video).toHaveAttribute("preload", "none")
     expect(container.querySelector('source[type="video/mp4"]')).toHaveAttribute("src", mockProject.videoThumbnailMp4)
     expect(container.querySelector('source[type="video/webm"]')).toHaveAttribute("src", mockProject.videoThumbnail)
+    expect(observeMock).toHaveBeenCalled()
+  })
+
+  it("enables metadata preload when near the viewport", async () => {
+    const { container } = render(<SwProjectVideo project={mockProject} canAutoPlay={false} />)
+
+    expect(container.querySelector("video")).toHaveAttribute("preload", "none")
+
+    observerCallback?.(
+      [{ isIntersecting: true, target: container.firstChild as Element } as IntersectionObserverEntry],
+      {} as IntersectionObserver,
+    )
+
+    await waitFor(() => {
+      expect(container.querySelector("video")).toHaveAttribute("preload", "metadata")
+    })
+    expect(HTMLMediaElement.prototype.load).toHaveBeenCalled()
+    expect(disconnectMock).toHaveBeenCalled()
   })
 
   it("shows play button when video is not playing", () => {

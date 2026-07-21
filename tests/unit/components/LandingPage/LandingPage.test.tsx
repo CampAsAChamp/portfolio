@@ -41,9 +41,11 @@ describe("LandingPage", () => {
       expectElementHasAnimation(subtitle, "animate__fadeInUp")
     })
 
-    it("profile picture has fadeIn animation", () => {
+    it("profile picture paints immediately without fadeIn (LCP)", () => {
       const profilePic = document.getElementById("profile-pic")
-      expectElementHasAnimation(profilePic, "animate__fadeIn")
+      expect(profilePic).toBeTruthy()
+      expect(profilePic?.classList.contains("animate__fadeIn")).toBe(false)
+      expect(profilePic?.classList.contains("animate__animated")).toBe(false)
     })
 
     it("contact me button has fadeInUp animation", () => {

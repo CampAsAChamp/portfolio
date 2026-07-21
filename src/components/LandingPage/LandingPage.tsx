@@ -31,6 +31,7 @@ export function LandingPage(): React.ReactElement {
         </div>
         <div id="profile-pic-container">
           {/* Use <img> (not InlineSVG) so width/height reserve space before paint and avoid mobile CLS */}
+          {/* No fade-in: opacity:0 delays LCP until the animation completes */}
           <img
             id="profile-pic"
             src={ArtProfilePic}
@@ -40,7 +41,7 @@ export function LandingPage(): React.ReactElement {
             height="468"
             fetchPriority="high"
             decoding="async"
-            className="center animate__animated animate__fadeIn"
+            className="center"
           />
         </div>
       </section>

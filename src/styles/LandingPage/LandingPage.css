@@ -61,10 +61,7 @@
 }
 
 #profile-pic {
-  animation-duration: 1s;
-  animation-delay: 0.3s;
-  opacity: 0;
-  animation-fill-mode: forwards;
+  /* Paint immediately — opacity:0 + fadeIn delayed LCP by ~3s on mobile */
   aspect-ratio: 418 / 468;
   display: block;
   height: auto;
