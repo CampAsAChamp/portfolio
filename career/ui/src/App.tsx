@@ -700,94 +700,96 @@ export function App(): ReactElement {
                 )}
               </section>
 
-              <div className="card-header">
-                <h2>Accomplishments</h2>
-                <button type="button" onClick={addAccomplishment}>
-                  + Bullet
-                </button>
-              </div>
+              <section className="card">
+                <div className="card-header">
+                  <h3>Accomplishments</h3>
+                  <button type="button" className="compact" onClick={addAccomplishment}>
+                    + Bullet
+                  </button>
+                </div>
 
-              <div className="accomplishments-list" ref={accomplishmentsListRef}>
-                {role.accomplishments.map((acc, ai) => (
-                  <section className="card accomplishment-card" data-accomplishment-id={acc.id} key={acc.id}>
-                    <div>
-                      <div className="card-header" style={{ marginBottom: "0.4rem" }}>
-                        <p className="muted" style={{ margin: 0 }}>
-                          Destinations
-                        </p>
-                        <div className="row-actions">
-                          <button
-                            type="button"
-                            className="icon-action move-up"
-                            aria-label="Move accomplishment up"
-                            title="Move up"
-                            onClick={() => moveAccomplishment(ai, -1)}
-                            disabled={ai === 0}
-                          >
-                            <ArrowUpIcon />
-                          </button>
-                          <button
-                            type="button"
-                            className="icon-action move-down"
-                            aria-label="Move accomplishment down"
-                            title="Move down"
-                            onClick={() => moveAccomplishment(ai, 1)}
-                            disabled={ai === role.accomplishments.length - 1}
-                          >
-                            <ArrowDownIcon />
-                          </button>
-                          <button
-                            type="button"
-                            className="icon-action danger"
-                            aria-label="Delete accomplishment"
-                            title="Delete"
-                            onClick={() => removeAccomplishment(ai)}
-                          >
-                            <TrashIcon />
-                          </button>
+                <div className="accomplishments-list" ref={accomplishmentsListRef}>
+                  {role.accomplishments.map((acc, ai) => (
+                    <section className="accomplishment-card" data-accomplishment-id={acc.id} key={acc.id}>
+                      <div>
+                        <div className="card-header" style={{ marginBottom: "0.4rem" }}>
+                          <p className="muted" style={{ margin: 0 }}>
+                            Destinations
+                          </p>
+                          <div className="row-actions">
+                            <button
+                              type="button"
+                              className="icon-action move-up"
+                              aria-label="Move accomplishment up"
+                              title="Move up"
+                              onClick={() => moveAccomplishment(ai, -1)}
+                              disabled={ai === 0}
+                            >
+                              <ArrowUpIcon />
+                            </button>
+                            <button
+                              type="button"
+                              className="icon-action move-down"
+                              aria-label="Move accomplishment down"
+                              title="Move down"
+                              onClick={() => moveAccomplishment(ai, 1)}
+                              disabled={ai === role.accomplishments.length - 1}
+                            >
+                              <ArrowDownIcon />
+                            </button>
+                            <button
+                              type="button"
+                              className="icon-action danger"
+                              aria-label="Delete accomplishment"
+                              title="Delete"
+                              onClick={() => removeAccomplishment(ai)}
+                            >
+                              <TrashIcon />
+                            </button>
+                          </div>
+                        </div>
+                        <div className="destinations">
+                          {DESTINATIONS.map((dest) => {
+                            const meta = DESTINATION_META[dest]
+                            return (
+                              <label key={dest}>
+                                <input type="checkbox" checked={acc.destinations.includes(dest)} onChange={() => toggleDestination(ai, dest)} />
+                                <span className="destination-option">
+                                  {meta.icon}
+                                  {meta.label}
+                                </span>
+                              </label>
+                            )
+                          })}
                         </div>
                       </div>
-                      <div className="destinations">
-                        {DESTINATIONS.map((dest) => {
-                          const meta = DESTINATION_META[dest]
-                          return (
-                            <label key={dest}>
-                              <input type="checkbox" checked={acc.destinations.includes(dest)} onChange={() => toggleDestination(ai, dest)} />
+
+                      {DESTINATIONS.filter((d) => acc.destinations.includes(d)).map((dest) => {
+                        const meta = DESTINATION_META[dest]
+                        return (
+                          <VariantField
+                            key={dest}
+                            label={
                               <span className="destination-option">
                                 {meta.icon}
-                                {meta.label}
+                                {meta.label} variant
                               </span>
-                            </label>
-                          )
-                        })}
-                      </div>
-                    </div>
-
-                    {DESTINATIONS.filter((d) => acc.destinations.includes(d)).map((dest) => {
-                      const meta = DESTINATION_META[dest]
-                      return (
-                        <VariantField
-                          key={dest}
-                          label={
-                            <span className="destination-option">
-                              {meta.icon}
-                              {meta.label} variant
-                            </span>
-                          }
-                          value={acc.variants[dest] ?? ""}
-                          supportsMarkdownLinks={dest === "portfolio"}
-                          onChange={(next) =>
-                            updateDoc((d) => {
-                              d.companies[companyIdx]!.roles[roleIdx]!.accomplishments[ai]!.variants[dest] = next
-                              return d
-                            })
-                          }
-                        />
-                      )
-                    })}
-                  </section>
-                ))}
-              </div>
+                            }
+                            value={acc.variants[dest] ?? ""}
+                            supportsMarkdownLinks={dest === "portfolio"}
+                            onChange={(next) =>
+                              updateDoc((d) => {
+                                d.companies[companyIdx]!.roles[roleIdx]!.accomplishments[ai]!.variants[dest] = next
+                                return d
+                              })
+                            }
+                          />
+                        )
+                      })}
+                    </section>
+                  ))}
+                </div>
+              </section>
 
               {companyIssues.length > 0 && (
                 <ul className="issues">
