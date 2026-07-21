@@ -9,9 +9,26 @@ interface SwProjectVideoProps {
   onVideoError?: () => void
 }
 
+/**
+ * `<source type="video/mp4">` alone is ambiguous: browsers without H.264 decode (e.g. the
+ * open-source Chromium build used by Playwright/CI) still report "maybe" for it, so they
+ * commit to the MP4 source over WebM and then silently never play (no `error` event fires).
+ * Probing the actual codec string tells them apart from real H.264 support.
+ */
+function canPlayH264Mp4(video: HTMLVideoElement): boolean {
+  return video.canPlayType('video/mp4; codecs="avc1.42E01E"') === "probably"
+}
+
 export function SwProjectVideo({ project, canAutoPlay, onVideoPlay, onVideoPause, onVideoError }: SwProjectVideoProps): React.ReactElement {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false)
   const [isPlayButtonFading, setIsPlayButtonFading] = useState(false)
+  // Codec support is a static capability of the browser/engine, not the network state, so it
+  // can be probed synchronously via a throwaway element rather than waiting on shouldPreload.
+  const [preferWebm] = useState(() => {
+    if (typeof document === "undefined" || !project.videoThumbnail) return false
+    const probe = document.createElement("video")
+    return !canPlayH264Mp4(probe)
+  })
   // Keep videos off the network until near the viewport (mobile Lighthouse bandwidth).
   // Fall back to immediate preload only when IntersectionObserver is unavailable.
   const [shouldPreload, setShouldPreload] = useState(() => typeof IntersectionObserver === "undefined")
@@ -187,10 +204,18 @@ export function SwProjectVideo({ project, canAutoPlay, onVideoPlay, onVideoPause
           background: `url(${project.thumbnail}) center/cover no-repeat`,
         }}
       >
-        {/* MP4 first for Safari iOS support */}
-        {project.videoThumbnailMp4 && <source src={project.videoThumbnailMp4} type="video/mp4" />}
-        {/* WebM as fallback for browsers that support it (smaller file size) */}
-        {project.videoThumbnail && <source src={project.videoThumbnail} type="video/webm" />}
+        {/* MP4 first for Safari iOS support, unless the browser can't actually decode H.264 */}
+        {preferWebm ? (
+          <>
+            {project.videoThumbnail && <source src={project.videoThumbnail} type="video/webm" />}
+            {project.videoThumbnailMp4 && <source src={project.videoThumbnailMp4} type="video/mp4" />}
+          </>
+        ) : (
+          <>
+            {project.videoThumbnailMp4 && <source src={project.videoThumbnailMp4} type="video/mp4" />}
+            {project.videoThumbnail && <source src={project.videoThumbnail} type="video/webm" />}
+          </>
+        )}
       </video>
 
       {shouldShowPlayButton && (

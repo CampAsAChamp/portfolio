@@ -23,6 +23,7 @@ describe("SwProjectVideo", () => {
     HTMLMediaElement.prototype.play = vi.fn().mockResolvedValue(undefined)
     HTMLMediaElement.prototype.pause = vi.fn()
     HTMLMediaElement.prototype.load = vi.fn()
+    HTMLMediaElement.prototype.canPlayType = vi.fn().mockReturnValue("")
 
     observeMock = vi.fn()
     disconnectMock = vi.fn()
@@ -59,6 +60,26 @@ describe("SwProjectVideo", () => {
     expect(container.querySelector('source[type="video/mp4"]')).toHaveAttribute("src", mockProject.videoThumbnailMp4)
     expect(container.querySelector('source[type="video/webm"]')).toHaveAttribute("src", mockProject.videoThumbnail)
     expect(observeMock).toHaveBeenCalled()
+  })
+
+  it("prefers MP4 first when the browser reports real H.264 support", () => {
+    HTMLMediaElement.prototype.canPlayType = vi.fn().mockImplementation((type: string) => (type.includes("avc1") ? "probably" : ""))
+
+    const { container } = render(<SwProjectVideo project={mockProject} canAutoPlay={false} />)
+
+    const sources = container.querySelectorAll("source")
+    expect(sources[0]).toHaveAttribute("type", "video/mp4")
+    expect(sources[1]).toHaveAttribute("type", "video/webm")
+  })
+
+  it("prefers WebM first when the browser lacks real H.264 support (e.g. open-source Chromium)", () => {
+    HTMLMediaElement.prototype.canPlayType = vi.fn().mockReturnValue("maybe")
+
+    const { container } = render(<SwProjectVideo project={mockProject} canAutoPlay={false} />)
+
+    const sources = container.querySelectorAll("source")
+    expect(sources[0]).toHaveAttribute("type", "video/webm")
+    expect(sources[1]).toHaveAttribute("type", "video/mp4")
   })
 
   it("enables metadata preload when near the viewport", async () => {
