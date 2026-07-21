@@ -11,12 +11,26 @@ if [ -f .env.local ]; then
 fi
 
 MODE="${1:-desktop}"
+PREVIEW_PORT=4173
 
 if [ "$MODE" != "desktop" ] && [ "$MODE" != "mobile" ] && [ "$MODE" != "both" ]; then
   echo "❌ Invalid mode: $MODE"
   echo "Usage: ./scripts/run-lighthouse.sh [desktop|mobile|both]"
   exit 1
 fi
+
+# Free the preview port in case a previous run (e.g. an interrupted push) left
+# a stale "vite preview" process behind — otherwise the next preview server
+# shifts to a different port and Lighthouse's startServerReadyPattern never matches.
+kill_stale_preview_server() {
+  local pids
+  pids=$(lsof -tiTCP:"$PREVIEW_PORT" -sTCP:LISTEN 2>/dev/null)
+  if [ -n "$pids" ]; then
+    echo "⚠️  Port $PREVIEW_PORT already in use (leftover process) — killing PID(s): $pids"
+    kill $pids 2>/dev/null
+    sleep 1
+  fi
+}
 
 # Function to run a single lighthouse test
 run_lighthouse_test() {
@@ -32,6 +46,8 @@ run_lighthouse_test() {
   fi
   echo "======================================"
   echo ""
+
+  kill_stale_preview_server
 
   # Run lighthouse tests and capture exit code
   if [ "$config_type" = "mobile" ]; then

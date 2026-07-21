@@ -3,7 +3,7 @@
     "collect": {
       "startServerCommand": "yarn preview",
       "startServerReadyPattern": "Local:.*4173",
-      "startServerReadyTimeout": 10000,
+      "startServerReadyTimeout": 30000,
       "url": ["http://localhost:4173"],
       "numberOfRuns": 3,
       "settings": {
