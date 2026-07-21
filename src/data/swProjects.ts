@@ -8,8 +8,10 @@ import FaceSwappingVideoThumbnail from "assets/Projects/Software/Face_Morphing.w
 import FaceSwappingThumbnail from "assets/Projects/Software/Face_Morphing.webp"
 import HomeServerThumbnail from "assets/Projects/Software/Home_Server.webp"
 import ObjectDetectionThumbnail from "assets/Projects/Software/Object_Detection.webp"
+import PlextraktboxThumbnail from "assets/Projects/Software/Plextraktbox.webp"
 import PortfolioThumbnail from "assets/Projects/Software/Portfolio_Thumbnail.webp"
 import SpotifyPPThumbnail from "assets/Projects/Software/Spotify.webp"
+import SprintPlannerThumbnail from "assets/Projects/Software/Sprint_Planner.webp"
 import { SoftwareProject, SoftwareProjectMap } from "types/project.types"
 import { createExternalLink } from "utils/contentUtils"
 
@@ -48,6 +50,63 @@ const projects: SoftwareProject[] = [
     githubLink: "https://github.com/CampAsAChamp/amslaw",
     siteLink: "https://annamschneiderlaw.com",
     thumbnail: AMSLawThumbnail,
+  },
+  {
+    name: "Sprint Planner",
+    technologies: [technologies.NEXTJS, technologies.REACT, technologies.TYPESCRIPT, technologies.TAILWIND, technologies.GITHUB_ACTIONS],
+    bulletPoints: [
+      [
+        "Next.js PWA for real-time sprint capacity planning: ",
+        "(team members × sprint days) − PTO days − on-call days − rollover points",
+        ".",
+      ],
+      [
+        "Tracks PTO and activities, on-call time, and unfinished work from prior sprints; save, load, duplicate, rename, and delete configurations in local storage.",
+      ],
+      [
+        "Static export deployed to ",
+        createExternalLink("GitHub Pages", "https://campasachamp.github.io/sprint-planner/"),
+        " with installable PWA support, dark mode, and toast feedback.",
+      ],
+    ],
+    githubLink: "https://github.com/CampAsAChamp/sprint-planner",
+    siteLink: "https://campasachamp.github.io/sprint-planner/",
+    thumbnail: SprintPlannerThumbnail,
+  },
+  {
+    name: "plextraktbox",
+    technologies: [
+      technologies.PYTHON,
+      technologies.FASTAPI,
+      technologies.REACT,
+      technologies.TYPESCRIPT,
+      technologies.VITE,
+      technologies.MANTINE,
+      technologies.SQLITE,
+      technologies.DOCKER,
+      technologies.LINUX,
+    ],
+    bulletPoints: [
+      [
+        "Self-hosted all-in-one sync for ",
+        createExternalLink("Plex", "https://www.plex.tv/"),
+        ", ",
+        createExternalLink("Letterboxd", "https://letterboxd.com/"),
+        ", and ",
+        createExternalLink("Trakt", "https://trakt.tv/"),
+        " — web UI, built-in scheduler, live log streaming, and notifications in one Docker image.",
+      ],
+      [
+        "Per-data-type source of truth: watchlist from Plex, ratings from Letterboxd (read-only), watched history from Trakt; FastAPI + React/Vite SPA with SQLite persistence and Mantine UI.",
+      ],
+      [
+        "Targets ",
+        createExternalLink("TrueNAS SCALE", "https://www.truenas.com/truenas-scale/"),
+        " for home-lab installs; App Catalog publication planned so others can install easily.",
+      ],
+    ],
+    githubLink: "https://github.com/CampAsAChamp/plextraktbox",
+    thumbnail: PlextraktboxThumbnail,
   },
   {
     name: "Los Angeles Sports Chick Fil A Scraper",

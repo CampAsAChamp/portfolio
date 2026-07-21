@@ -11,6 +11,7 @@ import CSS3_Icon from "assets/Dev_Icons/CSS3.svg"
 import Docker_Icon from "assets/Dev_Icons/Docker.svg"
 import Eslint_Icon from "assets/Dev_Icons/Eslint.svg"
 import Express_Icon from "assets/Dev_Icons/Express.svg"
+import FastAPI_Icon from "assets/Dev_Icons/FastAPI.svg"
 import Figma_Icon from "assets/Dev_Icons/Figma.svg"
 import FramerMotion_Icon from "assets/Dev_Icons/FramerMotion.svg"
 import GCP_Icon from "assets/Dev_Icons/GCP.svg"
@@ -24,6 +25,7 @@ import Java_Icon from "assets/Dev_Icons/Java.svg"
 import JavaScript_Icon from "assets/Dev_Icons/JavaScript.svg"
 import Kubernetes_Icon from "assets/Dev_Icons/Kubernetes.svg"
 import Linux_Icon from "assets/Dev_Icons/Linux.svg"
+import Mantine_Icon from "assets/Dev_Icons/Mantine.svg"
 import MongoDB_Icon from "assets/Dev_Icons/MongoDB.svg"
 import MySQL_Icon from "assets/Dev_Icons/MySQL.svg"
 import NextJS_Icon from "assets/Dev_Icons/NextJS.svg"
@@ -38,10 +40,12 @@ import React_Icon from "assets/Dev_Icons/React.svg"
 import Redis_Icon from "assets/Dev_Icons/Redis.svg"
 import Redux_Icon from "assets/Dev_Icons/Redux.svg"
 import Spring_Icon from "assets/Dev_Icons/Spring.svg"
+import SQLite_Icon from "assets/Dev_Icons/SQLite.svg"
 import Tailwind_Icon from "assets/Dev_Icons/Tailwind.svg"
 import TypeScript_Icon from "assets/Dev_Icons/TypeScript.svg"
 import Ubuntu_Icon from "assets/Dev_Icons/Ubuntu.svg"
 import Vite_Test_Icon from "assets/Dev_Icons/Vite_Test.svg"
+import Vite_Icon from "assets/Dev_Icons/Vite.svg"
 import { Technology, TechnologyMap } from "types/technology.types"
 
 export const ADOBE_ILLUSTRATOR = "Adobe Illustrator"
@@ -57,6 +61,7 @@ export const CSS3 = "CSS3"
 export const DOCKER = "Docker"
 export const ESLINT = "ESLint"
 export const EXPRESS = "Express"
+export const FASTAPI = "FastAPI"
 export const FIGMA = "Figma"
 export const FRAMER_MOTION = "Framer Motion"
 export const GCP = "Google Cloud Platform"
@@ -70,6 +75,7 @@ export const JAVA = "Java"
 export const JAVASCRIPT = "JavaScript"
 export const KUBERNETES = "Kubernetes"
 export const LINUX = "Linux"
+export const MANTINE = "Mantine"
 export const MONGODB = "MongoDB"
 export const MYSQL = "MySQL"
 export const NEXTJS = "Next.js"
@@ -85,9 +91,11 @@ export const REACT = "React"
 export const REDIS = "Redis"
 export const REDUX = "Redux"
 export const SPRING = "Spring"
+export const SQLITE = "SQLite"
 export const TAILWIND = "Tailwind CSS"
 export const TYPESCRIPT = "TypeScript"
 export const UBUNTU = "Ubuntu"
+export const VITE = "Vite"
 export const VITEST = "Vitest"
 
 const technologies = [
@@ -157,6 +165,11 @@ const technologies = [
     link: "https://expressjs.com/",
   },
   {
+    name: FASTAPI,
+    image: FastAPI_Icon,
+    link: "https://fastapi.tiangolo.com/",
+  },
+  {
     name: FIGMA,
     image: Figma_Icon,
     link: "https://www.figma.com/",
@@ -220,6 +233,11 @@ const technologies = [
     name: LINUX,
     image: Linux_Icon,
     link: "https://www.kernel.org/",
+  },
+  {
+    name: MANTINE,
+    image: Mantine_Icon,
+    link: "https://mantine.dev/",
   },
   {
     name: MONGODB,
@@ -292,6 +310,11 @@ const technologies = [
     link: "https://spring.io/",
   },
   {
+    name: SQLITE,
+    image: SQLite_Icon,
+    link: "https://www.sqlite.org/",
+  },
+  {
     name: TAILWIND,
     image: Tailwind_Icon,
     link: "https://tailwindcss.com/",
@@ -305,6 +328,11 @@ const technologies = [
     name: UBUNTU,
     image: Ubuntu_Icon,
     link: "https://ubuntu.com/",
+  },
+  {
+    name: VITE,
+    image: Vite_Icon,
+    link: "https://vitejs.dev/",
   },
   {
     name: VITEST,
