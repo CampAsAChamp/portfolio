@@ -1,7 +1,4 @@
 import { lazy, Suspense } from "react"
-
-import "animate.css/animate.min.css"
-
 import { AboutMe } from "components/AboutMe/AboutMe"
 import { ScrollToTopButton } from "components/Common/ScrollToTopButton"
 import { LandingPage } from "components/LandingPage/LandingPage"

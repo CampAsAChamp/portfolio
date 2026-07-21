@@ -47,7 +47,7 @@ export default defineConfig({
         manualChunks: {
           // Separate vendor chunks for better caching
           react: ["react", "react-dom"],
-          animations: ["animate.css", "react-animate-on-scroll"],
+          animations: ["react-animate-on-scroll"],
           swiper: ["swiper"],
         },
         // Asset file naming for better caching

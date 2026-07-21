@@ -2995,13 +2995,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"animate.css@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "animate.css@npm:4.1.1"
-  checksum: 10c0/28fcf5a5f502e4c12186846d22aa1cd63b835955160a97116930c78bff8a89135aa5c57f94010252a29456ada7cfc8ed8791cac02521ec6402befaf883937159
-  languageName: node
-  linkType: hard
-
 "ansi-colors@npm:^4.1.1":
   version: 4.1.3
   resolution: "ansi-colors@npm:4.1.3"
@@ -9919,7 +9912,6 @@ __metadata:
     "@vitejs/plugin-react": "npm:^5.1.2"
     "@vitest/coverage-v8": "npm:^4.1.10"
     "@vitest/ui": "npm:^4.1.0"
-    animate.css: "npm:^4.1.1"
     classnames: "npm:^2.5.1"
     eslint: "npm:^9.39.2"
     eslint-config-prettier: "npm:^10.1.8"

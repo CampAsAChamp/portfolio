@@ -1,5 +1,77 @@
 @import "styles/Common/hover.css";
 
+/*
+ * Hand-picked subset of animate.css (MIT license, https://animate.style/): only the
+ * classes this project actually uses. The full package is ~72KB of unused keyframes
+ * that render-blocked first paint for no benefit (Lighthouse flagged it directly).
+ */
+.animate__animated {
+  animation-duration: var(--animate-duration);
+  animation-fill-mode: both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.animate__fadeIn {
+  animation-name: fade-in;
+}
+
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate__fadeInDown {
+  animation-name: fade-in-down;
+}
+
+@keyframes fade-in-right {
+  from {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate__fadeInRight {
+  animation-name: fade-in-right;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate__fadeInUp {
+  animation-name: fade-in-up;
+}
+
 /* Custom spring animation for cards */
 @keyframes spring-in {
   0% {
@@ -60,6 +132,7 @@
   --rounded-button-corners-size: 1000px;
   --rounded-component-corners-size: 40px;
   --animation-duration: 0.5s;
+  --animate-duration: 1s;
 }
 
 /* Light Mode */
