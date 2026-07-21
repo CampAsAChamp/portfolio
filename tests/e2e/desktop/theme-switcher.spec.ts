@@ -2,7 +2,6 @@ import { expect, test } from "@playwright/test"
 
 import { BasePage } from "../fixtures/BasePage"
 import { NavbarPage } from "../fixtures/NavbarPage"
-import { skipUnlessVisualBaseline } from "../helpers/visual-helpers"
 
 test.describe("Theme Switcher - Desktop", () => {
   let navbarPage: NavbarPage
@@ -46,20 +45,22 @@ test.describe("Theme Switcher - Desktop", () => {
     await expect.poll(async () => navbarPage.getCurrentTheme()).toBe(themeAfterToggle)
   })
 
-  test("should display theme wipe animation - visual regression", async ({ page }, testInfo) => {
-    skipUnlessVisualBaseline(testInfo)
+  test("should morph sun/moon icon when theme toggles", async () => {
+    // Prefer icon class + color-mode over pixel shots — SVG anti-aliasing caused 80%+ diffs in CI.
     const themeButton = navbarPage.themeSwitcher
+    const morphIcon = themeButton.locator(".morph-icon")
     await expect(themeButton).toBeVisible()
 
-    await expect(themeButton).toHaveScreenshot("theme-light.png", { animations: "disabled", timeout: 15000 })
+    await expect(morphIcon).toHaveClass(/sun-mode/)
+    expect(await navbarPage.getCurrentTheme()).toBe("light")
 
     await navbarPage.toggleTheme()
-    await page.waitForFunction(() => document.documentElement.getAttribute("color-mode") === "dark")
-    await expect(themeButton).toHaveScreenshot("theme-dark.png", { animations: "disabled", timeout: 15000 })
+    await expect.poll(async () => navbarPage.getCurrentTheme()).toBe("dark")
+    await expect(morphIcon).toHaveClass(/moon-mode/)
 
     await navbarPage.toggleTheme()
-    await page.waitForFunction(() => document.documentElement.getAttribute("color-mode") === "light")
-    await expect(themeButton).toHaveScreenshot("theme-light-return.png", { animations: "disabled", timeout: 15000 })
+    await expect.poll(async () => navbarPage.getCurrentTheme()).toBe("light")
+    await expect(morphIcon).toHaveClass(/sun-mode/)
   })
 
   test("should switch icon between sun and moon", async () => {

@@ -362,9 +362,15 @@ ul ul {
     transition-duration: 0.01ms !important;
   }
 
-  /* Disable animate.css animations */
+  /*
+   * Entrance elements start at opacity:0 and rely on animate.css to fade in.
+   * Disabling the animation without forcing the end state leaves the page blank
+   * (critical for prefers-reduced-motion users and Playwright reducedMotion).
+   * Do not force transform:none here — that would also kill intentional hover scales.
+   */
   .animate__animated {
     animation: none !important;
+    opacity: 1 !important;
   }
 
   /* Disable custom spring animation */

@@ -28,18 +28,18 @@ Config: `playwright.config.ts` — base URL `http://localhost:5173`, 30s timeout
 
 ## Visual regression
 
-- Visual baselines are **Chromium / Mobile Chrome only** (`skipUnlessVisualBaseline`).
+- Visual baselines are **Chromium / Mobile Chrome** and **Linux-only** (`skipUnlessVisualBaseline` skips Darwin).
 - Functional coverage still runs in Firefox, WebKit, and Mobile Safari.
+- Prefer CSS/DOM assertions for hover and icon morph — do not screenshot hover states.
 - Use `takeStableScreenshot` from `screenshot-helpers.ts` when adding new captures.
-- Update baselines after intentional UI changes:
+- Update Linux baselines after intentional UI changes:
 
 ```bash
-npx playwright test --update-snapshots --project=chromium
-npx playwright test --update-snapshots --project="Mobile Chrome"
+yarn test:e2e:update-snapshots   # Docker → Linux *-linux.png (required for CI)
 ```
 
 Snapshots live beside specs in `*-snapshots/` folders. Tolerant diff settings are in `playwright.config.ts`.
-**Always update Linux (`*-linux.png`) snapshots for CI** — Darwin snapshots are local-only.
+**Never rely on Darwin `--update-snapshots` to fix CI.**
 
 ## Commands
 

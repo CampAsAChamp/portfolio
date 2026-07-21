@@ -144,7 +144,17 @@ test('should display landing page', async ({ page }) => {
 
 ### Visual Regression Testing
 
-Baselines are maintained for **Chromium** and **Mobile Chrome** only (see `skipUnlessVisualBaseline`). Other browsers still run functional checks.
+Baselines are **Linux-only** (what CI runs). Local Darwin snapshots are skipped so a green Mac run does not hide CI diffs.
+
+- Projects: **Chromium** + **Mobile Chrome** (`skipUnlessVisualBaseline`)
+- Prefer CSS/DOM assertions for hover and icon morph — do not screenshot hover states
+- After intentional UI changes, regenerate Linux baselines with Docker:
+
+```bash
+yarn test:e2e:update-snapshots
+```
+
+Do **not** commit Darwin-only `--update-snapshots` from your Mac — those files are not what CI compares.
 
 ```typescript
 import { takeStableScreenshot } from '../helpers/screenshot-helpers'
@@ -159,12 +169,10 @@ test('should match visual snapshot', async ({ page }, testInfo) => {
 })
 ```
 
-After intentional UI changes, update Linux snapshots (what CI uses):
+After intentional UI changes, update Linux snapshots via Docker:
 
 ```bash
-npx playwright test --update-snapshots --project=chromium
-npx playwright test --update-snapshots --project="Mobile Chrome"
-# Or regenerate via Docker / CI artifacts if local OS rendering differs
+yarn test:e2e:update-snapshots
 ```
 
 ### Video Testing

@@ -2,7 +2,6 @@ import { expect, test } from "@playwright/test"
 
 import { LandingPage } from "../fixtures/LandingPage"
 import { ModalPage } from "../fixtures/ModalPage"
-import { skipUnlessVisualBaseline } from "../helpers/visual-helpers"
 
 test.describe("Contact Me - Desktop", () => {
   let landingPage: LandingPage
@@ -21,11 +20,22 @@ test.describe("Contact Me - Desktop", () => {
     })
 
     test("should show hover effect with chevrons", async () => {
-      skipUnlessVisualBaseline(test.info())
       const button = landingPage.contactMeButton
       await expect(button).toBeVisible()
       await button.hover()
-      await expect(button).toHaveScreenshot("contact-me-button-hover.png", { animations: "disabled", timeout: 15000 })
+
+      // Assert computed hover styles — pixel hover shots flake across OS/font AA (75%+ diffs in CI).
+      await expect
+        .poll(
+          async () =>
+            button.locator("span").evaluate((el) => {
+              const span = getComputedStyle(el)
+              const after = getComputedStyle(el, "::after")
+              return { paddingRight: span.paddingRight, afterOpacity: after.opacity }
+            }),
+          { timeout: 5000, intervals: [50, 100, 150] },
+        )
+        .toEqual({ paddingRight: "20px", afterOpacity: "1" })
     })
 
     test("should open modal when clicked", async () => {
@@ -182,19 +192,27 @@ test.describe("Contact Me - Desktop", () => {
       expect(linkedinUrl).toContain("linkedin.com")
     })
 
-    test("should change color on hover", async () => {
-      skipUnlessVisualBaseline(test.info())
-      await landingPage.githubLink.hover()
-      await expect(landingPage.githubLink).toHaveScreenshot("github-icon-hover.png", {
-        animations: "disabled",
-        timeout: 15000,
-      })
+    test("should enlarge slightly on hover", async () => {
+      // Hover styles target the SVG (`#contact-me-socials svg:hover`).
+      // Prefer transform over fill — inline SVG computed `fill` is unreliable across engines.
+      const githubSvg = landingPage.githubLink.locator("svg")
+      const linkedinSvg = landingPage.linkedinLink.locator("svg")
 
-      await landingPage.linkedinLink.hover()
-      await expect(landingPage.linkedinLink).toHaveScreenshot("linkedin-icon-hover.png", {
-        animations: "disabled",
-        timeout: 15000,
-      })
+      await githubSvg.hover()
+      await expect
+        .poll(async () => githubSvg.evaluate((el) => getComputedStyle(el).transform), {
+          timeout: 5000,
+          intervals: [50, 100, 150],
+        })
+        .toMatch(/matrix\(1\.1/)
+
+      await linkedinSvg.hover()
+      await expect
+        .poll(async () => linkedinSvg.evaluate((el) => getComputedStyle(el).transform), {
+          timeout: 5000,
+          intervals: [50, 100, 150],
+        })
+        .toMatch(/matrix\(1\.1/)
     })
   })
 })

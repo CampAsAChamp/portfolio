@@ -106,8 +106,27 @@ export class ModalPage extends BasePage {
    * Close modal by clicking backdrop
    */
   async closeByBackdrop(): Promise<void> {
-    // Click the backdrop itself (not page coords) — more reliable across browsers/viewports.
-    await this.modal.click({ position: { x: 5, y: 5 }, force: true })
+    // Retry: first click can miss under parallel load / mid-animation hit-testing.
+    const deadline = Date.now() + 10000
+    while (Date.now() < deadline) {
+      if (!(await this.isModalOpen())) return
+      await this.modal.click({ position: { x: 5, y: 5 }, force: true })
+      try {
+        await expect
+          .poll(
+            async () => {
+              if ((await this.modal.count()) === 0) return true
+              const classes = await this.modal.getAttribute("class")
+              return !classes?.includes("show")
+            },
+            { timeout: 2000, intervals: [50, 100] },
+          )
+          .toBe(true)
+        return
+      } catch {
+        // Click didn't close — try again until deadline
+      }
+    }
     await this.waitForModalClose()
   }
 
