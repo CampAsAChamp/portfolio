@@ -49,18 +49,18 @@ export function TrashIcon({ size = 16 }: IconProps): ReactElement {
   )
 }
 
-export function RefreshIcon({ size = 18 }: IconProps): ReactElement {
+export function UndoIcon({ size = 18 }: IconProps): ReactElement {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
       <path
-        d="M21 12A9 9 0 1 1 12 3C14.5 3 16.7 4 18.3 5.6L21 8"
+        d="M9 14L4 9L9 4"
         stroke="currentColor"
         strokeWidth="2.25"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
-        d="M21 3V8H16"
+        d="M4 9H14.5A5.5 5.5 0 0 1 20 14.5V14.5A5.5 5.5 0 0 1 14.5 20H11"
         stroke="currentColor"
         strokeWidth="2.25"
         strokeLinecap="round"

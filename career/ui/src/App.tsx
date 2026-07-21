@@ -9,9 +9,9 @@ import {
   DocumentIcon,
   GlobeIcon,
   LinkedInIcon,
-  RefreshIcon,
   SaveIcon,
   TrashIcon,
+  UndoIcon,
 } from "./ActionIcons"
 import { HintedAction } from "./HintedAction"
 import {
@@ -101,8 +101,7 @@ export function App(): ReactElement {
   const [doc, setDoc] = useState<ExperiencesDocument | null>(null)
   const [companyIdx, setCompanyIdx] = useState(0)
   const [roleIdx, setRoleIdx] = useState(0)
-  const [status, setStatus] = useState<string>("Loading…")
-  const [statusKind, setStatusKind] = useState<"ok" | "error" | "">("")
+  const [loadError, setLoadError] = useState<string | null>(null)
   const [issues, setIssues] = useState<ValidationIssue[]>([])
   const [linkedinPreview, setLinkedinPreview] = useState("")
   const [resumePreview, setResumePreview] = useState("")
@@ -112,8 +111,8 @@ export function App(): ReactElement {
   const accomplishmentsListRef = useRef<HTMLDivElement>(null)
   const flipFirstTopsRef = useRef<Map<string, number> | null>(null)
 
-  const showToast = useCallback((text: string, kind: ToastKind = "ok"): void => {
-    setToasts((current) => [...current, { id: Date.now() + Math.random(), kind, text }])
+  const showToast = useCallback((text: string, kind: ToastKind = "ok", opts?: { copy?: boolean }): void => {
+    setToasts((current) => [...current, { id: Date.now() + Math.random(), kind, text, copy: opts?.copy }])
   }, [])
 
   const dismissToast = useCallback((id: number): void => {
@@ -130,35 +129,41 @@ export function App(): ReactElement {
     }
   }, [])
 
-  const load = useCallback(async () => {
-    setBusy(true)
-    try {
-      const data = await loadExperiences()
-      setDoc(data)
-      setCompanyIdx(0)
-      setRoleIdx(0)
-      setStatus("Loaded experiences.yaml")
-      setStatusKind("ok")
-      setIssues([])
-      await refreshPreviews()
-    } catch (err) {
-      setStatus(err instanceof Error ? err.message : String(err))
-      setStatusKind("error")
-    } finally {
-      setBusy(false)
-    }
-  }, [refreshPreviews])
+  const load = useCallback(
+    async (opts?: { notify?: boolean }) => {
+      setBusy(true)
+      try {
+        const data = await loadExperiences()
+        setDoc(data)
+        setCompanyIdx(0)
+        setRoleIdx(0)
+        setLoadError(null)
+        setIssues([])
+        await refreshPreviews()
+        if (opts?.notify) {
+          showToast("Reloaded experiences.yaml")
+        }
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err)
+        setLoadError(message)
+        showToast(message, "error")
+      } finally {
+        setBusy(false)
+      }
+    },
+    [refreshPreviews, showToast],
+  )
 
   useEffect(() => {
     void load()
   }, [load])
 
-  async function handleReload(): Promise<void> {
+  async function handleDiscard(): Promise<void> {
     if (reloading) return
     setReloading(true)
     const started = performance.now()
     try {
-      await load()
+      await load({ notify: true })
     } finally {
       const elapsed = performance.now() - started
       const remaining = Math.max(0, 700 - elapsed)
@@ -202,15 +207,13 @@ export function App(): ReactElement {
     try {
       const result = await saveExperiences(doc)
       setIssues(result.issues ?? [])
-      setStatus("Saved experiences.yaml")
-      setStatusKind("ok")
+      showToast("Saved experiences.yaml")
       await refreshPreviews()
     } catch (err) {
       if (err instanceof ApiError) {
         setIssues(err.issues)
       }
-      setStatus(err instanceof Error ? err.message : String(err))
-      setStatusKind("error")
+      showToast(err instanceof Error ? err.message : String(err), "error")
     } finally {
       setBusy(false)
     }
@@ -223,12 +226,10 @@ export function App(): ReactElement {
         await saveExperiences(doc)
       }
       const out = await generatePortfolio()
-      setStatus(`Generated ${out}`)
-      setStatusKind("ok")
+      showToast(`Generated ${out}`)
       await refreshPreviews()
     } catch (err) {
-      setStatus(err instanceof Error ? err.message : String(err))
-      setStatusKind("error")
+      showToast(err instanceof Error ? err.message : String(err), "error")
     } finally {
       setBusy(false)
     }
@@ -243,14 +244,9 @@ export function App(): ReactElement {
       const text = await exportLinkedIn()
       await navigator.clipboard.writeText(text)
       setLinkedinPreview(text)
-      setStatus("LinkedIn export copied to clipboard")
-      setStatusKind("ok")
-      showToast("LinkedIn copy ready")
+      showToast("LinkedIn copy ready", "ok", { copy: true })
     } catch (err) {
-      const message = err instanceof Error ? err.message : String(err)
-      setStatus(message)
-      setStatusKind("error")
-      showToast(message, "error")
+      showToast(err instanceof Error ? err.message : String(err), "error")
     } finally {
       setBusy(false)
     }
@@ -265,14 +261,9 @@ export function App(): ReactElement {
       const text = await exportResume()
       setResumePreview(text)
       await navigator.clipboard.writeText(text)
-      setStatus("Resume export copied to clipboard (also under career/exports after CLI sync)")
-      setStatusKind("ok")
-      showToast("Resume copy ready")
+      showToast("Resume copy ready", "ok", { copy: true })
     } catch (err) {
-      const message = err instanceof Error ? err.message : String(err)
-      setStatus(message)
-      setStatusKind("error")
-      showToast(message, "error")
+      showToast(err instanceof Error ? err.message : String(err), "error")
     } finally {
       setBusy(false)
     }
@@ -377,12 +368,21 @@ export function App(): ReactElement {
   if (!doc) {
     return (
       <div className="app">
+        <ToastStack toasts={toasts} onDismiss={dismissToast} />
         <header className="topbar">
           <div className="topbar-meta">
             <h1>Career Content Editor</h1>
-            <p className={`status ${statusKind}`}>{status}</p>
           </div>
         </header>
+        <main className="editor load-state">
+          {loadError ? (
+            <p className="load-error" role="alert">
+              {loadError}
+            </p>
+          ) : (
+            <p className="muted">Loading experiences.yaml…</p>
+          )}
+        </main>
       </div>
     )
   }
@@ -393,46 +393,49 @@ export function App(): ReactElement {
       <header className="topbar">
         <div className="topbar-meta">
           <h1>Career Content Editor</h1>
-          <p className={`status ${statusKind}`}>{status}</p>
         </div>
         <div className="topbar-actions">
-          <ThemeSwitcher />
-          <HintedAction
-            label="Reload from disk"
-            description="Discards unsaved editor changes and reloads career/content/experiences.yaml."
-            when="The YAML changed outside this UI, or you want to undo all edits since the last save."
-          >
-            <button
-              type="button"
-              className={`ghost icon-action reload-btn${reloading ? " spinning" : ""}`}
-              disabled={busy || reloading}
-              onClick={() => void handleReload()}
+          <div className="topbar-file-actions">
+            <HintedAction
+              label="Discard unsaved changes"
+              description="Throws away editor edits and reloads career/content/experiences.yaml from disk."
+              when="The YAML changed outside this UI, or you want to undo all edits since the last save."
             >
-              <RefreshIcon />
-              <span>Reload</span>
-            </button>
-          </HintedAction>
+              <button
+                type="button"
+                className={`ghost icon-action discard-btn${reloading ? " spinning" : ""}`}
+                disabled={busy || reloading}
+                onClick={() => void handleDiscard()}
+              >
+                <UndoIcon />
+                <span>Discard</span>
+              </button>
+            </HintedAction>
+            <HintedAction
+              label="Save YAML"
+              description="Writes the current editor state to career/content/experiences.yaml and refreshes LinkedIn/resume previews."
+              when="You're done editing, or before Generate / Copy. Does not update the live portfolio by itself."
+            >
+              <button type="button" className="ghost icon-action" disabled={busy} onClick={() => void handleSave()}>
+                <SaveIcon />
+                <span>Save YAML</span>
+              </button>
+            </HintedAction>
+          </div>
           <span className="topbar-divider" aria-hidden />
-          <HintedAction
-            label="Save YAML"
-            description="Writes the current editor state to career/content/experiences.yaml and refreshes LinkedIn/resume previews."
-            when="You're done editing, or before Generate / Copy. Does not update the live portfolio by itself."
-          >
-            <button type="button" className="primary icon-action" disabled={busy} onClick={() => void handleSave()}>
-              <SaveIcon />
-              <span>Save YAML</span>
-            </button>
-          </HintedAction>
-          <button type="button" className="ghost" disabled={busy} onClick={() => void handleGenerate()}>
-            Generate portfolio
+          <button type="button" className="ghost icon-action" disabled={busy} onClick={() => void handleGenerate()}>
+            <GlobeIcon />
+            <span>Generate portfolio</span>
+          </button>
+          <button type="button" className="ghost icon-action" disabled={busy} onClick={() => void handleExportResume()}>
+            <DocumentIcon />
+            <span>Copy resume</span>
           </button>
           <button type="button" className="ghost icon-action" disabled={busy} onClick={() => void handleCopyLinkedIn()}>
             <LinkedInIcon />
             <span>Copy LinkedIn</span>
           </button>
-          <button type="button" className="ghost" disabled={busy} onClick={() => void handleExportResume()}>
-            Copy resume
-          </button>
+          <ThemeSwitcher />
         </div>
       </header>
 

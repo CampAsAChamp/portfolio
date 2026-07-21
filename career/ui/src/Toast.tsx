@@ -8,6 +8,8 @@ export interface ToastMessage {
   id: number
   kind: ToastKind
   text: string
+  /** Clipboard actions: animate copy → check. Other ok toasts show a check only. */
+  copy?: boolean
 }
 
 interface ToastStackProps {
@@ -16,33 +18,37 @@ interface ToastStackProps {
 }
 
 const TOAST_DURATION_MS = 2800
+const ERROR_TOAST_DURATION_MS = 5200
 
 function ToastItem({ toast, onDismiss }: { toast: ToastMessage; onDismiss: (id: number) => void }): ReactElement {
+  const duration = toast.kind === "error" ? ERROR_TOAST_DURATION_MS : TOAST_DURATION_MS
   const [leaving, setLeaving] = useState(false)
-  const [showCheck, setShowCheck] = useState(toast.kind !== "ok")
+  const [showCheck, setShowCheck] = useState(toast.kind !== "ok" || !toast.copy)
 
   useEffect(() => {
-    const leaveTimer = window.setTimeout(() => setLeaving(true), TOAST_DURATION_MS - 280)
-    const removeTimer = window.setTimeout(() => onDismiss(toast.id), TOAST_DURATION_MS)
+    const leaveTimer = window.setTimeout(() => setLeaving(true), duration - 280)
+    const removeTimer = window.setTimeout(() => onDismiss(toast.id), duration)
     return () => {
       window.clearTimeout(leaveTimer)
       window.clearTimeout(removeTimer)
     }
-  }, [toast.id, onDismiss])
+  }, [toast.id, onDismiss, duration])
 
   useEffect(() => {
-    if (toast.kind !== "ok") return
+    if (toast.kind !== "ok" || !toast.copy) return
     const checkTimer = window.setTimeout(() => setShowCheck(true), 220)
     return () => window.clearTimeout(checkTimer)
-  }, [toast.kind])
+  }, [toast.kind, toast.copy])
 
   return (
     <div className={`toast${leaving ? " leaving" : ""} ${toast.kind}`} role="status" aria-live="polite">
       {toast.kind === "ok" ? (
         <span className={`toast-icon${showCheck ? " checked" : ""}`} aria-hidden>
-          <span className="toast-icon-layer copy">
-            <CopyIcon />
-          </span>
+          {toast.copy ? (
+            <span className="toast-icon-layer copy">
+              <CopyIcon />
+            </span>
+          ) : null}
           <span className="toast-icon-layer check">
             <CheckIcon />
           </span>
