@@ -119,8 +119,8 @@ async function main() {
     process.exit(stylelintCode)
   }
 
-  // Run TypeScript
-  const tscCode = await runWithProgress("yarn", ["tsc", "--noEmit", "--pretty"], "Checking TypeScript types...")
+  // Run TypeScript (portfolio + career lib/cli/api + career UI)
+  const tscCode = await runWithProgress("node", ["scripts/check-types.mjs"], "Checking TypeScript types...")
 
   if (tscCode !== 0) {
     console.log("\n❌ TypeScript check failed. Please fix the errors above.\n")

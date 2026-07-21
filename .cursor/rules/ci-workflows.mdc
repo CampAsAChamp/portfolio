@@ -14,7 +14,7 @@ push/PR → Tests → (on success) → Release + Deploy + Lighthouse
 
 | Workflow | Trigger | Purpose |
 |----------|---------|---------|
-| `test.yml` | push/PR to `main` | audit (non-blocking) → lint → unit tests → build → E2E |
+| `test.yml` | push/PR to `main` | audit (non-blocking) → lint → career:check → unit tests → build → E2E |
 | `release.yml` | Tests success on `main` | semantic-release (skips if `[skip ci]`) |
 | `deploy.yml` | Tests success on `main` | GitHub deployment status; verifies https://nickhs.dev returns HTTP 200 |
 | `lighthouse.yml` | Tests success on `main` | LHCI desktop + mobile against preview server |
@@ -41,5 +41,5 @@ Actual hosting is **Cloudflare Pages** (auto-deploy from `main`). The Deploy wor
 Before pushing CI changes, verify locally:
 
 ```bash
-nvm use && yarn lint && yarn test && yarn build && yarn test:e2e
+nvm use && yarn lint && yarn career:check && yarn test && yarn build && yarn test:e2e
 ```

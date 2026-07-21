@@ -21,7 +21,7 @@
     "lint:eslint:fix": "node scripts/check-node-version.mjs && eslint src/**/*.{js,jsx,ts,tsx} tests/**/*.{js,jsx,ts,tsx} --fix",
     "lint:eslint": "node scripts/check-node-version.mjs && eslint src/**/*.{js,jsx,ts,tsx} tests/**/*.{js,jsx,ts,tsx}",
     "lint:fix": "yarn lint:eslint:fix && yarn lint:css:fix && yarn format",
-    "lint:types": "node scripts/check-node-version.mjs && tsc --noEmit",
+    "lint:types": "node scripts/check-node-version.mjs && node scripts/check-types.mjs",
     "lint": "node scripts/check-node-version.mjs && node scripts/lint-with-progress.mjs && yarn format:check",
     "preanalyze": "node scripts/check-node-version.mjs",
     "prebuild": "node scripts/check-node-version.mjs",
@@ -68,7 +68,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix"
+      "eslint --fix --no-warn-ignored"
     ],
     "*.css": [
       "stylelint --fix",
@@ -78,7 +78,7 @@
       "prettier --write"
     ],
     "*.{ts,tsx}": [
-      "bash -c 'tsc --noEmit'"
+      "bash -c 'node scripts/check-types.mjs'"
     ]
   },
   "dependencies": {
