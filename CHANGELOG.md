@@ -1,3 +1,19 @@
+## 1.15.0 (2026-07-21)
+
+* fix: eliminate root causes of recurring e2e flakiness ([5d25246](https://github.com/CampAsAChamp/portfolio/commit/5d25246))
+* fix: fall back to WebM when the browser can't decode H.264 MP4 ([c155819](https://github.com/CampAsAChamp/portfolio/commit/c155819))
+* fix: root-cause recurring CI e2e flakiness (baseline OS mismatch, date drift, modal race) ([ea6970d](https://github.com/CampAsAChamp/portfolio/commit/ea6970d))
+* fix: update sw project bullet points ([c048dbf](https://github.com/CampAsAChamp/portfolio/commit/c048dbf))
+* test: fix e2e tests ([fce84ee](https://github.com/CampAsAChamp/portfolio/commit/fce84ee))
+* test: fix e2e tests ([60e7880](https://github.com/CampAsAChamp/portfolio/commit/60e7880))
+* test: fix e2e tests ([a22affd](https://github.com/CampAsAChamp/portfolio/commit/a22affd))
+* test: harden contact modal and video e2e flakes ([abd4e4b](https://github.com/CampAsAChamp/portfolio/commit/abd4e4b))
+* test: harden e2e suite around stable assertions ([7b50bca](https://github.com/CampAsAChamp/portfolio/commit/7b50bca))
+* chore: fix lint ([4c2adc7](https://github.com/CampAsAChamp/portfolio/commit/4c2adc7))
+* chore: fix lint ([7701dd9](https://github.com/CampAsAChamp/portfolio/commit/7701dd9))
+* feat: add new sw projects ([7061eda](https://github.com/CampAsAChamp/portfolio/commit/7061eda))
+* ci: make push hook run desktop and mobile lighthouse tests ([f644efd](https://github.com/CampAsAChamp/portfolio/commit/f644efd))
+
 ## 1.14.0 (2026-07-21)
 
 * test: fix act unit test ([72609a1](https://github.com/CampAsAChamp/portfolio/commit/72609a1))
