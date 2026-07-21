@@ -1,3 +1,8 @@
+## <small>1.15.2 (2026-07-21)</small>
+
+* chore: increase startServerReadyTimeout for Lighthouse tests to 30 seconds ([8b376d8](https://github.com/CampAsAChamp/portfolio/commit/8b376d8))
+* fix: replace full animate.css import with only the classes actually used ([d9956de](https://github.com/CampAsAChamp/portfolio/commit/d9956de))
+
 ## <small>1.15.1 (2026-07-21)</small>
 
 * fix: disable react-animate-on-scroll's pre-scroll check to recover mobile TBT ([9acbbad](https://github.com/CampAsAChamp/portfolio/commit/9acbbad))
