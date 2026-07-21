@@ -1048,6 +1048,10 @@ html[color-mode="dark"] .shortcut-hint {
   background-size: 16px 16px;
 }
 
+.color-key-hint {
+  font-style: italic;
+}
+
 .color-key-hint code {
   font-family: ui-monospace, "SFMono-Regular", "Menlo", "Monaco", "Consolas", monospace;
   font-size: 0.8em;
@@ -1305,6 +1309,10 @@ html[color-mode="dark"] .shortcut-hint {
   gap: 0.5rem 0.85rem;
   align-items: baseline;
   justify-content: space-between;
+}
+
+.tech-order-header .muted {
+  font-style: italic;
 }
 
 .tech-order-list {
