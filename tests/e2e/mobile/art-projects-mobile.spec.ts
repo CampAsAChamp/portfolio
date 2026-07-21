@@ -62,50 +62,39 @@ test.describe("Art Projects Section - Mobile", () => {
   })
 
   test("should display next and previous arrows", async ({ page }) => {
-    // Look for navigation arrows
-    const nextButton = page.locator('[class*="next"], [aria-label*="next" i], .swiper-button-next')
-    const prevButton = page.locator('[class*="prev"], [aria-label*="prev" i], .swiper-button-prev')
+    // Use Swiper nav classes only — [class*="prev/next"] also matches swiper-slide-prev/next
+    const nextButton = page.locator("#graphic-design-content .swiper-button-next")
+    const prevButton = page.locator("#graphic-design-content .swiper-button-prev")
 
-    // At least one navigation element should exist
-    const nextCount = await nextButton.count()
-    const prevCount = await prevButton.count()
-
-    expect(nextCount + prevCount).toBeGreaterThan(0)
+    await expect(nextButton).toBeVisible()
+    await expect(prevButton).toBeVisible()
   })
 
   test("should navigate to next slide when next arrow is tapped", async ({ page }) => {
-    const nextButton = page.locator('[class*="next"], [aria-label*="next" i], .swiper-button-next').first()
+    const nextButton = page.locator("#graphic-design-content .swiper-button-next")
+    const carousel = page.locator("#graphic-design-content .swiper")
 
-    if ((await nextButton.count()) > 0 && (await nextButton.isVisible())) {
-      // Tap next button
-      await nextButton.tap()
-      await page.waitForTimeout(500)
-
-      // Carousel should still be visible
-      const carousel = page.locator('#graphic-design-content [class*="carousel"], #graphic-design-content .swiper')
-      await expect(carousel.first()).toBeVisible()
-    }
+    await expect(nextButton).toBeVisible()
+    await nextButton.tap()
+    await expect(carousel).toBeVisible()
   })
 
   test("should navigate to previous slide when previous arrow is tapped", async ({ page }) => {
-    const nextButton = page.locator('[class*="next"], [aria-label*="next" i], .swiper-button-next').first()
-    const prevButton = page.locator('[class*="prev"], [aria-label*="prev" i], .swiper-button-prev').first()
+    const nextButton = page.locator("#graphic-design-content .swiper-button-next")
+    const prevButton = page.locator("#graphic-design-content .swiper-button-prev")
+    const carousel = page.locator("#graphic-design-content .swiper")
+    const activeSlide = page.locator("#graphic-design-content .swiper-slide-active").first()
 
-    // Go to next slide first
-    if ((await nextButton.count()) > 0 && (await nextButton.isVisible())) {
-      await nextButton.tap()
-      await page.waitForTimeout(500)
+    await expect(nextButton).toBeVisible()
+    const firstSlideId = await activeSlide.getAttribute("data-swiper-slide-index")
 
-      // Then go back
-      if ((await prevButton.count()) > 0 && (await prevButton.isVisible())) {
-        await prevButton.tap()
-        await page.waitForTimeout(500)
+    await nextButton.tap()
+    await expect(activeSlide).not.toHaveAttribute("data-swiper-slide-index", firstSlideId ?? "")
 
-        // Carousel should still be visible
-        const carousel = page.locator('#graphic-design-content [class*="carousel"], #graphic-design-content .swiper')
-        await expect(carousel.first()).toBeVisible()
-      }
-    }
+    await expect(prevButton).toBeVisible()
+    await prevButton.tap()
+    await expect(activeSlide).toHaveAttribute("data-swiper-slide-index", firstSlideId ?? "")
+    await expect(carousel).toBeVisible()
   })
 
   test("should display pagination dots", async ({ page }) => {
