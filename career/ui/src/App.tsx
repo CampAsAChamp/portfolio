@@ -1,12 +1,26 @@
-import { useCallback, useEffect, useMemo, useState, type ReactElement } from "react"
+import { ThemeSwitcher } from "components/NavBar/ThemeSwitcher"
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactElement } from "react"
 
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  BriefcaseIcon,
+  BuildingIcon,
+  DocumentIcon,
+  GlobeIcon,
+  LinkedInIcon,
+  RefreshIcon,
+  SaveIcon,
+  TrashIcon,
+} from "./ActionIcons"
+import { HintedAction } from "./HintedAction"
 import {
   ApiError,
   DESTINATIONS,
   exportLinkedIn,
   exportResume,
   generatePortfolio,
-  listFiles,
+  getRoleEndBeforeStartMessage,
   loadExperiences,
   MONTH_ABBREVS,
   saveExperiences,
@@ -14,6 +28,11 @@ import {
   type ExperiencesDocument,
   type ValidationIssue,
 } from "./api"
+import { ColorKeyPicker, getColorHex } from "./ColorKeyPicker"
+import { LogoFilePicker } from "./LogoFilePicker"
+import { TechnologyPicker } from "./TechnologyPicker"
+import { ToastStack, type ToastKind, type ToastMessage } from "./Toast"
+import { VariantField } from "./VariantField"
 
 function emptyAccomplishment(id: string) {
   return {
@@ -23,18 +42,62 @@ function emptyAccomplishment(id: string) {
   }
 }
 
-function slugify(value: string): string {
-  return (
-    value
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "")
-      .slice(0, 48) || `item-${Date.now()}`
-  )
+const DESTINATION_META: Record<Destination, { label: string; icon: ReactElement }> = {
+  portfolio: { label: "Portfolio", icon: <GlobeIcon /> },
+  resume: { label: "Resume", icon: <DocumentIcon /> },
+  linkedin: { label: "LinkedIn", icon: <LinkedInIcon /> },
+}
+
+/** Stable internal ids for YAML / React keys — not shown in the editor. */
+function newId(prefix: string): string {
+  const suffix = typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID().slice(0, 8) : String(Date.now())
+  return `${prefix}-${suffix}`
+}
+
+function prefersReducedMotion(): boolean {
+  return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
+}
+
+function captureAccomplishmentTops(root: HTMLElement | null): Map<string, number> {
+  const tops = new Map<string, number>()
+  if (!root) return tops
+  root.querySelectorAll<HTMLElement>("[data-accomplishment-id]").forEach((el) => {
+    const id = el.dataset.accomplishmentId
+    if (id) tops.set(id, el.getBoundingClientRect().top)
+  })
+  return tops
+}
+
+function playAccomplishmentFlip(root: HTMLElement | null, firstTops: Map<string, number>): void {
+  if (!root || firstTops.size === 0 || prefersReducedMotion()) return
+
+  root.querySelectorAll<HTMLElement>("[data-accomplishment-id]").forEach((el) => {
+    const id = el.dataset.accomplishmentId
+    if (!id) return
+    const firstTop = firstTops.get(id)
+    if (firstTop == null) return
+
+    const dy = firstTop - el.getBoundingClientRect().top
+    if (Math.abs(dy) < 1) return
+
+    el.style.transition = "none"
+    el.style.transform = `translateY(${dy}px)`
+    void el.offsetHeight
+
+    el.classList.add("accomplishment-card-flipping")
+    el.style.transition = ""
+    el.style.transform = ""
+
+    const clear = (event: TransitionEvent): void => {
+      if (event.propertyName !== "transform") return
+      el.classList.remove("accomplishment-card-flipping")
+      el.removeEventListener("transitionend", clear)
+    }
+    el.addEventListener("transitionend", clear)
+  })
 }
 
 export function App(): ReactElement {
-  const [files, setFiles] = useState<string[]>([])
   const [doc, setDoc] = useState<ExperiencesDocument | null>(null)
   const [companyIdx, setCompanyIdx] = useState(0)
   const [roleIdx, setRoleIdx] = useState(0)
@@ -44,6 +107,18 @@ export function App(): ReactElement {
   const [linkedinPreview, setLinkedinPreview] = useState("")
   const [resumePreview, setResumePreview] = useState("")
   const [busy, setBusy] = useState(false)
+  const [reloading, setReloading] = useState(false)
+  const [toasts, setToasts] = useState<ToastMessage[]>([])
+  const accomplishmentsListRef = useRef<HTMLDivElement>(null)
+  const flipFirstTopsRef = useRef<Map<string, number> | null>(null)
+
+  const showToast = useCallback((text: string, kind: ToastKind = "ok"): void => {
+    setToasts((current) => [...current, { id: Date.now() + Math.random(), kind, text }])
+  }, [])
+
+  const dismissToast = useCallback((id: number): void => {
+    setToasts((current) => current.filter((toast) => toast.id !== id))
+  }, [])
 
   const refreshPreviews = useCallback(async () => {
     try {
@@ -58,8 +133,6 @@ export function App(): ReactElement {
   const load = useCallback(async () => {
     setBusy(true)
     try {
-      const fileList = await listFiles()
-      setFiles(fileList)
       const data = await loadExperiences()
       setDoc(data)
       setCompanyIdx(0)
@@ -80,14 +153,44 @@ export function App(): ReactElement {
     void load()
   }, [load])
 
+  async function handleReload(): Promise<void> {
+    if (reloading) return
+    setReloading(true)
+    const started = performance.now()
+    try {
+      await load()
+    } finally {
+      const elapsed = performance.now() - started
+      const remaining = Math.max(0, 700 - elapsed)
+      if (remaining > 0) {
+        await new Promise<void>((resolve) => {
+          window.setTimeout(resolve, remaining)
+        })
+      }
+      setReloading(false)
+    }
+  }
+
   const company = doc?.companies[companyIdx]
   const role = company?.roles[roleIdx]
+
+  const roleDateError = useMemo(() => {
+    if (!role?.end) return null
+    return getRoleEndBeforeStartMessage(role.start, role.end)
+  }, [role])
+
+  const displayIssues = useMemo(() => {
+    const path = `companies.${companyIdx}.roles.${roleIdx}.end`
+    const rest = issues.filter((i) => i.path !== path)
+    if (!roleDateError) return rest
+    return [...rest, { path, message: roleDateError, severity: "error" as const }]
+  }, [issues, roleDateError, companyIdx, roleIdx])
 
   const companyIssues = useMemo(() => {
     if (!company) return []
     const prefix = `companies.${companyIdx}`
-    return issues.filter((i) => i.path === prefix || i.path.startsWith(`${prefix}.`))
-  }, [issues, company, companyIdx])
+    return displayIssues.filter((i) => i.path === prefix || i.path.startsWith(`${prefix}.`))
+  }, [displayIssues, company, companyIdx])
 
   function updateDoc(updater: (current: ExperiencesDocument) => ExperiencesDocument): void {
     setDoc((current) => (current ? updater(structuredClone(current)) : current))
@@ -142,9 +245,12 @@ export function App(): ReactElement {
       setLinkedinPreview(text)
       setStatus("LinkedIn export copied to clipboard")
       setStatusKind("ok")
+      showToast("LinkedIn copy ready")
     } catch (err) {
-      setStatus(err instanceof Error ? err.message : String(err))
+      const message = err instanceof Error ? err.message : String(err)
+      setStatus(message)
       setStatusKind("error")
+      showToast(message, "error")
     } finally {
       setBusy(false)
     }
@@ -161,9 +267,12 @@ export function App(): ReactElement {
       await navigator.clipboard.writeText(text)
       setStatus("Resume export copied to clipboard (also under career/exports after CLI sync)")
       setStatusKind("ok")
+      showToast("Resume copy ready")
     } catch (err) {
-      setStatus(err instanceof Error ? err.message : String(err))
+      const message = err instanceof Error ? err.message : String(err)
+      setStatus(message)
       setStatusKind("error")
+      showToast(message, "error")
     } finally {
       setBusy(false)
     }
@@ -171,7 +280,8 @@ export function App(): ReactElement {
 
   function addCompany(): void {
     updateDoc((d) => {
-      const id = `company-${d.companies.length + 1}`
+      const id = newId("company")
+      const roleId = newId(`${id}-role`)
       d.companies.push({
         id,
         companyName: "New Company",
@@ -181,10 +291,10 @@ export function App(): ReactElement {
         technologies: [],
         roles: [
           {
-            id: `${id}-role`,
+            id: roleId,
             position: "Software Engineer",
             start: { month: "Jan", year: new Date().getFullYear() },
-            accomplishments: [emptyAccomplishment(`${id}-bullet-1`)],
+            accomplishments: [emptyAccomplishment(newId(`${roleId}-bullet`))],
           },
         ],
       })
@@ -198,12 +308,12 @@ export function App(): ReactElement {
     if (!company) return
     updateDoc((d) => {
       const c = d.companies[companyIdx]!
-      const id = `${c.id}-role-${c.roles.length + 1}`
+      const id = newId(`${c.id}-role`)
       c.roles.push({
         id,
         position: "New Role",
         start: { month: "Jan", year: new Date().getFullYear() },
-        accomplishments: [emptyAccomplishment(`${id}-bullet-1`)],
+        accomplishments: [emptyAccomplishment(newId(`${id}-bullet`))],
       })
       return d
     })
@@ -214,7 +324,7 @@ export function App(): ReactElement {
     if (!company || !role) return
     updateDoc((d) => {
       const r = d.companies[companyIdx]!.roles[roleIdx]!
-      r.accomplishments.push(emptyAccomplishment(`${r.id}-${slugify(String(Date.now()))}`))
+      r.accomplishments.push(emptyAccomplishment(newId(`${r.id}-bullet`)))
       return d
     })
   }
@@ -227,15 +337,25 @@ export function App(): ReactElement {
   }
 
   function moveAccomplishment(index: number, delta: number): void {
+    const list = doc?.companies[companyIdx]?.roles[roleIdx]?.accomplishments
+    const next = index + delta
+    if (!list || next < 0 || next >= list.length) return
+
+    flipFirstTopsRef.current = captureAccomplishmentTops(accomplishmentsListRef.current)
     updateDoc((d) => {
-      const list = d.companies[companyIdx]!.roles[roleIdx]!.accomplishments
-      const next = index + delta
-      if (next < 0 || next >= list.length) return d
-      const [item] = list.splice(index, 1)
-      list.splice(next, 0, item!)
+      const accomplishments = d.companies[companyIdx]!.roles[roleIdx]!.accomplishments
+      const [item] = accomplishments.splice(index, 1)
+      accomplishments.splice(next, 0, item!)
       return d
     })
   }
+
+  useLayoutEffect(() => {
+    const firstTops = flipFirstTopsRef.current
+    if (!firstTops) return
+    flipFirstTopsRef.current = null
+    playAccomplishmentFlip(accomplishmentsListRef.current, firstTops)
+  }, [doc])
 
   function toggleDestination(accIdx: number, dest: Destination): void {
     updateDoc((d) => {
@@ -258,8 +378,10 @@ export function App(): ReactElement {
     return (
       <div className="app">
         <header className="topbar">
-          <h1>Career Content Editor</h1>
-          <p className={`status ${statusKind}`}>{status}</p>
+          <div className="topbar-meta">
+            <h1>Career Content Editor</h1>
+            <p className={`status ${statusKind}`}>{status}</p>
+          </div>
         </header>
       </div>
     )
@@ -267,25 +389,48 @@ export function App(): ReactElement {
 
   return (
     <div className="app">
+      <ToastStack toasts={toasts} onDismiss={dismissToast} />
       <header className="topbar">
-        <div>
+        <div className="topbar-meta">
           <h1>Career Content Editor</h1>
           <p className={`status ${statusKind}`}>{status}</p>
         </div>
         <div className="topbar-actions">
-          <button type="button" disabled={busy} onClick={() => void load()}>
-            Reload
-          </button>
-          <button type="button" className="primary" disabled={busy} onClick={() => void handleSave()}>
-            Save YAML
-          </button>
-          <button type="button" disabled={busy} onClick={() => void handleGenerate()}>
+          <ThemeSwitcher />
+          <HintedAction
+            label="Reload from disk"
+            description="Discards unsaved editor changes and reloads career/content/experiences.yaml."
+            when="The YAML changed outside this UI, or you want to undo all edits since the last save."
+          >
+            <button
+              type="button"
+              className={`ghost icon-action reload-btn${reloading ? " spinning" : ""}`}
+              disabled={busy || reloading}
+              onClick={() => void handleReload()}
+            >
+              <RefreshIcon />
+              <span>Reload</span>
+            </button>
+          </HintedAction>
+          <span className="topbar-divider" aria-hidden />
+          <HintedAction
+            label="Save YAML"
+            description="Writes the current editor state to career/content/experiences.yaml and refreshes LinkedIn/resume previews."
+            when="You're done editing, or before Generate / Copy. Does not update the live portfolio by itself."
+          >
+            <button type="button" className="primary icon-action" disabled={busy} onClick={() => void handleSave()}>
+              <SaveIcon />
+              <span>Save YAML</span>
+            </button>
+          </HintedAction>
+          <button type="button" className="ghost" disabled={busy} onClick={() => void handleGenerate()}>
             Generate portfolio
           </button>
-          <button type="button" disabled={busy} onClick={() => void handleCopyLinkedIn()}>
-            Copy LinkedIn
+          <button type="button" className="ghost icon-action" disabled={busy} onClick={() => void handleCopyLinkedIn()}>
+            <LinkedInIcon />
+            <span>Copy LinkedIn</span>
           </button>
-          <button type="button" disabled={busy} onClick={() => void handleExportResume()}>
+          <button type="button" className="ghost" disabled={busy} onClick={() => void handleExportResume()}>
             Copy resume
           </button>
         </div>
@@ -293,58 +438,88 @@ export function App(): ReactElement {
 
       <div className="layout">
         <aside className="sidebar">
-          <h2>Content files</h2>
-          <ul className="file-list">
-            {files.map((file) => (
-              <li key={file}>
-                <button type="button" className={file === "experiences.yaml" ? "active" : ""}>
-                  {file}
-                </button>
-              </li>
-            ))}
-          </ul>
-
-          <h2 style={{ marginTop: "1.5rem" }}>Companies</h2>
-          <ul className="nav-list">
-            {doc.companies.map((c, ci) => (
-              <li key={c.id}>
-                <button
-                  type="button"
-                  className={ci === companyIdx ? "active" : ""}
-                  onClick={() => {
-                    setCompanyIdx(ci)
-                    setRoleIdx(0)
-                  }}
-                >
-                  {c.companyName}
-                </button>
-                {ci === companyIdx &&
-                  c.roles.map((r, ri) => (
-                    <button key={r.id} type="button" className={`role ${ri === roleIdx ? "active" : ""}`} onClick={() => setRoleIdx(ri)}>
-                      {r.position}
-                      <span className="meta">
-                        {r.start.month} {r.start.year}
-                        {r.end ? ` – ${r.end.month} ${r.end.year}` : " – Present"}
-                      </span>
-                    </button>
-                  ))}
-              </li>
-            ))}
-          </ul>
-          <div className="row-actions" style={{ marginTop: "0.75rem" }}>
-            <button type="button" onClick={addCompany}>
-              + Company
-            </button>
-            <button type="button" onClick={addRole} disabled={!company}>
-              + Role
-            </button>
+          <div className="sidebar-section-header">
+            <h2>Companies</h2>
+            <div className="row-actions">
+              <button type="button" className="sidebar-add-btn" onClick={addCompany} aria-label="Add company" title="Add Company">
+                <BuildingIcon />
+                <span className="sidebar-add-plus" aria-hidden>
+                  +
+                </span>
+              </button>
+              <button
+                type="button"
+                className="sidebar-add-btn"
+                onClick={addRole}
+                disabled={!company}
+                aria-label="Add role"
+                title="Add Role"
+              >
+                <BriefcaseIcon />
+                <span className="sidebar-add-plus" aria-hidden>
+                  +
+                </span>
+              </button>
+            </div>
           </div>
+          <ul className="company-accordion">
+            {doc.companies.map((c, ci) => {
+              const expanded = ci === companyIdx
+              const brandColor = getColorHex(c.colorKey)
+              return (
+                <li key={c.id} className={`company-accordion-item${expanded ? " expanded" : ""}`}>
+                  <button
+                    type="button"
+                    className={`company-accordion-trigger${expanded ? " active" : ""}`}
+                    aria-expanded={expanded}
+                    onClick={() => {
+                      setCompanyIdx(ci)
+                      setRoleIdx(0)
+                    }}
+                  >
+                    <span className="company-accordion-chevron" aria-hidden>
+                      ▾
+                    </span>
+                    <span className="company-accordion-name" style={brandColor ? { color: brandColor } : undefined}>
+                      {c.companyName || "Untitled company"}
+                    </span>
+                    <span className="company-accordion-count">{c.roles.length}</span>
+                  </button>
+                  <div className="company-accordion-panel">
+                    <div className="company-accordion-panel-inner">
+                      <ul className="role-list">
+                        {c.roles.map((r, ri) => (
+                          <li key={r.id}>
+                            <button
+                              type="button"
+                              className={`role-item${expanded && ri === roleIdx ? " active" : ""}`}
+                              tabIndex={expanded ? 0 : -1}
+                              onClick={() => {
+                                setCompanyIdx(ci)
+                                setRoleIdx(ri)
+                              }}
+                            >
+                              <span className="role-item-title">{r.position || "Untitled role"}</span>
+                              <span className="role-item-meta">
+                                {r.start.month} {r.start.year}
+                                {r.end ? ` – ${r.end.month} ${r.end.year}` : " – Present"}
+                              </span>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+              )
+            })}
+          </ul>
 
-          {issues.length > 0 && (
+          {displayIssues.length > 0 && (
             <>
               <h2 style={{ marginTop: "1.5rem" }}>Validation</h2>
               <ul className="issues">
-                {issues.map((issue) => (
+                {displayIssues.map((issue) => (
                   <li key={`${issue.path}-${issue.message}`} className={issue.severity}>
                     <strong>{issue.severity}</strong>: {issue.path} — {issue.message}
                   </li>
@@ -386,93 +561,58 @@ export function App(): ReactElement {
                       }
                     />
                   </label>
-                  <label>
-                    ID
-                    <input
-                      value={company.id}
-                      onChange={(e) =>
-                        updateDoc((d) => {
-                          d.companies[companyIdx]!.id = e.target.value
-                          return d
-                        })
-                      }
-                    />
-                  </label>
-                  <label>
-                    Color key
-                    <input
-                      value={company.colorKey}
-                      onChange={(e) =>
-                        updateDoc((d) => {
-                          d.companies[companyIdx]!.colorKey = e.target.value
-                          return d
-                        })
-                      }
-                    />
-                  </label>
-                  <label>
-                    Logo file
-                    <input
-                      value={company.logoFile}
-                      onChange={(e) =>
-                        updateDoc((d) => {
-                          d.companies[companyIdx]!.logoFile = e.target.value
-                          return d
-                        })
-                      }
-                    />
-                  </label>
-                  <label>
-                    Technologies (comma-separated keys)
-                    <input
-                      value={company.technologies.join(", ")}
-                      onChange={(e) =>
-                        updateDoc((d) => {
-                          d.companies[companyIdx]!.technologies = e.target.value
-                            .split(",")
-                            .map((t) => t.trim())
-                            .filter(Boolean)
-                          return d
-                        })
-                      }
-                    />
-                  </label>
                 </div>
+                <ColorKeyPicker
+                  value={company.colorKey}
+                  onChange={(colorKey) =>
+                    updateDoc((d) => {
+                      d.companies[companyIdx]!.colorKey = colorKey
+                      return d
+                    })
+                  }
+                />
+                <LogoFilePicker
+                  value={company.logoFile}
+                  onChange={(logoFile) =>
+                    updateDoc((d) => {
+                      d.companies[companyIdx]!.logoFile = logoFile
+                      return d
+                    })
+                  }
+                />
+                <TechnologyPicker
+                  value={company.technologies}
+                  onChange={(technologies) =>
+                    updateDoc((d) => {
+                      d.companies[companyIdx]!.technologies = technologies
+                      return d
+                    })
+                  }
+                />
               </section>
 
               <section className="card">
                 <div className="card-header">
                   <h3>Role</h3>
                 </div>
+                <label>
+                  Position
+                  <input
+                    value={role.position}
+                    onChange={(e) =>
+                      updateDoc((d) => {
+                        d.companies[companyIdx]!.roles[roleIdx]!.position = e.target.value
+                        return d
+                      })
+                    }
+                  />
+                </label>
                 <div className="grid-2">
-                  <label>
-                    Position
-                    <input
-                      value={role.position}
-                      onChange={(e) =>
-                        updateDoc((d) => {
-                          d.companies[companyIdx]!.roles[roleIdx]!.position = e.target.value
-                          return d
-                        })
-                      }
-                    />
-                  </label>
-                  <label>
-                    Role ID
-                    <input
-                      value={role.id}
-                      onChange={(e) =>
-                        updateDoc((d) => {
-                          d.companies[companyIdx]!.roles[roleIdx]!.id = e.target.value
-                          return d
-                        })
-                      }
-                    />
-                  </label>
                   <label>
                     Start month
                     <select
                       value={role.start.month}
+                      aria-invalid={roleDateError ? true : undefined}
                       onChange={(e) =>
                         updateDoc((d) => {
                           d.companies[companyIdx]!.roles[roleIdx]!.start.month = e.target.value as (typeof MONTH_ABBREVS)[number]
@@ -492,6 +632,7 @@ export function App(): ReactElement {
                     <input
                       type="number"
                       value={role.start.year}
+                      aria-invalid={roleDateError ? true : undefined}
                       onChange={(e) =>
                         updateDoc((d) => {
                           d.companies[companyIdx]!.roles[roleIdx]!.start.year = Number(e.target.value)
@@ -500,10 +641,12 @@ export function App(): ReactElement {
                       }
                     />
                   </label>
-                  <label>
+                  <label className={roleDateError ? "field-invalid" : undefined}>
                     End month
                     <select
                       value={role.end?.month ?? ""}
+                      aria-invalid={roleDateError ? true : undefined}
+                      aria-describedby={roleDateError ? "role-date-error" : undefined}
                       onChange={(e) =>
                         updateDoc((d) => {
                           const r = d.companies[companyIdx]!.roles[roleIdx]!
@@ -527,12 +670,15 @@ export function App(): ReactElement {
                       ))}
                     </select>
                   </label>
-                  <label>
+                  <label className={!role.end ? "field-disabled" : roleDateError ? "field-invalid" : undefined}>
                     End year
                     <input
                       type="number"
                       disabled={!role.end}
                       value={role.end?.year ?? ""}
+                      placeholder={role.end ? undefined : "—"}
+                      aria-invalid={roleDateError ? true : undefined}
+                      aria-describedby={roleDateError ? "role-date-error" : undefined}
                       onChange={(e) =>
                         updateDoc((d) => {
                           const r = d.companies[companyIdx]!.roles[roleIdx]!
@@ -544,6 +690,11 @@ export function App(): ReactElement {
                     />
                   </label>
                 </div>
+                {roleDateError && (
+                  <p id="role-date-error" className="field-error" role="alert">
+                    {roleDateError}
+                  </p>
+                )}
               </section>
 
               <div className="card-header">
@@ -553,67 +704,87 @@ export function App(): ReactElement {
                 </button>
               </div>
 
-              {role.accomplishments.map((acc, ai) => (
-                <section className="card" key={acc.id}>
-                  <div className="card-header">
-                    <h3>#{ai + 1}</h3>
-                    <div className="row-actions">
-                      <button type="button" onClick={() => moveAccomplishment(ai, -1)} disabled={ai === 0}>
-                        Up
-                      </button>
-                      <button type="button" onClick={() => moveAccomplishment(ai, 1)} disabled={ai === role.accomplishments.length - 1}>
-                        Down
-                      </button>
-                      <button type="button" className="danger" onClick={() => removeAccomplishment(ai)}>
-                        Delete
-                      </button>
+              <div className="accomplishments-list" ref={accomplishmentsListRef}>
+                {role.accomplishments.map((acc, ai) => (
+                  <section className="card accomplishment-card" data-accomplishment-id={acc.id} key={acc.id}>
+                    <div>
+                      <div className="card-header" style={{ marginBottom: "0.4rem" }}>
+                        <p className="muted" style={{ margin: 0 }}>
+                          Destinations
+                        </p>
+                        <div className="row-actions">
+                          <button
+                            type="button"
+                            className="icon-action move-up"
+                            aria-label="Move accomplishment up"
+                            title="Move up"
+                            onClick={() => moveAccomplishment(ai, -1)}
+                            disabled={ai === 0}
+                          >
+                            <ArrowUpIcon />
+                          </button>
+                          <button
+                            type="button"
+                            className="icon-action move-down"
+                            aria-label="Move accomplishment down"
+                            title="Move down"
+                            onClick={() => moveAccomplishment(ai, 1)}
+                            disabled={ai === role.accomplishments.length - 1}
+                          >
+                            <ArrowDownIcon />
+                          </button>
+                          <button
+                            type="button"
+                            className="icon-action danger"
+                            aria-label="Delete accomplishment"
+                            title="Delete"
+                            onClick={() => removeAccomplishment(ai)}
+                          >
+                            <TrashIcon />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="destinations">
+                        {DESTINATIONS.map((dest) => {
+                          const meta = DESTINATION_META[dest]
+                          return (
+                            <label key={dest}>
+                              <input type="checkbox" checked={acc.destinations.includes(dest)} onChange={() => toggleDestination(ai, dest)} />
+                              <span className="destination-option">
+                                {meta.icon}
+                                {meta.label}
+                              </span>
+                            </label>
+                          )
+                        })}
+                      </div>
                     </div>
-                  </div>
 
-                  <label>
-                    ID
-                    <input
-                      value={acc.id}
-                      onChange={(e) =>
-                        updateDoc((d) => {
-                          d.companies[companyIdx]!.roles[roleIdx]!.accomplishments[ai]!.id = e.target.value
-                          return d
-                        })
-                      }
-                    />
-                  </label>
-
-                  <div>
-                    <p className="muted" style={{ margin: "0 0 0.4rem" }}>
-                      Destinations
-                    </p>
-                    <div className="destinations">
-                      {DESTINATIONS.map((dest) => (
-                        <label key={dest}>
-                          <input type="checkbox" checked={acc.destinations.includes(dest)} onChange={() => toggleDestination(ai, dest)} />
-                          {dest}
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  {DESTINATIONS.filter((d) => acc.destinations.includes(d)).map((dest) => (
-                    <label key={dest}>
-                      {dest} variant
-                      {dest === "portfolio" ? " (supports [text](url) markdown links)" : ""}
-                      <textarea
-                        value={acc.variants[dest] ?? ""}
-                        onChange={(e) =>
-                          updateDoc((d) => {
-                            d.companies[companyIdx]!.roles[roleIdx]!.accomplishments[ai]!.variants[dest] = e.target.value
-                            return d
-                          })
-                        }
-                      />
-                    </label>
-                  ))}
-                </section>
-              ))}
+                    {DESTINATIONS.filter((d) => acc.destinations.includes(d)).map((dest) => {
+                      const meta = DESTINATION_META[dest]
+                      return (
+                        <VariantField
+                          key={dest}
+                          label={
+                            <span className="destination-option">
+                              {meta.icon}
+                              {meta.label} variant
+                            </span>
+                          }
+                          value={acc.variants[dest] ?? ""}
+                          supportsMarkdownLinks={dest === "portfolio"}
+                          onChange={(next) =>
+                            updateDoc((d) => {
+                              d.companies[companyIdx]!.roles[roleIdx]!.accomplishments[ai]!.variants[dest] = next
+                              return d
+                            })
+                          }
+                        />
+                      )
+                    })}
+                  </section>
+                ))}
+              </div>
 
               {companyIssues.length > 0 && (
                 <ul className="issues">
