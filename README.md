@@ -273,7 +273,6 @@ Lighthouse CI verifies the portfolio maintains high performance, accessibility, 
 Run Lighthouse audits locally:
 ```sh
 yarn test:lighthouse          # Runs desktop tests (default)
-yarn test:lighthouse:desktop  # Explicitly run desktop tests
 yarn test:lighthouse:mobile   # Run mobile tests with device emulation
 yarn test:lighthouse:both     # Run both desktop and mobile tests
 ```
