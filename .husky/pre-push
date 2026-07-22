@@ -1,8 +1,14 @@
 echo "🔍 Running tests before push..."
 echo ""
 
-echo "🧪 Running unit tests and Lighthouse audits (desktop + mobile)..."
-yarn test && yarn test:lighthouse:both
+# Lighthouse is intentionally NOT run here. It's the real CI gate (Linux
+# runner via .github/workflows/lighthouse.yml) and is unreliable locally on
+# macOS: headless Chrome frequently fails to paint under lhci's automation
+# ("NO_FCP" runtime error, unrelated to app performance), and even when it
+# does run, Mac scores don't reflect the Linux CI environment being gated on.
+# Run `yarn test:lighthouse:both` manually if you want a local sanity check.
+echo "🧪 Running unit tests..."
+yarn test
 
 if [ $? -ne 0 ]; then
   echo "❌ Tests failed! Fix failing tests before pushing."
