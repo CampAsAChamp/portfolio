@@ -1,3 +1,7 @@
+## <small>1.15.3 (2026-07-22)</small>
+
+* fix: warm up the Lighthouse preview server before measured runs ([4c2c58f](https://github.com/CampAsAChamp/portfolio/commit/4c2c58f))
+
 ## <small>1.15.2 (2026-07-21)</small>
 
 * chore: increase startServerReadyTimeout for Lighthouse tests to 30 seconds ([8b376d8](https://github.com/CampAsAChamp/portfolio/commit/8b376d8))
