@@ -73,3 +73,4 @@ Do **not** manually edit `CHANGELOG.md` — semantic-release generates it from c
 | E2E tests | `.cursor/rules/e2e-testing.mdc` |
 | CI workflows | `.cursor/rules/ci-workflows.mdc` |
 | Content/data files | `.cursor/rules/data-and-content.mdc` |
+| Mobile Lighthouse performance | `LIGHTHOUSE_MOBILE_PERF.md` |
