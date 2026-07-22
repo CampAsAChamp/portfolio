@@ -123,7 +123,13 @@ body.art-modal-open .column img:hover {
   }
 }
 
-.swiper {
+/* Higher specificity than swiper's own `.swiper { display: block; }` (in
+   node_modules/swiper/swiper.css) so this override wins regardless of
+   stylesheet insertion order -- swiper's CSS is now loaded lazily at
+   carousel-mount time (see ArtGalleryCarousel.tsx) to keep it off the
+   render-blocking critical path, which means it can land after this
+   stylesheet in the DOM instead of before it. */
+#graphic-design-content .swiper {
   display: none;
 }
 
@@ -141,7 +147,7 @@ body.art-modal-open .column img:hover {
     display: none;
   }
 
-  .swiper {
+  #graphic-design-content .swiper {
     display: block;
     width: 85vw;
   }
