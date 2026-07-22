@@ -28,15 +28,20 @@ jobs:
       - name: Build production site
         run: yarn build
 
-      - name: Install Playwright Chromium (for warm-up)
-        run: npx playwright install --with-deps chromium
-
       - name: Start and warm up preview server
         run: |
           yarn preview &
           echo $! > preview.pid
           npx wait-on http://localhost:4173 --timeout 30000
-          node scripts/warm-up-preview-server.mjs http://localhost:4173
+          # Burn the JIT/OS-cache warm-up cost (confirmed via bootup-time: identical
+          # bundle's `scripting` cost run ~2.5x slower on a process's first execution)
+          # on a throwaway run nobody scores. Must use the same `lighthouse` binary
+          # and Chrome-discovery path lighthouse-ci-action uses below -- an earlier
+          # attempt warmed a separately-installed Playwright Chromium instead, which
+          # is a different process/binary than what chrome-launcher finds here, and
+          # had no effect (confirmed: cold run stayed ~2000ms scripting either way).
+          npx lighthouse http://localhost:4173 --output=json --output-path=/dev/null \
+            --chrome-flags="--headless" --quiet || true
 
       - name: Run Lighthouse CI (desktop)
         uses: treosh/lighthouse-ci-action@v12
@@ -78,15 +83,20 @@ jobs:
       - name: Build production site
         run: yarn build
 
-      - name: Install Playwright Chromium (for warm-up)
-        run: npx playwright install --with-deps chromium
-
       - name: Start and warm up preview server
         run: |
           yarn preview &
           echo $! > preview.pid
           npx wait-on http://localhost:4173 --timeout 30000
-          node scripts/warm-up-preview-server.mjs http://localhost:4173
+          # Burn the JIT/OS-cache warm-up cost (confirmed via bootup-time: identical
+          # bundle's `scripting` cost run ~2.5x slower on a process's first execution)
+          # on a throwaway run nobody scores. Must use the same `lighthouse` binary
+          # and Chrome-discovery path lighthouse-ci-action uses below -- an earlier
+          # attempt warmed a separately-installed Playwright Chromium instead, which
+          # is a different process/binary than what chrome-launcher finds here, and
+          # had no effect (confirmed: cold run stayed ~2000ms scripting either way).
+          npx lighthouse http://localhost:4173 --output=json --output-path=/dev/null \
+            --chrome-flags="--headless" --quiet || true
 
       - name: Run Lighthouse CI (mobile)
         uses: treosh/lighthouse-ci-action@v12
