@@ -45,18 +45,24 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Split heavy vendor code out of the entry chunk so the main bundle
-          // stays small and first paint isn't blocked by the React reconciler.
-          // A function (not an object map) is required here: react-dom's real
-          // runtime lives in deep imports (react-dom/client, react-dom-client.production.js,
-          // scheduler) that an object map keyed on "react-dom" does NOT capture,
-          // which previously left the ~540KB reconciler in the entry chunk.
+          // Split react-dom (the ~540KB reconciler) and swiper out of the
+          // entry chunk so the main bundle stays small and first paint isn't
+          // blocked. `react` itself is deliberately left to Vite/Rollup's
+          // default chunking rather than given its own manualChunks bucket:
+          // an earlier attempt did that (and also split react-animate-on-scroll
+          // into its own "animations" chunk), and Rollup placed a shared
+          // CJS-interop helper in "animations" instead of "react", creating a
+          // genuine circular import between the two chunks. Because one
+          // side's top-level code (react.production.js's
+          // `exports.Activity = ...`) ran before the cycle's other side
+          // finished initializing, it crashed at runtime with
+          // "Cannot set properties of undefined (setting 'Activity')".
+          // Leaving react (and react-animate-on-scroll, which depends on it)
+          // in Rollup's default chunking avoids that hazard while still
+          // isolating react-dom's bulk from the entry chunk.
           if (id.includes("node_modules")) {
-            if (/[\\/]react-dom[\\/]|[\\/]scheduler[\\/]|[\\/]react[\\/]/.test(id)) {
-              return "react"
-            }
-            if (id.includes("react-animate-on-scroll")) {
-              return "animations"
+            if (/[\\/]react-dom[\\/]/.test(id)) {
+              return "react-dom"
             }
             if (id.includes("swiper")) {
               return "swiper"
