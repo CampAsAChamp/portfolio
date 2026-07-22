@@ -10,6 +10,13 @@ if [ -f .env.local ]; then
   export $(grep -v '^#' .env.local | xargs)
 fi
 
+# Provide LHCI_GITHUB_TOKEN so lhci's healthcheck doesn't warn "GitHub token not set"
+# (it detects the GitHub remote and expects a token even though we upload to
+# temporary-public-storage, not GitHub). Uses the gh CLI's existing auth, if any.
+if [ -z "$LHCI_GITHUB_TOKEN" ] && command -v gh >/dev/null 2>&1; then
+  export LHCI_GITHUB_TOKEN="$(gh auth token 2>/dev/null)"
+fi
+
 MODE="${1:-desktop}"
 PREVIEW_PORT=4173
 
