@@ -1,3 +1,9 @@
+## <small>1.15.6 (2026-07-22)</small>
+
+* fix: split React reconciler out of the entry chunk to fix Lighthouse perf ([15e8ff5](https://github.com/CampAsAChamp/portfolio/commit/15e8ff5))
+* fix: stop running Lighthouse in the pre-push hook ([d222724](https://github.com/CampAsAChamp/portfolio/commit/d222724))
+* chore: trigger CodeQL run to verify advanced-setup fix ([e78f976](https://github.com/CampAsAChamp/portfolio/commit/e78f976))
+
 ## <small>1.15.5 (2026-07-22)</small>
 
 * fix: run project's own ESLint 9 config in the ESLint workflow ([5e17258](https://github.com/CampAsAChamp/portfolio/commit/5e17258))
