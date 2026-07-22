@@ -1,3 +1,10 @@
+## <small>1.15.4 (2026-07-22)</small>
+
+* Add CodeQL analysis workflow configuration ([1afa7f6](https://github.com/CampAsAChamp/portfolio/commit/1afa7f6))
+* Add ESLint workflow for code analysis ([ed68875](https://github.com/CampAsAChamp/portfolio/commit/ed68875))
+* chore: fix LHCI_GITHUB_TOKEN warning in lighthouse pipeline tests ([a9e1716](https://github.com/CampAsAChamp/portfolio/commit/a9e1716))
+* fix: warm the same Chrome binary lighthouse-ci-action uses, not a separate Playwright instance ([5980385](https://github.com/CampAsAChamp/portfolio/commit/5980385))
+
 ## <small>1.15.3 (2026-07-22)</small>
 
 * fix: warm up the Lighthouse preview server before measured runs ([4c2c58f](https://github.com/CampAsAChamp/portfolio/commit/4c2c58f))
