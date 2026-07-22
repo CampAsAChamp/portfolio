@@ -1,3 +1,7 @@
+## <small>1.15.8 (2026-07-22)</small>
+
+* fix: defer swiper CSS so it's not render-blocking on initial load ([c9a78b4](https://github.com/CampAsAChamp/portfolio/commit/c9a78b4)), closes [#graphic-design-content](https://github.com/CampAsAChamp/portfolio/issues/graphic-design-content)
+
 ## <small>1.15.7 (2026-07-22)</small>
 
 * fix: revert unsafe react manualChunks split that broke the app entirely ([301156f](https://github.com/CampAsAChamp/portfolio/commit/301156f)), closes [#root](https://github.com/CampAsAChamp/portfolio/issues/root) [#root](https://github.com/CampAsAChamp/portfolio/issues/root)
