@@ -38,6 +38,15 @@
   margin-top: 10px;
 }
 
+.art-grid-btn {
+  border: none;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+}
+
 .column img {
   border-radius: 10px;
   transition: transform 0.25s;
