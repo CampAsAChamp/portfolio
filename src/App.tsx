@@ -3,6 +3,7 @@ import { AboutMe } from "components/AboutMe/AboutMe"
 import { ScrollToTopButton } from "components/Common/ScrollToTopButton"
 import { LandingPage } from "components/LandingPage/LandingPage"
 import { Navbar } from "components/NavBar/Navbar"
+import { useScrollRestoration } from "hooks/useScrollRestoration"
 
 import "styles/Common/Globals.css"
 import "styles/Common/Scrollbar.css"
@@ -27,6 +28,8 @@ function SectionSkeleton(): React.ReactElement {
 }
 
 export function App(): React.ReactElement {
+  useScrollRestoration()
+
   return (
     <>
       <a href="#landing-page-container" className="skip-link">
