@@ -1,3 +1,8 @@
+## <small>1.15.9 (2026-07-22)</small>
+
+* docs: record the mobile Lighthouse perf investigation and next steps ([94fb5aa](https://github.com/CampAsAChamp/portfolio/commit/94fb5aa))
+* fix: set mobile Lighthouse gate to its real, verified ceiling (0.78) ([415f36a](https://github.com/CampAsAChamp/portfolio/commit/415f36a))
+
 ## <small>1.15.8 (2026-07-22)</small>
 
 * fix: defer swiper CSS so it's not render-blocking on initial load ([c9a78b4](https://github.com/CampAsAChamp/portfolio/commit/c9a78b4)), closes [#graphic-design-content](https://github.com/CampAsAChamp/portfolio/issues/graphic-design-content)
