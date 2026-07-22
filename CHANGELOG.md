@@ -1,3 +1,7 @@
+## <small>1.15.7 (2026-07-22)</small>
+
+* fix: revert unsafe react manualChunks split that broke the app entirely ([301156f](https://github.com/CampAsAChamp/portfolio/commit/301156f)), closes [#root](https://github.com/CampAsAChamp/portfolio/issues/root) [#root](https://github.com/CampAsAChamp/portfolio/issues/root)
+
 ## <small>1.15.6 (2026-07-22)</small>
 
 * fix: split React reconciler out of the entry chunk to fix Lighthouse perf ([15e8ff5](https://github.com/CampAsAChamp/portfolio/commit/15e8ff5))
