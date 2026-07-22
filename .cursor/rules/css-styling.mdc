@@ -20,6 +20,8 @@ Dark/light theme via CSS variables toggled by `useTheme` hook. Check `Globals.cs
 
 - `Globals.css` — variables, resets, base typography
 - `hover.css` — shared hover effects
+- `animation.css` — hand-picked animate.css subset + spring-in
+- `SkipLink.css` — skip-to-content accessibility link
 - `Scrollbar.css` — custom scrollbar styling
 
 Run `yarn lint:css:fix` to auto-fix Stylelint issues.

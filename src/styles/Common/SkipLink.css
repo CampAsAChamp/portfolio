@@ -1,0 +1,18 @@
+/* Skip Navigation Link */
+.skip-link {
+  background-color: var(--color-purple);
+  border-radius: 4px;
+  color: white;
+  left: 50%;
+  padding: 8px 16px;
+  position: absolute;
+  text-decoration: none;
+  top: -100px;
+  transform: translateX(-50%);
+  transition: top 0.3s;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  top: 10px;
+}
