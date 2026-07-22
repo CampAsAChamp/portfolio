@@ -1,3 +1,7 @@
+## <small>1.15.5 (2026-07-22)</small>
+
+* fix: run project's own ESLint 9 config in the ESLint workflow ([5e17258](https://github.com/CampAsAChamp/portfolio/commit/5e17258))
+
 ## <small>1.15.4 (2026-07-22)</small>
 
 * Add CodeQL analysis workflow configuration ([1afa7f6](https://github.com/CampAsAChamp/portfolio/commit/1afa7f6))
