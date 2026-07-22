@@ -44,11 +44,25 @@ export default defineConfig({
     cssCodeSplit: true,
     rollupOptions: {
       output: {
-        manualChunks: {
-          // Separate vendor chunks for better caching
-          react: ["react", "react-dom"],
-          animations: ["react-animate-on-scroll"],
-          swiper: ["swiper"],
+        manualChunks: (id) => {
+          // Split heavy vendor code out of the entry chunk so the main bundle
+          // stays small and first paint isn't blocked by the React reconciler.
+          // A function (not an object map) is required here: react-dom's real
+          // runtime lives in deep imports (react-dom/client, react-dom-client.production.js,
+          // scheduler) that an object map keyed on "react-dom" does NOT capture,
+          // which previously left the ~540KB reconciler in the entry chunk.
+          if (id.includes("node_modules")) {
+            if (/[\\/]react-dom[\\/]|[\\/]scheduler[\\/]|[\\/]react[\\/]/.test(id)) {
+              return "react"
+            }
+            if (id.includes("react-animate-on-scroll")) {
+              return "animations"
+            }
+            if (id.includes("swiper")) {
+              return "swiper"
+            }
+          }
+          return undefined
         },
         // Asset file naming for better caching
         assetFileNames: (assetInfo) => {
