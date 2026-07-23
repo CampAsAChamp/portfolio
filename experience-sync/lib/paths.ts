@@ -18,6 +18,9 @@ export const EXPERIENCES_OUTPUT = path.join(REPO_ROOT, "src/data/experiences.ts"
 /** Primary experiences content file. */
 export const EXPERIENCES_YAML = path.join(CONTENT_DIR, "experiences.yaml")
 
+/** Template for generated `src/data/experiences.ts`. */
+export const EXPERIENCES_TS_TEMPLATE = path.join(EXPERIENCE_SYNC_ROOT, "templates/experiences.ts.template")
+
 /**
  * Map a bare YAML filename to an absolute path under CONTENT_DIR.
  * @throws if the filename is invalid or would escape CONTENT_DIR
