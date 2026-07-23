@@ -1,26 +1,35 @@
-import { bulletToTsExpr, parseMarkdownSegments, stripMarkdownLinks } from "experience-sync/lib/markdown"
+import {
+  bulletToTsExpr,
+  parseMarkdownSegments,
+  stripMarkdownLinks,
+  type MarkdownSegment,
+  type PlainTextSegment,
+} from "experience-sync/lib/markdown"
 import { printTsExpr } from "experience-sync/lib/tsExpr"
 import { describe, expect, it } from "vitest"
 
 describe("parseMarkdownSegments", () => {
   it("returns plain text as a single segment", () => {
-    expect(parseMarkdownSegments("Just text")).toEqual([{ type: "text", value: "Just text" }])
+    const expected: PlainTextSegment[] = [{ type: "text", value: "Just text" }]
+    expect(parseMarkdownSegments("Just text")).toEqual(expected)
   })
 
   it("parses a single markdown link", () => {
-    expect(parseMarkdownSegments("See [docs](https://example.com) now")).toEqual([
+    const expected: MarkdownSegment[] = [
       { type: "text", value: "See " },
       { type: "link", text: "docs", href: "https://example.com" },
       { type: "text", value: " now" },
-    ])
+    ]
+    expect(parseMarkdownSegments("See [docs](https://example.com) now")).toEqual(expected)
   })
 
   it("parses multiple markdown links", () => {
-    expect(parseMarkdownSegments("[A](https://a.example) and [B](http://b.example)")).toEqual([
+    const expected: MarkdownSegment[] = [
       { type: "link", text: "A", href: "https://a.example" },
       { type: "text", value: " and " },
       { type: "link", text: "B", href: "http://b.example" },
-    ])
+    ]
+    expect(parseMarkdownSegments("[A](https://a.example) and [B](http://b.example)")).toEqual(expected)
   })
 })
 
