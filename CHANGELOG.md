@@ -1,3 +1,26 @@
+## 1.16.0 (2026-07-23)
+
+* fix: keep Vitest explorer off experience-sync Vite config ([b234f2f](https://github.com/CampAsAChamp/portfolio/commit/b234f2f))
+* fix: regenerate experiences.ts to match YAML source ([30b1460](https://github.com/CampAsAChamp/portfolio/commit/30b1460))
+* fix: stop scroll restoration from fighting programmatic scroll ([5ee0b04](https://github.com/CampAsAChamp/portfolio/commit/5ee0b04))
+* fix: stretch art grid buttons to fill their column width ([adfae88](https://github.com/CampAsAChamp/portfolio/commit/adfae88))
+* fix: use ASCII hyphen in LinkedIn and resume date ranges ([2684c4d](https://github.com/CampAsAChamp/portfolio/commit/2684c4d))
+* refactor: clarify markdown segment parsing types ([21c6470](https://github.com/CampAsAChamp/portfolio/commit/21c6470))
+* refactor: emit experiences.ts from structured TS expressions ([95840ed](https://github.com/CampAsAChamp/portfolio/commit/95840ed))
+* refactor: extract semantic validation helpers in schema ([baeba2f](https://github.com/CampAsAChamp/portfolio/commit/baeba2f))
+* refactor: generate experiences.ts from a template file ([ccd0edd](https://github.com/CampAsAChamp/portfolio/commit/ccd0edd))
+* refactor: rename career tooling to experience-sync ([64778d0](https://github.com/CampAsAChamp/portfolio/commit/64778d0))
+* refactor: rename emitTsExpr to printTsExpr ([e46195f](https://github.com/CampAsAChamp/portfolio/commit/e46195f))
+* refactor: rename resolveContentPath to contentFilePath ([a72034d](https://github.com/CampAsAChamp/portfolio/commit/a72034d))
+* refactor: split animation and skip-link styles out of Globals ([81ae258](https://github.com/CampAsAChamp/portfolio/commit/81ae258))
+* refactor: ui folder on experience-sync sub project ([93e8723](https://github.com/CampAsAChamp/portfolio/commit/93e8723))
+* test: add unit tests for experience-sync lib ([1c282a7](https://github.com/CampAsAChamp/portfolio/commit/1c282a7))
+* revert: node script simplification ([48e085d](https://github.com/CampAsAChamp/portfolio/commit/48e085d))
+* chore: add claude launch.json ([fe1a62f](https://github.com/CampAsAChamp/portfolio/commit/fe1a62f))
+* chore: drop redundant npm scripts ([839d02b](https://github.com/CampAsAChamp/portfolio/commit/839d02b))
+* chore: make package.json cleaner with yarn injecting node options env var ([02a400d](https://github.com/CampAsAChamp/portfolio/commit/02a400d))
+* feat: restore scroll position across refreshes ([7bb4e7b](https://github.com/CampAsAChamp/portfolio/commit/7bb4e7b))
+
 ## <small>1.15.9 (2026-07-22)</small>
 
 * docs: record the mobile Lighthouse perf investigation and next steps ([94fb5aa](https://github.com/CampAsAChamp/portfolio/commit/94fb5aa))
