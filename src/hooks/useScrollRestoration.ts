@@ -6,6 +6,8 @@ const HASH_RESTORE_TIMEOUT_MS = 10_000
 const SAVED_RESTORE_TIMEOUT_MS = 8_000
 /** Consider layout stable when scrollHeight is unchanged for this long. */
 const LAYOUT_STABLE_MS = 200
+/** How far scroll may drift from the restore target before we treat it as user intent. */
+const RESTORE_DIVERGENCE_PX = 8
 
 function withInstantScroll(action: () => void): void {
   const html = document.documentElement
@@ -20,7 +22,9 @@ function readSavedScrollY(): number | null {
     const raw = sessionStorage.getItem(SCROLL_STORAGE_KEY)
     if (raw === null) return null
     const y = Number(raw)
-    return Number.isFinite(y) && y >= 0 ? y : null
+    // Top-of-page is the default — never treat 0 as a restore target (StrictMode remount
+    // used to persist "0" then re-enter an 8s restore loop that fought programmatic scroll).
+    return Number.isFinite(y) && y > 0 ? y : null
   } catch {
     return null
   }
@@ -28,7 +32,11 @@ function readSavedScrollY(): number | null {
 
 function writeSavedScrollY(y: number): void {
   try {
-    sessionStorage.setItem(SCROLL_STORAGE_KEY, String(y))
+    if (y > 0) {
+      sessionStorage.setItem(SCROLL_STORAGE_KEY, String(y))
+    } else {
+      sessionStorage.removeItem(SCROLL_STORAGE_KEY)
+    }
   } catch {
     // Ignore quota / private-mode failures
   }
@@ -242,6 +250,18 @@ export function useScrollRestoration(): void {
       if (ticking) return
       ticking = true
       requestAnimationFrame(() => {
+        // Programmatic scrolls (e.g. Playwright) don't fire wheel/touch/keydown — if the
+        // page has moved away from the restore target, stop fighting and accept the new Y.
+        if (isRestoring && shouldRestoreSaved && savedY !== null) {
+          const currentY = getCurrentScrollY()
+          if (Math.abs(currentY - savedY) > RESTORE_DIVERGENCE_PX) {
+            clearUrlHash()
+            finishRestoring()
+            writeSavedScrollY(currentY)
+            ticking = false
+            return
+          }
+        }
         persistScrollY()
         ticking = false
       })

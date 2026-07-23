@@ -51,11 +51,18 @@ run_suite_in_container() {
   # binaries (e.g. @rollup/rollup-linux-x64-gnu) straight into node_modules. Without an
   # anonymous volume there, that install clobbers the host's Mac binaries and breaks
   # `yarn test`/`yarn start` on the host until a fresh `yarn install` is run there too.
+  #
+  # `${arr[@]+"${arr[@]}"}` expands to nothing when empty — plain `"${arr[@]}"` trips
+  # `set -u` on macOS's Bash 3.2.
+  #
+  # Prefer the host's native arch. A global DOCKER_DEFAULT_PLATFORM=linux/amd64 on Apple
+  # Silicon forces QEMU and routinely SIGBUS mid-suite.
+  unset DOCKER_DEFAULT_PLATFORM || true
   docker run --rm \
     -v "${ROOT}:/work" \
     -v /work/node_modules \
-    "${CA_MOUNT_ARGS[@]}" \
-    "${CA_ENV_ARGS[@]}" \
+    ${CA_MOUNT_ARGS[@]+"${CA_MOUNT_ARGS[@]}"} \
+    ${CA_ENV_ARGS[@]+"${CA_ENV_ARGS[@]}"} \
     -w /work \
     -e CI=1 \
     "${IMAGE}" \

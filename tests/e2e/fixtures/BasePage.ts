@@ -7,6 +7,7 @@ import { waitForElementStable } from "../helpers/wait-helpers"
  */
 export class BasePage {
   readonly page: Page
+  private scrollStorageCleared = false
 
   constructor(page: Page) {
     this.page = page
@@ -16,6 +17,17 @@ export class BasePage {
    * Navigate to a specific URL
    */
   async goto(url: string = "/"): Promise<void> {
+    // Clear before any page script runs so restore cannot fight programmatic scrolls in e2e.
+    if (!this.scrollStorageCleared) {
+      await this.page.addInitScript(() => {
+        try {
+          sessionStorage.removeItem("portfolio-scroll-y")
+        } catch {
+          // Ignore private-mode / disabled storage
+        }
+      })
+      this.scrollStorageCleared = true
+    }
     await this.page.goto(url, { waitUntil: "domcontentloaded" })
   }
 

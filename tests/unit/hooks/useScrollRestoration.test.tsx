@@ -80,6 +80,52 @@ describe("useScrollRestoration", () => {
     expect(observe).toHaveBeenCalled()
   })
 
+  it("does not restore a saved scroll position of 0", () => {
+    sessionStorage.setItem(STORAGE_KEY, "0")
+
+    renderHook(() => useScrollRestoration())
+
+    expect(scrollTo).not.toHaveBeenCalled()
+    expect(observe).not.toHaveBeenCalled()
+    expect(sessionStorage.getItem(STORAGE_KEY)).toBeNull()
+  })
+
+  it("does not persist scroll position 0 on cold mount", () => {
+    Object.defineProperty(window, "scrollY", { configurable: true, writable: true, value: 0 })
+
+    renderHook(() => useScrollRestoration())
+
+    expect(sessionStorage.getItem(STORAGE_KEY)).toBeNull()
+  })
+
+  it("stops restoring when scroll diverges from the saved position", () => {
+    const rafCallbacks: FrameRequestCallback[] = []
+    vi.stubGlobal("requestAnimationFrame", (cb: FrameRequestCallback) => {
+      rafCallbacks.push(cb)
+      return rafCallbacks.length
+    })
+
+    sessionStorage.setItem(STORAGE_KEY, "1200")
+    renderHook(() => useScrollRestoration())
+    scrollTo.mockClear()
+
+    Object.defineProperty(window, "scrollY", { configurable: true, writable: true, value: 500 })
+
+    act(() => {
+      window.dispatchEvent(new Event("scroll"))
+      rafCallbacks.forEach((cb) => cb(0))
+    })
+
+    expect(sessionStorage.getItem(STORAGE_KEY)).toBe("500")
+    expect(disconnect).toHaveBeenCalled()
+
+    scrollTo.mockClear()
+    act(() => {
+      mutationCallback?.([], {} as MutationObserver)
+    })
+    expect(scrollTo).not.toHaveBeenCalled()
+  })
+
   it("does not overwrite the saved position while restoring", () => {
     sessionStorage.setItem(STORAGE_KEY, "1200")
     Object.defineProperty(window, "scrollY", { configurable: true, writable: true, value: 40 })
