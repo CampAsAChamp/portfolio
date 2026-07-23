@@ -19,7 +19,10 @@ export const experiences: Experience[] = [
     roles: [
       {
         position: "Senior Software Engineer",
-        start: { month: "Aug", year: 2026 },
+        start: {
+          month: "Aug",
+          year: 2026,
+        },
         bulletPoints: [
           [
             "Currently working as a full stack software engineer on the appointment scheduling team for TurboTax's ",
@@ -30,8 +33,14 @@ export const experiences: Experience[] = [
       },
       {
         position: "Software Engineer 2 - Full Stack",
-        start: { month: "Oct", year: 2023 },
-        end: { month: "Jul", year: 2026 },
+        start: {
+          month: "Oct",
+          year: 2023,
+        },
+        end: {
+          month: "Jul",
+          year: 2026,
+        },
         bulletPoints: [
           [
             "Launched Attribute Based Routing to match customers to tax experts at a more granular level, driving a 11% reduction in TurboTax Live customer service time without impact to quality and 6% increase in same-day tax filings (contributing to $5.3M savings).",
@@ -66,8 +75,14 @@ export const experiences: Experience[] = [
     roles: [
       {
         position: "Software Engineer",
-        start: { month: "Jan", year: 2022 },
-        end: { month: "Oct", year: 2023 },
+        start: {
+          month: "Jan",
+          year: 2022,
+        },
+        end: {
+          month: "Oct",
+          year: 2023,
+        },
         bulletPoints: [
           [
             "Worked on the ",
@@ -107,8 +122,14 @@ export const experiences: Experience[] = [
     roles: [
       {
         position: "Software Engineer 1",
-        start: { month: "Jan", year: 2020 },
-        end: { month: "Dec", year: 2021 },
+        start: {
+          month: "Jan",
+          year: 2020,
+        },
+        end: {
+          month: "Dec",
+          year: 2021,
+        },
         bulletPoints: [
           [
             "Worked on ",
@@ -148,8 +169,14 @@ export const experiences: Experience[] = [
     roles: [
       {
         position: "Software Engineer Co-op",
-        start: { month: "Sept", year: 2018 },
-        end: { month: "Dec", year: 2018 },
+        start: {
+          month: "Sept",
+          year: 2018,
+        },
+        end: {
+          month: "Dec",
+          year: 2018,
+        },
         bulletPoints: [
           [
             "Created responsive mobile web app ",
@@ -178,8 +205,14 @@ export const experiences: Experience[] = [
     roles: [
       {
         position: "Software Engineer Intern",
-        start: { month: "Jan", year: 2018 },
-        end: { month: "Mar", year: 2018 },
+        start: {
+          month: "Jan",
+          year: 2018,
+        },
+        end: {
+          month: "Mar",
+          year: 2018,
+        },
         bulletPoints: [
           [
             "Implemented RCampus online classroom learning tools and RESTful APIs with Java and MySQL for universities such as University of Virginia and Indiana University to use in courses.",
