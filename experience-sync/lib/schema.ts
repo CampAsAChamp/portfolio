@@ -77,6 +77,111 @@ export function getRoleEndBeforeStartMessage(start: RoleDate, end: RoleDate): st
   return null
 }
 
+function zodIssuesToValidationIssues(zodIssues: z.ZodIssue[]): ValidationIssue[] {
+  return zodIssues.map((issue) => ({
+    path: issue.path.join(".") || "(root)",
+    message: issue.message,
+    severity: "error" as const,
+  }))
+}
+
+function collectDuplicateIdIssue(
+  id: string,
+  seen: Set<string>,
+  path: string,
+  kind: "company" | "role" | "accomplishment",
+): ValidationIssue | null {
+  if (seen.has(id)) {
+    return {
+      path,
+      message: `Duplicate ${kind} id "${id}"`,
+      severity: "error",
+    }
+  }
+  seen.add(id)
+  return null
+}
+
+function collectRoleDateIssues(role: ExperienceRole, rolePath: string): ValidationIssue[] {
+  if (!role.end) return []
+  const dateMessage = getRoleEndBeforeStartMessage(role.start, role.end)
+  if (!dateMessage) return []
+  return [
+    {
+      path: `${rolePath}.end`,
+      message: dateMessage,
+      severity: "error",
+    },
+  ]
+}
+
+function collectVariantDestinationIssues(
+  accomplishment: Accomplishment,
+  basePath: string,
+): ValidationIssue[] {
+  const issues: ValidationIssue[] = []
+  const destSet = new Set(accomplishment.destinations)
+
+  for (const dest of DESTINATIONS) {
+    const variant = accomplishment.variants[dest]
+    const hasVariant = typeof variant === "string" && variant.trim().length > 0
+    const selected = destSet.has(dest)
+    const path = `${basePath}.variants.${dest}`
+
+    if (selected && !hasVariant) {
+      issues.push({
+        path,
+        message: `Destination "${dest}" is selected but has no variant text`,
+        severity: "error",
+      })
+    }
+    if (!selected && hasVariant) {
+      issues.push({
+        path,
+        message: `Variant "${dest}" is set but destination is not selected`,
+        severity: "warning",
+      })
+    }
+  }
+
+  return issues
+}
+
+function collectSemanticIssues(doc: ExperiencesDocument): ValidationIssue[] {
+  const issues: ValidationIssue[] = []
+  const seenCompanyIds = new Set<string>()
+  const seenRoleIds = new Set<string>()
+  const seenAccomplishmentIds = new Set<string>()
+
+  for (const [ci, company] of doc.companies.entries()) {
+    const companyDup = collectDuplicateIdIssue(company.id, seenCompanyIds, `companies.${ci}.id`, "company")
+    if (companyDup) issues.push(companyDup)
+
+    for (const [ri, role] of company.roles.entries()) {
+      const rolePath = `companies.${ci}.roles.${ri}`
+      const roleDup = collectDuplicateIdIssue(role.id, seenRoleIds, `${rolePath}.id`, "role")
+      if (roleDup) issues.push(roleDup)
+
+      issues.push(...collectRoleDateIssues(role, rolePath))
+
+      for (const [ai, accomplishment] of role.accomplishments.entries()) {
+        const base = `${rolePath}.accomplishments.${ai}`
+        const accomplishmentDup = collectDuplicateIdIssue(
+          accomplishment.id,
+          seenAccomplishmentIds,
+          `${base}.id`,
+          "accomplishment",
+        )
+        if (accomplishmentDup) issues.push(accomplishmentDup)
+
+        issues.push(...collectVariantDestinationIssues(accomplishment, base))
+      }
+    }
+  }
+
+  return issues
+}
+
 /**
  * Structural Zod parse plus destination/variant consistency rules.
  * Missing variant for a selected destination → error.
@@ -89,93 +194,15 @@ export function validateExperiencesDocument(data: unknown): {
   issues: ValidationIssue[]
 } {
   const parsed = experiencesDocumentSchema.safeParse(data)
-  const issues: ValidationIssue[] = []
 
   if (!parsed.success) {
-    for (const issue of parsed.error.issues) {
-      issues.push({
-        path: issue.path.join(".") || "(root)",
-        message: issue.message,
-        severity: "error",
-      })
-    }
-    return { success: false, issues }
+    return { success: false, issues: zodIssuesToValidationIssues(parsed.error.issues) }
   }
 
   const doc = parsed.data
-  const seenCompanyIds = new Set<string>()
-  const seenRoleIds = new Set<string>()
-  const seenAccomplishmentIds = new Set<string>()
-
-  for (const [ci, company] of doc.companies.entries()) {
-    if (seenCompanyIds.has(company.id)) {
-      issues.push({
-        path: `companies.${ci}.id`,
-        message: `Duplicate company id "${company.id}"`,
-        severity: "error",
-      })
-    }
-    seenCompanyIds.add(company.id)
-
-    for (const [ri, role] of company.roles.entries()) {
-      const rolePath = `companies.${ci}.roles.${ri}`
-      if (seenRoleIds.has(role.id)) {
-        issues.push({
-          path: `${rolePath}.id`,
-          message: `Duplicate role id "${role.id}"`,
-          severity: "error",
-        })
-      }
-      seenRoleIds.add(role.id)
-
-      if (role.end) {
-        const dateMessage = getRoleEndBeforeStartMessage(role.start, role.end)
-        if (dateMessage) {
-          issues.push({
-            path: `${rolePath}.end`,
-            message: dateMessage,
-            severity: "error",
-          })
-        }
-      }
-
-      for (const [ai, accomplishment] of role.accomplishments.entries()) {
-        const base = `companies.${ci}.roles.${ri}.accomplishments.${ai}`
-        if (seenAccomplishmentIds.has(accomplishment.id)) {
-          issues.push({
-            path: `${base}.id`,
-            message: `Duplicate accomplishment id "${accomplishment.id}"`,
-            severity: "error",
-          })
-        }
-        seenAccomplishmentIds.add(accomplishment.id)
-
-        const destSet = new Set(accomplishment.destinations)
-        for (const dest of DESTINATIONS) {
-          const variant = accomplishment.variants[dest]
-          const hasVariant = typeof variant === "string" && variant.trim().length > 0
-          const selected = destSet.has(dest)
-
-          if (selected && !hasVariant) {
-            issues.push({
-              path: `${base}.variants.${dest}`,
-              message: `Destination "${dest}" is selected but has no variant text`,
-              severity: "error",
-            })
-          }
-          if (!selected && hasVariant) {
-            issues.push({
-              path: `${base}.variants.${dest}`,
-              message: `Variant "${dest}" is set but destination is not selected`,
-              severity: "warning",
-            })
-          }
-        }
-      }
-    }
-  }
-
+  const issues = collectSemanticIssues(doc)
   const hasErrors = issues.some((i) => i.severity === "error")
+
   return {
     success: !hasErrors,
     data: hasErrors ? undefined : doc,
