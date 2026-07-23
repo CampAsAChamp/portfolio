@@ -5,7 +5,7 @@ import { runCli } from "experience-sync/api/runCli"
 import { writeExperiencesTs } from "experience-sync/lib/generate"
 import { formatLinkedInExport } from "experience-sync/lib/linkedin"
 import { listContentFiles, loadExperiencesDocument, readYamlFile, saveExperiencesDocument, writeYamlFile } from "experience-sync/lib/load"
-import { resolveContentPath } from "experience-sync/lib/paths"
+import { contentFilePath } from "experience-sync/lib/paths"
 import { formatResumeExport } from "experience-sync/lib/resume"
 import { type ExperiencesDocument, type ValidationIssue, validateExperiencesDocument } from "experience-sync/lib/schema"
 
@@ -71,7 +71,7 @@ function handleListFiles(_req: http.IncomingMessage, res: http.ServerResponse): 
 /** `GET /api/files/:name` — read and return one YAML file's parsed contents. */
 function handleGetFile(_req: http.IncomingMessage, res: http.ServerResponse, pathname: string): void {
   const filename = filenameFromFilesPath(pathname)
-  resolveContentPath(filename)
+  contentFilePath(filename)
   const data = readYamlFile(filename)
   sendJson(res, 200, { filename, data })
 }

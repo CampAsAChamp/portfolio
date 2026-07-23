@@ -19,10 +19,10 @@ export const EXPERIENCES_OUTPUT = path.join(REPO_ROOT, "src/data/experiences.ts"
 export const EXPERIENCES_YAML = path.join(CONTENT_DIR, "experiences.yaml")
 
 /**
- * Resolve a content file path, ensuring it stays under CONTENT_DIR.
- * @throws if the path escapes CONTENT_DIR
+ * Map a bare YAML filename to an absolute path under CONTENT_DIR.
+ * @throws if the filename is invalid or would escape CONTENT_DIR
  */
-export function resolveContentPath(filename: string): string {
+export function contentFilePath(filename: string): string {
   const base = path.basename(filename)
   if (base !== filename || filename.includes("..") || path.isAbsolute(filename)) {
     throw new Error(`Invalid content filename: ${filename}`)

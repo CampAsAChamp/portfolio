@@ -2,7 +2,7 @@ import fs from "node:fs"
 import path from "node:path"
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml"
 
-import { CONTENT_DIR, EXPERIENCES_YAML, resolveContentPath } from "experience-sync/lib/paths"
+import { CONTENT_DIR, EXPERIENCES_YAML, contentFilePath } from "experience-sync/lib/paths"
 import { validateExperiencesDocument, type ExperiencesDocument, type ValidationIssue } from "experience-sync/lib/schema"
 
 /** List YAML filenames under `experience-sync/content` (sorted). */
@@ -18,10 +18,10 @@ export function listContentFiles(): string[] {
 
 /**
  * Parse a content YAML file by basename.
- * Path-safe via {@link resolveContentPath}.
+ * Path-safe via {@link contentFilePath}.
  */
 export function readYamlFile(filename: string): unknown {
-  const filePath = resolveContentPath(filename)
+  const filePath = contentFilePath(filename)
   const raw = fs.readFileSync(filePath, "utf8")
   return parseYaml(raw)
 }
@@ -31,7 +31,7 @@ export function readYamlFile(filename: string): unknown {
  * Creates parent directories as needed; always ends the file with a newline.
  */
 export function writeYamlFile(filename: string, data: unknown): void {
-  const filePath = resolveContentPath(filename)
+  const filePath = contentFilePath(filename)
   const yaml = stringifyYaml(data, {
     lineWidth: 100,
     defaultKeyType: "PLAIN",
