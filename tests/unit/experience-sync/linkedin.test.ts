@@ -33,7 +33,7 @@ describe("formatLinkedInExport", () => {
     const text = formatLinkedInExport(doc)
     expect(text).toContain("Engineer")
     expect(text).toContain("Acme Corp · Remote")
-    expect(text).toContain("Jan 2020 – Dec 2021")
+    expect(text).toContain("Jan 2020 - Dec 2021")
     expect(text).toContain("• Shipped API")
     expect(text).not.toContain("https://api.example")
   })
@@ -60,7 +60,7 @@ describe("formatLinkedInExport", () => {
       ],
     })
 
-    expect(formatLinkedInExport(doc)).toContain("Jan 2020 – Present")
+    expect(formatLinkedInExport(doc)).toContain("Jan 2020 - Present")
   })
 
   it("skips roles without LinkedIn-tagged accomplishments", () => {

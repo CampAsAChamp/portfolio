@@ -34,7 +34,7 @@ describe("formatResumeExport", () => {
     expect(md).toContain("# Experience")
     expect(md).toContain("## Acme Corp — Remote")
     expect(md).toContain("### Engineer")
-    expect(md).toContain("*Jan 2020 – Dec 2021*")
+    expect(md).toContain("*Jan 2020 - Dec 2021*")
     expect(md).toContain("- Led migration")
     expect(md).not.toContain("https://example.com")
   })
@@ -61,7 +61,7 @@ describe("formatResumeExport", () => {
       ],
     })
 
-    expect(formatResumeExport(doc)).toContain("*Jan 2020 – Present*")
+    expect(formatResumeExport(doc)).toContain("*Jan 2020 - Present*")
   })
 
   it("returns an empty-state message when no resume accomplishments exist", () => {

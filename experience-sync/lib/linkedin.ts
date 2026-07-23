@@ -1,13 +1,13 @@
 import { stripMarkdownLinks } from "experience-sync/lib/markdown"
-import type { ExperiencesDocument } from "experience-sync/lib/schema"
+import type { ExperienceRole, ExperiencesDocument } from "experience-sync/lib/schema"
 
-/** Format a role's date range for LinkedIn (e.g. `Jan 2020 – Present`). */
-function formatRoleDates(role: ExperiencesDocument["companies"][number]["roles"][number]): string {
+/** Format a role's date range for LinkedIn (e.g. `Jan 2020 - Present`). */
+function formatRoleDates(role: ExperienceRole): string {
   const start = `${role.start.month} ${role.start.year}`
   if (!role.end) {
-    return `${start} – Present`
+    return `${start} - Present`
   }
-  return `${start} – ${role.end.month} ${role.end.year}`
+  return `${start} - ${role.end.month} ${role.end.year}`
 }
 
 /**
@@ -27,7 +27,14 @@ export function formatLinkedInExport(doc: ExperiencesDocument): string {
         continue
       }
 
-      blocks.push([`${role.position}`, `${company.companyName} · ${company.location}`, formatRoleDates(role), "", ...bullets].join("\n"))
+      const lines = [
+        role.position,
+        `${company.companyName} · ${company.location}`,
+        formatRoleDates(role),
+        "", // blank line before bullets
+        ...bullets,
+      ]
+      blocks.push(lines.join("\n"))
     }
   }
 
@@ -35,5 +42,6 @@ export function formatLinkedInExport(doc: ExperiencesDocument): string {
     return "No LinkedIn-tagged accomplishments found.\n"
   }
 
+  // Blank line between roles so pasted blocks stay visually separated.
   return blocks.join("\n\n") + "\n"
 }

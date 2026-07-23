@@ -1,13 +1,13 @@
 import { stripMarkdownLinks } from "experience-sync/lib/markdown"
-import type { ExperiencesDocument } from "experience-sync/lib/schema"
+import type { ExperienceRole, ExperiencesDocument } from "experience-sync/lib/schema"
 
-/** Format a role's date range for resume markdown (e.g. `Jan 2020 – Present`). */
-function formatRoleDates(role: ExperiencesDocument["companies"][number]["roles"][number]): string {
+/** Format a role's date range for resume markdown (e.g. `Jan 2020 - Present`). */
+function formatRoleDates(role: ExperienceRole): string {
   const start = `${role.start.month} ${role.start.year}`
   if (!role.end) {
-    return `${start} – Present`
+    return `${start} - Present`
   }
-  return `${start} – ${role.end.month} ${role.end.year}`
+  return `${start} - ${role.end.month} ${role.end.year}`
 }
 
 /**
