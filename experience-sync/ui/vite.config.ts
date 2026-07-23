@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url"
 import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 
-import { experienceSyncApiPlugin } from "experience-sync/ui/experienceSyncApiPlugin"
+import { experienceSyncApiPlugin } from "./experienceSyncApiPlugin"
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
