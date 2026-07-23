@@ -1,6 +1,5 @@
 import { useEffect, useState, type ReactElement } from "react"
-
-import { CheckIcon, CopyIcon } from "experience-sync/ui/src/ActionIcons"
+import { CheckIcon, CopyIcon } from "experience-sync/ui/src/components/ActionIcons"
 
 export type ToastKind = "ok" | "error"
 

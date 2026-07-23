@@ -52,6 +52,11 @@ experience-sync/
   cli/               # yarn exp:* entrypoints
   api/               # optional standalone API (yarn exp:api)
   ui/                # React editor
+    src/
+      App.tsx / main.tsx / styles.css
+      components/    # pickers, toasts, icons, fields
+      catalogs/      # logo + technology option lists
+      lib/           # API client + markdown helpers
   exports/           # generated resume.md (gitignored)
 ```
 

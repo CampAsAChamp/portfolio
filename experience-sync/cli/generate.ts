@@ -1,7 +1,6 @@
 #!/usr/bin/env tsx
-import { writeExperiencesTs } from "experience-sync/lib/generate"
-
 import { isCliEntry, requireExperiencesDocument } from "experience-sync/cli/shared"
+import { writeExperiencesTs } from "experience-sync/lib/generate"
 
 /** Generate `src/data/experiences.ts` from the YAML source of truth. */
 export function runGenerate(): void {

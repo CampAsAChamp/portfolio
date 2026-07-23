@@ -1,9 +1,8 @@
 import fs from "node:fs"
 import path from "node:path"
-import { parse as parseYaml, stringify as stringifyYaml } from "yaml"
-
-import { CONTENT_DIR, EXPERIENCES_YAML, contentFilePath } from "experience-sync/lib/paths"
+import { CONTENT_DIR, contentFilePath, EXPERIENCES_YAML } from "experience-sync/lib/paths"
 import { validateExperiencesDocument, type ExperiencesDocument, type ValidationIssue } from "experience-sync/lib/schema"
+import { parse as parseYaml, stringify as stringifyYaml } from "yaml"
 
 /** List YAML filenames under `experience-sync/content` (sorted). */
 export function listContentFiles(): string[] {

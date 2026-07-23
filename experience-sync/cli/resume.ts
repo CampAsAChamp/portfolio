@@ -1,11 +1,9 @@
 #!/usr/bin/env tsx
 import fs from "node:fs"
 import path from "node:path"
-
+import { copyToClipboard, flagValue, hasFlag, isCliEntry, requireExperiencesDocument } from "experience-sync/cli/shared"
 import { EXPERIENCE_SYNC_ROOT } from "experience-sync/lib/paths"
 import { formatResumeExport } from "experience-sync/lib/resume"
-
-import { copyToClipboard, flagValue, hasFlag, isCliEntry, requireExperiencesDocument } from "experience-sync/cli/shared"
 
 const DEFAULT_OUT_PATH = path.join(EXPERIENCE_SYNC_ROOT, "exports/resume.md")
 

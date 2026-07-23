@@ -115,10 +115,7 @@ function collectRoleDateIssues(role: ExperienceRole, rolePath: string): Validati
   ]
 }
 
-function collectVariantDestinationIssues(
-  accomplishment: Accomplishment,
-  basePath: string,
-): ValidationIssue[] {
+function collectVariantDestinationIssues(accomplishment: Accomplishment, basePath: string): ValidationIssue[] {
   const issues: ValidationIssue[] = []
   const destSet = new Set(accomplishment.destinations)
 
@@ -166,12 +163,7 @@ function collectSemanticIssues(doc: ExperiencesDocument): ValidationIssue[] {
 
       for (const [ai, accomplishment] of role.accomplishments.entries()) {
         const base = `${rolePath}.accomplishments.${ai}`
-        const accomplishmentDup = collectDuplicateIdIssue(
-          accomplishment.id,
-          seenAccomplishmentIds,
-          `${base}.id`,
-          "accomplishment",
-        )
+        const accomplishmentDup = collectDuplicateIdIssue(accomplishment.id, seenAccomplishmentIds, `${base}.id`, "accomplishment")
         if (accomplishmentDup) issues.push(accomplishmentDup)
 
         issues.push(...collectVariantDestinationIssues(accomplishment, base))

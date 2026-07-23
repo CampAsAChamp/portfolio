@@ -1,8 +1,7 @@
 import { useId, useLayoutEffect, useRef, type ReactElement, type ReactNode } from "react"
-
-import { LinkIcon } from "experience-sync/ui/src/ActionIcons"
-import { HintedAction } from "experience-sync/ui/src/HintedAction"
-import { insertMarkdownLink, isMarkdownLinkShortcut, markdownLinkShortcutLabel } from "experience-sync/ui/src/insertMarkdownLink"
+import { LinkIcon } from "experience-sync/ui/src/components/ActionIcons"
+import { HintedAction } from "experience-sync/ui/src/components/HintedAction"
+import { insertMarkdownLink, isMarkdownLinkShortcut, markdownLinkShortcutLabel } from "experience-sync/ui/src/lib/insertMarkdownLink"
 
 interface VariantFieldProps {
   label: ReactNode

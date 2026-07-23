@@ -2,7 +2,6 @@ import fs from "node:fs"
 import http from "node:http"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
-
 import { HttpMethod, sendJson } from "experience-sync/api/http"
 import { routeRequest } from "experience-sync/api/routes"
 import { CONTENT_DIR } from "experience-sync/lib/paths"

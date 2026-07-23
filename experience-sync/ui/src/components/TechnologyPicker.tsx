@@ -8,10 +8,13 @@ import {
   type ReactElement,
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react"
+import {
+  TECHNOLOGY_OPTIONS_ALPHA,
+  TECHNOLOGY_OPTIONS_BY_KEY,
+  type TechnologyOption,
+} from "experience-sync/ui/src/catalogs/technologyCatalog"
+import { TrashIcon } from "experience-sync/ui/src/components/ActionIcons"
 import InlineSVG from "react-inlinesvg"
-
-import { TrashIcon } from "experience-sync/ui/src/ActionIcons"
-import { TECHNOLOGY_OPTIONS_ALPHA, TECHNOLOGY_OPTIONS_BY_KEY, type TechnologyOption } from "experience-sync/ui/src/technologyCatalog"
 
 interface TechnologyPickerProps {
   value: string[]

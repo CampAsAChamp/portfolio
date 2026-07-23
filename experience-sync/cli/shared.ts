@@ -1,7 +1,6 @@
 import { spawnSync } from "node:child_process"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
-
 import { loadExperiencesDocument } from "experience-sync/lib/load"
 import type { ExperiencesDocument, ValidationIssue } from "experience-sync/lib/schema"
 

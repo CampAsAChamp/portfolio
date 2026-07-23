@@ -1,6 +1,5 @@
 import { useMemo, type ReactElement } from "react"
-
-import { LOGO_OPTIONS, LOGO_OPTIONS_BY_FILE } from "experience-sync/ui/src/logoCatalog"
+import { LOGO_OPTIONS, LOGO_OPTIONS_BY_FILE } from "experience-sync/ui/src/catalogs/logoCatalog"
 
 interface LogoFilePickerProps {
   value: string

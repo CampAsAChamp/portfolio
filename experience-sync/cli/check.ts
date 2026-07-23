@@ -1,10 +1,8 @@
 #!/usr/bin/env tsx
 import fs from "node:fs"
-
+import { isCliEntry, requireExperiencesDocument } from "experience-sync/cli/shared"
 import { writeExperiencesTs } from "experience-sync/lib/generate"
 import { EXPERIENCES_OUTPUT } from "experience-sync/lib/paths"
-
-import { isCliEntry, requireExperiencesDocument } from "experience-sync/cli/shared"
 
 /**
  * Fail if `src/data/experiences.ts` is missing or differs from what the YAML would generate.
@@ -26,10 +24,7 @@ export function runCheck(): void {
     fs.writeFileSync(EXPERIENCES_OUTPUT, before)
   }
 
-  console.error(
-    `${EXPERIENCES_OUTPUT} is out of date with experience-sync/content/experiences.yaml.\n` +
-      `Run: yarn exp:generate`,
-  )
+  console.error(`${EXPERIENCES_OUTPUT} is out of date with experience-sync/content/experiences.yaml.\n` + `Run: yarn exp:generate`)
   process.exit(1)
 }
 

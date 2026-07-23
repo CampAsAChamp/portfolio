@@ -1,6 +1,5 @@
 import { spawn } from "node:child_process"
 import path from "node:path"
-
 import { EXPERIENCE_SYNC_ROOT } from "experience-sync/lib/paths"
 
 /** Run an experience-sync CLI script via tsx and capture combined stdout/stderr. */

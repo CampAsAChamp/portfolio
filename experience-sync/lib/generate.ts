@@ -1,7 +1,6 @@
 import { spawnSync } from "node:child_process"
 import fs from "node:fs"
 import path from "node:path"
-
 import { bulletToTsExpr } from "experience-sync/lib/markdown"
 import { EXPERIENCES_OUTPUT, EXPERIENCES_TS_TEMPLATE, REPO_ROOT } from "experience-sync/lib/paths"
 import type { Company, ExperienceRole, ExperiencesDocument, RoleDate } from "experience-sync/lib/schema"

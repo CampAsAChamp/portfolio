@@ -1,7 +1,6 @@
 #!/usr/bin/env tsx
-import { formatLinkedInExport } from "experience-sync/lib/linkedin"
-
 import { copyToClipboard, hasFlag, isCliEntry, requireExperiencesDocument } from "experience-sync/cli/shared"
+import { formatLinkedInExport } from "experience-sync/lib/linkedin"
 
 export interface LinkedInCliOptions {
   copy?: boolean

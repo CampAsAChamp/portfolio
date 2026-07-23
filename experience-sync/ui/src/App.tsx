@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactElement } from "react"
 import { ThemeSwitcher } from "components/NavBar/ThemeSwitcher"
-
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -12,7 +11,13 @@ import {
   SaveIcon,
   TrashIcon,
   UndoIcon,
-} from "experience-sync/ui/src/ActionIcons"
+} from "experience-sync/ui/src/components/ActionIcons"
+import { ColorKeyPicker, getColorHex } from "experience-sync/ui/src/components/ColorKeyPicker"
+import { HintedAction } from "experience-sync/ui/src/components/HintedAction"
+import { LogoFilePicker } from "experience-sync/ui/src/components/LogoFilePicker"
+import { TechnologyPicker } from "experience-sync/ui/src/components/TechnologyPicker"
+import { ToastStack, type ToastKind, type ToastMessage } from "experience-sync/ui/src/components/Toast"
+import { VariantField } from "experience-sync/ui/src/components/VariantField"
 import {
   ApiError,
   DESTINATIONS,
@@ -26,13 +31,7 @@ import {
   type Destination,
   type ExperiencesDocument,
   type ValidationIssue,
-} from "experience-sync/ui/src/api"
-import { ColorKeyPicker, getColorHex } from "experience-sync/ui/src/ColorKeyPicker"
-import { HintedAction } from "experience-sync/ui/src/HintedAction"
-import { LogoFilePicker } from "experience-sync/ui/src/LogoFilePicker"
-import { TechnologyPicker } from "experience-sync/ui/src/TechnologyPicker"
-import { ToastStack, type ToastKind, type ToastMessage } from "experience-sync/ui/src/Toast"
-import { VariantField } from "experience-sync/ui/src/VariantField"
+} from "experience-sync/ui/src/lib/api"
 
 /** Blank accomplishment with portfolio destination selected (used when adding a bullet). */
 function emptyAccomplishment(id: string) {
