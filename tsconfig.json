@@ -20,7 +20,8 @@
       "styles/*": ["styles/*"], // Import from styles/ directly
       "hooks/*": ["hooks/*"], // Import from hooks/ directly
       "utils/*": ["utils/*"], // Import from utils/ directly
-      "tests/*": ["../tests/*"] // Import from tests/ directory (one level up from src)
+      "tests/*": ["../tests/*"], // Import from tests/ directory (one level up from src)
+      "experience-sync/*": ["../experience-sync/*"] // Experience sync tooling (unit tests import lib/)
     },
 
     /* JavaScript Support */

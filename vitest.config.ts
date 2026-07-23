@@ -15,6 +15,7 @@ export default defineConfig({
       hooks: path.resolve(__dirname, "./src/hooks"),
       utils: path.resolve(__dirname, "./src/utils"),
       tests: path.resolve(__dirname, "./tests"),
+      "experience-sync": path.resolve(__dirname, "./experience-sync"),
     },
   },
   test: {
