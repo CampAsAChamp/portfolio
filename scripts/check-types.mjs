@@ -2,13 +2,13 @@
 import { spawnSync } from "child_process"
 
 /**
- * Typecheck the portfolio app and the career tooling (lib/cli/api + UI).
+ * Typecheck the portfolio app and the experience-sync tooling (lib/cli/api + UI).
  * Exit codes from tsc are forwarded so CI/lint fail on type errors.
  */
 const checks = [
   { label: "portfolio", args: ["tsc", "--noEmit", "--pretty"] },
-  { label: "career lib/cli/api", args: ["tsc", "--noEmit", "--pretty", "-p", "career/tsconfig.json"] },
-  { label: "career UI", args: ["tsc", "--noEmit", "--pretty", "-p", "career/ui/tsconfig.json"] },
+  { label: "experience-sync lib/cli/api", args: ["tsc", "--noEmit", "--pretty", "-p", "experience-sync/tsconfig.json"] },
+  { label: "experience-sync UI", args: ["tsc", "--noEmit", "--pretty", "-p", "experience-sync/ui/tsconfig.json"] },
 ]
 
 for (const { label, args } of checks) {

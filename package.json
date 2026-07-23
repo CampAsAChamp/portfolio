@@ -44,13 +44,13 @@
     "test:ui": "node scripts/check-node-version.mjs && vitest --ui",
     "test:watch": "node scripts/check-node-version.mjs && vitest",
     "test": "node scripts/check-node-version.mjs && vitest run",
-    "career:generate": "node scripts/check-node-version.mjs && tsx career/cli/generate.ts",
-    "career:linkedin": "node scripts/check-node-version.mjs && tsx career/cli/linkedin.ts",
-    "career:resume": "node scripts/check-node-version.mjs && tsx career/cli/resume.ts",
-    "career:sync": "node scripts/check-node-version.mjs && tsx career/cli/sync.ts",
-    "career:check": "node scripts/check-node-version.mjs && tsx career/cli/check.ts",
-    "career:ui": "node scripts/check-node-version.mjs && vite --config career/ui/vite.config.ts",
-    "career:api": "node scripts/check-node-version.mjs && tsx career/api/server.ts"
+    "exp:generate": "node scripts/check-node-version.mjs && tsx --tsconfig experience-sync/tsconfig.json experience-sync/cli/generate.ts",
+    "exp:linkedin": "node scripts/check-node-version.mjs && tsx --tsconfig experience-sync/tsconfig.json experience-sync/cli/linkedin.ts",
+    "exp:resume": "node scripts/check-node-version.mjs && tsx --tsconfig experience-sync/tsconfig.json experience-sync/cli/resume.ts",
+    "exp:sync": "node scripts/check-node-version.mjs && tsx --tsconfig experience-sync/tsconfig.json experience-sync/cli/sync.ts",
+    "exp:check": "node scripts/check-node-version.mjs && tsx --tsconfig experience-sync/tsconfig.json experience-sync/cli/check.ts",
+    "exp:ui": "node scripts/check-node-version.mjs && vite --config experience-sync/ui/vite.config.ts",
+    "exp:api": "node scripts/check-node-version.mjs && tsx --tsconfig experience-sync/tsconfig.json experience-sync/api/server.ts"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

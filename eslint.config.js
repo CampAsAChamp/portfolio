@@ -13,7 +13,7 @@ import globals from "globals"
 export default [
   // Ignore patterns (replaces .eslintignore)
   {
-    ignores: ["node_modules/**", "build/**", "dist/**", "**/*.js", "**/*.cjs", "**/*.mjs", "career/**"],
+    ignores: ["node_modules/**", "build/**", "dist/**", "**/*.js", "**/*.cjs", "**/*.mjs", "experience-sync/**"],
   },
 
   // Base configuration for all files

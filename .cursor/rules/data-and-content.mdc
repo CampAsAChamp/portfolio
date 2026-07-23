@@ -10,14 +10,14 @@ Keep all display content in `src/data/` — components should import, not hardco
 
 | File | Purpose |
 |------|---------|
-| `experiences.ts` | Work history (**generated** from `career/content/experiences.yaml` via `yarn career:generate`) |
+| `experiences.ts` | Work history (**generated** from `experience-sync/content/experiences.yaml` via `yarn exp:generate`) |
 | `swProjects.ts` | Software projects |
 | `artProjects.ts` | Art portfolio items |
 | `technologies.ts` | Skills/tech stack icons |
 | `navigation.ts` | Navbar links |
 | `colors.ts` | Color constants |
 
-Experience bullets are edited in `career/` (YAML or `yarn career:ui`), not by hand in `experiences.ts`. See [`career/README.md`](../../career/README.md).
+Experience bullets are edited in `experience-sync/` (YAML or `yarn exp:ui`), not by hand in `experiences.ts`. See [`experience-sync/README.md`](../../experience-sync/README.md).
 
 Define TypeScript types in `src/types/` (e.g., `experience.types.ts`, `project.types.ts`). Export named constants with full metadata (company, duration, technologies, URLs, etc.).
 

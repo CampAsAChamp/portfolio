@@ -30,8 +30,8 @@ jobs:
       - name: Run linter
         run: yarn lint
 
-      - name: Check career content sync
-        run: yarn career:check
+      - name: Check experience-sync content
+        run: yarn exp:check
 
       - name: Check visual baseline sync (Darwin vs Linux snapshots)
         run: node scripts/check-visual-baseline-sync.mjs

@@ -140,7 +140,7 @@ const projects: SoftwareProject[] = [
         ", with dark/light theme, scroll-driven sections, and Cloudflare Pages deploy.",
       ],
       [
-        "Local career content pipeline: YAML source of truth with a localhost editor that syncs experience copy into the site plus LinkedIn/resume exports.",
+        "Local experience-sync pipeline: YAML source of truth with a localhost editor that syncs experience copy into the site plus LinkedIn/resume exports.",
       ],
       [
         "Quality bar: Vitest unit tests, Playwright desktop/mobile E2E, Lighthouse CI, Husky/lint-staged hooks, and semantic-release for versioning and changelog.",

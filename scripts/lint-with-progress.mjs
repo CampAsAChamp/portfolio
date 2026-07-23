@@ -119,7 +119,7 @@ async function main() {
     process.exit(stylelintCode)
   }
 
-  // Run TypeScript (portfolio + career lib/cli/api + career UI)
+  // Run TypeScript (portfolio + experience-sync lib/cli/api + experience-sync UI)
   const tscCode = await runWithProgress("node", ["scripts/check-types.mjs"], "Checking TypeScript types...")
 
   if (tscCode !== 0) {
