@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest"
 import { makeAccomplishment, makeCompany, makeDocument, makeRole } from "./helpers"
 
 describe("generateExperiencesTs", () => {
-  it("emits a logo import derived from the logo filename", () => {
+  it("includes a logo import derived from the logo filename", () => {
     const source = generateExperiencesTs(makeDocument())
     expect(source).toContain('import IntuitLogo from "assets/Company_Logos/Intuit.svg"')
     expect(source).toContain("logo: IntuitLogo")
@@ -76,7 +76,7 @@ describe("generateExperiencesTs", () => {
     expect(source).toContain("logo: _123CorpLogo")
   })
 
-  it("emits empty bulletPoints when no portfolio accomplishments exist", () => {
+  it("writes empty bulletPoints when no portfolio accomplishments exist", () => {
     const doc = makeDocument({
       companies: [
         makeCompany({

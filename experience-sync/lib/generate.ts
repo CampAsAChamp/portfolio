@@ -5,7 +5,7 @@ import path from "node:path"
 import { bulletToTsExpr } from "experience-sync/lib/markdown"
 import { EXPERIENCES_OUTPUT, REPO_ROOT } from "experience-sync/lib/paths"
 import type { Company, ExperiencesDocument } from "experience-sync/lib/schema"
-import { arr, emitTsExpr, ident, lit, obj, type TsExpr } from "experience-sync/lib/tsEmit"
+import { arr, ident, lit, obj, printTsExpr, type TsExpr } from "experience-sync/lib/tsExpr"
 
 /** Derive a stable JS import identifier from a logo filename (e.g. `Intuit.svg` → `IntuitLogo`). */
 function logoImportName(logoFile: string): string {
@@ -74,7 +74,7 @@ import { Experience } from "types/experience.types"
 import { createExternalLink } from "utils/contentUtils"
 ${logoImports}
 
-export const experiences: Experience[] = ${emitTsExpr(experiencesExpr)}
+export const experiences: Experience[] = ${printTsExpr(experiencesExpr)}
 `
 }
 

@@ -36,28 +36,28 @@ export function obj(properties: Record<string, TsExpr | undefined>): TsExpr {
   }
 }
 
-/** Print a TS expression (Prettier can reformat afterward). */
-export function emitTsExpr(expr: TsExpr, indent = ""): string {
+/** Print a TS expression as source text (Prettier can reformat afterward). */
+export function printTsExpr(expr: TsExpr, indent = ""): string {
   switch (expr.kind) {
     case "literal":
       return JSON.stringify(expr.value)
     case "ident":
       return expr.name
     case "call":
-      return `${expr.callee}(${expr.args.map((arg) => emitTsExpr(arg, indent)).join(", ")})`
+      return `${expr.callee}(${expr.args.map((arg) => printTsExpr(arg, indent)).join(", ")})`
     case "array": {
       if (expr.elements.length === 0) {
         return "[]"
       }
       const inner = indent + "  "
-      return `[\n${expr.elements.map((el) => `${inner}${emitTsExpr(el, inner)},`).join("\n")}\n${indent}]`
+      return `[\n${expr.elements.map((el) => `${inner}${printTsExpr(el, inner)},`).join("\n")}\n${indent}]`
     }
     case "object": {
       if (expr.properties.length === 0) {
         return "{}"
       }
       const inner = indent + "  "
-      return `{\n${expr.properties.map((p) => `${inner}${p.key}: ${emitTsExpr(p.value, inner)},`).join("\n")}\n${indent}}`
+      return `{\n${expr.properties.map((p) => `${inner}${p.key}: ${printTsExpr(p.value, inner)},`).join("\n")}\n${indent}}`
     }
   }
 }

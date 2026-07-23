@@ -5,7 +5,7 @@
  * Supports `[label](https://url)` → createExternalLink("label", "url").
  */
 
-import { arr, call, lit, type TsExpr } from "experience-sync/lib/tsEmit"
+import { arr, call, lit, type TsExpr } from "experience-sync/lib/tsExpr"
 
 export type TextSegmentLiteral = { type: "text"; value: string } | { type: "link"; text: string; href: string }
 
