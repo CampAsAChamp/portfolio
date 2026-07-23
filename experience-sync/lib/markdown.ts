@@ -5,6 +5,8 @@
  * Supports `[label](https://url)` → createExternalLink("label", "url").
  */
 
+import { arr, call, lit, type TsExpr } from "experience-sync/lib/tsEmit"
+
 export type TextSegmentLiteral = { type: "text"; value: string } | { type: "link"; text: string; href: string }
 
 const LINK_RE = /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g
@@ -43,14 +45,15 @@ export function stripMarkdownLinks(input: string): string {
   return input.replace(LINK_RE, "$1")
 }
 
-/** Emit a JS array literal for one bullet (TextSegment[]). */
-export function emitBulletArrayLiteral(portfolioVariant: string, indent: string): string {
+/** Build a TS array expression for one bullet (`TextSegment[]`). */
+export function bulletToTsExpr(portfolioVariant: string): TsExpr {
   const segments = parseMarkdownSegments(portfolioVariant)
-  const lines = segments.map((seg) => {
-    if (seg.type === "text") {
-      return `${indent}  ${JSON.stringify(seg.value)},`
-    }
-    return `${indent}  createExternalLink(${JSON.stringify(seg.text)}, ${JSON.stringify(seg.href)}),`
-  })
-  return `${indent}[\n${lines.join("\n")}\n${indent}]`
+  return arr(
+    segments.map((seg) => {
+      if (seg.type === "text") {
+        return lit(seg.value)
+      }
+      return call("createExternalLink", lit(seg.text), lit(seg.href))
+    }),
+  )
 }

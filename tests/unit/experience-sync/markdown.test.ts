@@ -1,4 +1,5 @@
-import { emitBulletArrayLiteral, parseMarkdownSegments, stripMarkdownLinks } from "experience-sync/lib/markdown"
+import { bulletToTsExpr, parseMarkdownSegments, stripMarkdownLinks } from "experience-sync/lib/markdown"
+import { emitTsExpr } from "experience-sync/lib/tsEmit"
 import { describe, expect, it } from "vitest"
 
 describe("parseMarkdownSegments", () => {
@@ -33,15 +34,15 @@ describe("stripMarkdownLinks", () => {
   })
 })
 
-describe("emitBulletArrayLiteral", () => {
+describe("bulletToTsExpr", () => {
   it("emits a text-only bullet array literal", () => {
-    expect(emitBulletArrayLiteral("Shipped features", "    ")).toBe(`    [
-      "Shipped features",
-    ]`)
+    expect(emitTsExpr(bulletToTsExpr("Shipped features"))).toBe(`[
+  "Shipped features",
+]`)
   })
 
   it("emits createExternalLink calls for markdown links", () => {
-    const emitted = emitBulletArrayLiteral("Built [API](https://api.example)", "  ")
+    const emitted = emitTsExpr(bulletToTsExpr("Built [API](https://api.example)"))
     expect(emitted).toContain('createExternalLink("API", "https://api.example")')
     expect(emitted).toContain('"Built "')
   })
