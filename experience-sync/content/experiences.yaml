@@ -22,9 +22,18 @@ companies:
           - id: intuit-sse-vep
             destinations:
               - portfolio
+              - resume
+              - linkedin
             variants:
               portfolio: Currently working as a full stack software engineer on the appointment scheduling team
-                for TurboTax's [Virtual Expert Platform](https://www.intuit.com/strategy/#bigbet-2).
+                for TurboTax's [Virtual Expert
+                Platform](https://investors.intuit.com/news-events/press-releases/detail/100/intuits-virtual-expert-platform-connects-people-to-tax-and-bookkeeping-experts-powered-by-ai).
+              resume: Full stack engineer on the appointments team for Intuit's [Virtual Expert
+                Platform](https://investors.intuit.com/news-events/press-releases/detail/100/intuits-virtual-expert-platform-connects-people-to-tax-and-bookkeeping-experts-powered-by-ai).
+                across TurboTax, QuickBooks, and Mailchimp.
+              linkedin: Full stack engineer on the appointments team for Intuit's [Virtual Expert
+                Platform](https://investors.intuit.com/news-events/press-releases/detail/100/intuits-virtual-expert-platform-connects-people-to-tax-and-bookkeeping-experts-powered-by-ai).
+                across TurboTax, QuickBooks, and Mailchimp.
       - id: intuit-swe2
         position: Software Engineer 2 - Full Stack
         start:
