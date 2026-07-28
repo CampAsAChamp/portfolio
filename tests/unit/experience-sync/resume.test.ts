@@ -1,7 +1,7 @@
 import { formatResumeExport } from "experience-sync/lib/resume"
 import { describe, expect, it } from "vitest"
 
-import { makeAccomplishment, makeCompany, makeDocument, makeRole, makeRoleDate } from "./helpers"
+import { makeAccomplishment, makeCompany, makeDocument, makeRole, makeRoleDate, makeSharedVariant } from "./helpers"
 
 describe("formatResumeExport", () => {
   it("formats resume markdown with company, role, and bullets", () => {
@@ -86,5 +86,31 @@ describe("formatResumeExport", () => {
     })
 
     expect(formatResumeExport(doc)).toBe("# Experience\n\nNo resume-tagged accomplishments found.\n")
+  })
+
+  it("resolves shared variant text for linked accomplishments", () => {
+    const doc = makeDocument({
+      sharedVariants: [makeSharedVariant({ id: "shared-1", variants: { resume: "Shared resume bullet" } })],
+      companies: [
+        makeCompany({
+          id: "acme",
+          roles: [
+            makeRole({
+              id: "r1",
+              accomplishments: [
+                makeAccomplishment({
+                  id: "a1",
+                  destinations: ["resume"],
+                  sharedVariants: { resume: "shared-1" },
+                  variants: {},
+                }),
+              ],
+            }),
+          ],
+        }),
+      ],
+    })
+
+    expect(formatResumeExport(doc)).toContain("- Shared resume bullet")
   })
 })

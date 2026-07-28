@@ -861,6 +861,152 @@ label {
   min-height: 2.75rem;
 }
 
+.variant-field .autosize-textarea-readonly {
+  opacity: 0.92;
+  background: rgb(108, 99, 255, 0.06);
+  cursor: default;
+}
+
+.shared-variants-panel {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgb(112, 112, 112, 0.16);
+}
+
+.sidebar h2.sidebar-shared-heading {
+  margin: 0;
+}
+
+.shared-variants-empty {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.app button.sidebar-add-btn.compact-add {
+  min-width: 1.75rem;
+  min-height: 1.75rem;
+  padding: 0;
+  font-size: 1.1rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.shared-variant-list {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.shared-variant-item {
+  border: 1px solid rgb(112, 112, 112, 0.16);
+  border-radius: calc(var(--rounded-component-corners-size) - 6px);
+  background: var(--color-background);
+  overflow: hidden;
+}
+
+.shared-variant-trigger {
+  display: grid;
+  gap: 0.15rem;
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 0.55rem 0.65rem;
+  color: var(--color-body-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.shared-variant-trigger.active,
+.shared-variant-trigger:hover {
+  background: rgb(108, 99, 255, 0.08);
+}
+
+.shared-variant-trigger-name {
+  font-weight: 800;
+  font-size: 0.86rem;
+}
+
+.shared-variant-trigger-meta {
+  color: var(--color-card-alt-text);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.shared-variant-editor {
+  display: grid;
+  gap: 0.65rem;
+  border-top: 1px solid rgb(112, 112, 112, 0.12);
+  padding: 0.65rem;
+}
+
+.shared-variant-dest-heading {
+  margin: 0;
+  font-size: 0.78rem;
+}
+
+.shared-variant-destinations {
+  gap: 0.45rem 0.75rem;
+}
+
+.shared-variant-editor-actions {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.shared-variant-ref-note,
+.shared-variant-editing-note {
+  margin: 0;
+  font-size: 0.75rem;
+}
+
+.shared-variant-link-picker {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.shared-variant-link-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.65rem;
+  align-items: end;
+  justify-content: space-between;
+}
+
+.shared-variant-link-label {
+  display: grid;
+  gap: 0.25rem;
+  min-width: min(100%, 14rem);
+  color: var(--color-card-alt-text);
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+.shared-variant-linked-badge {
+  justify-self: start;
+  border: 1px solid rgb(108, 99, 255, 0.35);
+  border-radius: 999px;
+  background: rgb(108, 99, 255, 0.1);
+  padding: 0.15rem 0.55rem;
+  color: var(--color-purple);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.shared-variant-linked-badge:hover {
+  background: rgb(108, 99, 255, 0.16);
+}
+
+.shared-variant-unlink-btn,
+.shared-variant-save-btn {
+  flex-shrink: 0;
+}
+
 .shortcut-hint {
   display: inline-flex;
   align-items: center;

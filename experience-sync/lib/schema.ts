@@ -20,9 +20,25 @@ export const variantsSchema = z
   })
   .strict()
 
+export const sharedVariantSchema = z.object({
+  id: z.string().min(1),
+  label: z.string().optional(),
+  variants: variantsSchema,
+})
+
+export const accomplishmentSharedVariantRefsSchema = z
+  .object({
+    portfolio: z.string().min(1).optional(),
+    resume: z.string().min(1).optional(),
+    linkedin: z.string().min(1).optional(),
+  })
+  .strict()
+
 export const accomplishmentSchema = z.object({
   id: z.string().min(1),
   destinations: z.array(destinationSchema).min(1),
+  /** Per-destination links to a document-level shared variant id. */
+  sharedVariants: accomplishmentSharedVariantRefsSchema.optional(),
   variants: variantsSchema,
 })
 
@@ -48,11 +64,14 @@ export const companySchema = z.object({
 })
 
 export const experiencesDocumentSchema = z.object({
+  sharedVariants: z.array(sharedVariantSchema).optional().default([]),
   companies: z.array(companySchema).min(1),
 })
 
 export type RoleDate = z.infer<typeof roleDateSchema>
 export type Variants = z.infer<typeof variantsSchema>
+export type SharedVariant = z.infer<typeof sharedVariantSchema>
+export type AccomplishmentSharedVariantRefs = z.infer<typeof accomplishmentSharedVariantRefsSchema>
 export type Accomplishment = z.infer<typeof accomplishmentSchema>
 export type ExperienceRole = z.infer<typeof roleSchema>
 export type Company = z.infer<typeof companySchema>
@@ -89,7 +108,7 @@ function collectDuplicateIdIssue(
   id: string,
   seen: Set<string>,
   path: string,
-  kind: "company" | "role" | "accomplishment",
+  kind: "company" | "role" | "accomplishment" | "shared variant",
 ): ValidationIssue | null {
   if (seen.has(id)) {
     return {
@@ -100,6 +119,32 @@ function collectDuplicateIdIssue(
   }
   seen.add(id)
   return null
+}
+
+function hasNonEmptyVariantText(value: string | undefined): boolean {
+  return typeof value === "string" && value.trim().length > 0
+}
+
+function collectSharedVariantLibraryIssues(doc: ExperiencesDocument): ValidationIssue[] {
+  const issues: ValidationIssue[] = []
+  const seenSharedIds = new Set<string>()
+
+  for (const [si, shared] of (doc.sharedVariants ?? []).entries()) {
+    const basePath = `sharedVariants.${si}`
+    const dup = collectDuplicateIdIssue(shared.id, seenSharedIds, `${basePath}.id`, "shared variant")
+    if (dup) issues.push(dup)
+
+    const hasAnyText = DESTINATIONS.some((dest) => hasNonEmptyVariantText(shared.variants[dest]))
+    if (!hasAnyText) {
+      issues.push({
+        path: `${basePath}.variants`,
+        message: `Shared variant "${shared.id}" has no destination text defined`,
+        severity: "warning",
+      })
+    }
+  }
+
+  return issues
 }
 
 function collectRoleDateIssues(role: ExperienceRole, rolePath: string): ValidationIssue[] {
@@ -115,26 +160,66 @@ function collectRoleDateIssues(role: ExperienceRole, rolePath: string): Validati
   ]
 }
 
-function collectVariantDestinationIssues(accomplishment: Accomplishment, basePath: string): ValidationIssue[] {
+function collectVariantDestinationIssues(
+  accomplishment: Accomplishment,
+  basePath: string,
+  sharedVariantsById: Map<string, SharedVariant>,
+): ValidationIssue[] {
   const issues: ValidationIssue[] = []
   const destSet = new Set(accomplishment.destinations)
+  const sharedRefs = accomplishment.sharedVariants ?? {}
 
   for (const dest of DESTINATIONS) {
-    const variant = accomplishment.variants[dest]
-    const hasVariant = typeof variant === "string" && variant.trim().length > 0
+    const inlineVariant = accomplishment.variants[dest]
+    const hasInline = hasNonEmptyVariantText(inlineVariant)
     const selected = destSet.has(dest)
-    const path = `${basePath}.variants.${dest}`
+    const refId = sharedRefs[dest]
+    const inlinePath = `${basePath}.variants.${dest}`
+    const sharedRefPath = `${basePath}.sharedVariants.${dest}`
 
-    if (selected && !hasVariant) {
+    let hasResolvedText = false
+
+    if (refId) {
+      const shared = sharedVariantsById.get(refId)
+      if (!shared) {
+        issues.push({
+          path: sharedRefPath,
+          message: `Shared variant "${refId}" not found`,
+          severity: "error",
+        })
+      } else {
+        hasResolvedText = hasNonEmptyVariantText(shared.variants[dest])
+        if (!hasResolvedText) {
+          issues.push({
+            path: sharedRefPath,
+            message: `Shared variant "${refId}" has no text for destination "${dest}"`,
+            severity: "error",
+          })
+        }
+      }
+
+      if (hasInline) {
+        issues.push({
+          path: inlinePath,
+          message: `Inline variant ignored because destination "${dest}" is linked to shared variant "${refId}"`,
+          severity: "warning",
+        })
+      }
+    } else {
+      hasResolvedText = hasInline
+    }
+
+    if (selected && !hasResolvedText) {
       issues.push({
-        path,
+        path: refId ? sharedRefPath : inlinePath,
         message: `Destination "${dest}" is selected but has no variant text`,
         severity: "error",
       })
     }
-    if (!selected && hasVariant) {
+
+    if (!selected && hasInline) {
       issues.push({
-        path,
+        path: inlinePath,
         message: `Variant "${dest}" is set but destination is not selected`,
         severity: "warning",
       })
@@ -149,6 +234,13 @@ function collectSemanticIssues(doc: ExperiencesDocument): ValidationIssue[] {
   const seenCompanyIds = new Set<string>()
   const seenRoleIds = new Set<string>()
   const seenAccomplishmentIds = new Set<string>()
+  const sharedVariantsById = new Map<string, SharedVariant>()
+
+  issues.push(...collectSharedVariantLibraryIssues(doc))
+
+  for (const shared of doc.sharedVariants ?? []) {
+    sharedVariantsById.set(shared.id, shared)
+  }
 
   for (const [ci, company] of doc.companies.entries()) {
     const companyDup = collectDuplicateIdIssue(company.id, seenCompanyIds, `companies.${ci}.id`, "company")
@@ -166,7 +258,7 @@ function collectSemanticIssues(doc: ExperiencesDocument): ValidationIssue[] {
         const accomplishmentDup = collectDuplicateIdIssue(accomplishment.id, seenAccomplishmentIds, `${base}.id`, "accomplishment")
         if (accomplishmentDup) issues.push(accomplishmentDup)
 
-        issues.push(...collectVariantDestinationIssues(accomplishment, base))
+        issues.push(...collectVariantDestinationIssues(accomplishment, base, sharedVariantsById))
       }
     }
   }

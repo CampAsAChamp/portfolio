@@ -9,6 +9,8 @@ interface VariantFieldProps {
   onChange: (next: string) => void
   /** When true, shows the markdown link button and enables ⌘/Ctrl+K. */
   supportsMarkdownLinks?: boolean
+  /** When true, textarea is read-only (e.g. linked shared variant). */
+  readOnly?: boolean
 }
 
 /** Grow a textarea to fit its content so multi-line variants don't scroll internally. */
@@ -21,7 +23,7 @@ function autosizeTextarea(textarea: HTMLTextAreaElement): void {
  * Autosizing textarea for one destination variant.
  * Optionally adds a markdown-link button and ⌘/Ctrl+K shortcut.
  */
-export function VariantField({ label, value, onChange, supportsMarkdownLinks = false }: VariantFieldProps): ReactElement {
+export function VariantField({ label, value, onChange, supportsMarkdownLinks = false, readOnly = false }: VariantFieldProps): ReactElement {
   const fieldId = useId()
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const shortcut = markdownLinkShortcutLabel()
@@ -59,7 +61,7 @@ export function VariantField({ label, value, onChange, supportsMarkdownLinks = f
         <label htmlFor={fieldId} className="variant-field-label">
           {label}
         </label>
-        {supportsMarkdownLinks && (
+        {supportsMarkdownLinks && !readOnly && (
           <HintedAction
             label="Add markdown link"
             description={`Inserts [text](url) at the cursor. Selected text becomes the link label; then edit the URL.`}
@@ -81,12 +83,15 @@ export function VariantField({ label, value, onChange, supportsMarkdownLinks = f
       <textarea
         id={fieldId}
         ref={textareaRef}
-        className="autosize-textarea"
+        className={`autosize-textarea${readOnly ? " autosize-textarea-readonly" : ""}`}
         rows={2}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        readOnly={readOnly}
+        onChange={(e) => {
+          if (!readOnly) onChange(e.target.value)
+        }}
         onKeyDown={(e) => {
-          if (!supportsMarkdownLinks || !isMarkdownLinkShortcut(e)) {
+          if (readOnly || !supportsMarkdownLinks || !isMarkdownLinkShortcut(e)) {
             return
           }
           e.preventDefault()

@@ -3,7 +3,8 @@ import fs from "node:fs"
 import path from "node:path"
 import { bulletToTsExpr } from "experience-sync/lib/markdown"
 import { EXPERIENCES_OUTPUT, EXPERIENCES_TS_TEMPLATE, REPO_ROOT } from "experience-sync/lib/paths"
-import type { Company, ExperienceRole, ExperiencesDocument, RoleDate } from "experience-sync/lib/schema"
+import { resolveDocument, type ResolvedCompany, type ResolvedExperienceRole } from "experience-sync/lib/resolve"
+import type { ExperiencesDocument, RoleDate } from "experience-sync/lib/schema"
 import { arr, ident, lit, obj, printTsExpr, type TsExpr } from "experience-sync/lib/tsExpr"
 
 const EXPERIENCES_TEMPLATE = fs.readFileSync(EXPERIENCES_TS_TEMPLATE, "utf8")
@@ -53,7 +54,7 @@ function optionalRoleEndToTsExpr(end: RoleDate | undefined): TsExpr | undefined 
   return roleDateToTsExpr(end)
 }
 
-function roleToTsExpr(role: ExperienceRole): TsExpr {
+function roleToTsExpr(role: ResolvedExperienceRole): TsExpr {
   const bulletPoints = role.accomplishments
     .filter((a) => a.destinations.includes("portfolio") && a.variants.portfolio?.trim())
     .map((a) => bulletToTsExpr(a.variants.portfolio!.trim()))
@@ -66,7 +67,7 @@ function roleToTsExpr(role: ExperienceRole): TsExpr {
   })
 }
 
-function companyToTsExpr(company: Company): TsExpr {
+function companyToTsExpr(company: ResolvedCompany): TsExpr {
   return obj({
     companyName: lit(company.companyName),
     location: lit(company.location),
@@ -82,8 +83,9 @@ function companyToTsExpr(company: Company): TsExpr {
  * Portfolio-only: filters accomplishments to the `portfolio` destination and expands markdown links.
  */
 export function generateExperiencesTs(doc: ExperiencesDocument): string {
-  const logoImports = doc.companies.map((c) => logoImportStatement(c.logoFile)).join("\n")
-  const experiences = printTsExpr(arr(doc.companies.map(companyToTsExpr)))
+  const resolved = resolveDocument(doc)
+  const logoImports = resolved.companies.map((c) => logoImportStatement(c.logoFile)).join("\n")
+  const experiences = printTsExpr(arr(resolved.companies.map(companyToTsExpr)))
 
   return fillTemplate(EXPERIENCES_TEMPLATE, { logoImports, experiences })
 }

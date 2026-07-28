@@ -1,7 +1,7 @@
 import { formatLinkedInExport } from "experience-sync/lib/linkedin"
 import { describe, expect, it } from "vitest"
 
-import { makeAccomplishment, makeCompany, makeDocument, makeRole, makeRoleDate } from "./helpers"
+import { makeAccomplishment, makeCompany, makeDocument, makeRole, makeRoleDate, makeSharedVariant } from "./helpers"
 
 describe("formatLinkedInExport", () => {
   it("formats a role with LinkedIn bullets and ranged dates", () => {
@@ -85,5 +85,31 @@ describe("formatLinkedInExport", () => {
     })
 
     expect(formatLinkedInExport(doc)).toBe("No LinkedIn-tagged accomplishments found.\n")
+  })
+
+  it("resolves shared variant text for linked accomplishments", () => {
+    const doc = makeDocument({
+      sharedVariants: [makeSharedVariant({ id: "shared-1", variants: { linkedin: "Shared LinkedIn bullet" } })],
+      companies: [
+        makeCompany({
+          id: "acme",
+          roles: [
+            makeRole({
+              id: "r1",
+              accomplishments: [
+                makeAccomplishment({
+                  id: "a1",
+                  destinations: ["linkedin"],
+                  sharedVariants: { linkedin: "shared-1" },
+                  variants: {},
+                }),
+              ],
+            }),
+          ],
+        }),
+      ],
+    })
+
+    expect(formatLinkedInExport(doc)).toContain("• Shared LinkedIn bullet")
   })
 })

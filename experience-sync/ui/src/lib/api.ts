@@ -4,6 +4,7 @@ import {
   MONTH_ABBREVS,
   type Destination,
   type ExperiencesDocument,
+  type SharedVariant,
   type ValidationIssue,
 } from "experience-sync/lib/schema"
 
@@ -70,4 +71,4 @@ export async function exportResume(): Promise<string> {
 }
 
 export { DESTINATIONS, MONTH_ABBREVS, getRoleEndBeforeStartMessage }
-export type { Destination, ExperiencesDocument, ValidationIssue }
+export type { Destination, ExperiencesDocument, SharedVariant, ValidationIssue }
