@@ -1,0 +1,29 @@
+version: 1
+
+output: src/assets/website_screenshot.png
+
+server:
+  build: yarn build
+  start: yarn preview --host 127.0.0.1 --port {port}
+  health_url: "http://127.0.0.1:{port}/"
+
+capture:
+  viewport: { width: 1280, height: 600 }
+  target:
+    type: viewport
+  wait_for_animations: true
+  reduced_motion: true
+
+theme:
+  storage_key: color-mode
+  attribute: color-mode
+  modes: [dark, light]
+
+blend:
+  enabled: true
+  order: [dark, light]
+  direction: tl-br
+  blend_width: 150
+
+commit:
+  message: "docs: update readme screenshot"

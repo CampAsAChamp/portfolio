@@ -25,6 +25,7 @@
     "lint": "node scripts/check-node-version.mjs && node scripts/lint-with-progress.mjs && yarn format:check",
     "prepare": "husky",
     "preview": "node scripts/check-node-version.mjs && vite preview",
+    "screenshot:readme": "node scripts/check-node-version.mjs && readme-screenshot capture",
     "start": "node scripts/check-node-version.mjs && vite",
     "test:all": "yarn test && yarn test:lighthouse && yarn test:e2e",
     "test:coverage": "node scripts/check-node-version.mjs && vitest run --coverage",

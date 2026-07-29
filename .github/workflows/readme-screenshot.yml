@@ -1,0 +1,23 @@
+name: Readme screenshot
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/components/**"
+      - "src/styles/**"
+      - "src/data/**"
+      - "src/assets/**"
+      - "!src/assets/website_screenshot.png"
+      - ".readme-screenshot.yml"
+  workflow_dispatch:
+
+jobs:
+  screenshot:
+    uses: CampAsAChamp/readme-screenshot/.github/workflows/capture-and-commit.yml@v1
+    with:
+      config: .readme-screenshot.yml
+      commit_message: "docs: update readme screenshot"
+      file_pattern: src/assets/website_screenshot.png
+    permissions:
+      contents: write
