@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactElement } from "react"
 import { ThemeSwitcher } from "components/NavBar/ThemeSwitcher"
-import { buildSharedVariantIndex, listSharedVariantReferences, resolveAccomplishment } from "experience-sync/lib/resolve"
+import { formatLinkedInExport } from "experience-sync/lib/linkedin"
+import { formatResumeExport } from "experience-sync/lib/resume"
+import { AccomplishmentVariants } from "experience-sync/ui/src/components/AccomplishmentVariants"
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -16,15 +18,12 @@ import {
 import { ColorKeyPicker, getColorHex } from "experience-sync/ui/src/components/ColorKeyPicker"
 import { HintedAction } from "experience-sync/ui/src/components/HintedAction"
 import { LogoFilePicker } from "experience-sync/ui/src/components/LogoFilePicker"
-import { SharedVariantLinkPicker } from "experience-sync/ui/src/components/SharedVariantLinkPicker"
-import { SharedVariantsPanel } from "experience-sync/ui/src/components/SharedVariantsPanel"
+import { MarkdownLinkPreview } from "experience-sync/ui/src/components/MarkdownLinkPreview"
 import { TechnologyPicker } from "experience-sync/ui/src/components/TechnologyPicker"
 import { ToastStack, type ToastKind, type ToastMessage } from "experience-sync/ui/src/components/Toast"
 import {
   ApiError,
   DESTINATIONS,
-  exportLinkedIn,
-  exportResume,
   generatePortfolio,
   getRoleEndBeforeStartMessage,
   loadExperiences,
@@ -32,7 +31,6 @@ import {
   saveExperiences,
   type Destination,
   type ExperiencesDocument,
-  type SharedVariant,
   type ValidationIssue,
 } from "experience-sync/ui/src/lib/api"
 
@@ -117,12 +115,9 @@ export function App(): ReactElement {
   const [roleIdx, setRoleIdx] = useState(0)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [issues, setIssues] = useState<ValidationIssue[]>([])
-  const [linkedinPreview, setLinkedinPreview] = useState("")
-  const [resumePreview, setResumePreview] = useState("")
   const [busy, setBusy] = useState(false)
   const [reloading, setReloading] = useState(false)
   const [toasts, setToasts] = useState<ToastMessage[]>([])
-  const [selectedSharedVariantId, setSelectedSharedVariantId] = useState<string | null>(null)
   const accomplishmentsListRef = useRef<HTMLDivElement>(null)
   const flipFirstTopsRef = useRef<Map<string, number> | null>(null)
 
@@ -138,28 +133,17 @@ export function App(): ReactElement {
     setBaselineJson(JSON.stringify(data))
   }, [])
 
-  const refreshPreviews = useCallback(async () => {
-    try {
-      const [li, resume] = await Promise.all([exportLinkedIn(), exportResume()])
-      setLinkedinPreview(li)
-      setResumePreview(resume)
-    } catch {
-      // previews optional until saved
-    }
-  }, [])
-
   const load = useCallback(
     async (opts?: { notify?: boolean }) => {
       setBusy(true)
       try {
         const data = await loadExperiences()
-        setDoc({ ...data, sharedVariants: data.sharedVariants ?? [] })
+        setDoc(data)
         markBaseline(data)
         setCompanyIdx(0)
         setRoleIdx(0)
         setLoadError(null)
         setIssues([])
-        await refreshPreviews()
         if (opts?.notify) {
           showToast("Reloaded experiences.yaml")
         }
@@ -171,7 +155,7 @@ export function App(): ReactElement {
         setBusy(false)
       }
     },
-    [markBaseline, refreshPreviews, showToast],
+    [markBaseline, showToast],
   )
 
   useEffect(() => {
@@ -231,9 +215,8 @@ export function App(): ReactElement {
     return displayIssues.filter((i) => i.path === prefix || i.path.startsWith(`${prefix}.`))
   }, [displayIssues, company, companyIdx])
 
-  const sharedVariantReferences = useMemo(() => (doc ? listSharedVariantReferences(doc) : new Map()), [doc])
-
-  const sharedVariantIndex = useMemo(() => (doc ? buildSharedVariantIndex(doc) : new Map()), [doc])
+  const linkedinPreview = useMemo(() => (doc ? formatLinkedInExport(doc) : ""), [doc])
+  const resumePreview = useMemo(() => (doc ? formatResumeExport(doc) : ""), [doc])
 
   function updateDoc(updater: (current: ExperiencesDocument) => ExperiencesDocument): void {
     setDoc((current) => (current ? updater(structuredClone(current)) : current))
@@ -247,7 +230,6 @@ export function App(): ReactElement {
       setIssues(result.issues ?? [])
       markBaseline(doc)
       showToast("Saved experiences.yaml")
-      await refreshPreviews()
     } catch (err) {
       if (err instanceof ApiError) {
         setIssues(err.issues)
@@ -256,7 +238,7 @@ export function App(): ReactElement {
     } finally {
       setBusy(false)
     }
-  }, [busy, doc, markBaseline, refreshPreviews, showToast])
+  }, [busy, doc, markBaseline, showToast])
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent): void => {
@@ -277,7 +259,6 @@ export function App(): ReactElement {
       }
       const out = await generatePortfolio()
       showToast(`Generated ${out}`)
-      await refreshPreviews()
     } catch (err) {
       showToast(err instanceof Error ? err.message : String(err), "error")
     } finally {
@@ -286,15 +267,13 @@ export function App(): ReactElement {
   }
 
   async function handleCopyLinkedIn(): Promise<void> {
+    if (!doc) return
     setBusy(true)
     try {
-      if (doc) {
-        await saveExperiences(doc)
-        markBaseline(doc)
-      }
-      const text = await exportLinkedIn()
+      await saveExperiences(doc)
+      markBaseline(doc)
+      const text = formatLinkedInExport(doc)
       await navigator.clipboard.writeText(text)
-      setLinkedinPreview(text)
       showToast("LinkedIn copy ready", "ok", { copy: true })
     } catch (err) {
       showToast(err instanceof Error ? err.message : String(err), "error")
@@ -304,14 +283,12 @@ export function App(): ReactElement {
   }
 
   async function handleExportResume(): Promise<void> {
+    if (!doc) return
     setBusy(true)
     try {
-      if (doc) {
-        await saveExperiences(doc)
-        markBaseline(doc)
-      }
-      const text = await exportResume()
-      setResumePreview(text)
+      await saveExperiences(doc)
+      markBaseline(doc)
+      const text = formatResumeExport(doc)
       await navigator.clipboard.writeText(text)
       showToast("Resume copy ready", "ok", { copy: true })
     } catch (err) {
@@ -451,9 +428,24 @@ export function App(): ReactElement {
       const set = new Set(current.destinations)
       if (set.has(dest)) {
         set.delete(dest)
+        delete current.variants[dest]
+        if (current.variantSources?.[dest]) {
+          delete current.variantSources[dest]
+          if (Object.keys(current.variantSources).length === 0) {
+            delete current.variantSources
+          }
+        }
+        for (const other of DESTINATIONS) {
+          if (current.variantSources?.[other] === dest) {
+            delete current.variantSources[other]
+          }
+        }
+        if (current.variantSources && Object.keys(current.variantSources).length === 0) {
+          delete current.variantSources
+        }
       } else {
         set.add(dest)
-        if (!current.variants[dest]) {
+        if (!current.variants[dest] && !current.variantSources?.[dest]) {
           current.variants[dest] = ""
         }
       }
@@ -462,92 +454,22 @@ export function App(): ReactElement {
     })
   }
 
-  function addSharedVariant(): void {
-    const id = newId("shared")
-    updateDoc((d) => {
-      d.sharedVariants ??= []
-      d.sharedVariants.push({ id, variants: { portfolio: "" } })
-      return d
-    })
-    setSelectedSharedVariantId(id)
-  }
-
-  function removeSharedVariant(index: number): void {
-    updateDoc((d) => {
-      d.sharedVariants?.splice(index, 1)
-      return d
-    })
-  }
-
-  function updateSharedVariant(index: number, next: SharedVariant): void {
-    updateDoc((d) => {
-      if (!d.sharedVariants?.[index]) return d
-      const previousId = d.sharedVariants[index]!.id
-      d.sharedVariants[index] = next
-      if (previousId !== next.id) {
-        for (const company of d.companies) {
-          for (const role of company.roles) {
-            for (const accomplishment of role.accomplishments) {
-              if (!accomplishment.sharedVariants) continue
-              for (const dest of DESTINATIONS) {
-                if (accomplishment.sharedVariants[dest] === previousId) {
-                  accomplishment.sharedVariants[dest] = next.id
-                }
-              }
-            }
-          }
-        }
-        if (selectedSharedVariantId === previousId) {
-          setSelectedSharedVariantId(next.id)
-        }
-      }
-      return d
-    })
-  }
-
-  function setAccomplishmentSharedLink(accIdx: number, dest: Destination, sharedId: string | null): void {
+  function setVariantSource(accIdx: number, dest: Destination, sourceDest: Destination | null, resolvedText: string): void {
     updateDoc((d) => {
       const acc = d.companies[companyIdx]!.roles[roleIdx]!.accomplishments[accIdx]!
-      if (sharedId) {
-        acc.sharedVariants ??= {}
-        acc.sharedVariants[dest] = sharedId
+      if (sourceDest) {
+        acc.variantSources ??= {}
+        acc.variantSources[dest] = sourceDest
         delete acc.variants[dest]
-      } else if (acc.sharedVariants?.[dest]) {
-        delete acc.sharedVariants[dest]
-        if (Object.keys(acc.sharedVariants).length === 0) {
-          delete acc.sharedVariants
+      } else if (acc.variantSources?.[dest]) {
+        delete acc.variantSources[dest]
+        if (Object.keys(acc.variantSources).length === 0) {
+          delete acc.variantSources
         }
+        acc.variants[dest] = resolvedText
       }
       return d
     })
-  }
-
-  function unlinkAccomplishmentDestination(accIdx: number, dest: Destination, resolvedText: string): void {
-    updateDoc((d) => {
-      const acc = d.companies[companyIdx]!.roles[roleIdx]!.accomplishments[accIdx]!
-      if (acc.sharedVariants?.[dest]) {
-        delete acc.sharedVariants[dest]
-        if (Object.keys(acc.sharedVariants).length === 0) {
-          delete acc.sharedVariants
-        }
-      }
-      acc.variants[dest] = resolvedText
-      return d
-    })
-  }
-
-  function saveAccomplishmentAsShared(accIdx: number, dest: Destination, text: string): void {
-    const sharedId = newId("shared")
-    updateDoc((d) => {
-      d.sharedVariants ??= []
-      d.sharedVariants.push({ id: sharedId, variants: { [dest]: text } })
-      const acc = d.companies[companyIdx]!.roles[roleIdx]!.accomplishments[accIdx]!
-      acc.sharedVariants ??= {}
-      acc.sharedVariants[dest] = sharedId
-      delete acc.variants[dest]
-      return d
-    })
-    setSelectedSharedVariantId(sharedId)
   }
 
   if (!doc) {
@@ -707,16 +629,6 @@ export function App(): ReactElement {
               )
             })}
           </ul>
-
-          <SharedVariantsPanel
-            sharedVariants={doc.sharedVariants ?? []}
-            references={sharedVariantReferences}
-            selectedId={selectedSharedVariantId}
-            onSelectedIdChange={setSelectedSharedVariantId}
-            onAdd={addSharedVariant}
-            onRemove={removeSharedVariant}
-            onUpdate={updateSharedVariant}
-          />
 
           {displayIssues.length > 0 && (
             <>
@@ -923,7 +835,7 @@ export function App(): ReactElement {
               <section className="card">
                 <div className="card-header">
                   <h3>Accomplishments</h3>
-                  <button type="button" className="compact" onClick={addAccomplishment}>
+                  <button type="button" className="add-bullet-btn" onClick={addAccomplishment}>
                     + Bullet
                   </button>
                 </div>
@@ -934,9 +846,9 @@ export function App(): ReactElement {
                   <div className="accomplishments-list" ref={accomplishmentsListRef}>
                     {role.accomplishments.map((acc, ai) => (
                       <section className="accomplishment-card" data-accomplishment-id={acc.id} key={acc.id}>
-                        <div>
+                        <section className="accomplishment-card-section accomplishment-destinations" aria-label="Destinations">
                           <div className="card-header accomplishment-destinations-header">
-                            <p className="muted">Destinations</p>
+                            <h4 className="accomplishment-section-title">Destinations</h4>
                             <div className="row-actions">
                               <button
                                 type="button"
@@ -987,40 +899,19 @@ export function App(): ReactElement {
                               )
                             })}
                           </div>
-                        </div>
+                        </section>
 
-                        {DESTINATIONS.filter((d) => acc.destinations.includes(d)).map((dest) => {
-                          const meta = DESTINATION_META[dest]
-                          const linkedSharedId = acc.sharedVariants?.[dest]
-                          const resolved = resolveAccomplishment(acc, sharedVariantIndex)
-                          return (
-                            <SharedVariantLinkPicker
-                              key={dest}
-                              destination={dest}
-                              label={
-                                <span className="destination-option">
-                                  {meta.icon}
-                                  {meta.label} variant
-                                </span>
-                              }
-                              linkedSharedId={linkedSharedId}
-                              resolvedText={resolved.variants[dest] ?? ""}
-                              customText={acc.variants[dest] ?? ""}
-                              sharedVariants={doc.sharedVariants ?? []}
-                              supportsMarkdownLinks={dest === "portfolio"}
-                              onLinkChange={(sharedId) => setAccomplishmentSharedLink(ai, dest, sharedId)}
-                              onUnlink={() => unlinkAccomplishmentDestination(ai, dest, resolved.variants[dest] ?? "")}
-                              onSaveAsShared={() => saveAccomplishmentAsShared(ai, dest, acc.variants[dest] ?? "")}
-                              onCustomChange={(next) =>
-                                updateDoc((d) => {
-                                  d.companies[companyIdx]!.roles[roleIdx]!.accomplishments[ai]!.variants[dest] = next
-                                  return d
-                                })
-                              }
-                              onJumpToShared={setSelectedSharedVariantId}
-                            />
-                          )
-                        })}
+                        <AccomplishmentVariants
+                          accomplishment={acc}
+                          destinationMeta={DESTINATION_META}
+                          onVariantSourceChange={(dest, sourceDest, resolvedText) => setVariantSource(ai, dest, sourceDest, resolvedText)}
+                          onVariantChange={(dest, next) =>
+                            updateDoc((d) => {
+                              d.companies[companyIdx]!.roles[roleIdx]!.accomplishments[ai]!.variants[dest] = next
+                              return d
+                            })
+                          }
+                        />
                       </section>
                     ))}
                   </div>
@@ -1045,7 +936,7 @@ export function App(): ReactElement {
         <aside className="preview-pane">
           <h2>LinkedIn preview</h2>
           <div className="preview">
-            <pre>{linkedinPreview || "No LinkedIn-tagged bullets yet."}</pre>
+            <MarkdownLinkPreview text={linkedinPreview} emptyMessage="No LinkedIn-tagged bullets yet." />
           </div>
           <h2 className="preview-heading-spaced">Resume preview</h2>
           <div className="preview">

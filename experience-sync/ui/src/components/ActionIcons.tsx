@@ -1,6 +1,10 @@
-import type { ReactElement } from "react"
-import LinkedInLogo from "assets/Dev_Icons/LinkedIn.svg"
-import InlineSVG from "react-inlinesvg"
+import type { ReactElement } from "react";
+import LinkedInLogo from "assets/Dev_Icons/LinkedIn.svg";
+import InlineSVG from "react-inlinesvg";
+
+
+
+
 
 interface IconProps {
   size?: number
@@ -184,6 +188,46 @@ export function LinkIcon({ size = 16 }: IconProps): ReactElement {
       <path d="M9 17H7A5 5 0 0 1 7 7H9" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M15 7H17A5 5 0 0 1 17 17H15" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M8 12H16" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+/** Decorative stacked-layers icon for shared library actions. */
+export function SharedLibraryIcon({ size = 16 }: IconProps): ReactElement {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M12 3L21 8L12 13L3 8L12 3Z"
+        stroke="currentColor"
+        strokeWidth="2.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M3 12L12 17L21 12"
+        stroke="currentColor"
+        strokeWidth="2.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M3 16L12 21L21 16"
+        stroke="currentColor"
+        strokeWidth="2.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+/** Decorative info icon for hint/tooltip triggers. */
+export function InfoIcon({ size = 16 }: IconProps): ReactElement {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2.25" />
+      <path d="M12 10V16" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" />
+      <circle cx="12" cy="7.25" r="1.15" fill="currentColor" />
     </svg>
   )
 }

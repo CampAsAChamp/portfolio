@@ -1,7 +1,11 @@
-import { useId, useLayoutEffect, useRef, type ReactElement, type ReactNode } from "react"
-import { LinkIcon } from "experience-sync/ui/src/components/ActionIcons"
-import { HintedAction } from "experience-sync/ui/src/components/HintedAction"
-import { insertMarkdownLink, isMarkdownLinkShortcut, markdownLinkShortcutLabel } from "experience-sync/ui/src/lib/insertMarkdownLink"
+import { useId, useLayoutEffect, useRef, type ReactElement, type ReactNode } from "react";
+import { LinkIcon } from "experience-sync/ui/src/components/ActionIcons";
+import { HintedAction } from "experience-sync/ui/src/components/HintedAction";
+import { insertMarkdownLink, isMarkdownLinkShortcut, markdownLinkShortcutLabel } from "experience-sync/ui/src/lib/insertMarkdownLink";
+
+
+
+
 
 interface VariantFieldProps {
   label: ReactNode
@@ -9,7 +13,7 @@ interface VariantFieldProps {
   onChange: (next: string) => void
   /** When true, shows the markdown link button and enables ⌘/Ctrl+K. */
   supportsMarkdownLinks?: boolean
-  /** When true, textarea is read-only (e.g. linked shared variant). */
+  /** When true, textarea is read-only (e.g. aliased to another destination). */
   readOnly?: boolean
 }
 

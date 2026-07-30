@@ -1,20 +1,11 @@
-import {
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-  type DragEvent,
-  type ReactElement,
-  type KeyboardEvent as ReactKeyboardEvent,
-} from "react"
-import {
-  TECHNOLOGY_OPTIONS_ALPHA,
-  TECHNOLOGY_OPTIONS_BY_KEY,
-  type TechnologyOption,
-} from "experience-sync/ui/src/catalogs/technologyCatalog"
-import { TrashIcon } from "experience-sync/ui/src/components/ActionIcons"
-import InlineSVG from "react-inlinesvg"
+import { useEffect, useId, useMemo, useRef, useState, type DragEvent, type ReactElement, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import { TECHNOLOGY_OPTIONS_ALPHA, TECHNOLOGY_OPTIONS_BY_KEY, type TechnologyOption } from "experience-sync/ui/src/catalogs/technologyCatalog";
+import { TrashIcon } from "experience-sync/ui/src/components/ActionIcons";
+import InlineSVG from "react-inlinesvg";
+
+
+
+
 
 interface TechnologyPickerProps {
   value: string[]
@@ -47,6 +38,7 @@ function reorder(list: string[], from: number, to: number): string[] {
  */
 export function TechnologyPicker({ value, onChange }: TechnologyPickerProps): ReactElement {
   const [open, setOpen] = useState(false)
+  const [orderOpen, setOrderOpen] = useState(false)
   const [query, setQuery] = useState("")
   const [dragIndex, setDragIndex] = useState<number | null>(null)
   const [overIndex, setOverIndex] = useState<number | null>(null)
@@ -149,7 +141,16 @@ export function TechnologyPicker({ value, onChange }: TechnologyPickerProps): Re
           aria-controls={listboxId}
           onClick={() => setOpen((prev) => !prev)}
         >
-          <span>{summary}</span>
+          <span className="tech-picker-trigger-main">
+            <span className="tech-picker-summary">{summary}</span>
+            {orderedSelected.length > 0 ? (
+              <span className="tech-picker-trigger-icons" aria-hidden>
+                {orderedSelected.map((opt) => (
+                  <TechIcon key={opt.key} option={opt} size={24} />
+                ))}
+              </span>
+            ) : null}
+          </span>
           <span className="tech-picker-chevron" aria-hidden>
             {open ? "▴" : "▾"}
           </span>
@@ -188,46 +189,59 @@ export function TechnologyPicker({ value, onChange }: TechnologyPickerProps): Re
       </div>
 
       {orderedSelected.length > 0 ? (
-        <div className="tech-order">
-          <div className="tech-order-header">
+        <div className={`tech-order-accordion${orderOpen ? " expanded" : ""}`}>
+          <button
+            type="button"
+            className={`tech-order-trigger${orderOpen ? " active" : ""}`}
+            aria-expanded={orderOpen}
+            onClick={() => setOrderOpen((prev) => !prev)}
+          >
+            <span className="tech-order-chevron" aria-hidden>
+              ▾
+            </span>
             <span className="tech-order-label-heading">Display order</span>
-            <span className="muted">Drag rows to reorder</span>
+            <span className="tech-order-count">{orderedSelected.length}</span>
+          </button>
+          <div className="tech-order-panel">
+            <div className="tech-order-panel-inner">
+              <p className="tech-order-hint muted">Drag rows to reorder</p>
+              <ol className="tech-order-list">
+                {orderedSelected.map((opt, index) => {
+                  const isDragging = dragIndex === index
+                  const isOver = overIndex === index && dragIndex !== null && dragIndex !== index
+                  return (
+                    <li
+                      key={opt.key}
+                      className={`tech-order-item${isDragging ? " dragging" : ""}${isOver ? " drag-over" : ""}`}
+                      draggable={orderOpen}
+                      tabIndex={orderOpen ? 0 : -1}
+                      aria-label={`${opt.label}, position ${index + 1}. Drag or use arrow keys to reorder.`}
+                      onDragStart={(event) => handleDragStart(event, index)}
+                      onDragOver={(event) => handleDragOver(event, index)}
+                      onDrop={(event) => handleDrop(event, index)}
+                      onDragEnd={handleDragEnd}
+                      onKeyDown={(event) => handleRowKeyDown(event, index)}
+                    >
+                      <span className="tech-order-handle" aria-hidden>
+                        ⋮⋮
+                      </span>
+                      {opt.icon ? <TechIcon option={opt} /> : <span className="tech-icon tech-icon-fallback" />}
+                      <span className="tech-order-label">{opt.label}</span>
+                      <button
+                        type="button"
+                        className="tech-order-btn danger"
+                        aria-label={`Remove ${opt.label}`}
+                        title="Delete"
+                        onClick={() => removeAt(index)}
+                      >
+                        <TrashIcon />
+                      </button>
+                    </li>
+                  )
+                })}
+              </ol>
+            </div>
           </div>
-          <ol className="tech-order-list">
-            {orderedSelected.map((opt, index) => {
-              const isDragging = dragIndex === index
-              const isOver = overIndex === index && dragIndex !== null && dragIndex !== index
-              return (
-                <li
-                  key={opt.key}
-                  className={`tech-order-item${isDragging ? " dragging" : ""}${isOver ? " drag-over" : ""}`}
-                  draggable
-                  tabIndex={0}
-                  aria-label={`${opt.label}, position ${index + 1}. Drag or use arrow keys to reorder.`}
-                  onDragStart={(event) => handleDragStart(event, index)}
-                  onDragOver={(event) => handleDragOver(event, index)}
-                  onDrop={(event) => handleDrop(event, index)}
-                  onDragEnd={handleDragEnd}
-                  onKeyDown={(event) => handleRowKeyDown(event, index)}
-                >
-                  <span className="tech-order-handle" aria-hidden>
-                    ⋮⋮
-                  </span>
-                  {opt.icon ? <TechIcon option={opt} /> : <span className="tech-icon tech-icon-fallback" />}
-                  <span className="tech-order-label">{opt.label}</span>
-                  <button
-                    type="button"
-                    className="tech-order-btn danger"
-                    aria-label={`Remove ${opt.label}`}
-                    title="Delete"
-                    onClick={() => removeAt(index)}
-                  >
-                    <TrashIcon />
-                  </button>
-                </li>
-              )
-            })}
-          </ol>
         </div>
       ) : null}
     </div>

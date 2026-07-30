@@ -1,5 +1,5 @@
 /** Vite-eager glob of company logo assets under `src/assets/Company_Logos/`. */
-const logoModules = import.meta.glob("../../../src/assets/Company_Logos/*.{svg,png,webp,jpg,jpeg}", {
+const logoModules = import.meta.glob("../../../../src/assets/Company_Logos/*.{svg,png,webp,jpg,jpeg}", {
   eager: true,
   import: "default",
 }) as Record<string, string>

@@ -1,12 +1,8 @@
-import {
-  DESTINATIONS,
-  getRoleEndBeforeStartMessage,
-  MONTH_ABBREVS,
-  type Destination,
-  type ExperiencesDocument,
-  type SharedVariant,
-  type ValidationIssue,
-} from "experience-sync/lib/schema"
+import { DESTINATIONS, getRoleEndBeforeStartMessage, MONTH_ABBREVS, type Destination, type ExperiencesDocument, type ValidationIssue } from "experience-sync/lib/schema";
+
+
+
+
 
 /** Thrown when an experience-sync API request fails; may include validation `issues`. */
 export class ApiError extends Error {
@@ -71,4 +67,4 @@ export async function exportResume(): Promise<string> {
 }
 
 export { DESTINATIONS, MONTH_ABBREVS, getRoleEndBeforeStartMessage }
-export type { Destination, ExperiencesDocument, SharedVariant, ValidationIssue }
+export type { Destination, ExperiencesDocument, ValidationIssue }
