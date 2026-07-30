@@ -1,6 +1,6 @@
 import { useEffect } from "react"
+import { markScrollRestoreComplete, readSavedScrollY, writeSavedScrollY } from "utils/scrollRestoration"
 
-const SCROLL_STORAGE_KEY = "portfolio-scroll-y"
 const HASH_RESTORE_TIMEOUT_MS = 10_000
 /** Max time to keep re-applying saved scroll while layout/lazy content settles. */
 const SAVED_RESTORE_TIMEOUT_MS = 8_000
@@ -15,31 +15,6 @@ function withInstantScroll(action: () => void): void {
   html.style.scrollBehavior = "auto"
   action()
   html.style.scrollBehavior = previousBehavior
-}
-
-function readSavedScrollY(): number | null {
-  try {
-    const raw = sessionStorage.getItem(SCROLL_STORAGE_KEY)
-    if (raw === null) return null
-    const y = Number(raw)
-    // Top-of-page is the default — never treat 0 as a restore target (StrictMode remount
-    // used to persist "0" then re-enter an 8s restore loop that fought programmatic scroll).
-    return Number.isFinite(y) && y > 0 ? y : null
-  } catch {
-    return null
-  }
-}
-
-function writeSavedScrollY(y: number): void {
-  try {
-    if (y > 0) {
-      sessionStorage.setItem(SCROLL_STORAGE_KEY, String(y))
-    } else {
-      sessionStorage.removeItem(SCROLL_STORAGE_KEY)
-    }
-  } catch {
-    // Ignore quota / private-mode failures
-  }
 }
 
 /** Prefer the locked modal offset when body scroll is frozen; otherwise use window.scrollY. */
@@ -165,6 +140,7 @@ export function useScrollRestoration(): void {
       isRestoring = false
       stopObservers()
       window.removeEventListener("load", onLayoutChange)
+      markScrollRestoreComplete()
 
       // Never persist a clamped mid-restore Y — keep the intended saved position
       // until the user scrolls on their own.
@@ -246,25 +222,31 @@ export function useScrollRestoration(): void {
       }
     }
 
+    const flushScrollPersistence = (): void => {
+      // Programmatic scrolls (e.g. Playwright) don't fire wheel/touch/keydown — if the
+      // page has moved away from the restore target, stop fighting and accept the new Y.
+      // Ignore divergence when the document is still too short (lazy sections / images
+      // not mounted yet) and scroll is clamped below the saved target.
+      if (isRestoring && shouldRestoreSaved && savedY !== null) {
+        const currentY = getCurrentScrollY()
+        const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
+        const isClampedBelowTarget = currentY < savedY - RESTORE_DIVERGENCE_PX && maxScroll < savedY - 1
+        if (Math.abs(currentY - savedY) > RESTORE_DIVERGENCE_PX && !isClampedBelowTarget) {
+          clearUrlHash()
+          finishRestoring()
+          writeSavedScrollY(currentY)
+          ticking = false
+          return
+        }
+      }
+      persistScrollY()
+      ticking = false
+    }
+
     const onScroll = (): void => {
       if (ticking) return
       ticking = true
-      requestAnimationFrame(() => {
-        // Programmatic scrolls (e.g. Playwright) don't fire wheel/touch/keydown — if the
-        // page has moved away from the restore target, stop fighting and accept the new Y.
-        if (isRestoring && shouldRestoreSaved && savedY !== null) {
-          const currentY = getCurrentScrollY()
-          if (Math.abs(currentY - savedY) > RESTORE_DIVERGENCE_PX) {
-            clearUrlHash()
-            finishRestoring()
-            writeSavedScrollY(currentY)
-            ticking = false
-            return
-          }
-        }
-        persistScrollY()
-        ticking = false
-      })
+      requestAnimationFrame(flushScrollPersistence)
     }
 
     const onPageHide = (): void => {

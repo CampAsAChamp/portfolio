@@ -1,8 +1,11 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
+import { bootstrapScrollRestore } from "utils/scrollRestoration"
 
 import { App } from "./App"
 import { ErrorBoundary } from "./components/Common/ErrorBoundary"
+
+bootstrapScrollRestore()
 
 // Initialize theme before React renders to prevent flash of wrong theme
 const COLOR_MODE_KEY = "color-mode"

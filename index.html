@@ -11,6 +11,18 @@
       document.documentElement.setAttribute('color-mode', theme);
     })();
   </script>
+  <!-- Hide the app until scroll restore completes — key must match SCROLL_STORAGE_KEY in scrollRestoration.ts -->
+  <script>
+    (function () {
+      try {
+        var raw = sessionStorage.getItem('portfolio-scroll-y');
+        var y = raw ? Number(raw) : 0;
+        if (Number.isFinite(y) && y > 0) {
+          document.documentElement.setAttribute('data-scroll-restoring', 'true');
+        }
+      } catch (e) { }
+    })();
+  </script>
   <!-- Favicons -->
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -176,6 +188,18 @@
     body {
       margin: 0;
       font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    html[data-scroll-restoring] #root {
+      visibility: hidden;
+    }
+
+    html[data-scroll-restoring] body {
+      background-color: #fff;
+    }
+
+    html[data-scroll-restoring][color-mode="dark"] body {
+      background-color: #1e272e;
     }
 
     /* Mobile responsive */

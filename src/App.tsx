@@ -1,9 +1,10 @@
-import { lazy, Suspense } from "react"
+import { lazy, Suspense, use } from "react"
 import { AboutMe } from "components/AboutMe/AboutMe"
 import { ScrollToTopButton } from "components/Common/ScrollToTopButton"
 import { LandingPage } from "components/LandingPage/LandingPage"
 import { Navbar } from "components/NavBar/Navbar"
 import { useScrollRestoration } from "hooks/useScrollRestoration"
+import { preloadBelowFoldSections, readSavedScrollY } from "utils/scrollRestoration"
 
 import "styles/Common/Globals.css"
 import "styles/Common/Scrollbar.css"
@@ -27,6 +28,42 @@ function SectionSkeleton(): React.ReactElement {
   )
 }
 
+function LazyBelowFoldSections(): React.ReactElement {
+  return (
+    <Suspense fallback={<SectionSkeleton />}>
+      <Experience />
+      <SkillsAndTechnologies />
+      <SWProjects />
+      <ArtProjects />
+    </Suspense>
+  )
+}
+
+function PreloadedBelowFoldSections(): React.ReactElement {
+  const { Experience: ExperienceSection, SkillsAndTechnologies, SWProjects, ArtProjects } = use(preloadBelowFoldSections())
+
+  return (
+    <>
+      <ExperienceSection />
+      <SkillsAndTechnologies />
+      <SWProjects />
+      <ArtProjects />
+    </>
+  )
+}
+
+function BelowFoldSections(): React.ReactElement {
+  if (readSavedScrollY() !== null) {
+    return (
+      <Suspense fallback={null}>
+        <PreloadedBelowFoldSections />
+      </Suspense>
+    )
+  }
+
+  return <LazyBelowFoldSections />
+}
+
 export function App(): React.ReactElement {
   useScrollRestoration()
 
@@ -39,12 +76,7 @@ export function App(): React.ReactElement {
       <ScrollToTopButton />
       <LandingPage />
       <AboutMe />
-      <Suspense fallback={<SectionSkeleton />}>
-        <Experience />
-        <SkillsAndTechnologies />
-        <SWProjects />
-        <ArtProjects />
-      </Suspense>
+      <BelowFoldSections />
     </>
   )
 }
