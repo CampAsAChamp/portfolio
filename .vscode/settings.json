@@ -25,8 +25,8 @@
   "[markdown]": {
     "files.trimTrailingWhitespace": false
   },
-  "vitest.configPath": "./config/vitest.config.ts",
-  "vitest.configSearchPatternExclude": "{**/node_modules/**,**/vendor/**,**/.*/**,**/*.d.ts,**/experience-sync/**}",
+  "vitest.rootConfig": "./config/vitest.config.ts",
+  "vitest.configSearchPatternExclude": "{**/node_modules/**,**/vendor/**,**/.*/**,**/*.d.ts,**/experience-sync/**,**/vite.config.{ts,js,mjs,cjs,cts,mts}}",
   "nodejs.defaultRuntimeVersion": "22",
   "debug.onTaskErrors": "ignore"
 }
