@@ -1,3 +1,28 @@
+## 1.18.0 (2026-07-30)
+
+* chore: fix vs code test explorer setup ([83b8f62](https://github.com/CampAsAChamp/portfolio/commit/83b8f62))
+* chore: move Prettier config to repo root for VS Code ([9eeef00](https://github.com/CampAsAChamp/portfolio/commit/9eeef00))
+* chore: remove weird symbols in projects bullet points ([8a1eb65](https://github.com/CampAsAChamp/portfolio/commit/8a1eb65))
+* chore: rename jira quick filters project ([d99581b](https://github.com/CampAsAChamp/portfolio/commit/d99581b))
+* chore: update experience content and regenerate portfolio data ([385659a](https://github.com/CampAsAChamp/portfolio/commit/385659a))
+* feat: add accomplishment defaults with implicit portfolio sharing ([dc1dfaa](https://github.com/CampAsAChamp/portfolio/commit/dc1dfaa))
+* feat: add human-readable validation issue formatting ([1141d76](https://github.com/CampAsAChamp/portfolio/commit/1141d76))
+* feat: add markdown-lite parsing for bullet points ([6d56208](https://github.com/CampAsAChamp/portfolio/commit/6d56208))
+* feat: add software projects and refresh project thumbnails ([1757539](https://github.com/CampAsAChamp/portfolio/commit/1757539))
+* feat: add text cursor shortcuts for variant fields ([774e332](https://github.com/CampAsAChamp/portfolio/commit/774e332))
+* feat: improve scroll restoration for lazy-loaded sections ([fa7d3a6](https://github.com/CampAsAChamp/portfolio/commit/fa7d3a6))
+* feat: load experiences.yaml through validation on GET ([0b37994](https://github.com/CampAsAChamp/portfolio/commit/0b37994))
+* feat: polish experience-sync editor UI with animated panels ([ac35e9c](https://github.com/CampAsAChamp/portfolio/commit/ac35e9c))
+* feat: redesign experience-sync editor for variantSources ([607768a](https://github.com/CampAsAChamp/portfolio/commit/607768a))
+* feat: simplify experience-sync editor for default bullet setup ([425c917](https://github.com/CampAsAChamp/portfolio/commit/425c917))
+* feat: treat implicit portfolio sharing as default in resolve ([22bc4de](https://github.com/CampAsAChamp/portfolio/commit/22bc4de))
+* refactor: move config and root files to config folder ([c660b8d](https://github.com/CampAsAChamp/portfolio/commit/c660b8d))
+* refactor: replace shared variants with per-accomplishment variantSources ([352dec3](https://github.com/CampAsAChamp/portfolio/commit/352dec3))
+* fix: run experience-sync Vite launch configs directly ([22dbb21](https://github.com/CampAsAChamp/portfolio/commit/22dbb21))
+* test: fix skipped e2e tests ([eb6f3f7](https://github.com/CampAsAChamp/portfolio/commit/eb6f3f7))
+* docs: refactor and split up readme ([9146ace](https://github.com/CampAsAChamp/portfolio/commit/9146ace))
+* docs: remove links from readme ([ef4c893](https://github.com/CampAsAChamp/portfolio/commit/ef4c893))
+
 ## <small>1.17.4 (2026-07-30)</small>
 
 * ci: change production deploys to only run after tests pass ([41936d8](https://github.com/CampAsAChamp/portfolio/commit/41936d8))
