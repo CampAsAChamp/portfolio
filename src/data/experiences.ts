@@ -26,7 +26,10 @@ export const experiences: Experience[] = [
         bulletPoints: [
           [
             "Currently working as a full stack software engineer on the appointment scheduling team for TurboTax's ",
-            createExternalLink("Virtual Expert Platform", "https://www.intuit.com/strategy/#bigbet-2"),
+            createExternalLink(
+              "Virtual Expert Platform",
+              "https://investors.intuit.com/news-events/press-releases/detail/100/intuits-virtual-expert-platform-connects-people-to-tax-and-bookkeeping-experts-powered-by-ai",
+            ),
             ".",
           ],
         ],
