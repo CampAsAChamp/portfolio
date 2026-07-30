@@ -25,6 +25,7 @@ const projects: SoftwareProject[] = [
       technologies.VITEST,
       technologies.PLAYWRIGHT,
       technologies.ESLINT,
+      technologies.GITHUB_ACTIONS,
       technologies.CLOUDFLARE,
     ],
     bulletPoints: [
@@ -94,7 +95,7 @@ const projects: SoftwareProject[] = [
   },
   {
     name: "Jira Single Click Filters",
-    technologies: [technologies.JAVASCRIPT, technologies.HTML5, technologies.CSS3],
+    technologies: [technologies.JAVASCRIPT, technologies.HTML5, technologies.CSS3, technologies.CHROME],
     bulletPoints: [
       "Chrome extension (Manifest V3) that makes Jira quick filters mutually exclusive — clicking one filter auto-deselects all others.",
       "Toggle on/off via the extension popup; settings persist across browser sessions via Chrome Storage API.",
@@ -105,7 +106,14 @@ const projects: SoftwareProject[] = [
   },
   {
     name: "Sprint Planner",
-    technologies: [technologies.NEXTJS, technologies.REACT, technologies.TYPESCRIPT, technologies.TAILWIND, technologies.GITHUB_ACTIONS],
+    technologies: [
+      technologies.NEXTJS,
+      technologies.REACT,
+      technologies.TYPESCRIPT,
+      technologies.TAILWIND,
+      technologies.GITHUB_ACTIONS,
+      technologies.GITHUB,
+    ],
     bulletPoints: [
       "Next.js PWA for real-time sprint capacity planning: (team members x sprint days) - PTO days - on-call days - rollover points.",
       "Tracks PTO and activities, on-call time, and unfinished work from prior sprints; save, load, duplicate, rename, and delete configurations in local storage.",
@@ -117,7 +125,7 @@ const projects: SoftwareProject[] = [
   },
   {
     name: "Los Angeles Sports Chick Fil A Scraper",
-    technologies: [technologies.PYTHON, technologies.GITHUB_ACTIONS],
+    technologies: [technologies.PYTHON, technologies.BEAUTIFUL_SOUP, technologies.GITHUB_ACTIONS],
     bulletPoints: [
       "Python scraper (Beautiful Soup + requests) that pulls prior day match results from [Baseball-Reference](https://www.baseball-reference.com/), [Hockey-Reference](https://www.hockey-reference.com/), and [FBref](https://fbref.com/) for Angels, Ducks, and LAFC, then checks Chick-fil-A home-game promo thresholds: Angels 7+ runs, Ducks 5+ goals, or an LAFC win.",
       "Season-aware scheduling: only evaluates each team while that sport is in season; runs daily at 8 AM PT via GitHub Actions cron.",
@@ -131,8 +139,11 @@ const projects: SoftwareProject[] = [
     technologies: [
       technologies.REACT,
       technologies.TYPESCRIPT,
+      technologies.VITE,
       technologies.VITEST,
       technologies.PLAYWRIGHT,
+      technologies.GITHUB_ACTIONS,
+      technologies.ESLINT,
       technologies.CLOUDFLARE,
       technologies.HTML5,
       technologies.CSS3,
@@ -169,7 +180,7 @@ const projects: SoftwareProject[] = [
   },
   {
     name: "SDGE Rate Checker",
-    technologies: [technologies.JAVASCRIPT, technologies.HTML5, technologies.CSS3],
+    technologies: [technologies.JAVASCRIPT, technologies.HTML5, technologies.CSS3, technologies.GITHUB],
     bulletPoints: [
       "Real-time [SDGE](https://www.sdge.com/) Time of Use period tracker — shows current rate level, time range, and when the next period change occurs.",
       "Automatic weekday/weekend and seasonal schedule detection (summer vs. winter TOU windows).",

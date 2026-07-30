@@ -3,7 +3,9 @@ import Adobe_Photoshop_Icon from "assets/Dev_Icons/Adobe_Photoshop.svg"
 import Adobe_XD_Icon from "assets/Dev_Icons/Adobe_XD.svg"
 import Angular_Icon from "assets/Dev_Icons/Angular.svg"
 import AWS_Icon from "assets/Dev_Icons/AWS.svg"
+import BeautifulSoup_Icon from "assets/Dev_Icons/BeautifulSoup.svg"
 import C_Icon from "assets/Dev_Icons/C.svg"
+import Chrome_Icon from "assets/Dev_Icons/Chrome.svg"
 import Cloudflare_Icon from "assets/Dev_Icons/Cloudflare.svg"
 import ColdFusion_Icon from "assets/Dev_Icons/ColdFusion.svg"
 import CPP_Icon from "assets/Dev_Icons/CPP.svg"
@@ -23,6 +25,7 @@ import GraphQL_Icon from "assets/Dev_Icons/GraphQL.svg"
 import HTML5_Icon from "assets/Dev_Icons/HTML5.svg"
 import Java_Icon from "assets/Dev_Icons/Java.svg"
 import JavaScript_Icon from "assets/Dev_Icons/JavaScript.svg"
+import Kafka_Icon from "assets/Dev_Icons/Kafka.svg"
 import Kubernetes_Icon from "assets/Dev_Icons/Kubernetes.svg"
 import Linux_Icon from "assets/Dev_Icons/Linux.svg"
 import Mantine_Icon from "assets/Dev_Icons/Mantine.svg"
@@ -35,6 +38,7 @@ import NumPy_Icon from "assets/Dev_Icons/NumPy.svg"
 import OpenGL_Icon from "assets/Dev_Icons/OpenGL.svg"
 import Playwright_Icon from "assets/Dev_Icons/Playwright.svg"
 import Postgres_Icon from "assets/Dev_Icons/Postgres.svg"
+import Protobuf_Icon from "assets/Dev_Icons/Protobuf.svg"
 import Python_Icon from "assets/Dev_Icons/Python.svg"
 import React_Icon from "assets/Dev_Icons/React.svg"
 import Redis_Icon from "assets/Dev_Icons/Redis.svg"
@@ -53,10 +57,12 @@ export const ADOBE_PHOTOSHOP = "Adobe Photoshop"
 export const ADOBE_XD = "Adobe XD"
 export const ANGULAR = "Angular"
 export const AWS = "Amazon Web Services"
+export const BEAUTIFUL_SOUP = "Beautiful Soup"
 export const C = "C"
 export const CLOUDFLARE = "Cloudflare"
 export const COLDFUSION = "ColdFusion"
 export const CPP = "C++"
+export const CHROME = "Chrome"
 export const CSS3 = "CSS3"
 export const DOCKER = "Docker"
 export const ESLINT = "ESLint"
@@ -73,6 +79,7 @@ export const GO = "Go"
 export const HTML5 = "HTML5"
 export const JAVA = "Java"
 export const JAVASCRIPT = "JavaScript"
+export const KAFKA = "Kafka"
 export const KUBERNETES = "Kubernetes"
 export const LINUX = "Linux"
 export const MANTINE = "Mantine"
@@ -86,6 +93,7 @@ export const OPEN_GL = "OpenGL"
 export const PLAYWRIGHT = "Playwright"
 export const POSTGRES = "Postgres"
 export const POSTCSS = "PostCSS"
+export const PROTOBUF = "Protocol Buffers"
 export const PYTHON = "Python"
 export const REACT = "React"
 export const REDIS = "Redis"
@@ -125,6 +133,11 @@ const technologies = [
     link: "https://aws.amazon.com/",
   },
   {
+    name: BEAUTIFUL_SOUP,
+    image: BeautifulSoup_Icon,
+    link: "https://www.crummy.com/software/BeautifulSoup/bs4/doc/",
+  },
+  {
     name: C,
     image: C_Icon,
     link: "http://www.open-std.org/jtc1/sc22/wg14/",
@@ -143,6 +156,11 @@ const technologies = [
     name: CPP,
     image: CPP_Icon,
     link: "https://isocpp.org/",
+  },
+  {
+    name: CHROME,
+    image: Chrome_Icon,
+    link: "https://developer.chrome.com/docs/extensions/",
   },
   {
     name: CSS3,
@@ -225,6 +243,11 @@ const technologies = [
     link: "http://www.ecma-international.org/publications-and-standards/standards/ecma-262/",
   },
   {
+    name: KAFKA,
+    image: Kafka_Icon,
+    link: "https://kafka.apache.org/",
+  },
+  {
     name: KUBERNETES,
     image: Kubernetes_Icon,
     link: "https://kubernetes.io/",
@@ -283,6 +306,11 @@ const technologies = [
     name: POSTGRES,
     image: Postgres_Icon,
     link: "https://www.postgresql.org/",
+  },
+  {
+    name: PROTOBUF,
+    image: Protobuf_Icon,
+    link: "https://protobuf.dev/",
   },
   {
     name: PYTHON,

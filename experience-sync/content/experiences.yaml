@@ -12,6 +12,7 @@ companies:
       - TYPESCRIPT
       - GRAPHQL
       - AWS
+      - KAFKA
     roles:
       - id: intuit-sse
         position: Senior Software Engineer
@@ -161,6 +162,8 @@ companies:
       - C
       - PYTHON
       - DOCKER
+      - KAFKA
+      - PROTOBUF
     roles:
       - id: raytheon-swe1
         position: Software Engineer 1
