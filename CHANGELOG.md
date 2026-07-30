@@ -1,3 +1,10 @@
+## 1.21.0 (2026-07-30)
+
+* feat: add new dev icons ([38d53a1](https://github.com/CampAsAChamp/portfolio/commit/38d53a1))
+* feat: remove school projects from sw projects section ([5c892ef](https://github.com/CampAsAChamp/portfolio/commit/5c892ef))
+* test: derive SwProjects button counts from swProjects data ([1418173](https://github.com/CampAsAChamp/portfolio/commit/1418173))
+* test: skip mobile SW projects video e2e when no thumbnails ([20f1753](https://github.com/CampAsAChamp/portfolio/commit/20f1753))
+
 ## 1.20.0 (2026-07-30)
 
 * chore: update experiences ([efe36bd](https://github.com/CampAsAChamp/portfolio/commit/efe36bd))
