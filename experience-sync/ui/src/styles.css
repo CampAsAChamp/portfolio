@@ -705,6 +705,12 @@ label {
   gap: 0.85rem;
 }
 
+.accomplishments-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.85rem;
+}
+
 .accomplishments-empty {
   margin: 0;
 }
@@ -750,10 +756,101 @@ label {
   padding: 1rem;
 }
 
+.accomplishment-card-header {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.accomplishment-card-title {
+  margin: 0;
+  color: var(--color-body-text);
+  font-weight: 900;
+  font-size: 1.35rem;
+  line-height: 1.3;
+}
+
+.accomplishment-destination-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem;
+  align-items: center;
+  margin: 0.15rem 0 0;
+  color: var(--color-muted-text, rgb(112, 112, 112));
+  font-size: 0.82rem;
+}
+
+.accomplishment-destination-summary .destination-option {
+  display: inline-flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.accomplishment-customize-link {
+  justify-self: start;
+  margin: 0.1rem 0 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-link, #2563eb);
+  font: inherit;
+  font-size: 0.84rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.accomplishment-customize-link:hover {
+  text-decoration: underline;
+}
+
+.accomplishment-customize-link:focus-visible {
+  outline: 2px solid var(--color-link, #2563eb);
+  outline-offset: 2px;
+}
+
 .accomplishment-card.accomplishment-card-flipping {
   position: relative;
   z-index: 1;
   will-change: transform;
+}
+
+.accomplishment-card-invalid {
+  border-color: var(--color-red, #c0392b);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-red, #c0392b) 35%, transparent);
+}
+
+@keyframes accomplishment-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes accomplishment-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+}
+
+.accomplishment-card-entering {
+  animation: accomplishment-enter 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.accomplishment-card-exiting {
+  pointer-events: none;
+  animation: accomplishment-exit 220ms cubic-bezier(0.4, 0, 1, 1) forwards;
 }
 
 .app button.add-bullet-btn {
@@ -786,6 +883,11 @@ label {
 @media (prefers-reduced-motion: reduce) {
   .accomplishment-card {
     transition: none;
+  }
+
+  .accomplishment-card-entering,
+  .accomplishment-card-exiting {
+    animation: none;
   }
 
   .app button.icon-action:active:not(:disabled),
@@ -934,8 +1036,14 @@ label {
   margin-top: 0.15rem;
 }
 
+.accomplishment-wording + .accomplishment-variant-fields {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgb(112, 112, 112, 0.14);
+}
+
 .accomplishment-text-fields .variant-field-header {
-  padding-inline: var(--accomplishment-text-inset);
+  padding-inline-start: var(--accomplishment-text-inset);
 }
 
 .accomplishment-wording-source {

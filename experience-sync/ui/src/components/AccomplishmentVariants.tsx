@@ -1,4 +1,4 @@
-import { type ReactElement } from "react"
+import { type ReactElement, type ReactNode } from "react"
 import { resolveAccomplishment } from "experience-sync/lib/resolve"
 import type { Accomplishment, Destination } from "experience-sync/lib/schema"
 import { HintedInfoButton } from "experience-sync/ui/src/components/HintedInfoButton"
@@ -10,9 +10,30 @@ const DESTINATION_LABELS: Record<Destination, string> = {
   linkedin: "LinkedIn",
 }
 
+/** Destinations with their own non-empty text field that can be reused as alias sources. */
+function getAliasSourceOptions(accomplishment: Accomplishment, dest: Destination): Destination[] {
+  const currentSource = accomplishment.variantSources?.[dest]
+
+  return accomplishment.destinations.filter((option) => {
+    if (option === dest) {
+      return false
+    }
+    if (accomplishment.variantSources?.[option]) {
+      return false
+    }
+    if (option === currentSource) {
+      return true
+    }
+    return (accomplishment.variants[option]?.trim() ?? "") !== ""
+  })
+}
+
 interface AccomplishmentVariantsProps {
   accomplishment: Accomplishment
   destinationMeta: Record<Destination, { label: string; icon: ReactElement }>
+  simpleMode: boolean
+  destinationSummary: ReactNode
+  onCustomize: () => void
   onVariantSourceChange: (dest: Destination, sourceDest: Destination | null, resolvedText: string) => void
   onVariantChange: (dest: Destination, next: string) => void
 }
@@ -21,6 +42,9 @@ interface AccomplishmentVariantsProps {
 export function AccomplishmentVariants({
   accomplishment,
   destinationMeta,
+  simpleMode,
+  destinationSummary,
+  onCustomize,
   onVariantSourceChange,
   onVariantChange,
 }: AccomplishmentVariantsProps): ReactElement {
@@ -33,13 +57,30 @@ export function AccomplishmentVariants({
     return <></>
   }
 
+  if (simpleMode) {
+    return (
+      <section className="accomplishment-card-section accomplishment-text-fields" aria-label="Wording">
+        <VariantField
+          label="Wording"
+          value={accomplishment.variants.portfolio ?? ""}
+          supportsMarkdownLinks
+          onChange={(next) => onVariantChange("portfolio", next)}
+        />
+        <p className="accomplishment-destination-summary">{destinationSummary}</p>
+        <button type="button" className="accomplishment-customize-link" onClick={onCustomize}>
+          Customize destinations & wording
+        </button>
+      </section>
+    )
+  }
+
   return (
-    <section className="accomplishment-card-section accomplishment-text-fields" aria-label="Text">
+    <section className="accomplishment-card-section accomplishment-text-fields" aria-label="Wording">
       <h4 className="accomplishment-section-title">
-        Text
+        Wording
         {showWordingRow && (
           <HintedInfoButton
-            label="Wording"
+            label="Same as"
             description="Reuse another destination's text on this bullet, or keep custom wording per channel."
             when='Set Resume to "Same as LinkedIn" when both should match. Switch back to Custom to edit independently.'
           />
@@ -51,7 +92,7 @@ export function AccomplishmentVariants({
           <div className="accomplishment-wording-row">
             {selected.map((dest) => {
               const sourceDestination = accomplishment.variantSources?.[dest]
-              const aliasOptions = selected.filter((option) => option !== dest)
+              const aliasOptions = getAliasSourceOptions(accomplishment, dest)
               const meta = destinationMeta[dest]
 
               return (

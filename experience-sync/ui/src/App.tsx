@@ -1,5 +1,18 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactElement } from "react"
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type AnimationEvent as ReactAnimationEvent,
+  type ReactElement,
+  type ReactNode,
+} from "react"
 import { ThemeSwitcher } from "components/NavBar/ThemeSwitcher"
+import { isDefaultAccomplishmentSetup, isPortfolioOnly } from "experience-sync/lib/accomplishmentDefaults"
+import { formatValidationIssue, formatValidationSummary } from "experience-sync/lib/formatValidationIssue"
 import { formatLinkedInExport } from "experience-sync/lib/linkedin"
 import { formatResumeExport } from "experience-sync/lib/resume"
 import { AccomplishmentVariants } from "experience-sync/ui/src/components/AccomplishmentVariants"
@@ -33,12 +46,17 @@ import {
   type ExperiencesDocument,
   type ValidationIssue,
 } from "experience-sync/ui/src/lib/api"
+import { handleTextCursorShortcutEvent } from "experience-sync/ui/src/lib/textCursorShortcuts"
 
-/** Blank accomplishment with portfolio destination selected (used when adding a bullet). */
+/** Blank accomplishment with all destinations selected (used when adding a bullet). */
 function emptyAccomplishment(id: string) {
   return {
     id,
-    destinations: ["portfolio"] as Destination[],
+    destinations: ["portfolio", "resume", "linkedin"] as Destination[],
+    variantSources: {
+      resume: "portfolio" as Destination,
+      linkedin: "portfolio" as Destination,
+    },
     variants: { portfolio: "" },
   }
 }
@@ -47,6 +65,32 @@ const DESTINATION_META: Record<Destination, { label: string; icon: ReactElement 
   portfolio: { label: "Portfolio", icon: <GlobeIcon /> },
   resume: { label: "Resume", icon: <DocumentIcon /> },
   linkedin: { label: "LinkedIn", icon: <LinkedInIcon /> },
+}
+
+function buildDestinationSummary(destinations: Destination[]): ReactNode {
+  if (isPortfolioOnly(destinations)) {
+    const meta = DESTINATION_META.portfolio
+    return (
+      <span className="destination-option">
+        {meta.icon}
+        Portfolio only
+      </span>
+    )
+  }
+
+  return destinations.map((dest, index) => (
+    <Fragment key={dest}>
+      {index > 0 && (
+        <span className="accomplishment-destination-separator" aria-hidden="true">
+          {" · "}
+        </span>
+      )}
+      <span className="destination-option">
+        {DESTINATION_META[dest].icon}
+        {DESTINATION_META[dest].label}
+      </span>
+    </Fragment>
+  ))
 }
 
 /** Stable internal ids for YAML / React keys — not shown in the editor. */
@@ -120,6 +164,18 @@ export function App(): ReactElement {
   const [toasts, setToasts] = useState<ToastMessage[]>([])
   const accomplishmentsListRef = useRef<HTMLDivElement>(null)
   const flipFirstTopsRef = useRef<Map<string, number> | null>(null)
+  const pendingAddIdRef = useRef<string | null>(null)
+  const [exitingAccomplishmentIds, setExitingAccomplishmentIds] = useState<Set<string>>(() => new Set())
+  const [customizedAccomplishmentIds, setCustomizedAccomplishmentIds] = useState<Set<string>>(() => new Set())
+
+  const markAccomplishmentCustomized = useCallback((id: string): void => {
+    setCustomizedAccomplishmentIds((current) => {
+      if (current.has(id)) {
+        return current
+      }
+      return new Set(current).add(id)
+    })
+  }, [])
 
   const showToast = useCallback((text: string, kind: ToastKind = "ok", opts?: { copy?: boolean }): void => {
     setToasts((current) => [...current, { id: Date.now() + Math.random(), kind, text, copy: opts?.copy }])
@@ -144,6 +200,7 @@ export function App(): ReactElement {
         setRoleIdx(0)
         setLoadError(null)
         setIssues([])
+        setCustomizedAccomplishmentIds(new Set())
         if (opts?.notify) {
           showToast("Reloaded experiences.yaml")
         }
@@ -215,6 +272,19 @@ export function App(): ReactElement {
     return displayIssues.filter((i) => i.path === prefix || i.path.startsWith(`${prefix}.`))
   }, [displayIssues, company, companyIdx])
 
+  const invalidAccomplishmentIndices = useMemo(() => {
+    const indices = new Set<number>()
+    const prefix = `companies.${companyIdx}.roles.${roleIdx}.accomplishments.`
+    for (const issue of displayIssues) {
+      if (issue.severity !== "error") continue
+      const match = /^companies\.\d+\.roles\.\d+\.accomplishments\.(\d+)/.exec(issue.path)
+      if (match && issue.path.startsWith(prefix)) {
+        indices.add(Number(match[1]))
+      }
+    }
+    return indices
+  }, [displayIssues, companyIdx, roleIdx])
+
   const linkedinPreview = useMemo(() => (doc ? formatLinkedInExport(doc) : ""), [doc])
   const resumePreview = useMemo(() => (doc ? formatResumeExport(doc) : ""), [doc])
 
@@ -233,8 +303,10 @@ export function App(): ReactElement {
     } catch (err) {
       if (err instanceof ApiError) {
         setIssues(err.issues)
+        showToast(formatValidationSummary(doc, err.issues), "error")
+      } else {
+        showToast(err instanceof Error ? err.message : String(err), "error")
       }
-      showToast(err instanceof Error ? err.message : String(err), "error")
     } finally {
       setBusy(false)
     }
@@ -249,6 +321,11 @@ export function App(): ReactElement {
     window.addEventListener("keydown", onKeyDown)
     return () => window.removeEventListener("keydown", onKeyDown)
   }, [handleSave])
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleTextCursorShortcutEvent, true)
+    return () => window.removeEventListener("keydown", handleTextCursorShortcutEvent, true)
+  }, [])
 
   async function handleGenerate(): Promise<void> {
     setBusy(true)
@@ -380,18 +457,53 @@ export function App(): ReactElement {
 
   function addAccomplishment(): void {
     if (!company || !role) return
+    const id = newId(`${role.id}-bullet`)
+    pendingAddIdRef.current = id
     updateDoc((d) => {
       const r = d.companies[companyIdx]!.roles[roleIdx]!
-      r.accomplishments.push(emptyAccomplishment(newId(`${r.id}-bullet`)))
+      r.accomplishments.push(emptyAccomplishment(id))
       return d
     })
   }
 
+  const finalizeRemoveAccomplishment = useCallback(
+    (id: string): void => {
+      setExitingAccomplishmentIds((current) => {
+        if (!current.has(id)) return current
+        const next = new Set(current)
+        next.delete(id)
+        return next
+      })
+      flipFirstTopsRef.current = captureAccomplishmentTops(accomplishmentsListRef.current)
+      updateDoc((d) => {
+        const accomplishments = d.companies[companyIdx]!.roles[roleIdx]!.accomplishments
+        const index = accomplishments.findIndex((acc) => acc.id === id)
+        if (index >= 0) accomplishments.splice(index, 1)
+        return d
+      })
+    },
+    [companyIdx, roleIdx, updateDoc],
+  )
+
   function removeAccomplishment(index: number): void {
-    updateDoc((d) => {
-      d.companies[companyIdx]!.roles[roleIdx]!.accomplishments.splice(index, 1)
-      return d
-    })
+    const acc = role?.accomplishments[index]
+    if (!acc || exitingAccomplishmentIds.has(acc.id)) return
+
+    if (prefersReducedMotion()) {
+      updateDoc((d) => {
+        d.companies[companyIdx]!.roles[roleIdx]!.accomplishments.splice(index, 1)
+        return d
+      })
+      return
+    }
+
+    setExitingAccomplishmentIds((current) => new Set(current).add(acc.id))
+  }
+
+  function handleAccomplishmentExitAnimationEnd(id: string, event: ReactAnimationEvent<HTMLElement>): void {
+    if (event.animationName !== "accomplishment-exit") return
+    if (!exitingAccomplishmentIds.has(id)) return
+    finalizeRemoveAccomplishment(id)
   }
 
   function moveAccomplishment(index: number, delta: number): void {
@@ -408,16 +520,43 @@ export function App(): ReactElement {
     })
   }
 
+  useEffect(() => {
+    setExitingAccomplishmentIds(new Set())
+  }, [companyIdx, roleIdx])
+
   useLayoutEffect(() => {
+    const root = accomplishmentsListRef.current
+
     const firstTops = flipFirstTopsRef.current
-    if (!firstTops) return
-    flipFirstTopsRef.current = null
-    playAccomplishmentFlip(accomplishmentsListRef.current, firstTops)
+    if (firstTops) {
+      flipFirstTopsRef.current = null
+      playAccomplishmentFlip(root, firstTops)
+    }
+
+    const addId = pendingAddIdRef.current
+    if (!addId) return
+    pendingAddIdRef.current = null
+
+    const el = root?.querySelector<HTMLElement>(`[data-accomplishment-id="${CSS.escape(addId)}"]`)
+    if (!el) return
+
+    el.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth", block: "nearest" })
+
+    if (prefersReducedMotion()) return
+
+    el.classList.add("accomplishment-card-entering")
+    const onEnd = (event: globalThis.AnimationEvent): void => {
+      if (event.animationName !== "accomplishment-enter") return
+      el.classList.remove("accomplishment-card-entering")
+      el.removeEventListener("animationend", onEnd)
+    }
+    el.addEventListener("animationend", onEnd)
   }, [doc])
 
   function toggleDestination(accIdx: number, dest: Destination): void {
     const acc = doc?.companies[companyIdx]?.roles[roleIdx]?.accomplishments[accIdx]
     if (!acc) return
+    markAccomplishmentCustomized(acc.id)
     if (acc.destinations.includes(dest) && acc.destinations.length === 1) {
       showToast("At least one destination is required", "error")
       return
@@ -446,7 +585,12 @@ export function App(): ReactElement {
       } else {
         set.add(dest)
         if (!current.variants[dest] && !current.variantSources?.[dest]) {
-          current.variants[dest] = ""
+          if (dest !== "portfolio" && set.has("portfolio")) {
+            current.variantSources ??= {}
+            current.variantSources[dest] = "portfolio"
+          } else {
+            current.variants[dest] = ""
+          }
         }
       }
       current.destinations = DESTINATIONS.filter((x) => set.has(x))
@@ -455,6 +599,10 @@ export function App(): ReactElement {
   }
 
   function setVariantSource(accIdx: number, dest: Destination, sourceDest: Destination | null, resolvedText: string): void {
+    const acc = doc?.companies[companyIdx]?.roles[roleIdx]?.accomplishments[accIdx]
+    if (acc) {
+      markAccomplishmentCustomized(acc.id)
+    }
     updateDoc((d) => {
       const acc = d.companies[companyIdx]!.roles[roleIdx]!.accomplishments[accIdx]!
       if (sourceDest) {
@@ -636,7 +784,7 @@ export function App(): ReactElement {
               <ul className="issues">
                 {displayIssues.map((issue) => (
                   <li key={`${issue.path}-${issue.message}`} className={issue.severity}>
-                    <strong>{issue.severity}</strong>: {issue.path} — {issue.message}
+                    {formatValidationIssue(doc, issue)}
                   </li>
                 ))}
               </ul>
@@ -832,23 +980,27 @@ export function App(): ReactElement {
                 )}
               </section>
 
-              <section className="card">
+              <section className="card accomplishments-card">
                 <div className="card-header">
                   <h3>Accomplishments</h3>
-                  <button type="button" className="add-bullet-btn" onClick={addAccomplishment}>
-                    + Bullet
-                  </button>
                 </div>
 
                 {role.accomplishments.length === 0 ? (
-                  <p className="muted accomplishments-empty">No bullets yet. Use + Bullet to add one.</p>
+                  <p className="muted accomplishments-empty">No bullets yet.</p>
                 ) : (
                   <div className="accomplishments-list" ref={accomplishmentsListRef}>
-                    {role.accomplishments.map((acc, ai) => (
-                      <section className="accomplishment-card" data-accomplishment-id={acc.id} key={acc.id}>
-                        <section className="accomplishment-card-section accomplishment-destinations" aria-label="Destinations">
-                          <div className="card-header accomplishment-destinations-header">
-                            <h4 className="accomplishment-section-title">Destinations</h4>
+                    {role.accomplishments.map((acc, ai) => {
+                      const showAdvanced = !isDefaultAccomplishmentSetup(acc) || customizedAccomplishmentIds.has(acc.id)
+
+                      return (
+                        <section
+                          className={`accomplishment-card${invalidAccomplishmentIndices.has(ai) ? " accomplishment-card-invalid" : ""}${exitingAccomplishmentIds.has(acc.id) ? " accomplishment-card-exiting" : ""}`}
+                          data-accomplishment-id={acc.id}
+                          key={acc.id}
+                          onAnimationEnd={(event) => handleAccomplishmentExitAnimationEnd(acc.id, event)}
+                        >
+                          <div className="accomplishment-card-header">
+                            <h4 className="accomplishment-card-title">Bullet {ai + 1}</h4>
                             <div className="row-actions">
                               <button
                                 type="button"
@@ -876,53 +1028,69 @@ export function App(): ReactElement {
                                 aria-label="Delete accomplishment"
                                 title="Delete"
                                 onClick={() => removeAccomplishment(ai)}
+                                disabled={exitingAccomplishmentIds.has(acc.id)}
                               >
                                 <TrashIcon />
                               </button>
                             </div>
                           </div>
-                          <div className="destinations">
-                            {DESTINATIONS.map((dest) => {
-                              const meta = DESTINATION_META[dest]
-                              return (
-                                <label key={dest}>
-                                  <input
-                                    type="checkbox"
-                                    checked={acc.destinations.includes(dest)}
-                                    onChange={() => toggleDestination(ai, dest)}
-                                  />
-                                  <span className="destination-option">
-                                    {meta.icon}
-                                    {meta.label}
-                                  </span>
-                                </label>
-                              )
-                            })}
-                          </div>
-                        </section>
 
-                        <AccomplishmentVariants
-                          accomplishment={acc}
-                          destinationMeta={DESTINATION_META}
-                          onVariantSourceChange={(dest, sourceDest, resolvedText) => setVariantSource(ai, dest, sourceDest, resolvedText)}
-                          onVariantChange={(dest, next) =>
-                            updateDoc((d) => {
-                              d.companies[companyIdx]!.roles[roleIdx]!.accomplishments[ai]!.variants[dest] = next
-                              return d
-                            })
-                          }
-                        />
-                      </section>
-                    ))}
+                          {showAdvanced && (
+                            <section className="accomplishment-card-section accomplishment-destinations" aria-label="Destinations">
+                              <h4 className="accomplishment-section-title">Destinations</h4>
+                              <div className="destinations">
+                                {DESTINATIONS.map((dest) => {
+                                  const meta = DESTINATION_META[dest]
+                                  return (
+                                    <label key={dest}>
+                                      <input
+                                        type="checkbox"
+                                        checked={acc.destinations.includes(dest)}
+                                        onChange={() => toggleDestination(ai, dest)}
+                                      />
+                                      <span className="destination-option">
+                                        {meta.icon}
+                                        {meta.label}
+                                      </span>
+                                    </label>
+                                  )
+                                })}
+                              </div>
+                            </section>
+                          )}
+
+                          <AccomplishmentVariants
+                            accomplishment={acc}
+                            destinationMeta={DESTINATION_META}
+                            simpleMode={!showAdvanced}
+                            destinationSummary={buildDestinationSummary(acc.destinations)}
+                            onCustomize={() => markAccomplishmentCustomized(acc.id)}
+                            onVariantSourceChange={(dest, sourceDest, resolvedText) => setVariantSource(ai, dest, sourceDest, resolvedText)}
+                            onVariantChange={(dest, next) =>
+                              updateDoc((d) => {
+                                d.companies[companyIdx]!.roles[roleIdx]!.accomplishments[ai]!.variants[dest] = next
+                                return d
+                              })
+                            }
+                          />
+                        </section>
+                      )
+                    })}
                   </div>
                 )}
+
+                <div className="accomplishments-footer">
+                  <button type="button" className="add-bullet-btn" onClick={addAccomplishment}>
+                    + Bullet
+                  </button>
+                </div>
               </section>
 
               {companyIssues.length > 0 && (
                 <ul className="issues">
                   {companyIssues.map((issue) => (
                     <li key={`${issue.path}-${issue.message}`} className={issue.severity}>
-                      {issue.message}
+                      {formatValidationIssue(doc, issue)}
                     </li>
                   ))}
                 </ul>
