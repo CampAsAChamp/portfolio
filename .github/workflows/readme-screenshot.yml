@@ -14,7 +14,7 @@ on:
 
 jobs:
   screenshot:
-    uses: CampAsAChamp/readme-screenshot/.github/workflows/capture-and-commit.yml@v1.1.2
+    uses: CampAsAChamp/readme-screenshot/.github/workflows/capture-and-commit.yml@main
     with:
       config: .readme-screenshot.yml
       commit_message: "docs: update readme screenshot"
