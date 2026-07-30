@@ -1,3 +1,12 @@
+## 1.17.0 (2026-07-30)
+
+* fix: pin readme-screenshot workflow to v1.1.1 ([bc428e9](https://github.com/CampAsAChamp/portfolio/commit/bc428e9))
+* fix: pin readme-screenshot workflow to v1.1.2 ([ba52c95](https://github.com/CampAsAChamp/portfolio/commit/ba52c95))
+* docs: update README product screenshot ([189e25e](https://github.com/CampAsAChamp/portfolio/commit/189e25e))
+* feat: add automated README screenshot capture via readme-screenshot ([e5e7983](https://github.com/CampAsAChamp/portfolio/commit/e5e7983))
+* feat: add shared variants for accomplishments ([a47051d](https://github.com/CampAsAChamp/portfolio/commit/a47051d))
+* data: update experiences.yaml ([2b34cb4](https://github.com/CampAsAChamp/portfolio/commit/2b34cb4))
+
 ## 1.16.0 (2026-07-23)
 
 * fix: keep Vitest explorer off experience-sync Vite config ([b234f2f](https://github.com/CampAsAChamp/portfolio/commit/b234f2f))
