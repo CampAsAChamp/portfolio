@@ -1,5 +1,6 @@
 import fs from "node:fs"
 import path from "node:path"
+import { normalizeDocument } from "experience-sync/lib/accomplishmentDefaults"
 import { CONTENT_DIR, contentFilePath, EXPERIENCES_YAML } from "experience-sync/lib/paths"
 import { validateExperiencesDocument, type ExperiencesDocument, type ValidationIssue } from "experience-sync/lib/schema"
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml"
@@ -77,6 +78,7 @@ export function saveExperiencesDocument(data: unknown): {
   if (!result.success || !result.data) {
     return result
   }
-  writeYamlFile("experiences.yaml", result.data)
-  return result
+  const normalized = normalizeDocument(result.data)
+  writeYamlFile("experiences.yaml", normalized)
+  return { ...result, data: normalized }
 }

@@ -50,7 +50,7 @@ describe("validateExperiencesDocument", () => {
     expect(result.success).toBe(false)
     const issue = result.issues.find((i) => i.path === "companies.0.roles.0.accomplishments.0.variants.resume")
     expect(issue?.severity).toBe("error")
-    expect(issue?.message).toContain('Destination "resume"')
+    expect(issue?.message).toBe("This bullet has no text")
   })
 
   it("warns when an orphan variant is set without its destination", () => {
@@ -339,6 +339,8 @@ describe("validateExperiencesDocument", () => {
 
     const result = validateExperiencesDocument(doc)
     expect(result.success).toBe(false)
-    expect(result.issues.some((i) => i.message.includes('Destination "resume" is selected but has no variant text'))).toBe(true)
+    expect(result.issues.some((i) => i.path === "companies.0.roles.0.accomplishments.0.variants.portfolio")).toBe(true)
+    expect(result.issues.some((i) => i.message === "This bullet has no text")).toBe(true)
+    expect(result.issues.some((i) => i.path.includes("variantSources"))).toBe(false)
   })
 })

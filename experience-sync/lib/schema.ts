@@ -1,3 +1,4 @@
+import { expandDocumentDefaults } from "experience-sync/lib/accomplishmentDefaults";
 import { resolveAccomplishment } from "experience-sync/lib/resolve";
 import { z } from "zod";
 
@@ -210,11 +211,15 @@ function collectVariantDestinationIssues(accomplishment: Accomplishment, basePat
 
   for (const dest of accomplishment.destinations) {
     const sourceDest = sources[dest]
+    // Aliased destinations inherit text from their source; report once on the root variant.
+    if (sourceDest) {
+      continue
+    }
     const hasResolvedText = hasNonEmptyVariantText(resolved.variants[dest])
     if (!hasResolvedText) {
       issues.push({
-        path: sourceDest ? `${basePath}.variantSources.${dest}` : `${basePath}.variants.${dest}`,
-        message: `Destination "${dest}" is selected but has no variant text`,
+        path: `${basePath}.variants.${dest}`,
+        message: "This bullet has no text",
         severity: "error",
       })
     }
@@ -270,7 +275,7 @@ export function validateExperiencesDocument(data: unknown): {
     return { success: false, issues: zodIssuesToValidationIssues(parsed.error.issues) }
   }
 
-  const doc = parsed.data
+  const doc = expandDocumentDefaults(parsed.data)
   const issues = collectSemanticIssues(doc)
   const hasErrors = issues.some((i) => i.severity === "error")
 
