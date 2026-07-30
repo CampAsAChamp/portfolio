@@ -11,13 +11,6 @@
     Portfolio Website to visually show off my work in my career and free time.
     <br />
     <a href="https://nickhs.dev/">https://nickhs.dev/</a>
-    <br />
-    <br />
-    <a href="https://nickhs.dev/">View Website</a>
-    ·
-    <a href="https://github.com/CampAsAChamp/portfolio/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/CampAsAChamp/portfolio/issues">Request Feature</a>
   </p>
 </div>
 
