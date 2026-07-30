@@ -23,6 +23,11 @@ function autosizeTextarea(textarea: HTMLTextAreaElement): void {
   textarea.style.height = `${textarea.scrollHeight}px`
 }
 
+/** Remove trailing newline characters (e.g. from pressing Enter at the end of the text). */
+function trimTrailingNewlines(text: string): string {
+  return text.replace(/\n+$/, "")
+}
+
 /**
  * Autosizing textarea for one destination variant.
  * Optionally adds a markdown-link button and ⌘/Ctrl+K shortcut.
@@ -93,6 +98,15 @@ export function VariantField({ label, value, onChange, supportsMarkdownLinks = f
         readOnly={readOnly}
         onChange={(e) => {
           if (!readOnly) onChange(e.target.value)
+        }}
+        onBlur={(e) => {
+          if (readOnly) {
+            return
+          }
+          const trimmed = trimTrailingNewlines(e.currentTarget.value)
+          if (trimmed !== e.currentTarget.value) {
+            onChange(trimmed)
+          }
         }}
         onKeyDown={(e) => {
           if (readOnly || !supportsMarkdownLinks || !isMarkdownLinkShortcut(e)) {
