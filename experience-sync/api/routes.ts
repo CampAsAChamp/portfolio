@@ -1,12 +1,16 @@
-import http from "node:http"
-import { HttpMethod, parseJsonBody, sendJson } from "experience-sync/api/http"
-import { runCli } from "experience-sync/api/runCli"
-import { writeExperiencesTs } from "experience-sync/lib/generate"
-import { formatLinkedInExport } from "experience-sync/lib/linkedin"
-import { listContentFiles, loadExperiencesDocument, readYamlFile, saveExperiencesDocument, writeYamlFile } from "experience-sync/lib/load"
-import { contentFilePath } from "experience-sync/lib/paths"
-import { formatResumeExport } from "experience-sync/lib/resume"
-import { validateExperiencesDocument, type ExperiencesDocument, type ValidationIssue } from "experience-sync/lib/schema"
+import http from "node:http";
+import { HttpMethod, parseJsonBody, sendJson } from "experience-sync/api/http";
+import { runCli } from "experience-sync/api/runCli";
+import { writeExperiencesTs } from "experience-sync/lib/generate";
+import { formatLinkedInExport } from "experience-sync/lib/linkedin";
+import { listContentFiles, loadExperiencesDocument, readYamlFile, saveExperiencesDocument, writeYamlFile } from "experience-sync/lib/load";
+import { contentFilePath } from "experience-sync/lib/paths";
+import { formatResumeExport } from "experience-sync/lib/resume";
+import { validateExperiencesDocument, type ExperiencesDocument, type ValidationIssue } from "experience-sync/lib/schema";
+
+
+
+
 
 type RouteHandler = (req: http.IncomingMessage, res: http.ServerResponse, pathname: string) => Promise<void> | void
 
@@ -71,6 +75,15 @@ function handleListFiles(_req: http.IncomingMessage, res: http.ServerResponse): 
 function handleGetFile(_req: http.IncomingMessage, res: http.ServerResponse, pathname: string): void {
   const filename = filenameFromFilesPath(pathname)
   contentFilePath(filename)
+  if (filename === "experiences.yaml") {
+    const loaded = loadExperiencesDocument()
+    if (!loaded.success || !loaded.data) {
+      sendJson(res, 400, { ok: false, issues: loaded.issues })
+      return
+    }
+    sendJson(res, 200, { filename, data: loaded.data, issues: loaded.issues })
+    return
+  }
   const data = readYamlFile(filename)
   sendJson(res, 200, { filename, data })
 }

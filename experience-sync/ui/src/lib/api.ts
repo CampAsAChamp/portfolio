@@ -39,10 +39,10 @@ export async function loadExperiences(): Promise<ExperiencesDocument> {
 
 /**
  * Validate and persist experiences to YAML.
- * @returns Validation issues (warnings may still accompany a successful save)
+ * @returns Normalized on-disk document (expand before editing in the UI) and validation issues
  */
-export async function saveExperiences(doc: ExperiencesDocument): Promise<{ issues: ValidationIssue[] }> {
-  return request<{ ok: boolean; issues: ValidationIssue[] }>("/api/files/experiences.yaml", {
+export async function saveExperiences(doc: ExperiencesDocument): Promise<{ data: ExperiencesDocument; issues: ValidationIssue[] }> {
+  return request<{ ok: boolean; data: ExperiencesDocument; issues: ValidationIssue[] }>("/api/files/experiences.yaml", {
     method: "PUT",
     body: JSON.stringify({ data: doc }),
   })
