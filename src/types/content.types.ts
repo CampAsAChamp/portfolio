@@ -7,6 +7,11 @@ export interface Link {
   rel?: string
 }
 
-export type TextSegment = string | Link
+export interface InlineCode {
+  code: string
+}
 
-export type BulletPoint = TextSegment[]
+export type TextSegment = string | Link | InlineCode
+
+/** Plain markdown-lite string or pre-parsed segments (generated experience data). */
+export type BulletPoint = string | TextSegment[]

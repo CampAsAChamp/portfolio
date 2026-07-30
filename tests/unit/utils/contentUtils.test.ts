@@ -1,4 +1,4 @@
-import { createExternalLink, createLink } from "utils/contentUtils"
+import { createExternalLink, createInlineCode, createLink } from "utils/contentUtils"
 import { describe, expect, it } from "vitest"
 
 describe("contentUtils", () => {
@@ -22,5 +22,9 @@ describe("contentUtils", () => {
       target: "_blank",
       rel: "noopener noreferrer",
     })
+  })
+
+  it("creates inline code", () => {
+    expect(createInlineCode("yarn exp:ui")).toEqual({ code: "yarn exp:ui" })
   })
 })

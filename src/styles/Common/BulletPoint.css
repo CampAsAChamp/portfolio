@@ -1,0 +1,7 @@
+.bullet-inline-code {
+  border-radius: 4px;
+  background-color: var(--color-inline-code-background);
+  padding: 0.1em 0.35em;
+  font-size: 0.9em;
+  font-family: ui-monospace, "SFMono-Regular", "SF Mono", "Menlo", "Consolas", monospace;
+}

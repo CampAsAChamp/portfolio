@@ -40,6 +40,7 @@
   --color-hamburger: var(--color-white);
   --color-name: var(--color-purple);
   --color-section-header: var(--color-purple);
+  --color-inline-code-background: rgb(108, 99, 255, 0.12);
 }
 
 /* Dark Mode */
@@ -61,6 +62,7 @@
   --color-hamburger: var(--color-white);
   --color-name: var(--color-yellow);
   --color-section-header: var(--color-yellow);
+  --color-inline-code-background: rgb(255, 255, 255, 0.1);
 }
 
 *,

@@ -7,7 +7,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 const mockProject: SoftwareProject = {
   name: "Demo Video Project",
   technologies: [REACT],
-  bulletPoints: [["Demo bullet"]],
+  bulletPoints: ["Demo bullet"],
   thumbnail: "/thumb.webp",
   videoThumbnail: "/video.webm",
   videoThumbnailMp4: "/video.mp4",
