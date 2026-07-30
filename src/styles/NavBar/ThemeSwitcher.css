@@ -63,6 +63,8 @@
 /* Morph Icon Styling */
 .morph-icon {
   overflow: visible;
+  width: 1.5vw;
+  height: 1.5vw;
 }
 
 /* Sun elements (rays and circle) - always yellow */
@@ -122,8 +124,8 @@
     z-index: auto; /* Remove z-index on mobile to allow parent li animation to work */
   }
 
-  .theme-icon {
-    width: 35px;
-    height: 35px;
+  .morph-icon {
+    width: 3rem;
+    height: 3rem;
   }
 }
