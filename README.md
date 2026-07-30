@@ -495,11 +495,9 @@ Production deploys are triggered by GitHub Actions, not by Cloudflare Git auto-d
 
 3. The **Tests** workflow runs lint, unit tests, `yarn build`, and E2E tests, then uploads the `build/` output as an artifact.
 
-4. If Tests pass, the **Deploy** workflow downloads that artifact and uploads it to Cloudflare Pages via Wrangler — the same build that was tested in CI, with no second build step.
+4. If Tests pass on a push to `main`, the **Deploy** job in the same workflow downloads that artifact and uploads it to Cloudflare Pages via Wrangler — the same build that was tested in CI, with no second build step.
 
-5. Deploy verifies `https://nickhs.dev` returns HTTP 200 before marking the GitHub deployment successful.
-
-If Tests fail, production stays on the previous deploy. Release commits (`[skip ci]`) do not trigger Deploy.
+If Tests fail, production stays on the previous deploy. Release commits (`[skip ci]`) do not trigger Deploy. Deploy verifies `https://nickhs.dev` returns HTTP 200 before marking the GitHub deployment successful.
 
 ### Cloudflare Pages Configuration
 
