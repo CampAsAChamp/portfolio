@@ -1,1 +1,1 @@
-bash scripts/lint-staged-pre-commit.sh
+node scripts/lint-staged-pre-commit.mjs
