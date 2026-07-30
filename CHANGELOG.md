@@ -1,3 +1,13 @@
+## 1.20.0 (2026-07-30)
+
+* chore: update experiences ([efe36bd](https://github.com/CampAsAChamp/portfolio/commit/efe36bd))
+* chore: update experiences ([3e64c65](https://github.com/CampAsAChamp/portfolio/commit/3e64c65))
+* test: update experience section linux visual baseline ([36f32ed](https://github.com/CampAsAChamp/portfolio/commit/36f32ed))
+* feat: add optional company nickname for experience sync sidebar ([ae26d46](https://github.com/CampAsAChamp/portfolio/commit/ae26d46))
+* feat: change save button label on experience sync ui ([3049667](https://github.com/CampAsAChamp/portfolio/commit/3049667))
+* feat: move copy linkedin and resume buttons from navbar to previews ([90f7b50](https://github.com/CampAsAChamp/portfolio/commit/90f7b50))
+* fix: lazy-load experience sync API modules per request ([0c224fb](https://github.com/CampAsAChamp/portfolio/commit/0c224fb))
+
 ## 1.19.0 (2026-07-30)
 
 * chore: update experiences ([2d570f1](https://github.com/CampAsAChamp/portfolio/commit/2d570f1))
