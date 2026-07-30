@@ -1,1 +1,1 @@
-yarn lint-staged
+bash scripts/lint-staged-pre-commit.sh
