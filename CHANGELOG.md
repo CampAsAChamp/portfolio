@@ -1,3 +1,7 @@
+## <small>1.17.1 (2026-07-30)</small>
+
+* fix: track readme-screenshot v1 tag for latest workflow ([e9b8bf9](https://github.com/CampAsAChamp/portfolio/commit/e9b8bf9))
+
 ## 1.17.0 (2026-07-30)
 
 * fix: pin readme-screenshot workflow to v1.1.1 ([bc428e9](https://github.com/CampAsAChamp/portfolio/commit/bc428e9))
