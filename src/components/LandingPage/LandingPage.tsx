@@ -1,10 +1,12 @@
-import ArtProfilePic from "assets/Art_Profile_Pic.svg"
 import HeroImageBlobShape from "assets/Organic_Shapes/Hero_Image_Blob_Shape.svg"
 import { ContactMeBar } from "components/LandingPage/ContactMeBar"
 import { MouseScrollIndicator } from "components/LandingPage/MouseScrollIndicator"
 import { useModal } from "hooks/useModal"
 
 import "styles/LandingPage/LandingPage.css"
+
+/** Stable public URL — must match index.html LCP prerender shell and preload link */
+const PROFILE_PIC_SRC = "/Art_Profile_Pic.svg"
 
 export function LandingPage(): React.ReactElement {
   const { isOpen, open, close } = useModal()
@@ -34,7 +36,7 @@ export function LandingPage(): React.ReactElement {
           {/* No fade-in: opacity:0 delays LCP until the animation completes */}
           <img
             id="profile-pic"
-            src={ArtProfilePic}
+            src={PROFILE_PIC_SRC}
             alt="Flat Profile Pic"
             title="Flat Profile Pic"
             width="418"

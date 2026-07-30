@@ -32,3 +32,14 @@ root.render(
     </ErrorBoundary>
   </React.StrictMode>,
 )
+
+/** Hide the static LCP prerender shell once React has painted the real landing page. */
+function markAppReady(): void {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.documentElement.classList.add("react-ready")
+    })
+  })
+}
+
+markAppReady()

@@ -155,16 +155,21 @@ they just reduce it at the margins.
 
 ## Next steps, if you want to keep pushing this
 
+### Implemented (2026-07-30): static LCP prerender
+
+The profile pic now lives at `public/Art_Profile_Pic.svg` with a matching `<link
+rel="preload">` and a mobile/tablet-only prerender shell in `index.html`
+(`#landing-lcp-shell` / `#profile-pic-lcp`). The shell paints before React
+mounts; `index.tsx` adds `html.react-ready` after the first React commit to
+hide it. `LandingPage.tsx` uses the same public URL so the browser reuses the
+cached image. Desktop hides the shell via CSS (desktop Lighthouse already
+passes).
+
+Remaining options if mobile still needs more headroom:
+
 Roughly in order of effort/risk:
 
-1. **Move the LCP image outside React's render tree.** Put the profile-pic
-   `<img>` directly in `index.html` (not rendered by `LandingPage.tsx`),
-   positioned/sized to match, so it can paint on raw HTML parse without
-   waiting for React to mount at all. This directly targets the actual
-   bottleneck instead of working around it. Care needed: avoid a duplicate
-   image or a layout jump when React's version of the tree mounts on top of
-   it (e.g. render a placeholder/no-op in React's tree, or have React skip
-   re-rendering that exact node).
+1. ~~**Move the LCP image outside React's render tree.**~~ Done — see above.
 2. **Investigate reducing react-dom's own execution cost further** — check
    whether a smaller subset of React's client APIs are actually needed
    (e.g. anything that could avoid pulling in unused reconciler paths), or

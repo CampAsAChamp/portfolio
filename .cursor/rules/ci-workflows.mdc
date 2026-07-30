@@ -13,11 +13,11 @@ push/PR → Tests → (on main push success) Deploy job in same workflow
                 → (on success) → Release + Lighthouse
 ```
 
-| Workflow | Trigger | Purpose |
-|----------|---------|---------|
-| `test.yml` | push/PR to `main` | audit → lint → exp:check → unit tests → build → E2E → upload `production-build` → (main push only) Wrangler deploy |
-| `release.yml` | Tests success on `main` | semantic-release (skips if `[skip ci]`) |
-| `lighthouse.yml` | Tests success on `main` | LHCI desktop + mobile against preview server |
+| Workflow         | Trigger                 | Purpose                                                                                                            |
+| ---------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `test.yml`       | push/PR to `main`       | audit → lint → exp:check → unit tests → build → E2E → upload `production-build` → (main push only) Wrangler deploy |
+| `release.yml`    | Tests success on `main` | semantic-release (skips if `[skip ci]`)                                                                            |
+| `lighthouse.yml` | Tests success on `main` | LHCI desktop + mobile against preview server                                                                       |
 
 Production hosting is **Cloudflare Pages** (`portfolio` project). Deploys are CI-gated: the `deploy` job in `test.yml` runs after the `test` job passes on pushes to `main`, downloads the same workflow's `production-build` artifact, and uploads via Wrangler. Cloudflare automatic production branch deployments are disabled. Required repo secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
 
@@ -47,12 +47,11 @@ paint until React mounts, and react-dom's ~540KB reconciler takes ~800ms of
 scripting to execute under 4x throttling before that first paint can happen.
 Bundle-splitting react-dom into its own chunk (for caching) and deferring
 non-critical CSS (see `ArtGalleryCarousel.tsx`) both helped but can't remove
-that fundamental cost. Actually closing this gap would need either moving
-the LCP image outside React's render tree (a static `<img>` in `index.html`)
-or SSR/prerendering so the browser has real HTML to paint immediately --
-both out of scope for a CI-gate fix. minScore is set to 0.78 (a few points
-of headroom below the observed ~0.82) so the gate still catches real
-regressions without re-litigating this same investigation.
+that fundamental cost. The LCP image now prerenders from static HTML
+(`public/Art_Profile_Pic.svg` + `index.html` shell) so it can paint before
+React mounts — see `docs/lighthouse-mobile-perf.md`. minScore is set to 0.78
+(a few points of headroom below the observed ~0.82) so the gate still catches
+real regressions without re-litigating this same investigation.
 
 ## Local parity
 

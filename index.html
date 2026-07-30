@@ -101,8 +101,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
   <!-- Preload critical fonts (700 and 800 used in hero text "NICK SCHNEIDER") -->
-  <link rel="preload" href="https://fonts.gstatic.com/s/nunito/v32/XRXV3I6Li01BKof4N-yGbss.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="https://fonts.gstatic.com/s/nunito/v32/XRXV3I6Li01BKofINeaBTMnFcQ.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="https://fonts.gstatic.com/s/nunito/v32/XRXV3I6Li01BKof4N-yGbss.woff2" as="font"
+    type="font/woff2" crossorigin />
+  <link rel="preload" href="https://fonts.gstatic.com/s/nunito/v32/XRXV3I6Li01BKofINeaBTMnFcQ.woff2" as="font"
+    type="font/woff2" crossorigin />
+
+  <!-- LCP image — stable public URL, paints from static HTML before React mounts -->
+  <link rel="preload" href="/Art_Profile_Pic.svg" as="image" type="image/svg+xml" fetchpriority="high" />
 
   <!-- Optionally increase loading priority -->
   <link rel="preload" as="style"
@@ -202,21 +207,68 @@
       background-color: #1e272e;
     }
 
+    /* LCP prerender — mobile/tablet only; desktop Lighthouse already passes */
+    #landing-lcp-shell {
+      box-sizing: border-box;
+      left: 0;
+      pointer-events: none;
+      position: absolute;
+      right: 0;
+      top: 12vh;
+      z-index: 0;
+    }
+
+    #landing-lcp-profile-pic-container {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    #profile-pic-lcp {
+      aspect-ratio: 418 / 468;
+      display: block;
+      height: auto;
+      margin: 2rem auto;
+      max-width: 80%;
+      padding: 0 2rem;
+      width: 100%;
+    }
+
+    html.react-ready #landing-lcp-shell,
+    html[data-scroll-restoring] #landing-lcp-shell {
+      display: none;
+    }
+
     /* Mobile responsive */
+    @media screen and (min-width: 1101px) {
+      #landing-lcp-shell {
+        display: none;
+      }
+    }
+
     @media screen and (max-width: 1100px) {
       #landing-blob {
         width: 60%;
       }
+
       #landing-page-container {
         grid-template-areas: "nav" "profile-pic-container" "name-intro";
         grid-template-columns: 1fr;
         margin-bottom: 50px;
       }
+
       #software-engineer {
         font-size: 2rem;
       }
+
       #name-intro-container {
         padding-left: 0;
+      }
+    }
+
+    @media screen and (max-width: 1100px) and (min-width: 769px) {
+      #profile-pic-lcp {
+        max-width: 50%;
       }
     }
   </style>
@@ -224,6 +276,13 @@
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
+  <!-- LCP prerender shell — see docs/lighthouse-mobile-perf.md -->
+  <section id="landing-lcp-shell" aria-hidden="true">
+    <div id="landing-lcp-profile-pic-container">
+      <img id="profile-pic-lcp" src="/Art_Profile_Pic.svg" alt="Flat Profile Pic" width="418" height="468"
+        fetchpriority="high" decoding="async" />
+    </div>
+  </section>
   <div id="root"></div>
   <script type="module" src="/src/index.tsx"></script>
 </body>
