@@ -25,12 +25,18 @@ export const experiences: Experience[] = [
         },
         bulletPoints: [
           [
-            "Currently working as a full stack software engineer on the appointment scheduling team for TurboTax's ",
+            "Full stack engineer on the appointments team for Intuit's ",
             createExternalLink(
               "Virtual Expert Platform",
               "https://investors.intuit.com/news-events/press-releases/detail/100/intuits-virtual-expert-platform-connects-people-to-tax-and-bookkeeping-experts-powered-by-ai",
             ),
-            ".",
+            ". across TurboTax, QuickBooks, Credit Karma, and Mailchimp.",
+          ],
+          [
+            "Decoupled one on one appointments from Amazon Connect at 600 TPS with zero incidents, unlocking a new offering for independent tax experts, eliminating Connect licenses, and cutting appointment failures by 8%.",
+          ],
+          [
+            "Led development of a feature (using React, Redux and Kafka), enabling experts to receive next appointment alerts during active calls, shipping defect free during last two weeks of tax season for 30,000 experts and reducing missed appointments by 23%.",
           ],
         ],
       },
@@ -46,16 +52,13 @@ export const experiences: Experience[] = [
         },
         bulletPoints: [
           [
-            "Launched Attribute Based Routing to match customers to tax experts at a more granular level, driving a 11% reduction in TurboTax Live customer service time without impact to quality and 6% increase in same-day tax filings (contributing to $5.3M savings).",
+            "Launched Attribute Based Routing (ABR), retrofitting legacy queue-based routing systems to match customers to tax experts at a more granular level, driving an 11% reduction in TurboTax Live customer service time and a 7% increase in same-day tax filings, for $5.3M in savings.",
           ],
           [
-            "Created service with accompanying web app for syncing expert skills and creating routing plans in AWS, enabling Attribute Based Routing.",
+            "Owned end to end delivery of ABR Evolution (autonomous skill prioritization, attribute model redesign) using Java and Spring Boot, from requirements, design, decisions, and technical leadership, improving global match rate by 14%, average handle time (AHT) by 6%, and $3.7M in AHT savings.",
           ],
           [
-            "Developed service for scheduling expert appointments and fulfilling them at their scheduled time, handling over 500,000 appointments a year.",
-          ],
-          [
-            "Decoupled TurboTax Live from Amazon Connect, saving 1100 hours per year by eliminating the need for personal queues and licenses to be created by Ops team.",
+            "Developed  service for creating ABR rules with an AI model trained on historical expert and customer interactions, replacing manual ABR rule creation by operators, unlocking $2.1M in AHT savings.",
           ],
         ],
       },
@@ -88,21 +91,21 @@ export const experiences: Experience[] = [
         },
         bulletPoints: [
           [
-            "Worked on the ",
-            createExternalLink("product", "https://manage.arcules.com/login/"),
-            " (video surveillance as a service) team across the whole stack.",
+            "Full stack engineer on the ",
+            createExternalLink("video surveillance as a service", "https://www.milestonesys.com/products/software/arcules/"),
+            " product team.",
           ],
           [
-            "Developed and maintained a service and scheduler for creating detailed customer device usage reports for further analysis and insights using Go, Postgres, and Google Cloud Platform.",
+            "Built a Kubernetes CronJob delivering hourly health status reports across 10,000+ devices to meet a top customer's reliability requirement, enabling proactive issue detection at fleet scale.",
           ],
           [
-            "Designed and implemented set of microservices for our Back Office portal, which streamlined the quote/order creation process for the Sales Ops team, resulting in a significantly faster sales pipeline.",
+            "Developed a Go service and scheduler on GCP/Postgres that generated detailed device usage reports, giving the team recurring visibility into customer behavior that previously required manual pulls.",
           ],
           [
-            "Created a Kubernetes CronJob to generate and distribute hourly device health status reports for 10,000+ devices, per request from our largest customer.",
+            "Designed and shipped a set of microservices powering the Back Office portal's quote/order flow, cutting manual steps for the Sales Ops team and shortening the path from quote to order.",
           ],
           [
-            "Enhanced user experience of the app by revamping the application flow, adding localization infrastructure and quality-of-life features using React, Redux, and react-intl.",
+            "Revamped the app's core flow and stood up localization infrastructure (React, Redux, react-intl), improving usability and unblocking international rollout.",
           ],
         ],
       },
@@ -134,30 +137,12 @@ export const experiences: Experience[] = [
           year: 2021,
         },
         bulletPoints: [
+          ["Backend engineer on the Ground Software team for the Next Gen Space Based Early Missile Warning System."],
           [
-            "Worked on ",
-            createExternalLink(
-              "Space Based Early Missile Warning Satellite",
-              "https://www.raytheon.com/capabilities/products/space-based-early-warning",
-            ),
-            " on the Ground Software team",
+            "Built a C++11 / Kafka / Protobuf data processing framework ingesting terabytes of real time satellite data daily, engineered for the reliability and fault tolerance a defense system demands.",
           ],
           [
-            "Developed Space Mission Data Processing ",
-            createExternalLink(
-              "Framework",
-              "https://www.raytheonintelligenceandspace.com/what-we-do/space-solutions/missile-warning-and-defense/forge",
-            ),
-            " in C++ 11 and Google Protobufs to stream and process terabytes of real-time satellite data each day with extremely high reliability, performance, and fault tolerance.",
-          ],
-          [
-            "Implemented modules in Space to Earth message simulation with Python & C++, allowing for extensive development and testing without needing Space hardware.",
-          ],
-          [
-            "Optimized statistical feature generation algorithm from systems engineers leading to a 90% improvement in runtime (~200 μs to ~20 μs).",
-          ],
-          [
-            "Received program-wide performance recognition award for outstanding and impressive performance (July 2020, June 2021, Sept 2021); Recognition Awards for collaboration (June 2020, Aug 2020, Jan 2021).",
+            "Developed space to ground message simulator in Python and C++ that let the team develop and test end to end without physical space hardware, removing a major bottleneck from the dev cycle.",
           ],
         ],
       },

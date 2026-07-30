@@ -24,15 +24,28 @@ companies:
               - portfolio
               - resume
               - linkedin
-            variantSources:
-              resume: linkedin
             variants:
-              portfolio: Currently working as a full stack software engineer on the appointment scheduling team
-                for TurboTax's [Virtual Expert
+              portfolio: Full stack engineer on the appointments team for Intuit's [Virtual Expert
                 Platform](https://investors.intuit.com/news-events/press-releases/detail/100/intuits-virtual-expert-platform-connects-people-to-tax-and-bookkeeping-experts-powered-by-ai).
-              linkedin: Full stack engineer on the appointments team for Intuit's [Virtual Expert
-                Platform](https://investors.intuit.com/news-events/press-releases/detail/100/intuits-virtual-expert-platform-connects-people-to-tax-and-bookkeeping-experts-powered-by-ai).
-                across TurboTax, QuickBooks, and Mailchimp.
+                across TurboTax, QuickBooks, Credit Karma, and Mailchimp.
+          - id: intuit-sse-bullet-5ef15d4a
+            destinations:
+              - portfolio
+              - resume
+              - linkedin
+            variants:
+              portfolio: Decoupled one on one appointments from Amazon Connect at 600 TPS with zero incidents,
+                unlocking a new offering for independent tax experts, eliminating Connect licenses,
+                and cutting appointment failures by 8%.
+          - id: intuit-sse-bullet-fdfd9d06
+            destinations:
+              - portfolio
+              - resume
+              - linkedin
+            variants:
+              portfolio: Led development of a feature (using React, Redux and Kafka), enabling experts to receive
+                next appointment alerts during active calls, shipping defect free during last two
+                weeks of tax season for 30,000 experts and reducing missed appointments by 23%.
       - id: intuit-swe2
         position: Software Engineer 2 - Full Stack
         start:
@@ -42,31 +55,35 @@ companies:
           month: Jul
           year: 2026
         accomplishments:
-          - id: intuit-abr-launch
+          - id: intuit-swe2-bullet-7c7e8dfd
             destinations:
               - portfolio
+              - resume
+              - linkedin
             variants:
-              portfolio: Launched Attribute Based Routing to match customers to tax experts at a more granular
-                level, driving a 11% reduction in TurboTax Live customer service time without impact
-                to quality and 6% increase in same-day tax filings (contributing to $5.3M savings).
-          - id: intuit-abr-admin
+              portfolio: Launched Attribute Based Routing (ABR), retrofitting legacy queue-based routing systems
+                to match customers to tax experts at a more granular level, driving an 11% reduction
+                in TurboTax Live customer service time and a 7% increase in same-day tax filings,
+                for $5.3M in savings.
+          - id: intuit-swe2-bullet-a2f15c46
             destinations:
               - portfolio
+              - resume
+              - linkedin
             variants:
-              portfolio: Created service with accompanying web app for syncing expert skills and creating routing
-                plans in AWS, enabling Attribute Based Routing.
-          - id: intuit-scheduling
+              portfolio: Owned end to end delivery of ABR Evolution (autonomous skill prioritization, attribute
+                model redesign) using Java and Spring Boot, from requirements, design, decisions,
+                and technical leadership, improving global match rate by 14%, average handle time
+                (AHT) by 6%, and $3.7M in AHT savings.
+          - id: intuit-swe2-bullet-688457e5
             destinations:
               - portfolio
+              - resume
+              - linkedin
             variants:
-              portfolio: Developed service for scheduling expert appointments and fulfilling them at their
-                scheduled time, handling over 500,000 appointments a year.
-          - id: intuit-amazon-connect
-            destinations:
-              - portfolio
-            variants:
-              portfolio: Decoupled TurboTax Live from Amazon Connect, saving 1100 hours per year by eliminating
-                the need for personal queues and licenses to be created by Ops team.
+              portfolio: Developed  service for creating ABR rules with an AI model trained on historical expert
+                and customer interactions, replacing manual ABR rule creation by operators,
+                unlocking $2.1M in AHT savings.
   - id: arcules
     companyName: Arcules
     location: Irvine, CA
@@ -90,39 +107,49 @@ companies:
           month: Oct
           year: 2023
         accomplishments:
-          - id: arcules-product
+          - id: arcules-swe-bullet-712187e9
             destinations:
               - portfolio
+              - resume
+              - linkedin
             variants:
-              portfolio: Worked on the [product](https://manage.arcules.com/login/) (video surveillance as a
-                service) team across the whole stack.
-          - id: arcules-usage-reports
+              portfolio: Full stack engineer on the [video surveillance as a
+                service](https://www.milestonesys.com/products/software/arcules/) product team.
+          - id: arcules-swe-bullet-b62a3c5a
             destinations:
               - portfolio
+              - resume
+              - linkedin
             variants:
-              portfolio: Developed and maintained a service and scheduler for creating detailed customer device
-                usage reports for further analysis and insights using Go, Postgres, and Google Cloud
-                Platform.
-          - id: arcules-back-office
+              portfolio: Built a Kubernetes CronJob delivering hourly health status reports across 10,000+ devices
+                to meet a top customer's reliability requirement, enabling proactive issue detection
+                at fleet scale.
+          - id: arcules-swe-bullet-56cc4f75
             destinations:
               - portfolio
+              - resume
+              - linkedin
             variants:
-              portfolio: Designed and implemented set of microservices for our Back Office portal, which
-                streamlined the quote/order creation process for the Sales Ops team, resulting in a
-                significantly faster sales pipeline.
-          - id: arcules-health-cron
+              portfolio: Developed a Go service and scheduler on GCP/Postgres that generated detailed device usage
+                reports, giving the team recurring visibility into customer behavior that previously
+                required manual pulls.
+          - id: arcules-swe-bullet-e072a96c
             destinations:
               - portfolio
+              - resume
+              - linkedin
             variants:
-              portfolio: Created a Kubernetes CronJob to generate and distribute hourly device health status
-                reports for 10,000+ devices, per request from our largest customer.
-          - id: arcules-ux
+              portfolio: Designed and shipped a set of microservices powering the Back Office portal's quote/order
+                flow, cutting manual steps for the Sales Ops team and shortening the path from quote
+                to order.
+          - id: arcules-swe-bullet-0859c9be
             destinations:
               - portfolio
+              - resume
+              - linkedin
             variants:
-              portfolio: Enhanced user experience of the app by revamping the application flow, adding
-                localization infrastructure and quality-of-life features using React, Redux, and
-                react-intl.
+              portfolio: Revamped the app's core flow and stood up localization infrastructure (React, Redux,
+                react-intl), improving usability and unblocking international rollout.
   - id: raytheon
     companyName: Raytheon Intelligence & Space
     location: Los Angeles, CA
@@ -143,41 +170,32 @@ companies:
           month: Dec
           year: 2021
         accomplishments:
-          - id: raytheon-sbirs
+          - id: raytheon-swe1-bullet-c1c637cc
             destinations:
               - portfolio
+              - resume
+              - linkedin
             variants:
-              portfolio: Worked on [Space Based Early Missile Warning
-                Satellite](https://www.raytheon.com/capabilities/products/space-based-early-warning)
-                on the Ground Software team
-          - id: raytheon-forge
+              portfolio: Backend engineer on the Ground Software team for the Next Gen Space Based Early Missile
+                Warning System.
+          - id: raytheon-swe1-bullet-a1574598
             destinations:
               - portfolio
+              - resume
+              - linkedin
             variants:
-              portfolio: Developed Space Mission Data Processing
-                [Framework](https://www.raytheonintelligenceandspace.com/what-we-do/space-solutions/missile-warning-and-defense/forge)
-                in C++ 11 and Google Protobufs to stream and process terabytes of real-time
-                satellite data each day with extremely high reliability, performance, and fault
-                tolerance.
-          - id: raytheon-simulation
+              portfolio: Built a C++11 / Kafka / Protobuf data processing framework ingesting terabytes of real
+                time satellite data daily, engineered for the reliability and fault tolerance a
+                defense system demands.
+          - id: raytheon-swe1-bullet-171c4c51
             destinations:
               - portfolio
+              - resume
+              - linkedin
             variants:
-              portfolio: Implemented modules in Space to Earth message simulation with Python & C++, allowing for
-                extensive development and testing without needing Space hardware.
-          - id: raytheon-feature-gen
-            destinations:
-              - portfolio
-            variants:
-              portfolio: Optimized statistical feature generation algorithm from systems engineers leading to a
-                90% improvement in runtime (~200 μs to ~20 μs).
-          - id: raytheon-awards
-            destinations:
-              - portfolio
-            variants:
-              portfolio: Received program-wide performance recognition award for outstanding and impressive
-                performance (July 2020, June 2021, Sept 2021); Recognition Awards for collaboration
-                (June 2020, Aug 2020, Jan 2021).
+              portfolio: Developed space to ground message simulator in Python and C++ that let the team develop
+                and test end to end without physical space hardware, removing a major bottleneck
+                from the dev cycle.
   - id: id-tech
     companyName: ID Tech
     location: Cypress, CA
