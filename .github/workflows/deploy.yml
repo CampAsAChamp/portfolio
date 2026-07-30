@@ -6,14 +6,23 @@ on:
     types: [completed]
     branches: [main]
 
+concurrency:
+  group: production-deploy
+  cancel-in-progress: true
+
 jobs:
   deploy:
     name: Production Deployment
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' && !contains(github.event.workflow_run.head_commit.message, '[skip ci]') }}
     permissions:
-      deployments: write
+      actions: read
       contents: read
+      deployments: write
+
+    env:
+      HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+      HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
 
     steps:
       - name: Start deployment
@@ -24,7 +33,7 @@ jobs:
             const deployment = await github.rest.repos.createDeployment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: context.sha,
+              ref: process.env.HEAD_SHA,
               environment: 'production',
               required_contexts: [],
               auto_merge: false,
@@ -32,6 +41,21 @@ jobs:
             });
 
             return deployment.data.id;
+
+      - name: Download production build
+        uses: actions/download-artifact@v4
+        with:
+          name: production-build
+          path: build
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy build --project-name=portfolio --commit-hash=${{ github.event.workflow_run.head_sha }}
 
       - name: Verify Cloudflare Pages deployment
         id: verify
@@ -83,9 +107,9 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 📊 Deployment Details" >> $GITHUB_STEP_SUMMARY
           echo "- **Environment**: Production" >> $GITHUB_STEP_SUMMARY
-          echo "- **Branch**: \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "- **Commit**: [\`${GITHUB_SHA:0:7}\`](https://github.com/${{ github.repository }}/commit/${{ github.sha }})" >> $GITHUB_STEP_SUMMARY
-          echo "- **Deployed by**: Cloudflare Pages" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: \`${HEAD_BRANCH}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: [\`${HEAD_SHA:0:7}\`](https://github.com/${{ github.repository }}/commit/${HEAD_SHA})" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployed by**: GitHub Actions (Wrangler)" >> $GITHUB_STEP_SUMMARY
           echo "- **Deployment ID**: \`${{ steps.deployment.outputs.result }}\`" >> $GITHUB_STEP_SUMMARY
           echo "- **Verification**: HTTP 200 from https://nickhs.dev" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY

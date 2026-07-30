@@ -14,12 +14,12 @@ push/PR → Tests → (on success) → Release + Deploy + Lighthouse
 
 | Workflow | Trigger | Purpose |
 |----------|---------|---------|
-| `test.yml` | push/PR to `main` | audit (non-blocking) → lint → exp:check → unit tests → build → E2E |
+| `test.yml` | push/PR to `main` | audit (non-blocking) → lint → exp:check → unit tests → build → E2E → upload `production-build` artifact |
 | `release.yml` | Tests success on `main` | semantic-release (skips if `[skip ci]`) |
-| `deploy.yml` | Tests success on `main` | GitHub deployment status; verifies https://nickhs.dev returns HTTP 200 |
+| `deploy.yml` | Tests success on `main` | download CI build artifact → Wrangler `pages deploy` → verify https://nickhs.dev returns HTTP 200 (skips if `[skip ci]`) |
 | `lighthouse.yml` | Tests success on `main` | LHCI desktop + mobile against preview server |
 
-Actual hosting is **Cloudflare Pages** (auto-deploy from `main`). The Deploy workflow tracks status in GitHub Environments — it does not push artifacts itself.
+Production hosting is **Cloudflare Pages** (`portfolio` project). Deploys are CI-gated: Cloudflare automatic production branch deployments are disabled; GitHub Actions uploads the tested build artifact via Wrangler after Tests pass. Required repo secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
 
 ## Conventions
 

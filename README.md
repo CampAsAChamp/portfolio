@@ -476,11 +476,11 @@ This project uses [Husky](https://typicode.github.io/husky/) to enforce quality 
 
 ## Deployment
 
-This project automatically deploys to Cloudflare Pages.
+This project deploys to Cloudflare Pages only after CI passes on `main`.
 
-### Automatic Deployment
+### CI-Gated Deployment
 
-Cloudflare Pages automatically deploys your site whenever you push to the repository:
+Production deploys are triggered by GitHub Actions, not by Cloudflare Git auto-deploy:
 
 1. Make your changes and commit them (following [conventional commit format](#contributing)):
    ```sh
@@ -493,24 +493,22 @@ Cloudflare Pages automatically deploys your site whenever you push to the reposi
    git push origin main
    ```
 
-3. Cloudflare Pages will automatically:
-   - Detect the changes
-   - Install dependencies
-   - Build the project with `yarn build`
-   - Deploy to production
+3. The **Tests** workflow runs lint, unit tests, `yarn build`, and E2E tests, then uploads the `build/` output as an artifact.
 
-4. View deployment status and logs in your Cloudflare Pages dashboard
+4. If Tests pass, the **Deploy** workflow downloads that artifact and uploads it to Cloudflare Pages via Wrangler — the same build that was tested in CI, with no second build step.
 
-5. Your site will be live at `https://nickhs.dev` (or your configured domain)
+5. Deploy verifies `https://nickhs.dev` returns HTTP 200 before marking the GitHub deployment successful.
+
+If Tests fail, production stays on the previous deploy. Release commits (`[skip ci]`) do not trigger Deploy.
 
 ### Cloudflare Pages Configuration
 
-Your Cloudflare Pages project should be configured with:
+The Cloudflare Pages project (`portfolio`) uses direct upload from CI. Automatic production branch deployments should be disabled in the Cloudflare dashboard (**Settings → Build & deployments → Branch control**).
 
-- **Build command:** `yarn build`
-- **Build output directory:** `build`
-- **Root directory:** `/` (default)
-- **Node version:** 22 or higher
+GitHub repo secrets required for Deploy:
+
+- `CLOUDFLARE_API_TOKEN` — API token with Account → Cloudflare Pages → Edit
+- `CLOUDFLARE_ACCOUNT_ID` — your Cloudflare account ID
 
 ### Custom Domain
 
@@ -543,8 +541,7 @@ This will serve the production build at `localhost:4173`.
 - Follow [conventional commit format](#contributing) for all commits
 - Pre-commit hooks automatically format code and validate commits
 - Pre-push hook runs unit tests and desktop Lighthouse before pushing to remote
-- Cloudflare Pages deployments typically complete in 1-2 minutes
-- Preview deployments are automatically created for pull requests
+- Production deploys typically complete in 1-2 minutes after Tests pass
 - Cloudflare provides automatic HTTPS, CDN, and DDoS protection
 
 <!-- RELEASES -->
