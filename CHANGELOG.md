@@ -1,3 +1,7 @@
+## <small>1.21.2 (2026-07-30)</small>
+
+* fix: lighthouse tests ([cb2bb4b](https://github.com/CampAsAChamp/portfolio/commit/cb2bb4b))
+
 ## <small>1.21.1 (2026-07-30)</small>
 
 * perf: prerender LCP profile pic before React mounts ([89940da](https://github.com/CampAsAChamp/portfolio/commit/89940da))
