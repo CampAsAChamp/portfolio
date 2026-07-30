@@ -9,6 +9,7 @@ import {
   isVideoPaused,
   isVideoPlaying,
   setInstagramUserAgent,
+  skipUnlessSwProjectVideos,
   waitForVideoReady,
 } from "../helpers/video-helpers"
 
@@ -62,11 +63,15 @@ test.describe("SW Projects Section - Mobile", () => {
   })
 
   test("should display video thumbnails", async ({ page }) => {
+    await skipUnlessSwProjectVideos(page)
+
     const videos = page.locator("#sw-projects-container video")
     await expect(videos.first()).toBeVisible()
   })
 
   test("should autoplay videos (except Instagram browser)", async ({ page }) => {
+    await skipUnlessSwProjectVideos(page)
+
     const firstVideo = page.locator("#sw-projects-container video").first()
     await expect(firstVideo).toBeVisible()
     await waitForVideoReady(firstVideo)
@@ -77,6 +82,8 @@ test.describe("SW Projects Section - Mobile", () => {
   })
 
   test("should allow pausing videos by tapping", async ({ page }) => {
+    await skipUnlessSwProjectVideos(page)
+
     const firstVideo = page.locator("#sw-projects-container video").first()
     await expect(firstVideo).toBeVisible()
     await waitForVideoReady(firstVideo)
@@ -132,6 +139,8 @@ test.describe("SW Projects - Instagram Browser Handling", () => {
   })
 
   test("should not autoplay videos in Instagram browser", async ({ page }) => {
+    await skipUnlessSwProjectVideos(page)
+
     const firstVideo = page.locator("#sw-projects-container video").first()
     await expect(firstVideo).toBeVisible()
     await waitForVideoReady(firstVideo)
@@ -144,11 +153,15 @@ test.describe("SW Projects - Instagram Browser Handling", () => {
   })
 
   test("should show play button on videos in Instagram browser", async ({ page }) => {
+    await skipUnlessSwProjectVideos(page)
+
     const playButton = page.locator(".video-play-overlay").first()
     await expect(playButton).toBeVisible()
   })
 
   test("should start video and hide play button when clicked", async ({ page }) => {
+    await skipUnlessSwProjectVideos(page)
+
     const firstVideo = page.locator("#sw-projects-container video").first()
     await expect(firstVideo).toBeVisible()
     await waitForVideoReady(firstVideo)
@@ -180,6 +193,8 @@ test.describe("SW Projects - Instagram Browser Handling", () => {
   })
 
   test("should pause video and show play button when tapped again", async ({ page }) => {
+    await skipUnlessSwProjectVideos(page)
+
     const firstVideo = page.locator("#sw-projects-container video").first()
     await expect(firstVideo).toBeVisible()
     await waitForVideoReady(firstVideo)

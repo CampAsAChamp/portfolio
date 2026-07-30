@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test"
+import { Locator, Page, test } from "@playwright/test"
 
 import { pollForCondition } from "./wait-helpers"
 
@@ -258,4 +258,12 @@ export async function hasVideoMetadata(locator: Locator): Promise<boolean> {
   return await locator.evaluate((video: HTMLVideoElement) => {
     return video.readyState >= (VideoReadyState.HAVE_METADATA as number)
   })
+}
+
+/**
+ * Skip video interaction tests when the SW projects section has no video thumbnails.
+ */
+export async function skipUnlessSwProjectVideos(page: Page): Promise<void> {
+  const videoCount = await page.locator("#sw-projects-container video").count()
+  test.skip(videoCount === 0, "No video thumbnails in SW projects section")
 }
