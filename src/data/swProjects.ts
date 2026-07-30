@@ -46,18 +46,6 @@ const projects: SoftwareProject[] = [
     thumbnail: AMSLawThumbnail,
   },
   {
-    name: "Sprint Planner",
-    technologies: [technologies.NEXTJS, technologies.REACT, technologies.TYPESCRIPT, technologies.TAILWIND, technologies.GITHUB_ACTIONS],
-    bulletPoints: [
-      "Next.js PWA for real-time sprint capacity planning: (team members × sprint days) − PTO days − on-call days − rollover points.",
-      "Tracks PTO and activities, on-call time, and unfinished work from prior sprints; save, load, duplicate, rename, and delete configurations in local storage.",
-      "Static export deployed to GitHub Pages with installable PWA support, dark mode, and toast feedback.",
-    ],
-    githubLink: "https://github.com/CampAsAChamp/sprint-planner",
-    siteLink: "https://campasachamp.github.io/sprint-planner/",
-    thumbnail: SprintPlannerThumbnail,
-  },
-  {
     name: "plextraktbox",
     technologies: [
       technologies.PYTHON,
@@ -113,7 +101,7 @@ const projects: SoftwareProject[] = [
     thumbnail: DiagonalBlendThumbnail,
   },
   {
-    name: "Jira Mutually Exclusive Quick Filters",
+    name: "Jira Single Click Filters",
     technologies: [technologies.JAVASCRIPT, technologies.HTML5, technologies.CSS3],
     bulletPoints: [
       "Chrome extension (Manifest V3) that makes Jira quick filters mutually exclusive — clicking one filter auto-deselects all others.",
@@ -122,6 +110,18 @@ const projects: SoftwareProject[] = [
     ],
     githubLink: "https://github.com/CampAsAChamp/jira-single-click-filters",
     thumbnail: JiraQuickFiltersThumbnail,
+  },
+  {
+    name: "Sprint Planner",
+    technologies: [technologies.NEXTJS, technologies.REACT, technologies.TYPESCRIPT, technologies.TAILWIND, technologies.GITHUB_ACTIONS],
+    bulletPoints: [
+      "Next.js PWA for real-time sprint capacity planning: (team members × sprint days) − PTO days − on-call days − rollover points.",
+      "Tracks PTO and activities, on-call time, and unfinished work from prior sprints; save, load, duplicate, rename, and delete configurations in local storage.",
+      "Static export deployed to GitHub Pages with installable PWA support, dark mode, and toast feedback.",
+    ],
+    githubLink: "https://github.com/CampAsAChamp/sprint-planner",
+    siteLink: "https://campasachamp.github.io/sprint-planner/",
+    thumbnail: SprintPlannerThumbnail,
   },
   {
     name: "SDGE Rate Checker",
