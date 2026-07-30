@@ -1,20 +1,12 @@
 import AMSLawThumbnail from "assets/Projects/Software/AMS_Law.webp"
 import ChickFilAThumbnail from "assets/Projects/Software/Chick_Fil_A.webp"
 import DiagonalBlendThumbnail from "assets/Projects/Software/DiagonalBlend.webp"
-import DiggermanVideoThumbnailMp4 from "assets/Projects/Software/Diggerman.mp4"
-import DiggermanVideoThumbnail from "assets/Projects/Software/Diggerman.webm"
-import DiggermanThumbnail from "assets/Projects/Software/Diggerman.webp"
-import FaceSwappingVideoThumbnailMp4 from "assets/Projects/Software/Face_Morphing.mp4"
-import FaceSwappingVideoThumbnail from "assets/Projects/Software/Face_Morphing.webm"
-import FaceSwappingThumbnail from "assets/Projects/Software/Face_Morphing.webp"
 import HomeServerThumbnail from "assets/Projects/Software/Home_Server.webp"
 import JiraQuickFiltersThumbnail from "assets/Projects/Software/Jira_Quick_Filters.webp"
-import ObjectDetectionThumbnail from "assets/Projects/Software/Object_Detection.webp"
 import PlextraktboxThumbnail from "assets/Projects/Software/Plextraktbox.webp"
 import PortfolioThumbnail from "assets/Projects/Software/Portfolio_Thumbnail.webp"
 import ReadmeScreenshotThumbnail from "assets/Projects/Software/Readme_Screenshot.webp"
 import SDGERateCheckerThumbnail from "assets/Projects/Software/SDGE_Rate_Checker.webp"
-import SpotifyPPThumbnail from "assets/Projects/Software/Spotify.webp"
 import SprintPlannerThumbnail from "assets/Projects/Software/Sprint_Planner.webp"
 import TrueNASConfigBackupThumbnail from "assets/Projects/Software/TrueNAS_Config_Backup.webp"
 import { SoftwareProject, SoftwareProjectMap } from "types/project.types"
@@ -186,62 +178,6 @@ const projects: SoftwareProject[] = [
     githubLink: "https://github.com/CampAsAChamp/sdge-rate-checker",
     siteLink: "https://campasachamp.github.io/sdge-rate-checker/",
     thumbnail: SDGERateCheckerThumbnail,
-  },
-  {
-    name: "Diggerman",
-    technologies: [technologies.CPP, technologies.OPEN_GL],
-    bulletPoints: [
-      "Dig Dug style 2D game in C++ with [OpenGL](https://www.opengl.org/)/freeglut: dig through a dirt grid, avoid falling boulders, collect oil barrels to clear the level.",
-      'Protester AI with state machines (wander, chase, stunned, leave); pathfinding via BFS back to the exit; harder "hardcore" protesters that track the player more aggressively.',
-      "Player tools and pickups: water squirts, sonar reveal, gold bait to distract enemies, scoring, and irrKlang sound effects; built as a Visual Studio team project.",
-    ],
-    githubLink: "https://github.com/CampAsAChamp/DiggerMan",
-    thumbnail: DiggermanThumbnail,
-    videoThumbnail: DiggermanVideoThumbnail,
-    videoThumbnailMp4: DiggermanVideoThumbnailMp4,
-    isVideo: true,
-  },
-  {
-    name: "Spotify++",
-    technologies: [
-      technologies.NODEJS,
-      technologies.EXPRESS,
-      technologies.ANGULAR,
-      technologies.TYPESCRIPT,
-      technologies.HTML5,
-      technologies.CSS3,
-    ],
-    bulletPoints: [
-      "Created Spotify browser using the [Spotify Web API](https://developer.spotify.com/documentation/web-api/) with custom front end interface built from the ground up using [Spicetify](https://github.com/khanhas/spicetify-cli) to inject custom CSS and Javascript into the Spotify client.",
-      "Adds additional track information the user normally doesn't have access to such as dance-ability, energy, acousticness, instrumentalness, and liveness provided by the track endpoint.",
-    ],
-    githubLink: "https://github.com/CampAsAChamp/SpotifyPP",
-    thumbnail: SpotifyPPThumbnail,
-  },
-  {
-    name: "Object & Face Detection System",
-    technologies: [technologies.PYTHON, technologies.NUMPY],
-    bulletPoints: [
-      "From-scratch object detector in Python/NumPy: image gradients → HOG descriptors over 8x8 blocks with 9 orientation bins.",
-      "Learns a template as average positive HOG minus average negative HOG, then finds matches with sliding-window correlation and non-maxima suppression.",
-      "Validated on faces and a second category (traffic signs), including scenes with multiple detections.",
-    ],
-    githubLink: "https://github.com/CampAsAChamp/ObjectDetection",
-    thumbnail: ObjectDetectionThumbnail,
-  },
-  {
-    name: "Face Swapping",
-    technologies: [technologies.PYTHON, technologies.NUMPY],
-    bulletPoints: [
-      "Piecewise affine face warping in Python/NumPy: estimate per-triangle affine transforms from annotated keypoints, then backward-warp with bilinear sampling.",
-      "Builds morph sequences by interpolating correspondences between two faces and cross-dissolving warped frames into a video.",
-      "Face swap composites a warped face onto another image using a triangle-region mask with Gaussian-feathered alpha blending to reduce seams.",
-    ],
-    githubLink: "https://github.com/CampAsAChamp/FaceSwap",
-    thumbnail: FaceSwappingThumbnail,
-    videoThumbnail: FaceSwappingVideoThumbnail,
-    videoThumbnailMp4: FaceSwappingVideoThumbnailMp4,
-    isVideo: true,
   },
 ]
 
