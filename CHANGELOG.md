@@ -1,3 +1,8 @@
+## <small>1.17.2 (2026-07-30)</small>
+
+* docs: update readme screenshot ([40d0dc2](https://github.com/CampAsAChamp/portfolio/commit/40d0dc2))
+* fix: scale theme icon same as navlinks ([e22187e](https://github.com/CampAsAChamp/portfolio/commit/e22187e))
+
 ## <small>1.17.1 (2026-07-30)</small>
 
 * fix: track readme-screenshot v1 tag for latest workflow ([e9b8bf9](https://github.com/CampAsAChamp/portfolio/commit/e9b8bf9))
