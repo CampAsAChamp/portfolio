@@ -1,8 +1,4 @@
-import type { Accomplishment, Destination, ExperiencesDocument, Variants } from "experience-sync/lib/schema";
-
-
-
-
+import type { Accomplishment, Destination, ExperiencesDocument, Variants } from "experience-sync/lib/schema"
 
 export const ALL_DESTINATIONS = ["portfolio", "resume", "linkedin"] as const satisfies readonly Destination[]
 

@@ -176,17 +176,19 @@ companies:
               - resume
               - linkedin
             variants:
-              portfolio: Backend engineer on the Ground Software team for the Next Gen Space Based Early Missile
-                Warning System.
+              portfolio: Backend engineer on the Ground Software team for the [Next Gen Space Based Early Missile
+                Warning
+                System](https://www.rtx.com/news/news-center/2024/09/30/rtxs-raytheon-delivers-missile-warning-sensor).
           - id: raytheon-swe1-bullet-a1574598
             destinations:
               - portfolio
               - resume
               - linkedin
             variants:
-              portfolio: Built a C++11 / Kafka / Protobuf data processing framework ingesting terabytes of real
-                time satellite data daily, engineered for the reliability and fault tolerance a
-                defense system demands.
+              portfolio: Built a C++11 / Kafka / Protobuf data processing
+                [framework](https://www.rtx.com/raytheon/what-we-do/space/forge) ingesting terabytes
+                of real time satellite data daily, engineered for the reliability and fault
+                tolerance a defense system demands.
           - id: raytheon-swe1-bullet-171c4c51
             destinations:
               - portfolio

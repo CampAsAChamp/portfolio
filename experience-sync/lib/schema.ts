@@ -1,10 +1,6 @@
-import { expandDocumentDefaults } from "experience-sync/lib/accomplishmentDefaults";
-import { resolveAccomplishment } from "experience-sync/lib/resolve";
-import { z } from "zod";
-
-
-
-
+import { expandDocumentDefaults } from "experience-sync/lib/accomplishmentDefaults"
+import { resolveAccomplishment } from "experience-sync/lib/resolve"
+import { z } from "zod"
 
 export const DESTINATIONS = ["portfolio", "resume", "linkedin"] as const
 export type Destination = (typeof DESTINATIONS)[number]

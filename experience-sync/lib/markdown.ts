@@ -1,4 +1,3 @@
-;
 /**
  * Parse a portfolio variant string with optional markdown links into
  * code-generation fragments for experiences.ts.
@@ -6,11 +5,7 @@
  * Supports `[label](https://url)` → createExternalLink("label", "url").
  */
 
-import { arr, call, lit, type TsExpr } from "experience-sync/lib/tsExpr";
-
-
-
-
+import { arr, call, lit, type TsExpr } from "experience-sync/lib/tsExpr"
 
 /** Plain text run between markdown links. */
 export interface PlainTextSegment {

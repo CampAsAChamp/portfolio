@@ -1236,6 +1236,55 @@ html[color-mode="dark"] .shortcut-hint {
   overflow-wrap: anywhere;
 }
 
+.preview-blocks {
+  margin: 0;
+  box-shadow: inset 0 0 0 1px rgb(112, 112, 112, 0.2);
+  border-radius: 16px;
+  background: var(--color-background);
+  padding: 0.9rem;
+  max-height: 40vh;
+  overflow: auto;
+  color: var(--color-body-text);
+  font-family: "Nunito", sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.preview-blocks pre {
+  box-shadow: none;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+  max-height: none;
+  overflow: visible;
+}
+
+.preview-company-divider {
+  margin: 1rem 0;
+  border: 0;
+  border-top: 1px solid rgb(112, 112, 112, 0.25);
+}
+
+.preview-section-heading,
+.preview-company-heading,
+.preview-position {
+  font-weight: 800;
+}
+
+.preview-section-heading,
+.preview-company-heading {
+  color: var(--color-section-header);
+}
+
+.preview-position {
+  color: var(--color-purple);
+}
+
+.preview-role-dates {
+  color: var(--color-card-alt-text);
+  font-style: italic;
+}
+
 .preview pre a {
   color: var(--color-purple);
   font-weight: 700;

@@ -70,11 +70,7 @@ export function formatValidationIssue(doc: ExperiencesDocument | null | undefine
 }
 
 /** Short multi-line summary for save/validation toasts. */
-export function formatValidationSummary(
-  doc: ExperiencesDocument | null | undefined,
-  issues: ValidationIssue[],
-  maxLines = 3,
-): string {
+export function formatValidationSummary(doc: ExperiencesDocument | null | undefined, issues: ValidationIssue[], maxLines = 3): string {
   const errors = issues.filter((issue) => issue.severity === "error")
   if (errors.length === 0) {
     return "Validation failed"

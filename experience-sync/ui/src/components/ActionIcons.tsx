@@ -1,10 +1,6 @@
-import type { ReactElement } from "react";
-import LinkedInLogo from "assets/Dev_Icons/LinkedIn.svg";
-import InlineSVG from "react-inlinesvg";
-
-
-
-
+import type { ReactElement } from "react"
+import LinkedInLogo from "assets/Dev_Icons/LinkedIn.svg"
+import InlineSVG from "react-inlinesvg"
 
 interface IconProps {
   size?: number
@@ -196,27 +192,9 @@ export function LinkIcon({ size = 16 }: IconProps): ReactElement {
 export function SharedLibraryIcon({ size = 16 }: IconProps): ReactElement {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M12 3L21 8L12 13L3 8L12 3Z"
-        stroke="currentColor"
-        strokeWidth="2.25"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M3 12L12 17L21 12"
-        stroke="currentColor"
-        strokeWidth="2.25"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M3 16L12 21L21 16"
-        stroke="currentColor"
-        strokeWidth="2.25"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M12 3L21 8L12 13L3 8L12 3Z" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M3 12L12 17L21 12" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M3 16L12 21L21 16" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }

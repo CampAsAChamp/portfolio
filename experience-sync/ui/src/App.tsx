@@ -1,4 +1,5 @@
 import {
+  Fragment,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -12,8 +13,8 @@ import {
 import { ThemeSwitcher } from "components/NavBar/ThemeSwitcher"
 import { expandDocumentDefaults, isDefaultAccomplishmentSetup, isPortfolioOnly } from "experience-sync/lib/accomplishmentDefaults"
 import { formatValidationIssue, formatValidationSummary } from "experience-sync/lib/formatValidationIssue"
-import { formatLinkedInExport } from "experience-sync/lib/linkedin"
-import { formatResumeExport } from "experience-sync/lib/resume"
+import { formatLinkedInExport, formatLinkedInExportBlocks, type CompanyExportBlock } from "experience-sync/lib/linkedin"
+import { formatResumeExport, formatResumeExportBlocks } from "experience-sync/lib/resume"
 import { AccomplishmentVariants } from "experience-sync/ui/src/components/AccomplishmentVariants"
 import {
   ArrowDownIcon,
@@ -28,9 +29,9 @@ import {
   UndoIcon,
 } from "experience-sync/ui/src/components/ActionIcons"
 import { ColorKeyPicker, getColorHex } from "experience-sync/ui/src/components/ColorKeyPicker"
+import { LinkedInExportPreviewContent, ResumeExportPreviewContent } from "experience-sync/ui/src/components/ExportPreviewContent"
 import { HintedAction } from "experience-sync/ui/src/components/HintedAction"
 import { LogoFilePicker } from "experience-sync/ui/src/components/LogoFilePicker"
-import { MarkdownLinkPreview } from "experience-sync/ui/src/components/MarkdownLinkPreview"
 import { TechnologyPicker } from "experience-sync/ui/src/components/TechnologyPicker"
 import { ToastStack, type ToastKind, type ToastMessage } from "experience-sync/ui/src/components/Toast"
 import {
@@ -83,6 +84,37 @@ function buildDestinationSummary(destinations: Destination[]): ReactNode {
       {DESTINATION_META[dest].label}
     </span>
   ))
+}
+
+interface GroupedExportPreviewProps {
+  blocks: CompanyExportBlock[]
+  emptyMessage: string
+  header?: ReactNode
+  renderBlock: (block: CompanyExportBlock) => ReactElement
+}
+
+/** Preview pane content with horizontal rules between companies. */
+function GroupedExportPreview({ blocks, emptyMessage, header, renderBlock }: GroupedExportPreviewProps): ReactElement {
+  if (blocks.length === 0) {
+    return <pre>{emptyMessage}</pre>
+  }
+
+  return (
+    <div className="preview-blocks">
+      {header != null && (
+        <pre>
+          {header}
+          {"\n\n"}
+        </pre>
+      )}
+      {blocks.map((block, index) => (
+        <Fragment key={`${block.companyName}-${index}`}>
+          {index > 0 && <hr className="preview-company-divider" aria-hidden />}
+          <pre>{renderBlock(block)}</pre>
+        </Fragment>
+      ))}
+    </div>
+  )
 }
 
 /** Stable internal ids for YAML / React keys — not shown in the editor. */
@@ -298,8 +330,8 @@ export function App(): ReactElement {
     return indices
   }, [displayIssues, companyIdx, roleIdx])
 
-  const linkedinPreview = useMemo(() => (doc ? formatLinkedInExport(doc) : ""), [doc])
-  const resumePreview = useMemo(() => (doc ? formatResumeExport(doc) : ""), [doc])
+  const linkedinPreviewBlocks = useMemo(() => (doc ? formatLinkedInExportBlocks(doc) : []), [doc])
+  const resumePreviewBlocks = useMemo(() => (doc ? formatResumeExportBlocks(doc) : []), [doc])
 
   function updateDoc(updater: (current: ExperiencesDocument) => ExperiencesDocument): void {
     setDoc((current) => (current ? updater(structuredClone(current)) : current))
@@ -1126,11 +1158,20 @@ export function App(): ReactElement {
         <aside className="preview-pane">
           <h2>LinkedIn preview</h2>
           <div className="preview">
-            <MarkdownLinkPreview text={linkedinPreview} emptyMessage="No LinkedIn-tagged bullets yet." />
+            <GroupedExportPreview
+              blocks={linkedinPreviewBlocks}
+              emptyMessage="No LinkedIn-tagged bullets yet."
+              renderBlock={(block) => <LinkedInExportPreviewContent block={block} />}
+            />
           </div>
           <h2 className="preview-heading-spaced">Resume preview</h2>
           <div className="preview">
-            <pre>{resumePreview || "No resume-tagged bullets yet."}</pre>
+            <GroupedExportPreview
+              blocks={resumePreviewBlocks}
+              emptyMessage="No resume-tagged bullets yet."
+              header={<span className="preview-section-heading"># Experience</span>}
+              renderBlock={(block) => <ResumeExportPreviewContent block={block} />}
+            />
           </div>
         </aside>
       </div>

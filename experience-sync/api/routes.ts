@@ -1,16 +1,12 @@
-import http from "node:http";
-import { HttpMethod, parseJsonBody, sendJson } from "experience-sync/api/http";
-import { runCli } from "experience-sync/api/runCli";
-import { writeExperiencesTs } from "experience-sync/lib/generate";
-import { formatLinkedInExport } from "experience-sync/lib/linkedin";
-import { listContentFiles, loadExperiencesDocument, readYamlFile, saveExperiencesDocument, writeYamlFile } from "experience-sync/lib/load";
-import { contentFilePath } from "experience-sync/lib/paths";
-import { formatResumeExport } from "experience-sync/lib/resume";
-import { validateExperiencesDocument, type ExperiencesDocument, type ValidationIssue } from "experience-sync/lib/schema";
-
-
-
-
+import http from "node:http"
+import { HttpMethod, parseJsonBody, sendJson } from "experience-sync/api/http"
+import { runCli } from "experience-sync/api/runCli"
+import { writeExperiencesTs } from "experience-sync/lib/generate"
+import { formatLinkedInExport } from "experience-sync/lib/linkedin"
+import { listContentFiles, loadExperiencesDocument, readYamlFile, saveExperiencesDocument, writeYamlFile } from "experience-sync/lib/load"
+import { contentFilePath } from "experience-sync/lib/paths"
+import { formatResumeExport } from "experience-sync/lib/resume"
+import { validateExperiencesDocument, type ExperiencesDocument, type ValidationIssue } from "experience-sync/lib/schema"
 
 type RouteHandler = (req: http.IncomingMessage, res: http.ServerResponse, pathname: string) => Promise<void> | void
 

@@ -1,8 +1,11 @@
-import { DESTINATIONS, getRoleEndBeforeStartMessage, MONTH_ABBREVS, type Destination, type ExperiencesDocument, type ValidationIssue } from "experience-sync/lib/schema";
-
-
-
-
+import {
+  DESTINATIONS,
+  getRoleEndBeforeStartMessage,
+  MONTH_ABBREVS,
+  type Destination,
+  type ExperiencesDocument,
+  type ValidationIssue,
+} from "experience-sync/lib/schema"
 
 /** Thrown when an experience-sync API request fails; may include validation `issues`. */
 export class ApiError extends Error {
