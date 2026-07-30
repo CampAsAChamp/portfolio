@@ -1,3 +1,7 @@
+## <small>1.21.3 (2026-07-30)</small>
+
+* fix: naming conflicts ([9b700a3](https://github.com/CampAsAChamp/portfolio/commit/9b700a3))
+
 ## <small>1.21.2 (2026-07-30)</small>
 
 * fix: lighthouse tests ([cb2bb4b](https://github.com/CampAsAChamp/portfolio/commit/cb2bb4b))
