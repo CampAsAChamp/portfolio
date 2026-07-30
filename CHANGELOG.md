@@ -1,3 +1,10 @@
+## <small>1.17.3 (2026-07-30)</small>
+
+* fix: flatten mobile navbar CSS selectors to restore hamburger drawer ([9557dc6](https://github.com/CampAsAChamp/portfolio/commit/9557dc6))
+* ci: fix commit hook ([c829c6f](https://github.com/CampAsAChamp/portfolio/commit/c829c6f))
+* docs: add section in README for vs code run time configs ([ad6a433](https://github.com/CampAsAChamp/portfolio/commit/ad6a433))
+* chore: set node version for vscode run configs ([5314e5b](https://github.com/CampAsAChamp/portfolio/commit/5314e5b))
+
 ## <small>1.17.2 (2026-07-30)</small>
 
 * docs: update readme screenshot ([40d0dc2](https://github.com/CampAsAChamp/portfolio/commit/40d0dc2))
