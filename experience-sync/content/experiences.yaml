@@ -152,7 +152,7 @@ companies:
                 react-intl), improving usability and unblocking international rollout.
   - id: raytheon
     companyName: Raytheon Intelligence & Space
-    nickname: RTX
+    nickname: Raytheon
     location: Los Angeles, CA
     colorKey: RAYTHEON
     logoFile: Raytheon.svg
