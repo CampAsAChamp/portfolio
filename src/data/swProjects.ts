@@ -9,9 +9,8 @@ import ReadmeScreenshotThumbnail from "assets/Projects/Software/Readme_Screensho
 import SDGERateCheckerThumbnail from "assets/Projects/Software/SDGE_Rate_Checker.webp"
 import SprintPlannerThumbnail from "assets/Projects/Software/Sprint_Planner.webp"
 import TrueNASConfigBackupThumbnail from "assets/Projects/Software/TrueNAS_Config_Backup.webp"
+import * as technologies from "data/technologies"
 import { SoftwareProject, SoftwareProjectMap } from "types/project.types"
-
-import * as technologies from "./technologies"
 
 const projects: SoftwareProject[] = [
   {

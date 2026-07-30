@@ -106,7 +106,7 @@ export const UBUNTU = "Ubuntu"
 export const VITE = "Vite"
 export const VITEST = "Vitest"
 
-const technologies = [
+const technologyCatalog = [
   {
     name: ADOBE_ILLUSTRATOR,
     image: Adobe_Illustrator_Icon,
@@ -369,12 +369,12 @@ const technologies = [
   },
 ] as const satisfies ReadonlyArray<Technology>
 
-export type TechnologyName = (typeof technologies)[number]["name"]
+export type TechnologyName = (typeof technologyCatalog)[number]["name"]
 
 const technologiesMap: TechnologyMap = new Map()
 
-technologies.forEach((item) => {
+technologyCatalog.forEach((item) => {
   technologiesMap.set(item.name, item)
 })
 
-export { technologies, technologiesMap }
+export { technologyCatalog, technologiesMap }
