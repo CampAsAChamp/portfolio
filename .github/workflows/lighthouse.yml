@@ -10,11 +10,17 @@ jobs:
   lighthouse-desktop:
     name: Desktop Performance Audits
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    permissions:
+      actions: read
+      contents: read
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -25,8 +31,13 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Build production site
-        run: yarn build
+      - name: Download production build
+        uses: actions/download-artifact@v4
+        with:
+          name: production-build
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+          path: build
 
       - name: Start and warm up preview server
         run: |
@@ -65,11 +76,17 @@ jobs:
   lighthouse-mobile:
     name: Mobile Performance Audits
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    permissions:
+      actions: read
+      contents: read
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -80,8 +97,13 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Build production site
-        run: yarn build
+      - name: Download production build
+        uses: actions/download-artifact@v4
+        with:
+          name: production-build
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+          path: build
 
       - name: Start and warm up preview server
         run: |

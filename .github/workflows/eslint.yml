@@ -16,6 +16,7 @@ jobs:
   eslint:
     name: Run eslint scanning
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read
       security-events: write
@@ -44,7 +45,7 @@ jobs:
             --output-file eslint-results.sarif
 
       - name: Upload analysis results to GitHub
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         if: hashFiles('eslint-results.sarif') != ''
         with:
           sarif_file: eslint-results.sarif

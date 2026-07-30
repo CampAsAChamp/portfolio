@@ -16,18 +16,22 @@ push/PR → Test and Deploy → (on main push success) Deploy job in same workfl
 | Workflow              | Trigger                   | Purpose                                                                                                            |
 | --------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | `test-and-deploy.yml` | push/PR to `main`         | audit → lint → exp:check → unit tests → build → E2E → upload `production-build` → (main push only) Wrangler deploy |
-| `release.yml`         | Test and Deploy on `main` | semantic-release (skips if `[skip ci]`)                                                                            |
-| `lighthouse.yml`      | Test and Deploy on `main` | LHCI desktop + mobile against preview server                                                                       |
+| `release.yml`         | Test and Deploy on `main` | semantic-release (skips if `[skip ci]`); one run per commit via concurrency                                        |
+| `lighthouse.yml`      | Test and Deploy on `main` | LHCI desktop + mobile; reuses `production-build` artifact from triggering run                                      |
 
 Production hosting is **Cloudflare Pages** (`portfolio` project). Deploys are CI-gated: the `deploy` job in `test-and-deploy.yml` runs after the `test` job passes on pushes to `main`, downloads the same workflow's `production-build` artifact, and uploads via Wrangler. Cloudflare automatic production branch deployments are disabled. Required repo secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
 
 ## Conventions
 
 - **Node 22** everywhere (`setup-node` + `.nvmrc`)
-- **Yarn 4**: use `yarn install --immutable` (or `--frozen-lockfile` in release.yml)
-- E2E: `npx playwright install --with-deps` before `yarn test:e2e`
+- **Yarn 4**: use `yarn install --immutable` everywhere
+- **PR concurrency**: test job cancels stale runs on the same PR (`cancel-in-progress` only for `pull_request`)
+- **Playwright cache**: browsers cached under `~/.cache/ms-playwright` keyed on `yarn.lock`; on cache hit run `playwright install-deps` only
 - E2E failures upload artifacts from `tests/test_results/e2e/`
 - Playwright config starts dev server at `http://localhost:5173` via `webServer`
+- **Job timeouts**: test 60m, deploy 15m, release 10m, lighthouse 20m each, codeql 30m, eslint 15m
+- **workflow_run checkouts**: Lighthouse checks out `github.event.workflow_run.head_sha` and downloads `production-build` via `run-id`
+- **Release concurrency**: `release-${{ github.event.workflow_run.head_sha }}` with `cancel-in-progress: false`
 
 ## When modifying workflows
 
