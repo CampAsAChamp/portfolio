@@ -5,5 +5,14 @@ interface SwProjectImageProps {
 }
 
 export function SwProjectImage({ project }: SwProjectImageProps): React.ReactElement {
-  return <img className="sw-projects-thumbnail" src={project.thumbnail} alt={project.name} title={project.name} loading="lazy" />
+  return (
+    <img
+      className="sw-projects-thumbnail"
+      src={project.thumbnail}
+      alt={project.name}
+      title={project.name}
+      loading="lazy"
+      style={project.thumbnailObjectPosition ? { objectPosition: project.thumbnailObjectPosition } : undefined}
+    />
+  )
 }

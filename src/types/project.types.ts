@@ -10,6 +10,7 @@ export interface SoftwareProject {
   githubLink?: string
   siteLink?: string
   thumbnail: string
+  thumbnailObjectPosition?: string
   videoThumbnail?: string
   videoThumbnailMp4?: string
   isVideo?: boolean
