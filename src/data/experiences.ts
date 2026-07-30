@@ -137,9 +137,18 @@ export const experiences: Experience[] = [
           year: 2021,
         },
         bulletPoints: [
-          ["Backend engineer on the Ground Software team for the Next Gen Space Based Early Missile Warning System."],
           [
-            "Built a C++11 / Kafka / Protobuf data processing framework ingesting terabytes of real time satellite data daily, engineered for the reliability and fault tolerance a defense system demands.",
+            "Backend engineer on the Ground Software team for the ",
+            createExternalLink(
+              "Next Gen Space Based Early Missile Warning System",
+              "https://www.rtx.com/news/news-center/2024/09/30/rtxs-raytheon-delivers-missile-warning-sensor",
+            ),
+            ".",
+          ],
+          [
+            "Built a C++11 / Kafka / Protobuf data processing ",
+            createExternalLink("framework", "https://www.rtx.com/raytheon/what-we-do/space/forge"),
+            " ingesting terabytes of real time satellite data daily, engineered for the reliability and fault tolerance a defense system demands.",
           ],
           [
             "Developed space to ground message simulator in Python and C++ that let the team develop and test end to end without physical space hardware, removing a major bottleneck from the dev cycle.",
