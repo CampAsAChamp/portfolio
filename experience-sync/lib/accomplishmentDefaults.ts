@@ -1,4 +1,8 @@
-import type { Accomplishment, Destination, ExperiencesDocument, Variants } from "experience-sync/lib/schema"
+import type { Accomplishment, Destination, ExperiencesDocument, Variants } from "experience-sync/lib/schema";
+
+
+
+
 
 export const ALL_DESTINATIONS = ["portfolio", "resume", "linkedin"] as const satisfies readonly Destination[]
 
@@ -24,6 +28,10 @@ export function isPortfolioOnly(destinations: Destination[]): boolean {
  * (or is portfolio itself).
  */
 export function isDefaultVariantSharing(accomplishment: Accomplishment): boolean {
+  if (shouldExpandImplicitSharing(accomplishment)) {
+    return true
+  }
+
   const sources = accomplishment.variantSources ?? {}
 
   if (sources.portfolio) {
@@ -49,6 +57,7 @@ export function isDefaultAccomplishmentSetup(accomplishment: Accomplishment): bo
   return defaultDestinations && isDefaultVariantSharing(accomplishment)
 }
 
+/** All-3 bullet with portfolio text only — resume/linkedin implicitly reuse portfolio on load. */
 function shouldExpandImplicitSharing(accomplishment: Accomplishment): boolean {
   if (!hasAllDestinations(accomplishment.destinations)) {
     return false

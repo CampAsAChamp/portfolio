@@ -81,6 +81,16 @@ describe("accomplishmentDefaults", () => {
     expect(isDefaultAccomplishmentSetup(acc)).toBe(false)
   })
 
+  it("treats implicit portfolio sharing as default variant sharing", () => {
+    const acc = makeAccomplishment({
+      id: "implicit",
+      destinations: ["portfolio", "resume", "linkedin"],
+      variants: { portfolio: "Canonical text" },
+    })
+    expect(isDefaultVariantSharing(acc)).toBe(true)
+    expect(isDefaultAccomplishmentSetup(acc)).toBe(true)
+  })
+
   it("expands implicit sharing for all-3 bullets with portfolio text only", () => {
     const acc = makeAccomplishment({
       id: "implicit",

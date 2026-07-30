@@ -1,8 +1,5 @@
-import type { Accomplishment, Company, Destination, ExperienceRole, ExperiencesDocument, Variants } from "experience-sync/lib/schema";
-
-
-
-
+import { expandAccomplishmentDefaults } from "experience-sync/lib/accomplishmentDefaults"
+import type { Accomplishment, Company, Destination, ExperienceRole, ExperiencesDocument, Variants } from "experience-sync/lib/schema"
 
 /** Accomplishment with all variant-source aliases resolved to inline text. */
 export interface ResolvedAccomplishment {
@@ -39,15 +36,16 @@ export function resolveDestinationText(accomplishment: Accomplishment, dest: Des
 
 /** Resolve one accomplishment's per-destination text from custom variants or aliases. */
 export function resolveAccomplishment(accomplishment: Accomplishment): ResolvedAccomplishment {
+  const expanded = expandAccomplishmentDefaults(accomplishment)
   const resolvedVariants: Variants = {}
 
-  for (const dest of accomplishment.destinations) {
-    resolvedVariants[dest] = resolveDestinationText(accomplishment, dest)
+  for (const dest of expanded.destinations) {
+    resolvedVariants[dest] = resolveDestinationText(expanded, dest)
   }
 
   return {
-    id: accomplishment.id,
-    destinations: accomplishment.destinations,
+    id: expanded.id,
+    destinations: expanded.destinations,
     variants: resolvedVariants,
   }
 }

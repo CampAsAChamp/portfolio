@@ -89,6 +89,19 @@ describe("resolveAccomplishment", () => {
     expect(resolved.variants.portfolio).toBe("Custom LinkedIn")
     expect(resolved.variants.linkedin).toBe("Custom LinkedIn")
   })
+
+  it("resolves implicit resume and linkedin sharing from portfolio-only YAML", () => {
+    const accomplishment = makeAccomplishment({
+      id: "a1",
+      destinations: ["portfolio", "resume", "linkedin"],
+      variants: { portfolio: "Shared bullet" },
+    })
+
+    const resolved = resolveAccomplishment(accomplishment)
+    expect(resolved.variants.portfolio).toBe("Shared bullet")
+    expect(resolved.variants.resume).toBe("Shared bullet")
+    expect(resolved.variants.linkedin).toBe("Shared bullet")
+  })
 })
 
 describe("resolveDocument", () => {
