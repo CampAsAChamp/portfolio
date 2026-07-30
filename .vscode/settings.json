@@ -13,5 +13,6 @@
     "files.trimTrailingWhitespace": false
   },
   "vitest.configSearchPatternExclude": "{**/node_modules/**,**/vendor/**,**/.*/**,**/*.d.ts,**/experience-sync/**}",
-  "nodejs.defaultRuntimeVersion": "22"
+  "nodejs.defaultRuntimeVersion": "22",
+  "debug.onTaskErrors": "ignore"
 }

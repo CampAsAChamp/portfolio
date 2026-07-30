@@ -171,12 +171,12 @@ Workspace settings set `"nodejs.defaultRuntimeVersion": "22"` so Node debug sess
 
 | Configuration                        | Description                                                                |
 | ------------------------------------ | -------------------------------------------------------------------------- |
-| **Dev: Chrome**                      | Starts the Vite dev server, then opens Chrome at `http://localhost:5173`   |
-| **Dev: Start Server**                | Runs `yarn start` in the integrated terminal                               |
+| **Dev: Chrome**                      | Starts Vite, attaches Chrome debugging (debug toolbar), stops server when debug ends |
+| **Dev: Start Server**                | Runs `yarn start` in the integrated terminal (no browser attach)                     |
 | **Debug: Unit Tests (Current File)** | Debug the open Vitest file                                                 |
 | **Debug: Unit Tests (All)**          | Debug the full unit test suite                                             |
 | **Debug: Playwright (Current File)** | Open Playwright Inspector for the open spec file                           |
-| **Experience Sync: Chrome**          | Starts the experience editor, then opens Chrome at `http://127.0.0.1:4700` |
+| **Experience Sync: Chrome**          | Starts the editor, attaches Chrome debugging at `http://127.0.0.1:4700`              |
 | **Experience Sync: Start Editor**    | Runs `yarn exp:ui` only                                                    |
 
 ### Tasks
