@@ -123,122 +123,122 @@ nav li a:hover::after {
 @media screen and (max-width: 1100px) {
   nav {
     padding: 0;
+  }
 
-    nav ul {
-      align-items: center;
-      background-color: rgb(108, 99, 255, 0.95);
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      padding: 20px 0;
-      position: fixed;
-      right: 0;
-      top: 0;
-      transform: translateX(100%);
-      transition: transform 0.5s ease-in;
-      width: 100%;
-      z-index: 1;
-    }
+  nav ul {
+    align-items: center;
+    background-color: rgb(108, 99, 255, 0.95);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    transform: translateX(100%);
+    transition: transform 0.5s ease-in;
+    width: 100%;
+    z-index: 1;
+  }
 
-    nav li {
+  nav li {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+
+  nav li a {
+    color: var(--color-white);
+    font-size: 3rem;
+  }
+
+  nav li a:hover {
+    color: var(--color-yellow);
+  }
+
+  /* Staggered fade-in animation for menu items when menu opens */
+  .nav-active li {
+    animation: nav-link-fade-in 0.5s ease forwards;
+  }
+
+  /* Staggered fade-out animation for menu items when menu closes (reverse order) */
+
+  /* Note: Actual animation is applied via JavaScript inline styles for better control */
+  .nav-closing li {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .nav-active li:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+
+  .nav-active li:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .nav-active li:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  .nav-active li:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+
+  .nav-active li:nth-child(5) {
+    animation-delay: 0.5s;
+  }
+
+  .nav-active li:nth-child(6) {
+    animation-delay: 0.6s;
+  }
+
+  @keyframes nav-link-fade-in {
+    from {
       opacity: 0;
       transform: translateX(50px);
     }
 
-    nav li a {
-      color: var(--color-white);
-      font-size: 3rem;
+    to {
+      opacity: 1;
+      transform: translateX(0);
     }
+  }
 
-    nav li a:hover {
-      color: var(--color-yellow);
-    }
-
-    /* Staggered fade-in animation for menu items when menu opens */
-    .nav-active li {
-      animation: nav-link-fade-in 0.5s ease forwards;
-    }
-
-    /* Staggered fade-out animation for menu items when menu closes (reverse order) */
-
-    /* Note: Actual animation is applied via JavaScript inline styles for better control */
-    .nav-closing li {
+  @keyframes nav-link-fade-out {
+    from {
       opacity: 1;
       transform: translateX(0);
     }
 
-    .nav-active li:nth-child(1) {
-      animation-delay: 0.1s;
-    }
-
-    .nav-active li:nth-child(2) {
-      animation-delay: 0.2s;
-    }
-
-    .nav-active li:nth-child(3) {
-      animation-delay: 0.3s;
-    }
-
-    .nav-active li:nth-child(4) {
-      animation-delay: 0.4s;
-    }
-
-    .nav-active li:nth-child(5) {
-      animation-delay: 0.5s;
-    }
-
-    .nav-active li:nth-child(6) {
-      animation-delay: 0.6s;
-    }
-
-    @keyframes nav-link-fade-in {
-      from {
-        opacity: 0;
-        transform: translateX(50px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    @keyframes nav-link-fade-out {
-      from {
-        opacity: 1;
-        transform: translateX(0);
-      }
-
-      to {
-        opacity: 0;
-        transform: translateX(50px);
-      }
-    }
-
-    .hamburger-menu {
-      cursor: pointer;
-      display: block;
-      margin-right: 2vw;
-      z-index: 1;
-    }
-
-    .hamburger-entrance {
-      animation-duration: 0.6s;
-      animation-delay: 0.3s;
+    to {
       opacity: 0;
-      animation-fill-mode: forwards;
+      transform: translateX(50px);
     }
+  }
 
-    .toggle #hamburger-menu-line1 {
-      transform: rotate(-45deg) translate(-8px, 6px);
-    }
+  .hamburger-menu {
+    cursor: pointer;
+    display: block;
+    margin-right: 2vw;
+    z-index: 1;
+  }
 
-    .toggle #hamburger-menu-line2 {
-      opacity: 0;
-    }
+  .hamburger-entrance {
+    animation-duration: 0.6s;
+    animation-delay: 0.3s;
+    opacity: 0;
+    animation-fill-mode: forwards;
+  }
 
-    .toggle #hamburger-menu-line3 {
-      transform: rotate(45deg) translate(-8px, -6px);
-    }
+  .toggle #hamburger-menu-line1 {
+    transform: rotate(-45deg) translate(-8px, 6px);
+  }
+
+  .toggle #hamburger-menu-line2 {
+    opacity: 0;
+  }
+
+  .toggle #hamburger-menu-line3 {
+    transform: rotate(45deg) translate(-8px, -6px);
   }
 }
