@@ -29,6 +29,16 @@
       }
     },
     {
+      "name": "Experience Sync: Start Editor",
+      "type": "node",
+      "request": "launch",
+      "runtimeVersion": "22",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": ["exec", "vite", "--config", "experience-sync/ui/vite.config.ts"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
       "name": "Experience Sync: Chrome",
       "type": "node",
       "request": "launch",
@@ -44,16 +54,6 @@
         "uriFormat": "%s",
         "webRoot": "${workspaceFolder}/experience-sync/ui/src"
       }
-    },
-    {
-      "name": "Experience Sync: Start Editor",
-      "type": "node",
-      "request": "launch",
-      "runtimeVersion": "22",
-      "runtimeExecutable": "yarn",
-      "runtimeArgs": ["exec", "vite", "--config", "experience-sync/ui/vite.config.ts"],
-      "cwd": "${workspaceFolder}",
-      "console": "integratedTerminal"
     },
     {
       "name": "Debug: Unit Tests (Current File)",
