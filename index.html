@@ -247,6 +247,17 @@
     }
 
     @media screen and (max-width: 1100px) {
+
+      /* Keep React's duplicate img out of the LCP race until handoff — otherwise
+         Lighthouse records LCP when React mounts (~3s) instead of the static shell. */
+      #profile-pic {
+        visibility: hidden;
+      }
+
+      html.react-ready #profile-pic {
+        visibility: visible;
+      }
+
       #landing-blob {
         width: 60%;
       }
@@ -277,10 +288,10 @@
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <!-- LCP prerender shell — see docs/lighthouse-mobile-perf.md -->
-  <section id="landing-lcp-shell" aria-hidden="true">
+  <section id="landing-lcp-shell">
     <div id="landing-lcp-profile-pic-container">
       <img id="profile-pic-lcp" src="/Art_Profile_Pic.svg" alt="Flat Profile Pic" width="418" height="468"
-        fetchpriority="high" decoding="async" />
+        fetchpriority="high" decoding="sync" />
     </div>
   </section>
   <div id="root"></div>

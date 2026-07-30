@@ -165,6 +165,12 @@ hide it. `LandingPage.tsx` uses the same public URL so the browser reuses the
 cached image. Desktop hides the shell via CSS (desktop Lighthouse already
 passes).
 
+**Handoff detail (2026-07-30):** the first version of this still measured LCP on
+React's `#profile-pic` (~3.2s) because that img was visible as soon as React
+mounted and replaced the shell as the LCP candidate. On viewports ≤1100px,
+`#profile-pic` now stays `visibility: hidden` until `html.react-ready`, so
+Lighthouse should record LCP on the static shell img instead.
+
 Remaining options if mobile still needs more headroom:
 
 Roughly in order of effort/risk:
