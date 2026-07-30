@@ -1,0 +1,97 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Local: Start Server",
+      "type": "node",
+      "request": "launch",
+      "runtimeVersion": "22",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": ["exec", "vite", "--port", "5173", "--strictPort"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Local: Chrome",
+      "type": "node",
+      "request": "launch",
+      "runtimeVersion": "22",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": ["exec", "vite", "--port", "5173", "--strictPort"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "serverReadyAction": {
+        "action": "debugWithChrome",
+        "killOnServerStop": true,
+        "pattern": ".+Local:.+(https?://\\S+)",
+        "uriFormat": "%s",
+        "webRoot": "${workspaceFolder}/src"
+      }
+    },
+    {
+      "name": "Experience Sync: Chrome",
+      "type": "node",
+      "request": "launch",
+      "runtimeVersion": "22",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": ["exec", "vite", "--config", "experience-sync/ui/vite.config.ts"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "serverReadyAction": {
+        "action": "debugWithChrome",
+        "killOnServerStop": true,
+        "pattern": ".+Local:.+(https?://\\S+)",
+        "uriFormat": "%s",
+        "webRoot": "${workspaceFolder}/experience-sync/ui/src"
+      }
+    },
+    {
+      "name": "Experience Sync: Start Editor",
+      "type": "node",
+      "request": "launch",
+      "runtimeVersion": "22",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": ["exec", "vite", "--config", "experience-sync/ui/vite.config.ts"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Debug: Unit Tests (Current File)",
+      "type": "node",
+      "request": "launch",
+      "runtimeVersion": "22",
+      "program": "${workspaceFolder}/node_modules/vitest/vitest.mjs",
+      "args": ["run", "${relativeFile}"],
+      "autoAttachChildProcesses": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "smartStep": true,
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug: Unit Tests (All)",
+      "type": "node",
+      "request": "launch",
+      "runtimeVersion": "22",
+      "program": "${workspaceFolder}/node_modules/vitest/vitest.mjs",
+      "args": ["run"],
+      "autoAttachChildProcesses": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "smartStep": true,
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug: Playwright (Current File)",
+      "type": "node",
+      "request": "launch",
+      "runtimeVersion": "22",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": ["playwright", "test", "${relativeFile}", "--debug"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    }
+  ]
+}

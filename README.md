@@ -167,24 +167,26 @@ The repo includes workspace run configs in [`.vscode/launch.json`](.vscode/launc
 
 Workspace settings set `"nodejs.defaultRuntimeVersion": "22"` so Node debug sessions resolve the correct runtime via nvm. Shell tasks use your integrated terminal environment; yarn scripts still enforce Node 22 via `check-node-version.mjs`.
 
+Cursor does not yet support auto-opening the integrated browser from `launch.json` (`editor-browser` and `openIntegratedBrowser` are unavailable). Use **Local: Start Server** and Cmd+click the `http://localhost:5173` link in the terminal, or use **Local: Chrome** for external Chrome debugging.
+
 ### Launch Configurations
 
-| Configuration                        | Description                                                                |
-| ------------------------------------ | -------------------------------------------------------------------------- |
-| **Dev: Chrome**                      | Starts Vite, attaches Chrome debugging (debug toolbar), stops server when debug ends |
-| **Dev: Start Server**                | Runs `yarn start` in the integrated terminal (no browser attach)                     |
-| **Debug: Unit Tests (Current File)** | Debug the open Vitest file                                                 |
-| **Debug: Unit Tests (All)**          | Debug the full unit test suite                                             |
-| **Debug: Playwright (Current File)** | Open Playwright Inspector for the open spec file                           |
+| Configuration                        | Description                                                                          |
+| ------------------------------------ | ------------------------------------------------------------------------------------ |
+| **Local: Start Server**              | Starts Vite in the integrated terminal (default config)                              |
+| **Local: Chrome**                    | Starts Vite, attaches Chrome debugging (debug toolbar), stops server when debug ends |
+| **Debug: Unit Tests (Current File)** | Debug the open Vitest file                                                           |
+| **Debug: Unit Tests (All)**          | Debug the full unit test suite                                                       |
+| **Debug: Playwright (Current File)** | Open Playwright Inspector for the open spec file                                     |
 | **Experience Sync: Chrome**          | Starts the editor, attaches Chrome debugging at `http://127.0.0.1:4700`              |
-| **Experience Sync: Start Editor**    | Runs `yarn exp:ui` only                                                    |
+| **Experience Sync: Start Editor**    | Runs the experience sync Vite app only                                               |
 
 ### Tasks
 
 | Task                                         | Description                          |
 | -------------------------------------------- | ------------------------------------ |
-| **Dev: Start Server**                        | `yarn start`                         |
-| **Dev: Preview Production Build**            | `yarn build` then `yarn preview`     |
+| **Local: Start Server**                        | `yarn start`                         |
+| **Local: Preview Production Build**            | `yarn build` then `yarn preview`     |
 | **Build**                                    | `yarn build`                         |
 | **Lint: Check**                              | `yarn lint`                          |
 | **Lint: Fix**                                | `yarn lint:fix`                      |
