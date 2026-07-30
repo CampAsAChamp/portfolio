@@ -1,3 +1,13 @@
+## <small>1.17.4 (2026-07-30)</small>
+
+* ci: change production deploys to only run after tests pass ([41936d8](https://github.com/CampAsAChamp/portfolio/commit/41936d8))
+* ci: fix workflow race ([4c9e7fa](https://github.com/CampAsAChamp/portfolio/commit/4c9e7fa))
+* ci: reorder vs code run configs ([55053a2](https://github.com/CampAsAChamp/portfolio/commit/55053a2))
+* fix: deployment badges ([87c75d1](https://github.com/CampAsAChamp/portfolio/commit/87c75d1))
+* chore: add vscode configs ([254aa67](https://github.com/CampAsAChamp/portfolio/commit/254aa67))
+* chore: fix commit hooks ([67d6401](https://github.com/CampAsAChamp/portfolio/commit/67d6401))
+* chore: fix vs code run configs ([7502fe3](https://github.com/CampAsAChamp/portfolio/commit/7502fe3))
+
 ## <small>1.17.3 (2026-07-30)</small>
 
 * fix: flatten mobile navbar CSS selectors to restore hamburger drawer ([9557dc6](https://github.com/CampAsAChamp/portfolio/commit/9557dc6))
