@@ -221,6 +221,23 @@ export function SharedLibraryIcon({ size = 16 }: IconProps): ReactElement {
   )
 }
 
+/** Decorative sliders icon for customize / advanced controls. */
+export function SlidersIcon({ size = 16 }: IconProps): ReactElement {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M4 21V14" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M4 10V3" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M12 21V12" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M12 8V3" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M20 21V16" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M20 12V3" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M1 14H7" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M9 8H15" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M17 16H23" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 /** Decorative info icon for hint/tooltip triggers. */
 export function InfoIcon({ size = 16 }: IconProps): ReactElement {
   return (

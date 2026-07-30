@@ -1,5 +1,4 @@
 import {
-  Fragment,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -11,7 +10,7 @@ import {
   type ReactNode,
 } from "react"
 import { ThemeSwitcher } from "components/NavBar/ThemeSwitcher"
-import { isDefaultAccomplishmentSetup, isPortfolioOnly } from "experience-sync/lib/accomplishmentDefaults"
+import { expandDocumentDefaults, isDefaultAccomplishmentSetup, isPortfolioOnly } from "experience-sync/lib/accomplishmentDefaults"
 import { formatValidationIssue, formatValidationSummary } from "experience-sync/lib/formatValidationIssue"
 import { formatLinkedInExport } from "experience-sync/lib/linkedin"
 import { formatResumeExport } from "experience-sync/lib/resume"
@@ -78,18 +77,11 @@ function buildDestinationSummary(destinations: Destination[]): ReactNode {
     )
   }
 
-  return destinations.map((dest, index) => (
-    <Fragment key={dest}>
-      {index > 0 && (
-        <span className="accomplishment-destination-separator" aria-hidden="true">
-          {" · "}
-        </span>
-      )}
-      <span className="destination-option">
-        {DESTINATION_META[dest].icon}
-        {DESTINATION_META[dest].label}
-      </span>
-    </Fragment>
+  return destinations.map((dest) => (
+    <span key={dest} className="destination-option">
+      {DESTINATION_META[dest].icon}
+      {DESTINATION_META[dest].label}
+    </span>
   ))
 }
 
@@ -177,6 +169,17 @@ export function App(): ReactElement {
     })
   }, [])
 
+  const markAccomplishmentSimple = useCallback((id: string): void => {
+    setCustomizedAccomplishmentIds((current) => {
+      if (!current.has(id)) {
+        return current
+      }
+      const next = new Set(current)
+      next.delete(id)
+      return next
+    })
+  }, [])
+
   const showToast = useCallback((text: string, kind: ToastKind = "ok", opts?: { copy?: boolean }): void => {
     setToasts((current) => [...current, { id: Date.now() + Math.random(), kind, text, copy: opts?.copy }])
   }, [])
@@ -189,11 +192,21 @@ export function App(): ReactElement {
     setBaselineJson(JSON.stringify(data))
   }, [])
 
+  const syncSavedDocument = useCallback(
+    (saved: ExperiencesDocument): ExperiencesDocument => {
+      const expanded = expandDocumentDefaults(saved)
+      setDoc(expanded)
+      markBaseline(expanded)
+      return expanded
+    },
+    [markBaseline],
+  )
+
   const load = useCallback(
     async (opts?: { notify?: boolean }) => {
       setBusy(true)
       try {
-        const data = await loadExperiences()
+        const data = expandDocumentDefaults(await loadExperiences())
         setDoc(data)
         markBaseline(data)
         setCompanyIdx(0)
@@ -297,8 +310,8 @@ export function App(): ReactElement {
     setBusy(true)
     try {
       const result = await saveExperiences(doc)
+      syncSavedDocument(result.data)
       setIssues(result.issues ?? [])
-      markBaseline(doc)
       showToast("Saved experiences.yaml")
     } catch (err) {
       if (err instanceof ApiError) {
@@ -310,7 +323,7 @@ export function App(): ReactElement {
     } finally {
       setBusy(false)
     }
-  }, [busy, doc, markBaseline, showToast])
+  }, [busy, doc, showToast, syncSavedDocument])
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent): void => {
@@ -331,8 +344,7 @@ export function App(): ReactElement {
     setBusy(true)
     try {
       if (doc) {
-        await saveExperiences(doc)
-        markBaseline(doc)
+        syncSavedDocument((await saveExperiences(doc)).data)
       }
       const out = await generatePortfolio()
       showToast(`Generated ${out}`)
@@ -347,9 +359,8 @@ export function App(): ReactElement {
     if (!doc) return
     setBusy(true)
     try {
-      await saveExperiences(doc)
-      markBaseline(doc)
-      const text = formatLinkedInExport(doc)
+      const saved = syncSavedDocument((await saveExperiences(doc)).data)
+      const text = formatLinkedInExport(saved)
       await navigator.clipboard.writeText(text)
       showToast("LinkedIn copy ready", "ok", { copy: true })
     } catch (err) {
@@ -363,9 +374,8 @@ export function App(): ReactElement {
     if (!doc) return
     setBusy(true)
     try {
-      await saveExperiences(doc)
-      markBaseline(doc)
-      const text = formatResumeExport(doc)
+      const saved = syncSavedDocument((await saveExperiences(doc)).data)
+      const text = formatResumeExport(saved)
       await navigator.clipboard.writeText(text)
       showToast("Resume copy ready", "ok", { copy: true })
     } catch (err) {
@@ -809,7 +819,7 @@ export function App(): ReactElement {
                     <TrashIcon />
                   </button>
                 </div>
-                <div className="grid-2">
+                <div className="grid-3 company-primary-fields">
                   <label>
                     Name
                     <input
@@ -834,25 +844,25 @@ export function App(): ReactElement {
                       }
                     />
                   </label>
+                  <ColorKeyPicker
+                    value={company.colorKey}
+                    onChange={(colorKey) =>
+                      updateDoc((d) => {
+                        d.companies[companyIdx]!.colorKey = colorKey
+                        return d
+                      })
+                    }
+                  />
+                  <LogoFilePicker
+                    value={company.logoFile}
+                    onChange={(logoFile) =>
+                      updateDoc((d) => {
+                        d.companies[companyIdx]!.logoFile = logoFile
+                        return d
+                      })
+                    }
+                  />
                 </div>
-                <ColorKeyPicker
-                  value={company.colorKey}
-                  onChange={(colorKey) =>
-                    updateDoc((d) => {
-                      d.companies[companyIdx]!.colorKey = colorKey
-                      return d
-                    })
-                  }
-                />
-                <LogoFilePicker
-                  value={company.logoFile}
-                  onChange={(logoFile) =>
-                    updateDoc((d) => {
-                      d.companies[companyIdx]!.logoFile = logoFile
-                      return d
-                    })
-                  }
-                />
                 <TechnologyPicker
                   value={company.technologies}
                   onChange={(technologies) =>
@@ -991,6 +1001,7 @@ export function App(): ReactElement {
                   <div className="accomplishments-list" ref={accomplishmentsListRef}>
                     {role.accomplishments.map((acc, ai) => {
                       const showAdvanced = !isDefaultAccomplishmentSetup(acc) || customizedAccomplishmentIds.has(acc.id)
+                      const canSimplify = isDefaultAccomplishmentSetup(acc) && customizedAccomplishmentIds.has(acc.id)
 
                       return (
                         <section
@@ -1035,36 +1046,47 @@ export function App(): ReactElement {
                             </div>
                           </div>
 
-                          {showAdvanced && (
-                            <section className="accomplishment-card-section accomplishment-destinations" aria-label="Destinations">
-                              <h4 className="accomplishment-section-title">Destinations</h4>
-                              <div className="destinations">
-                                {DESTINATIONS.map((dest) => {
-                                  const meta = DESTINATION_META[dest]
-                                  return (
-                                    <label key={dest}>
-                                      <input
-                                        type="checkbox"
-                                        checked={acc.destinations.includes(dest)}
-                                        onChange={() => toggleDestination(ai, dest)}
-                                      />
-                                      <span className="destination-option">
-                                        {meta.icon}
-                                        {meta.label}
-                                      </span>
-                                    </label>
-                                  )
-                                })}
-                              </div>
-                            </section>
-                          )}
+                          <div
+                            className={`accomplishment-expand-panel accomplishment-destinations-panel${showAdvanced ? " expanded" : ""}`}
+                          >
+                            <div className="accomplishment-expand-panel-inner">
+                              <section
+                                className="accomplishment-card-section accomplishment-destinations accomplishment-expand-panel-content"
+                                aria-label="Destinations"
+                                aria-hidden={!showAdvanced}
+                              >
+                                <h4 className="accomplishment-section-title">Destinations</h4>
+                                <div className="destinations">
+                                  {DESTINATIONS.map((dest) => {
+                                    const meta = DESTINATION_META[dest]
+                                    return (
+                                      <label key={dest}>
+                                        <input
+                                          type="checkbox"
+                                          checked={acc.destinations.includes(dest)}
+                                          disabled={!showAdvanced}
+                                          onChange={() => toggleDestination(ai, dest)}
+                                        />
+                                        <span className="destination-option">
+                                          {meta.icon}
+                                          {meta.label}
+                                        </span>
+                                      </label>
+                                    )
+                                  })}
+                                </div>
+                              </section>
+                            </div>
+                          </div>
 
                           <AccomplishmentVariants
                             accomplishment={acc}
                             destinationMeta={DESTINATION_META}
                             simpleMode={!showAdvanced}
+                            canSimplify={canSimplify}
                             destinationSummary={buildDestinationSummary(acc.destinations)}
                             onCustomize={() => markAccomplishmentCustomized(acc.id)}
+                            onSimplify={() => markAccomplishmentSimple(acc.id)}
                             onVariantSourceChange={(dest, sourceDest, resolvedText) => setVariantSource(ai, dest, sourceDest, resolvedText)}
                             onVariantChange={(dest, next) =>
                               updateDoc((d) => {
