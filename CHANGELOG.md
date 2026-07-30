@@ -1,3 +1,8 @@
+## <small>1.21.1 (2026-07-30)</small>
+
+* perf: prerender LCP profile pic before React mounts ([89940da](https://github.com/CampAsAChamp/portfolio/commit/89940da))
+* test: update sw projects linux visual baseline ([c844f54](https://github.com/CampAsAChamp/portfolio/commit/c844f54))
+
 ## 1.21.0 (2026-07-30)
 
 * feat: add new dev icons ([38d53a1](https://github.com/CampAsAChamp/portfolio/commit/38d53a1))
