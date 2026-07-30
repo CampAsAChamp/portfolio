@@ -50,6 +50,7 @@ tests/
 
 | Task | Start here |
 |------|------------|
+| Human docs (testing, deploy) | `docs/testing.md`, `docs/deployment.md`, `docs/releases.md`, `docs/vscode.md` |
 | Add a new section | `.cursor/skills/add-portfolio-section/SKILL.md` |
 | Component patterns | `.cursor/rules/typescript-react.mdc` |
 | CSS / theming | `.cursor/rules/css-styling.mdc`, `src/styles/Common/Globals.css` |

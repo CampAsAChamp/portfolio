@@ -38,15 +38,10 @@
       <li><a href="#installation">Installation</a></li>
     </ul>
   </li>
-  <li><a href="#usage">Usage</a></li>
   <li><a href="#experience-sync-editor">Experience Sync Editor</a></li>
   <li><a href="#available-scripts">Available Scripts</a></li>
-  <li><a href="#vscode--cursor-run-configurations">VS Code / Cursor Run Configurations</a></li>
-  <li><a href="#testing">Testing</a></li>
+  <li><a href="#documentation">Documentation</a></li>
   <li><a href="#project-maintenance">Project Maintenance</a></li>
-  <li><a href="#contributing">Contributing</a></li>
-  <li><a href="#releases">Releases</a></li>
-  <li><a href="#deployment">Deployment</a></li>
   <li><a href="#license">License</a></li>
 </ol>
 
@@ -100,9 +95,7 @@
    ```
 6. Open your web browser to `localhost:5173`
 
-## Usage
-
-1. View the site live at https://nickhs.dev/
+Live site: https://nickhs.dev/
 
 ## Experience Sync Editor
 
@@ -143,6 +136,8 @@ The editor UI is localhost-only and is **not** part of the Cloudflare Pages depl
 - `yarn test:lighthouse` - Run Lighthouse CI audits (builds and audits production site)
 - `yarn test:all` - Run all tests (unit + Lighthouse + E2E)
 
+See [`docs/testing.md`](docs/testing.md) for details on unit, E2E, Lighthouse, and CI testing.
+
 ### Code Quality
 
 - `yarn lint` - Run all linters (ESLint, TypeScript, Stylelint, Prettier)
@@ -157,240 +152,16 @@ The editor UI is localhost-only and is **not** part of the Cloudflare Pages depl
 
 - `yarn analyze` - Analyze bundle size with source-map-explorer
 
-## VS Code / Cursor Run Configurations
+## Documentation
 
-The repo includes workspace run configs in [`.vscode/launch.json`](.vscode/launch.json) and [`.vscode/tasks.json`](.vscode/tasks.json) for common dev, test, and build workflows.
-
-**Run and Debug** (`Cmd+Shift+D` / `Ctrl+Shift+D`): pick a configuration from the dropdown, then start it.
-
-**Tasks** (`Cmd+Shift+P` / `Ctrl+Shift+P` → **Tasks: Run Task**): run build, lint, test, and experience sync commands without memorizing yarn script names.
-
-Workspace settings set `"nodejs.defaultRuntimeVersion": "22"` so Node debug sessions resolve the correct runtime via nvm. Shell tasks use your integrated terminal environment; yarn scripts still enforce Node 22 via `check-node-version.mjs`.
-
-Cursor does not yet support auto-opening the integrated browser from `launch.json` (`editor-browser` and `openIntegratedBrowser` are unavailable). Use **Local: Start Server** and Cmd+click the `http://localhost:5173` link in the terminal, or use **Local: Chrome** for external Chrome debugging.
-
-### Launch Configurations
-
-| Configuration                        | Description                                                                          |
-| ------------------------------------ | ------------------------------------------------------------------------------------ |
-| **Local: Start Server**              | Starts Vite in the integrated terminal (default config)                              |
-| **Local: Chrome**                    | Starts Vite, attaches Chrome debugging (debug toolbar), stops server when debug ends |
-| **Debug: Unit Tests (Current File)** | Debug the open Vitest file                                                           |
-| **Debug: Unit Tests (All)**          | Debug the full unit test suite                                                       |
-| **Debug: Playwright (Current File)** | Open Playwright Inspector for the open spec file                                     |
-| **Experience Sync: Chrome**          | Starts the editor, attaches Chrome debugging at `http://127.0.0.1:4700`              |
-| **Experience Sync: Start Editor**    | Runs the experience sync Vite app only                                               |
-
-### Tasks
-
-| Task                                         | Description                          |
-| -------------------------------------------- | ------------------------------------ |
-| **Local: Start Server**                        | `yarn start`                         |
-| **Local: Preview Production Build**            | `yarn build` then `yarn preview`     |
-| **Build**                                    | `yarn build`                         |
-| **Lint: Check**                              | `yarn lint`                          |
-| **Lint: Fix**                                | `yarn lint:fix`                      |
-| **Test: Unit**                               | `yarn test` (default test task)      |
-| **Test: Unit (Watch)**                       | `yarn test:watch`                    |
-| **Test: Unit (UI)**                          | `yarn test:ui`                       |
-| **Test: Unit (Current File)**                | `yarn vitest run` on the active file |
-| **Test: E2E**                                | `yarn test:e2e`                      |
-| **Test: E2E (UI)**                           | `yarn test:e2e:ui`                   |
-| **Test: E2E (Desktop)**                      | `yarn test:e2e:desktop`              |
-| **Test: E2E (Mobile)**                       | `yarn test:e2e:mobile`               |
-| **Experience Sync: Start Editor**            | `yarn exp:ui`                        |
-| **Experience Sync: Generate Portfolio Data** | `yarn exp:generate`                  |
-| **Experience Sync: Sync All Exports**        | `yarn exp:sync`                      |
-
-<!-- TESTING -->
-
-## Testing
-
-This project includes comprehensive automated testing to catch regressions and ensure quality.
-
-### Unit Tests
-
-Unit tests verify component rendering and behavior using Vitest and React Testing Library.
-
-Run all unit tests once:
-```sh
-yarn test
-```
-
-Run tests in watch mode (useful during development):
-```sh
-yarn test:watch
-```
-
-Open the Vitest UI for an interactive testing experience:
-```sh
-yarn test:ui
-```
-
-Generate test coverage report:
-```sh
-yarn test:coverage
-```
-
-### E2E Tests
-
-End-to-end tests verify the application works correctly in real browsers using Playwright. These tests ensure no regressions occur when making changes to the codebase.
-
-Run all E2E tests:
-```sh
-yarn test:e2e
-```
-
-Run E2E tests with interactive UI:
-```sh
-yarn test:e2e:ui
-```
-
-Run E2E tests with browser visible (headed mode):
-```sh
-yarn test:e2e:headed
-```
-
-**Test Coverage:**
-
-The E2E test suite comprehensively validates all features documented in [`tests/e2e/E2E Test Requirements.md`](tests/e2e/E2E%20Test%20Requirements.md):
-
-**Desktop Tests:**
-- **Landing Page**: Element visibility, navbar navigation, smooth scrolling, animations
-- **Theme Switcher**: Dark/light mode toggle, localStorage persistence, visual regression
-- **Mouse Scroll Indicator**: Animations, visibility thresholds, fade out behavior
-- **Contact Me**: Button hover effects, modal interactions (open/close/ESC/backdrop), social links
-- **Scroll To Top**: Visibility threshold, smooth scrolling, hover effects
-- **About Me**: Layout, image animations with stagger, organic blob background
-- **Experience**: Company cards, colors, technologies, clickable links, animations
-- **Skills & Technologies**: Grid layout, hover effects, color wipe animations, stagger
-- **SW Projects**: Project cards, video autoplay, technologies, buttons, links
-- **Art Projects**: Grid layout, hover effects, fullscreen modal, modal interactions
-- **Footer**: Page layout integrity
-
-**Mobile Tests:**
-- **Landing Page Mobile**: Hamburger menu, drawer animations, nav link behavior, profile pic centering
-- **About Me Mobile**: Single column layout, element order (Images → Title → Description)
-- **SW Projects Mobile**: Single column cards, video handling, Instagram browser detection
-- **Art Projects Mobile**: Carousel instead of grid, swipe gestures, pagination dots
-- **General Mobile**: No scroll indicator, no scroll-to-top button, touch interactions
-
-**Test Reliability:**
-- All tests follow anti-flaky practices (no arbitrary timeouts, proper waiting strategies)
-- Visual regression testing with screenshot comparison
-- Tests run against 5 browser configurations:
-  - Desktop: Chrome, Firefox, Safari
-  - Mobile: Chrome (Pixel 5), Safari (iPhone 12)
-- Automatic retries in CI (2 retries on failure)
-- Test results and screenshots uploaded as artifacts on failure
-
-**Running Specific Test Suites:**
-```sh
-# Run only desktop tests
-npx playwright test tests/e2e/desktop
-
-# Run only mobile tests  
-npx playwright test tests/e2e/mobile
-
-# Run specific test file
-npx playwright test tests/e2e/desktop/landing-page.spec.ts
-
-# Run tests in specific browser
-npx playwright test --project=chromium
-npx playwright test --project="Mobile Safari"
-```
-
-**Debugging Failed Tests:**
-```sh
-# Run in debug mode with Playwright Inspector
-npx playwright test --debug
-
-# Run with visible browser
-yarn test:e2e:headed
-
-# View test report after run
-npx playwright show-report test_results/e2e/html-report
-```
-
-### Lighthouse Performance Audits
-
-Lighthouse CI verifies the portfolio maintains high performance, accessibility, best practices, and SEO standards using Google's official Lighthouse tooling.
-
-Run Lighthouse audits locally:
-```sh
-yarn test:lighthouse          # Runs desktop tests (default)
-yarn test:lighthouse:mobile   # Run mobile tests with device emulation
-yarn test:lighthouse:both     # Run both desktop and mobile tests
-```
-
-This command builds the production site and runs a Lighthouse audit to verify performance and quality standards.
-
-**Monitored Metrics:**
-- **Performance** (threshold: 85+): Load times, Core Web Vitals (LCP, CLS, FID), bundle optimization
-- **Accessibility** (threshold: 90+): ARIA labels, keyboard navigation, color contrast, semantic HTML
-- **Best Practices** (threshold: 90+): HTTPS, console errors, deprecated APIs, security
-- **SEO** (threshold: 90+): Meta tags, mobile-friendliness, structured data
-
-**Configuration:** Lighthouse settings are defined in:
-- [`.lighthouserc.desktop.json`](.lighthouserc.desktop.json) - Desktop preset (no throttling)
-- [`.lighthouserc.mobile.json`](.lighthouserc.mobile.json) - Mobile preset (375x667, 4G throttling, 4x CPU slowdown)
-
-**GitHub Integration:** Lighthouse CI is configured with a GitHub token to provide:
-- ✅ Status checks on commits showing pass/fail for each category
-- 💬 PR comments with score comparisons when changes affect performance
-- 📊 Integration with GitHub's checks interface
-
-**Local Development:** To run Lighthouse locally without token warnings:
-1. Copy `.env.example` to `.env.local`: `cp .env.example .env.local`
-2. Add your GitHub token to `.env.local`
-3. The token will be automatically loaded when running `yarn test:lighthouse`
-
-### Run All Tests
-
-Run unit tests, Lighthouse audits, and E2E tests:
-```sh
-yarn test:all
-```
-
-This command runs all three test suites in sequence: unit tests with Vitest, Lighthouse performance audits, and E2E tests with Playwright. Tests are ordered from fastest to slowest for quicker feedback.
-
-### Continuous Integration
-
-The CI pipeline runs automatically on every push and pull request via GitHub Actions ([`.github/workflows/test.yml`](.github/workflows/test.yml)):
-
-**Test Job:**
-1. **Setup**: Install Node.js 22 and dependencies
-2. **Lint**: Run ESLint, Stylelint, and TypeScript type checking
-3. **Test**: Run unit tests with Vitest
-4. **Build**: Create production build
-5. **Analyze**: Check bundle sizes
-
-**Lighthouse Job** (runs after Test job passes):
-1. **Build**: Create production build
-2. **Audit**: Run desktop Lighthouse audits for performance, accessibility, best practices, and SEO
-3. **Upload**: Save reports to temporary public storage and GitHub artifacts
-4. **Status**: Post GitHub status check with pass/fail results
-
-You can view interactive Lighthouse reports directly from the GitHub Actions run output via the temporary public storage link.
-
-**Note:** E2E tests run in CI as part of the Test workflow (`test.yml`). The pre-push hook runs unit tests and desktop + mobile Lighthouse audits (not the full `yarn test:all` suite). Pull requests must pass all CI checks before merging.
-
-### Test Structure
-
-Tests are located in the `tests/` directory, mirroring the structure of `src/`:
-- `tests/unit/` - Unit tests with Vitest
-  - `App.test.tsx` - Main app component
-  - `components/` - Component tests organized by feature
-  - `hooks/` - Custom hook tests
-  - `utils/` - Utility function tests
-- `tests/e2e/` - End-to-end tests with Playwright
-  - `desktop/` - Desktop browser specs
-  - `mobile/` - Mobile browser specs
-  - `fixtures/` - Page object models
-  - `helpers/` - Shared E2E helpers
-- `.lighthouserc.desktop.json` / `.lighthouserc.mobile.json` - Lighthouse CI configurations for performance audits
-- All tests use TypeScript for type safety
-- Focus on catching regressions when updating content or refactoring
+| Topic                  | Guide                                                  |
+| ---------------------- | ------------------------------------------------------ |
+| Testing                | [docs/testing.md](docs/testing.md)                     |
+| VS Code / Cursor       | [docs/vscode.md](docs/vscode.md)                       |
+| Deployment             | [docs/deployment.md](docs/deployment.md)               |
+| Releases               | [docs/releases.md](docs/releases.md)                   |
+| Experience sync        | [experience-sync/README.md](experience-sync/README.md) |
+| Agent / AI conventions | [AGENTS.md](AGENTS.md)                                 |
 
 <!-- PROJECT MAINTENANCE -->
 
@@ -402,200 +173,7 @@ For information about reporting security vulnerabilities, see [`SECURITY.md`](SE
 
 ### Changelog
 
-All notable changes are automatically documented in [`CHANGELOG.md`](CHANGELOG.md) by semantic-release. The changelog is generated from conventional commit messages and should not be manually edited. See [Releases](#releases) for more information.
-
-<!-- CONTRIBUTING -->
-
-## Contributing
-
-This project follows conventional commit standards to maintain a clean and readable git history.
-
-### Commit Message Format
-
-All commit messages must follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
-
-```
-<type>(<optional-scope>): <subject>
-```
-
-**Example commits:**
-```sh
-feat: add dark mode toggle
-fix: resolve mobile navigation bug
-docs: update README with setup instructions
-chore: update dependencies
-refactor(auth): simplify login logic
-test: add unit tests for utils
-style: format code with prettier
-perf: optimize image loading
-```
-
-### Commit Types
-
-- **feat**: A new feature
-- **fix**: A bug fix
-- **docs**: Documentation changes
-- **style**: Code style changes (formatting, missing semicolons, etc.)
-- **refactor**: Code changes that neither fix bugs nor add features
-- **perf**: Performance improvements
-- **test**: Adding or updating tests
-- **build**: Changes to build system or dependencies
-- **ci**: Changes to CI configuration files and scripts
-- **chore**: Other changes that don't modify src or test files
-- **revert**: Reverts a previous commit
-
-### Validation
-
-Commit messages are automatically validated using [commitlint](https://commitlint.js.org/):
-
-- The commit-msg hook runs on every commit
-- Invalid commit messages will be rejected
-- You'll see an error message explaining what's wrong
-
-To manually validate a commit message:
-```sh
-echo "feat: your message" | yarn commitlint
-```
-
-### Pre-commit Hooks
-
-This project uses [Husky](https://typicode.github.io/husky/) to enforce quality standards:
-
-- **pre-commit**: Runs `lint-staged` which formats and lints only staged files:
-  - ESLint auto-fixes JavaScript/TypeScript issues
-  - Prettier formats code
-  - Stylelint fixes CSS issues
-- **commit-msg**: Validates commit message format with `commitlint` (rejects invalid commits)
-- **pre-push**: Runs `yarn test && yarn test:lighthouse:both` (unit tests and desktop + mobile Lighthouse) before pushing
-
-**Note:** If tests fail during pre-push, the push will be blocked. Ensure unit and Lighthouse checks pass locally before pushing. Run `yarn test:e2e` (or `yarn test:all`) when UI changes warrant full E2E coverage.
-
-**Node Version:** All tests require Node.js version 22 or higher (specified in `.nvmrc`). If you use nvm, run `nvm use` to switch to the correct version.
-
-<!-- DEPLOYMENT -->
-
-## Deployment
-
-This project deploys to Cloudflare Pages only after CI passes on `main`.
-
-### CI-Gated Deployment
-
-Production deploys are triggered by GitHub Actions, not by Cloudflare Git auto-deploy:
-
-1. Make your changes and commit them (following [conventional commit format](#contributing)):
-   ```sh
-   git add .
-   git commit -m "feat: your feature description"
-   ```
-
-2. Push to the main branch:
-   ```sh
-   git push origin main
-   ```
-
-3. The **Tests** workflow runs lint, unit tests, `yarn build`, and E2E tests, then uploads the `build/` output as an artifact.
-
-4. If Tests pass on a push to `main`, the **Deploy** job in the same workflow downloads that artifact and uploads it to Cloudflare Pages via Wrangler — the same build that was tested in CI, with no second build step.
-
-If Tests fail, production stays on the previous deploy. Release commits (`[skip ci]`) do not trigger Deploy. Deploy verifies `https://nickhs.dev` returns HTTP 200 before marking the GitHub deployment successful.
-
-### Cloudflare Pages Configuration
-
-The Cloudflare Pages project (`portfolio`) uses direct upload from CI. Automatic production branch deployments should be disabled in the Cloudflare dashboard (**Settings → Build & deployments → Branch control**).
-
-GitHub repo secrets required for Deploy:
-
-- `CLOUDFLARE_API_TOKEN` — API token with Account → Cloudflare Pages → Edit
-- `CLOUDFLARE_ACCOUNT_ID` — your Cloudflare account ID
-
-### Custom Domain
-
-The custom domain `nickhs.dev` is configured in Cloudflare:
-
-1. DNS is managed through Cloudflare
-2. SSL/TLS is automatically handled
-3. CDN caching and optimization are enabled
-
-To update the domain or DNS settings, visit your Cloudflare dashboard.
-
-### Local Development Build
-
-To create a production build locally without deploying:
-
-```sh
-yarn build
-```
-
-This creates an optimized build in the `build` folder. To preview the production build locally:
-
-```sh
-yarn preview
-```
-
-This will serve the production build at `localhost:4173`.
-
-### Notes
-
-- Follow [conventional commit format](#contributing) for all commits
-- Pre-commit hooks automatically format code and validate commits
-- Pre-push hook runs unit tests and desktop Lighthouse before pushing to remote
-- Production deploys typically complete in 1-2 minutes after Tests pass
-- Cloudflare provides automatic HTTPS, CDN, and DDoS protection
-
-<!-- RELEASES -->
-
-## Releases
-
-This project uses [semantic-release](https://semantic-release.gitbook.io/) for automated version management and changelog generation.
-
-### How It Works
-
-Releases are fully automated based on your commit messages:
-
-1. **Commit with conventional format** (following the [Contributing](#contributing) guidelines)
-2. **Push to main branch** - triggers the CI pipeline
-3. **After tests pass** - the Release workflow automatically:
-   - Analyzes commits since the last release
-   - Determines the next version number based on commit types
-   - Generates release notes from commit messages
-   - Updates `CHANGELOG.md`
-   - Creates a GitHub release with notes
-   - Tags the release in git
-
-### Version Bumping Rules
-
-The version number is automatically determined by commit types:
-
-- **Major release** (1.0.0 → 2.0.0): Commits with `BREAKING CHANGE:` in the footer
-- **Minor release** (1.0.0 → 1.1.0): `feat:` commits
-- **Patch release** (1.0.0 → 1.0.1): `fix:`, `perf:`, or `revert:` commits
-- **No release**: `docs:`, `style:`, `chore:`, `refactor:`, `test:`, `build:`, `ci:` commits (but they still appear in the changelog)
-
-### Example Workflow
-
-```sh
-# Make changes
-git add .
-
-# Commit with conventional format - will trigger patch release
-git commit -m "fix: resolve mobile navigation bug"
-
-# Push to main
-git push origin main
-
-# GitHub Actions will:
-# 1. Run tests (test.yml workflow)
-# 2. If tests pass, run release (release.yml workflow)
-# 3. Create version 1.0.1 with generated changelog
-# 4. Create GitHub release with notes
-```
-
-### Important Notes
-
-- **DO NOT manually edit `CHANGELOG.md`** - it's automatically generated by semantic-release
-- Releases only happen on the `main` branch after successful test runs
-- The release workflow can be viewed at `.github/workflows/release.yml`
-- Release configuration is in `.releaserc.json`
+All notable changes are automatically documented in [`CHANGELOG.md`](CHANGELOG.md) by semantic-release. The changelog is generated from conventional commit messages and should not be manually edited. See [docs/releases.md](docs/releases.md) for more information.
 
 <!-- LICENSE -->
 
