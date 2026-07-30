@@ -247,6 +247,7 @@ companies:
                 stakeholders.
   - id: reazon
     companyName: Reazon Systems
+    nickname: Reazon
     location: Santa Ana, CA
     colorKey: REAZON
     logoFile: Reazon.svg
