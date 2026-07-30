@@ -21,8 +21,8 @@ const __dirname = path.dirname(__filename)
  * @returns {object} Object with desktop and mobile numberOfRuns
  */
 function getNumberOfRuns() {
-  const desktopConfigPath = path.join(__dirname, "..", ".lighthouserc.desktop.json")
-  const mobileConfigPath = path.join(__dirname, "..", ".lighthouserc.mobile.json")
+  const desktopConfigPath = path.join(__dirname, "..", "config", "lighthouse", "desktop.json")
+  const mobileConfigPath = path.join(__dirname, "..", "config", "lighthouse", "mobile.json")
 
   let desktopRuns = 3 // Default fallback
   let mobileRuns = 3 // Default fallback
@@ -49,8 +49,8 @@ function getNumberOfRuns() {
 }
 
 try {
-  // Find the lighthouse directory (copied to test_results after running)
-  const lighthouseDir = path.join(__dirname, "..", "test_results", "lighthouse")
+  // Find the lighthouse directory (copied to tests/test_results after running)
+  const lighthouseDir = path.join(__dirname, "..", "tests", "test_results", "lighthouse")
 
   // Get number of runs from config files
   const numberOfRuns = getNumberOfRuns()

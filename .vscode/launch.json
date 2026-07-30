@@ -7,7 +7,7 @@
       "request": "launch",
       "runtimeVersion": "22",
       "runtimeExecutable": "yarn",
-      "runtimeArgs": ["exec", "vite", "--port", "5173", "--strictPort"],
+      "runtimeArgs": ["exec", "vite", "--config", "config/vite.config.ts", "--port", "5173", "--strictPort"],
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal"
     },
@@ -17,7 +17,7 @@
       "request": "launch",
       "runtimeVersion": "22",
       "runtimeExecutable": "yarn",
-      "runtimeArgs": ["exec", "vite", "--port", "5173", "--strictPort"],
+      "runtimeArgs": ["exec", "vite", "--config", "config/vite.config.ts", "--port", "5173", "--strictPort"],
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
       "serverReadyAction": {
@@ -61,7 +61,7 @@
       "request": "launch",
       "runtimeVersion": "22",
       "program": "${workspaceFolder}/node_modules/vitest/vitest.mjs",
-      "args": ["run", "${relativeFile}"],
+      "args": ["run", "${relativeFile}", "--config", "config/vitest.config.ts"],
       "autoAttachChildProcesses": true,
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
@@ -75,7 +75,7 @@
       "request": "launch",
       "runtimeVersion": "22",
       "program": "${workspaceFolder}/node_modules/vitest/vitest.mjs",
-      "args": ["run"],
+      "args": ["run", "--config", "config/vitest.config.ts"],
       "autoAttachChildProcesses": true,
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
@@ -89,7 +89,7 @@
       "request": "launch",
       "runtimeVersion": "22",
       "runtimeExecutable": "yarn",
-      "runtimeArgs": ["playwright", "test", "${relativeFile}", "--debug"],
+      "runtimeArgs": ["playwright", "test", "${relativeFile}", "--debug", "--config", "config/playwright.config.ts"],
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal"
     }

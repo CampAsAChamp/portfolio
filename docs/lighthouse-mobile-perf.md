@@ -1,7 +1,7 @@
 # Mobile Lighthouse performance — investigation notes
 
 Status as of this writing: mobile performance gate is set to `minScore: 0.78`
-in [`.lighthouserc.mobile.ci.json`](.lighthouserc.mobile.ci.json), reflecting
+in [`config/lighthouse/mobile.ci.json`](../config/lighthouse/mobile.ci.json), reflecting
 a real, consistently-reproduced ceiling of **~0.82**, not the originally
 intended 0.85. Desktop passes comfortably (0.99–1.0) and is untouched.
 
@@ -46,7 +46,7 @@ genuinely borderline score with real variance layered on top.
 
 ### 1. The entry JS chunk was needlessly huge (220KB, 70.99KB gzip)
 
-`vite.config.ts`'s `manualChunks` used an object map:
+[`config/vite.config.ts`](../config/vite.config.ts)'s `manualChunks` used an object map:
 `{ react: ["react", "react-dom"] }`. This form matches by package *name*, but
 react-dom's actual runtime lives in deep imports (`react-dom/client` →
 `react-dom-client.production.js`, ~540KB raw, plus `scheduler`) that an
@@ -88,7 +88,7 @@ that `#root` actually renders content) before trusting it. Result: entry
 chunk 220KB → 48.71KB (gzip 70.99KB → 17.47KB), TBT dropped from ~440ms to
 ~290-360ms in subsequent real CI runs.
 
-See the `manualChunks` function in [`vite.config.ts`](vite.config.ts) for the
+See the `manualChunks` function in [`config/vite.config.ts`](../config/vite.config.ts) for the
 current (safe) configuration and its inline comment explaining the hazard.
 
 ### 2. Swiper's CSS was render-blocking for a below-the-fold, lazy component
@@ -106,7 +106,7 @@ single page load.
 them as plain asset URL strings, not stylesheets to bundle/hoist), and inject
 the actual `<link>` tags via a `useEffect` only when `ArtGalleryCarousel`
 mounts. See `useDeferredStylesheets` in
-[`ArtGalleryCarousel.tsx`](src/components/ArtProjects/ArtGalleryCarousel.tsx).
+[`ArtGalleryCarousel.tsx`](../src/components/ArtProjects/ArtGalleryCarousel.tsx).
 
 This exposed a **real, latent CSS specificity bug** as a side effect: swiper's
 own CSS sets `.swiper { display: block; }`, and `ArtProjects.css` overrides

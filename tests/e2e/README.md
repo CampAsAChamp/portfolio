@@ -90,12 +90,12 @@ npx playwright test tests/e2e/desktop/landing-page.spec.ts --debug
 npx playwright test tests/e2e/desktop/landing-page.spec.ts --headed
 
 # View test report
-npx playwright show-report test_results/e2e/html-report
+npx playwright show-report tests/test_results/e2e/html-report
 ```
 
 ## Test Configuration
 
-Tests are configured in `playwright.config.ts` with:
+Tests are configured in `config/playwright.config.ts` with:
 
 - **Base URL**: `http://localhost:5173`
 - **Timeout**: 30 seconds per test

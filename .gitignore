@@ -7,7 +7,7 @@
 .pnp.*
 
 # testing
-/test_results
+/tests/test_results
 /coverage
 .nyc_output
 
@@ -24,7 +24,8 @@ test-results/
 dist/
 dist-ssr/
 
-# environment variables
+# environment variables (see config/.env.example)
+config/.env.local
 .env.local
 .env.development.local
 .env.test.local

@@ -6,7 +6,7 @@ alwaysApply: false
 
 # E2E Testing (Playwright)
 
-Config: `playwright.config.ts` — base URL `http://localhost:5173`, 30s timeout.
+Config: `config/playwright.config.ts` — base URL `http://localhost:5173`, 30s timeout.
 
 ## Structure
 
@@ -50,7 +50,7 @@ yarn test:e2e:update-font-cache
 yarn test:e2e:update-snapshots   # Docker → Linux *-linux.png (required for CI)
 ```
 
-Snapshots live beside specs in `*-snapshots/` folders. Tolerant diff settings are in `playwright.config.ts`.
+Snapshots live beside specs in `*-snapshots/` folders. Tolerant diff settings are in `config/playwright.config.ts`.
 **Never rely on Darwin `--update-snapshots` to fix CI.** CI enforces this: a commit that changes
 a `*-chromium-darwin.png`/`*-Mobile-Chrome-darwin.png` snapshot without its `*-linux.png`
 sibling fails `scripts/check-visual-baseline-sync.mjs` (runs on both PRs and direct pushes to
@@ -68,7 +68,7 @@ diff on every run (a real, deterministic environment mismatch, not flakiness). V
 
 `yarn test:e2e` on a Mac does not reproduce CI: different OS, different Chromium build (font
 rendering, H.264 support), different `retries`/`workers` (CI-only via `CI=1` in
-`playwright.config.ts`), no resource contention. Before pushing, run the same suite CI runs:
+`config/playwright.config.ts`), no resource contention. Before pushing, run the same suite CI runs:
 
 ```bash
 yarn test:e2e:ci-parity   # scripts/run-e2e-ci-parity.sh — noble container, CI=1, full suite

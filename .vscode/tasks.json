@@ -118,7 +118,7 @@
     {
       "label": "Test: Unit (Current File)",
       "type": "shell",
-      "command": "yarn vitest run ${relativeFile}",
+      "command": "yarn vitest run --config config/vitest.config.ts ${relativeFile}",
       "options": {
         "cwd": "${workspaceFolder}"
       },

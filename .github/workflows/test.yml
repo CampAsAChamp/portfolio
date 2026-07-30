@@ -70,7 +70,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
-          path: test_results/e2e/html-report/
+          path: tests/test_results/e2e/html-report/
           retention-days: 30
 
       - name: Upload E2E screenshots
@@ -78,7 +78,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-screenshots
-          path: test_results/e2e/results/
+          path: tests/test_results/e2e/results/
           retention-days: 30
 
   deploy:

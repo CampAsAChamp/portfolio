@@ -28,7 +28,7 @@ export function AboutMe(): React.ReactElement {
 5. `types/...`
 6. `styles/...css`
 
-Use absolute imports from `src` — configured in `tsconfig.json` and `vite.config.ts`.
+Use absolute imports from `src` — configured in `tsconfig.json` and `config/vite.config.ts`.
 
 ## Formatting
 

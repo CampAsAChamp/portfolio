@@ -110,7 +110,16 @@ async function main() {
   // Run Stylelint with color output
   const stylelintCode = await runWithProgress(
     "yarn",
-    ["stylelint", "src/**/*.css", "tests/**/*.css", "--color"],
+    [
+      "stylelint",
+      "src/**/*.css",
+      "tests/**/*.css",
+      "--config",
+      "config/stylelint.config.cjs",
+      "--ignore-path",
+      "config/stylelintignore",
+      "--color",
+    ],
     "Checking CSS styles...",
   )
 

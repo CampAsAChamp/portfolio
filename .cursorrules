@@ -1,6 +1,0 @@
-# Deprecated — use .cursor/rules/ and AGENTS.md instead.
-#
-# Project rules live in:
-#   AGENTS.md                          — agent quick reference
-#   .cursor/rules/project-overview.mdc — always-on project context
-#   .cursor/rules/*.mdc                — file-specific conventions

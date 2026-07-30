@@ -54,7 +54,7 @@ docker run --rm \
     ${CA_INSTALL_CMD}
     corepack enable
     yarn install --immutable
-    yarn playwright test \
+    yarn playwright test --config config/playwright.config.ts \
       --update-snapshots \
       --project=chromium \
       --project=\"Mobile Chrome\" \

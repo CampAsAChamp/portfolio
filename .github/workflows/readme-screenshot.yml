@@ -9,14 +9,14 @@ on:
       - "src/data/**"
       - "src/assets/**"
       - "!src/assets/website_screenshot.png"
-      - ".readme-screenshot.yml"
+      - "config/readme-screenshot.yml"
   workflow_dispatch:
 
 jobs:
   screenshot:
     uses: CampAsAChamp/readme-screenshot/.github/workflows/capture-and-commit.yml@main
     with:
-      config: .readme-screenshot.yml
+      config: config/readme-screenshot.yml
       commit_message: "docs: update readme screenshot"
       file_pattern: src/assets/website_screenshot.png
     permissions:

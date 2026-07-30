@@ -26,7 +26,7 @@ Production hosting is **Cloudflare Pages** (`portfolio` project). Deploys are CI
 - **Node 22** everywhere (`setup-node` + `.nvmrc`)
 - **Yarn 4**: use `yarn install --immutable` (or `--frozen-lockfile` in release.yml)
 - E2E: `npx playwright install --with-deps` before `yarn test:e2e`
-- E2E failures upload artifacts from `test_results/e2e/`
+- E2E failures upload artifacts from `tests/test_results/e2e/`
 - Playwright config starts dev server at `http://localhost:5173` via `webServer`
 
 ## When modifying workflows
@@ -34,7 +34,7 @@ Production hosting is **Cloudflare Pages** (`portfolio` project). Deploys are CI
 1. Keep the Tests workflow as the single gate — downstream workflows depend on it via `workflow_run`
 2. Do not remove artifact uploads on E2E failure (needed for debugging)
 3. Match Node/Yarn versions with `package.json` engines
-4. Lighthouse runs desktop and mobile CI configs (`.lighthouserc.desktop.ci.json`, `.lighthouserc.mobile.ci.json`)
+4. Lighthouse runs desktop and mobile CI configs (`config/lighthouse/desktop.ci.json`, `config/lighthouse/mobile.ci.json`)
 
 ### Mobile performance gate is 0.78, not 0.85
 

@@ -5,9 +5,9 @@
 # Don't exit on error - we want to show diagnostics even if tests fail
 set +e
 
-# Load environment variables from .env.local if it exists
-if [ -f .env.local ]; then
-  export $(grep -v '^#' .env.local | xargs)
+# Load environment variables from config/.env.local if it exists
+if [ -f config/.env.local ]; then
+  export $(grep -v '^#' config/.env.local | xargs)
 fi
 
 # Provide LHCI_GITHUB_TOKEN so lhci's healthcheck doesn't warn "GitHub token not set"
@@ -43,7 +43,7 @@ kill_stale_preview_server() {
 run_lighthouse_test() {
   local config_type="$1"
   local clear_results="${2:-true}"  # Default to clearing results
-  local config_file=".lighthouserc.${config_type}.json"
+  local config_file="config/lighthouse/${config_type}.json"
 
   echo "======================================"
   if [ "$config_type" = "desktop" ]; then
@@ -65,15 +65,15 @@ run_lighthouse_test() {
   fi
   local exit_code=$?
 
-  # Copy results to test_results directory (regardless of pass/fail)
-  mkdir -p test_results/lighthouse
+  # Copy results to tests/test_results directory (regardless of pass/fail)
+  mkdir -p tests/test_results/lighthouse
 
   # Clear old lighthouse report files only if requested (not between runs in "both" mode)
   if [ "$clear_results" = "true" ]; then
-    rm -f test_results/lighthouse/lhr-*.json test_results/lighthouse/lhr-*.html test_results/lighthouse/flags-*.json 2>/dev/null || true
+    rm -f tests/test_results/lighthouse/lhr-*.json tests/test_results/lighthouse/lhr-*.html tests/test_results/lighthouse/flags-*.json 2>/dev/null || true
   fi
 
-  cp -r .lighthouseci/* test_results/lighthouse/ 2>/dev/null || true
+  cp -r .lighthouseci/* tests/test_results/lighthouse/ 2>/dev/null || true
 
   echo ""
 
@@ -89,8 +89,8 @@ if [ "$MODE" = "both" ]; then
   yarn build
 
   # Clear old results once before running both tests
-  mkdir -p test_results/lighthouse
-  rm -f test_results/lighthouse/lhr-*.json test_results/lighthouse/lhr-*.html test_results/lighthouse/flags-*.json 2>/dev/null || true
+  mkdir -p tests/test_results/lighthouse
+  rm -f tests/test_results/lighthouse/lhr-*.json tests/test_results/lighthouse/lhr-*.html tests/test_results/lighthouse/flags-*.json 2>/dev/null || true
 
   # Run desktop tests (don't clear results - we just did)
   run_lighthouse_test "desktop" "false"

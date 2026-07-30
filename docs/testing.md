@@ -48,12 +48,12 @@ Each command builds the production site first, then runs audits.
 
 **Configuration:**
 
-- [`.lighthouserc.desktop.json`](../.lighthouserc.desktop.json) — desktop preset (no throttling)
-- [`.lighthouserc.mobile.json`](../.lighthouserc.mobile.json) — mobile preset (375×667, 4G throttling, 4× CPU slowdown)
+- [`config/lighthouse/desktop.json`](../config/lighthouse/desktop.json) — desktop preset (no throttling)
+- [`config/lighthouse/mobile.json`](../config/lighthouse/mobile.json) — mobile preset (375×667, 4G throttling, 4× CPU slowdown)
 
-Mobile performance investigation notes (CI gate, TBT/LCP root cause): [`LIGHTHOUSE_MOBILE_PERF.md`](../LIGHTHOUSE_MOBILE_PERF.md).
+Mobile performance investigation notes (CI gate, TBT/LCP root cause): [`docs/lighthouse-mobile-perf.md`](lighthouse-mobile-perf.md).
 
-**GitHub integration:** Lighthouse CI posts status checks and PR comments when a GitHub token is configured. To avoid local token warnings, copy `.env.example` to `.env.local` and add your token.
+**GitHub integration:** Lighthouse CI posts status checks and PR comments when a GitHub token is configured. To avoid local token warnings, copy `config/.env.example` to `config/.env.local` and add your token.
 
 ## Run All Tests
 
@@ -83,4 +83,5 @@ tests/
 │   ├── mobile/     # Mobile browser specs
 │   ├── fixtures/   # Page object models
 │   └── helpers/    # Shared E2E helpers
+└── test_results/   # Generated output (coverage, E2E reports, Lighthouse) — gitignored
 ```

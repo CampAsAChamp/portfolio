@@ -1,6 +1,11 @@
 # Ignore artifacts:
 build
 coverage
+dist
+tests/test_results
+.lighthouseci
+experience-sync/exports
+experience-sync/ui/dist
 
 # Ignore all HTML files:
 **/*.html

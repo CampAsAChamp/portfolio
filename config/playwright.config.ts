@@ -1,13 +1,18 @@
+import path from "path"
+import { fileURLToPath } from "url"
 import { defineConfig, devices } from "@playwright/test"
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const rootDir = path.resolve(__dirname, "..")
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: "./tests/e2e",
+  testDir: path.resolve(rootDir, "./tests/e2e"),
   timeout: 60_000,
   /* Output directory for test artifacts */
-  outputDir: "./test_results/e2e/results",
+  outputDir: path.resolve(rootDir, "./tests/test_results/e2e/results"),
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -17,7 +22,7 @@ export default defineConfig({
   /* Two workers on CI — faster than serial, still conservative on 2-vCPU runners. */
   workers: process.env.CI ? 2 : 4,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [["html", { outputFolder: "test_results/e2e/html-report", open: "never" }]],
+  reporter: [["html", { outputFolder: path.resolve(rootDir, "./tests/test_results/e2e/html-report"), open: "never" }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */

@@ -70,7 +70,7 @@ run_suite_in_container() {
       ${CA_INSTALL_CMD}
       corepack enable
       yarn install --immutable
-      yarn playwright test
+      yarn playwright test --config config/playwright.config.ts
     "
 }
 

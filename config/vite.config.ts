@@ -1,11 +1,16 @@
 import path from "path"
+import { fileURLToPath } from "url"
 import react from "@vitejs/plugin-react"
 import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig, type Plugin } from "vite"
 import viteCompression from "vite-plugin-compression"
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const rootDir = path.resolve(__dirname, "..")
+
 // https://vitejs.dev/config/
 export default defineConfig({
+  envDir: path.join(rootDir, "config"),
   plugins: [
     react(),
     // Gzip compression for production builds
@@ -28,13 +33,13 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
-      components: path.resolve(__dirname, "./src/components"),
-      assets: path.resolve(__dirname, "./src/assets"),
-      data: path.resolve(__dirname, "./src/data"),
-      styles: path.resolve(__dirname, "./src/styles"),
-      hooks: path.resolve(__dirname, "./src/hooks"),
-      utils: path.resolve(__dirname, "./src/utils"),
+      "@": path.resolve(rootDir, "./src"),
+      components: path.resolve(rootDir, "./src/components"),
+      assets: path.resolve(rootDir, "./src/assets"),
+      data: path.resolve(rootDir, "./src/data"),
+      styles: path.resolve(rootDir, "./src/styles"),
+      hooks: path.resolve(rootDir, "./src/hooks"),
+      utils: path.resolve(rootDir, "./src/utils"),
     },
   },
   build: {

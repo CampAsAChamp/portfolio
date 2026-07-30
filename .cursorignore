@@ -7,7 +7,7 @@ dist/
 .yarn/install-state.gz
 
 # Test output (not source)
-test_results/
+tests/test_results/
 coverage/
 
 # Lighthouse reports

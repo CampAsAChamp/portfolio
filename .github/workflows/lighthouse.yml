@@ -50,7 +50,7 @@ jobs:
         with:
           urls: |
             http://localhost:4173
-          configPath: "./.lighthouserc.desktop.ci.json"
+          configPath: "./config/lighthouse/desktop.ci.json"
           uploadArtifacts: true
           temporaryPublicStorage: true
 
@@ -105,7 +105,7 @@ jobs:
         with:
           urls: |
             http://localhost:4173
-          configPath: "./.lighthouserc.mobile.ci.json"
+          configPath: "./config/lighthouse/mobile.ci.json"
           uploadArtifacts: true
           temporaryPublicStorage: true
 

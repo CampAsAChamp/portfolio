@@ -5,6 +5,11 @@
     "source.fixAll.eslint": "explicit"
   },
   "eslint.validate": ["javascript", "javascriptreact"],
+  "eslint.options": {
+    "overrideConfigFile": "./config/eslint.config.js"
+  },
+  "prettier.configPath": "./config/prettier.config.json",
+  "prettier.ignorePath": "./config/prettierignore",
   "editor.tabSize": 2,
   "files.eol": "\n",
   "files.insertFinalNewline": true,
@@ -12,6 +17,7 @@
   "[markdown]": {
     "files.trimTrailingWhitespace": false
   },
+  "vitest.configPath": "./config/vitest.config.ts",
   "vitest.configSearchPatternExclude": "{**/node_modules/**,**/vendor/**,**/.*/**,**/*.d.ts,**/experience-sync/**}",
   "nodejs.defaultRuntimeVersion": "22",
   "debug.onTaskErrors": "ignore"

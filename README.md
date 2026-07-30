@@ -153,6 +153,7 @@ See [`docs/testing.md`](docs/testing.md) for details on unit, E2E, Lighthouse, a
 | VS Code / Cursor       | [docs/vscode.md](docs/vscode.md)                       |
 | Deployment             | [docs/deployment.md](docs/deployment.md)               |
 | Releases               | [docs/releases.md](docs/releases.md)                   |
+| Tooling configs        | [config/README.md](config/README.md)                   |
 | Experience sync        | [experience-sync/README.md](experience-sync/README.md) |
 | Agent / AI conventions | [AGENTS.md](AGENTS.md)                                 |
 
