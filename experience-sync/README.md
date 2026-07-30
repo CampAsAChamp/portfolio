@@ -13,39 +13,28 @@ Edit [`content/experiences.yaml`](content/experiences.yaml) (or use the UI). Do 
 Each accomplishment has:
 
 - `destinations`: which channels get it (`portfolio`, `resume`, `linkedin`)
-- `variants`: separate text per destination (required for each selected destination unless linked to a shared variant)
-- `sharedVariants` (optional): per-destination links to a document-level shared variant id
+- `variants`: text per destination (for destinations using custom wording)
+- `variantSources` (optional): reuse another destination's text on the same bullet (e.g. resume uses linkedin wording)
 
-### Shared variants
+### Reusing text across destinations
 
-Define reusable text once under `sharedVariants` at the top of `experiences.yaml`. Each entry has an `id`, optional `label`, and `variants` for any subset of destinations.
-
-Link an accomplishment destination to shared text with `sharedVariants` on the accomplishment:
+When the same bullet should share wording across Portfolio, Resume, and LinkedIn, define custom text once and alias the others:
 
 ```yaml
-sharedVariants:
-  - id: abr-launch
-    label: ABR launch summary
-    variants:
-      portfolio: "Launched Attribute Based Routing..."
-      resume: "Launched ABR..."
-
-companies:
-  - roles:
-      - accomplishments:
-          - id: intuit-abr-launch
-            destinations: [portfolio, resume]
-            sharedVariants:
-              portfolio: abr-launch
-              resume: abr-launch
-            variants: {}
+- id: intuit-sse-vep
+  destinations: [portfolio, resume, linkedin]
+  variantSources:
+    resume: linkedin
+  variants:
+    portfolio: "Currently working as a full stack..."
+    linkedin: "Full stack engineer on the appointments team..."
 ```
 
-Pick and choose per destination: link some channels to shared text and keep custom inline text for others. Editing a shared variant updates every accomplishment that references it.
+Pick and choose per destination: alias some channels and keep custom text for others. Switch back to custom text in the editor to edit independently (copies the resolved text).
 
-In the editor UI, use **Shared variants** in the sidebar to manage the library. On each accomplishment, use the **Source** dropdown to link or unlink. **Unlink** copies the current shared text into custom text so you can edit without affecting other accomplishments.
+In the editor UI, each accomplishment card has destination checkboxes and a **Wording** row (when multiple destinations are selected) to pick Custom or Same as another channel. Only custom destinations show an editable text field.
 
-Portfolio variants may use markdown links: `[label](https://example.com)`.
+Portfolio and LinkedIn variants may use markdown links: `[label](https://example.com)`.
 
 ## Commands
 
@@ -65,12 +54,11 @@ yarn test            # includes unit tests in tests/unit/experience-sync/
 `yarn exp:ui` starts a Vite app with an embedded localhost-only API under `/api/*`.
 
 - Edit companies → roles → accomplishments
-- Toggle destinations and edit per-channel variants (custom or linked to shared variants)
-- **Shared variants** sidebar section — reusable text library with per-destination pickers
+- Toggle destinations and edit per-channel variants (custom or aliased to another destination via **Text source**)
 - **Save YAML** writes the editor to `content/experiences.yaml` (hover for details). Does not update the live site by itself.
 - **Discard** (undo icon) reloads YAML from disk and throws away unsaved edits — use after external file changes or to undo.
 - **Generate portfolio** / **Copy LinkedIn** / **Copy resume** for downstream outputs
-- Right pane shows LinkedIn / resume previews from the saved file
+- Right pane shows live LinkedIn / resume previews from the current editor state
 
 This UI is **not** part of the Cloudflare Pages deploy.
 

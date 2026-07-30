@@ -1,3 +1,4 @@
+;
 /**
  * Parse a portfolio variant string with optional markdown links into
  * code-generation fragments for experiences.ts.
@@ -5,7 +6,11 @@
  * Supports `[label](https://url)` → createExternalLink("label", "url").
  */
 
-import { arr, call, lit, type TsExpr } from "experience-sync/lib/tsExpr"
+import { arr, call, lit, type TsExpr } from "experience-sync/lib/tsExpr";
+
+
+
+
 
 /** Plain text run between markdown links. */
 export interface PlainTextSegment {
@@ -84,7 +89,7 @@ export function parseMarkdownSegments(input: string): MarkdownSegment[] {
   return segments
 }
 
-/** Strip markdown links to plain text (for LinkedIn/resume fallbacks). */
+/** Strip markdown links to plain text (for resume export). */
 export function stripMarkdownLinks(input: string): string {
   return input.replace(LINK_RE, "$<label>")
 }

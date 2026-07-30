@@ -1,6 +1,9 @@
-import { stripMarkdownLinks } from "experience-sync/lib/markdown"
-import { resolveDocument, type ResolvedExperienceRole } from "experience-sync/lib/resolve"
-import type { ExperiencesDocument } from "experience-sync/lib/schema"
+import { resolveDocument, type ResolvedExperienceRole } from "experience-sync/lib/resolve";
+import type { ExperiencesDocument } from "experience-sync/lib/schema";
+
+
+
+
 
 /** Format a role's date range for LinkedIn (e.g. `Jan 2020 - Present`). */
 function formatRoleDates(role: ResolvedExperienceRole): string {
@@ -13,7 +16,7 @@ function formatRoleDates(role: ResolvedExperienceRole): string {
 
 /**
  * Build LinkedIn-ready plain text for experience sections.
- * Includes only accomplishments tagged `linkedin`; strips markdown links.
+ * Includes only accomplishments tagged `linkedin`; preserves markdown links.
  */
 export function formatLinkedInExport(doc: ExperiencesDocument): string {
   const resolved = resolveDocument(doc)
@@ -23,7 +26,7 @@ export function formatLinkedInExport(doc: ExperiencesDocument): string {
     for (const role of company.roles) {
       const bullets = role.accomplishments
         .filter((a) => a.destinations.includes("linkedin") && a.variants.linkedin?.trim())
-        .map((a) => `• ${stripMarkdownLinks(a.variants.linkedin!.trim())}`)
+        .map((a) => `• ${a.variants.linkedin!.trim()}`)
 
       if (bullets.length === 0) {
         continue

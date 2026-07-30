@@ -1,4 +1,9 @@
-import { z } from "zod"
+import { resolveAccomplishment } from "experience-sync/lib/resolve";
+import { z } from "zod";
+
+
+
+
 
 export const DESTINATIONS = ["portfolio", "resume", "linkedin"] as const
 export type Destination = (typeof DESTINATIONS)[number]
@@ -20,25 +25,19 @@ export const variantsSchema = z
   })
   .strict()
 
-export const sharedVariantSchema = z.object({
-  id: z.string().min(1),
-  label: z.string().optional(),
-  variants: variantsSchema,
-})
-
-export const accomplishmentSharedVariantRefsSchema = z
+export const variantSourcesSchema = z
   .object({
-    portfolio: z.string().min(1).optional(),
-    resume: z.string().min(1).optional(),
-    linkedin: z.string().min(1).optional(),
+    portfolio: destinationSchema.optional(),
+    resume: destinationSchema.optional(),
+    linkedin: destinationSchema.optional(),
   })
   .strict()
 
 export const accomplishmentSchema = z.object({
   id: z.string().min(1),
   destinations: z.array(destinationSchema).min(1),
-  /** Per-destination links to a document-level shared variant id. */
-  sharedVariants: accomplishmentSharedVariantRefsSchema.optional(),
+  /** Per-destination alias to another destination's variant text on this accomplishment. */
+  variantSources: variantSourcesSchema.optional(),
   variants: variantsSchema,
 })
 
@@ -64,14 +63,12 @@ export const companySchema = z.object({
 })
 
 export const experiencesDocumentSchema = z.object({
-  sharedVariants: z.array(sharedVariantSchema).optional().default([]),
   companies: z.array(companySchema).min(1),
 })
 
 export type RoleDate = z.infer<typeof roleDateSchema>
 export type Variants = z.infer<typeof variantsSchema>
-export type SharedVariant = z.infer<typeof sharedVariantSchema>
-export type AccomplishmentSharedVariantRefs = z.infer<typeof accomplishmentSharedVariantRefsSchema>
+export type VariantSources = z.infer<typeof variantSourcesSchema>
 export type Accomplishment = z.infer<typeof accomplishmentSchema>
 export type ExperienceRole = z.infer<typeof roleSchema>
 export type Company = z.infer<typeof companySchema>
@@ -108,7 +105,7 @@ function collectDuplicateIdIssue(
   id: string,
   seen: Set<string>,
   path: string,
-  kind: "company" | "role" | "accomplishment" | "shared variant",
+  kind: "company" | "role" | "accomplishment",
 ): ValidationIssue | null {
   if (seen.has(id)) {
     return {
@@ -125,26 +122,15 @@ function hasNonEmptyVariantText(value: string | undefined): boolean {
   return typeof value === "string" && value.trim().length > 0
 }
 
-function collectSharedVariantLibraryIssues(doc: ExperiencesDocument): ValidationIssue[] {
-  const issues: ValidationIssue[] = []
-  const seenSharedIds = new Set<string>()
-
-  for (const [si, shared] of (doc.sharedVariants ?? []).entries()) {
-    const basePath = `sharedVariants.${si}`
-    const dup = collectDuplicateIdIssue(shared.id, seenSharedIds, `${basePath}.id`, "shared variant")
-    if (dup) issues.push(dup)
-
-    const hasAnyText = DESTINATIONS.some((dest) => hasNonEmptyVariantText(shared.variants[dest]))
-    if (!hasAnyText) {
-      issues.push({
-        path: `${basePath}.variants`,
-        message: `Shared variant "${shared.id}" has no destination text defined`,
-        severity: "warning",
-      })
-    }
+function hasVariantSourceCycle(sources: VariantSources, start: Destination): boolean {
+  const visited = new Set<Destination>()
+  let current: Destination | undefined = start
+  while (current) {
+    if (visited.has(current)) return true
+    visited.add(current)
+    current = sources[current]
   }
-
-  return issues
+  return false
 }
 
 function collectRoleDateIssues(role: ExperienceRole, rolePath: string): ValidationIssue[] {
@@ -160,61 +146,47 @@ function collectRoleDateIssues(role: ExperienceRole, rolePath: string): Validati
   ]
 }
 
-function collectVariantDestinationIssues(
-  accomplishment: Accomplishment,
-  basePath: string,
-  sharedVariantsById: Map<string, SharedVariant>,
-): ValidationIssue[] {
+function collectVariantDestinationIssues(accomplishment: Accomplishment, basePath: string): ValidationIssue[] {
   const issues: ValidationIssue[] = []
   const destSet = new Set(accomplishment.destinations)
-  const sharedRefs = accomplishment.sharedVariants ?? {}
+  const sources = accomplishment.variantSources ?? {}
 
   for (const dest of DESTINATIONS) {
     const inlineVariant = accomplishment.variants[dest]
     const hasInline = hasNonEmptyVariantText(inlineVariant)
     const selected = destSet.has(dest)
-    const refId = sharedRefs[dest]
+    const sourceDest = sources[dest]
     const inlinePath = `${basePath}.variants.${dest}`
-    const sharedRefPath = `${basePath}.sharedVariants.${dest}`
+    const sourcePath = `${basePath}.variantSources.${dest}`
 
-    let hasResolvedText = false
-
-    if (refId) {
-      const shared = sharedVariantsById.get(refId)
-      if (!shared) {
+    if (sourceDest) {
+      if (sourceDest === dest) {
         issues.push({
-          path: sharedRefPath,
-          message: `Shared variant "${refId}" not found`,
+          path: sourcePath,
+          message: `Destination "${dest}" cannot alias itself`,
           severity: "error",
         })
-      } else {
-        hasResolvedText = hasNonEmptyVariantText(shared.variants[dest])
-        if (!hasResolvedText) {
-          issues.push({
-            path: sharedRefPath,
-            message: `Shared variant "${refId}" has no text for destination "${dest}"`,
-            severity: "error",
-          })
-        }
+      } else if (!destSet.has(sourceDest)) {
+        issues.push({
+          path: sourcePath,
+          message: `Variant source "${sourceDest}" is not a selected destination`,
+          severity: "error",
+        })
+      } else if (hasVariantSourceCycle(sources, dest)) {
+        issues.push({
+          path: sourcePath,
+          message: `Variant source for "${dest}" creates a cycle`,
+          severity: "error",
+        })
       }
 
       if (hasInline) {
         issues.push({
           path: inlinePath,
-          message: `Inline variant ignored because destination "${dest}" is linked to shared variant "${refId}"`,
+          message: `Inline variant ignored because destination "${dest}" uses text from "${sourceDest}"`,
           severity: "warning",
         })
       }
-    } else {
-      hasResolvedText = hasInline
-    }
-
-    if (selected && !hasResolvedText) {
-      issues.push({
-        path: refId ? sharedRefPath : inlinePath,
-        message: `Destination "${dest}" is selected but has no variant text`,
-        severity: "error",
-      })
     }
 
     if (!selected && hasInline) {
@@ -222,6 +194,28 @@ function collectVariantDestinationIssues(
         path: inlinePath,
         message: `Variant "${dest}" is set but destination is not selected`,
         severity: "warning",
+      })
+    }
+
+    if (!selected && sourceDest) {
+      issues.push({
+        path: sourcePath,
+        message: `Variant source "${dest}" is set but destination is not selected`,
+        severity: "warning",
+      })
+    }
+  }
+
+  const resolved = resolveAccomplishment(accomplishment)
+
+  for (const dest of accomplishment.destinations) {
+    const sourceDest = sources[dest]
+    const hasResolvedText = hasNonEmptyVariantText(resolved.variants[dest])
+    if (!hasResolvedText) {
+      issues.push({
+        path: sourceDest ? `${basePath}.variantSources.${dest}` : `${basePath}.variants.${dest}`,
+        message: `Destination "${dest}" is selected but has no variant text`,
+        severity: "error",
       })
     }
   }
@@ -234,13 +228,6 @@ function collectSemanticIssues(doc: ExperiencesDocument): ValidationIssue[] {
   const seenCompanyIds = new Set<string>()
   const seenRoleIds = new Set<string>()
   const seenAccomplishmentIds = new Set<string>()
-  const sharedVariantsById = new Map<string, SharedVariant>()
-
-  issues.push(...collectSharedVariantLibraryIssues(doc))
-
-  for (const shared of doc.sharedVariants ?? []) {
-    sharedVariantsById.set(shared.id, shared)
-  }
 
   for (const [ci, company] of doc.companies.entries()) {
     const companyDup = collectDuplicateIdIssue(company.id, seenCompanyIds, `companies.${ci}.id`, "company")
@@ -258,7 +245,7 @@ function collectSemanticIssues(doc: ExperiencesDocument): ValidationIssue[] {
         const accomplishmentDup = collectDuplicateIdIssue(accomplishment.id, seenAccomplishmentIds, `${base}.id`, "accomplishment")
         if (accomplishmentDup) issues.push(accomplishmentDup)
 
-        issues.push(...collectVariantDestinationIssues(accomplishment, base, sharedVariantsById))
+        issues.push(...collectVariantDestinationIssues(accomplishment, base))
       }
     }
   }

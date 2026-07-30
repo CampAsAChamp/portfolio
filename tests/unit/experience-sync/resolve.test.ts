@@ -1,80 +1,99 @@
-import { buildSharedVariantIndex, listSharedVariantReferences, resolveAccomplishment, resolveDocument } from "experience-sync/lib/resolve"
+import { resolveAccomplishment, resolveDestinationText, resolveDocument } from "experience-sync/lib/resolve"
 import { describe, expect, it } from "vitest"
 
-import { makeAccomplishment, makeCompany, makeDocument, makeRole, makeSharedVariant } from "./helpers"
+import { makeAccomplishment, makeCompany, makeDocument, makeRole } from "./helpers"
 
-describe("resolveAccomplishment", () => {
-  it("uses inline variants when no shared refs are set", () => {
+describe("resolveDestinationText", () => {
+  it("returns inline text when no alias is set", () => {
     const accomplishment = makeAccomplishment({
       id: "a1",
       destinations: ["portfolio"],
       variants: { portfolio: "Inline text" },
     })
 
-    const resolved = resolveAccomplishment(accomplishment, buildSharedVariantIndex(makeDocument()))
-    expect(resolved.variants.portfolio).toBe("Inline text")
+    expect(resolveDestinationText(accomplishment, "portfolio")).toBe("Inline text")
   })
 
-  it("resolves linked destinations from shared variants", () => {
-    const doc = makeDocument({
-      sharedVariants: [
-        makeSharedVariant({
-          id: "shared-1",
-          variants: {
-            portfolio: "Shared portfolio",
-            resume: "Shared resume",
-          },
-        }),
-      ],
+  it("follows a single alias", () => {
+    const accomplishment = makeAccomplishment({
+      id: "a1",
+      destinations: ["resume", "linkedin"],
+      variantSources: { resume: "linkedin" },
+      variants: { linkedin: "LinkedIn text" },
     })
-    const index = buildSharedVariantIndex(doc)
+
+    expect(resolveDestinationText(accomplishment, "resume")).toBe("LinkedIn text")
+  })
+
+  it("follows alias chains", () => {
+    const accomplishment = makeAccomplishment({
+      id: "a1",
+      destinations: ["portfolio", "resume", "linkedin"],
+      variantSources: { portfolio: "resume", resume: "linkedin" },
+      variants: { linkedin: "Source text" },
+    })
+
+    expect(resolveDestinationText(accomplishment, "portfolio")).toBe("Source text")
+  })
+
+  it("returns empty string on alias cycles", () => {
     const accomplishment = makeAccomplishment({
       id: "a1",
       destinations: ["portfolio", "resume"],
-      sharedVariants: {
-        portfolio: "shared-1",
-        resume: "shared-1",
-      },
-      variants: {},
+      variantSources: { portfolio: "resume", resume: "portfolio" },
+      variants: { portfolio: "A", resume: "B" },
     })
 
-    const resolved = resolveAccomplishment(accomplishment, index)
-    expect(resolved.variants.portfolio).toBe("Shared portfolio")
-    expect(resolved.variants.resume).toBe("Shared resume")
+    expect(resolveDestinationText(accomplishment, "portfolio")).toBe("")
+  })
+})
+
+describe("resolveAccomplishment", () => {
+  it("uses inline variants when no aliases are set", () => {
+    const accomplishment = makeAccomplishment({
+      id: "a1",
+      destinations: ["portfolio"],
+      variants: { portfolio: "Inline text" },
+    })
+
+    const resolved = resolveAccomplishment(accomplishment)
+    expect(resolved.variants.portfolio).toBe("Inline text")
   })
 
-  it("mixes shared and custom destinations on one accomplishment", () => {
-    const doc = makeDocument({
-      sharedVariants: [
-        makeSharedVariant({
-          id: "shared-1",
-          variants: { portfolio: "Shared portfolio" },
-        }),
-      ],
+  it("resolves aliased destinations from another destination on the same accomplishment", () => {
+    const accomplishment = makeAccomplishment({
+      id: "a1",
+      destinations: ["portfolio", "resume", "linkedin"],
+      variantSources: { resume: "linkedin" },
+      variants: {
+        portfolio: "Portfolio text",
+        linkedin: "LinkedIn text",
+      },
     })
-    const index = buildSharedVariantIndex(doc)
+
+    const resolved = resolveAccomplishment(accomplishment)
+    expect(resolved.variants.portfolio).toBe("Portfolio text")
+    expect(resolved.variants.linkedin).toBe("LinkedIn text")
+    expect(resolved.variants.resume).toBe("LinkedIn text")
+  })
+
+  it("mixes aliased and custom destinations on one accomplishment", () => {
     const accomplishment = makeAccomplishment({
       id: "a1",
       destinations: ["portfolio", "linkedin"],
-      sharedVariants: { portfolio: "shared-1" },
+      variantSources: { portfolio: "linkedin" },
       variants: { linkedin: "Custom LinkedIn" },
     })
 
-    const resolved = resolveAccomplishment(accomplishment, index)
-    expect(resolved.variants.portfolio).toBe("Shared portfolio")
+    const resolved = resolveAccomplishment(accomplishment)
+    expect(resolved.variants.portfolio).toBe("Custom LinkedIn")
     expect(resolved.variants.linkedin).toBe("Custom LinkedIn")
   })
 })
 
 describe("resolveDocument", () => {
-  it("resolves shared text for multiple accomplishments referencing the same variant", () => {
+  it("resolves variantSources for all accomplishments", () => {
     const doc = makeDocument({
-      sharedVariants: [
-        makeSharedVariant({
-          id: "shared-1",
-          variants: { portfolio: "Shared bullet" },
-        }),
-      ],
       companies: [
         makeCompany({
           id: "acme",
@@ -84,15 +103,14 @@ describe("resolveDocument", () => {
               accomplishments: [
                 makeAccomplishment({
                   id: "a1",
-                  destinations: ["portfolio"],
-                  sharedVariants: { portfolio: "shared-1" },
-                  variants: {},
+                  destinations: ["portfolio", "resume"],
+                  variantSources: { resume: "portfolio" },
+                  variants: { portfolio: "Shared bullet" },
                 }),
                 makeAccomplishment({
                   id: "a2",
-                  destinations: ["portfolio"],
-                  sharedVariants: { portfolio: "shared-1" },
-                  variants: {},
+                  destinations: ["linkedin"],
+                  variants: { linkedin: "LinkedIn only" },
                 }),
               ],
             }),
@@ -102,36 +120,8 @@ describe("resolveDocument", () => {
     })
 
     const resolved = resolveDocument(doc)
-    const bullets = resolved.companies[0]!.roles[0]!.accomplishments.map((a) => a.variants.portfolio)
-    expect(bullets).toEqual(["Shared bullet", "Shared bullet"])
-  })
-})
-
-describe("listSharedVariantReferences", () => {
-  it("maps shared variant ids to accomplishment paths", () => {
-    const doc = makeDocument({
-      sharedVariants: [makeSharedVariant({ id: "shared-1" })],
-      companies: [
-        makeCompany({
-          id: "acme",
-          roles: [
-            makeRole({
-              id: "r1",
-              accomplishments: [
-                makeAccomplishment({
-                  id: "a1",
-                  destinations: ["portfolio"],
-                  sharedVariants: { portfolio: "shared-1" },
-                  variants: {},
-                }),
-              ],
-            }),
-          ],
-        }),
-      ],
-    })
-
-    const refs = listSharedVariantReferences(doc)
-    expect(refs.get("shared-1")).toEqual(["companies.0.roles.0.accomplishments.0"])
+    const accomplishments = resolved.companies[0]!.roles[0]!.accomplishments
+    expect(accomplishments[0]!.variants.resume).toBe("Shared bullet")
+    expect(accomplishments[1]!.variants.linkedin).toBe("LinkedIn only")
   })
 })

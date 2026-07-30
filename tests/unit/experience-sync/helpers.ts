@@ -5,7 +5,6 @@ import type {
   ExperienceRole,
   ExperiencesDocument,
   RoleDate,
-  SharedVariant,
   Variants,
 } from "experience-sync/lib/schema"
 
@@ -58,20 +57,8 @@ export function makeCompany(overrides: Partial<Company> & Pick<Company, "id">): 
   }
 }
 
-export function makeSharedVariant(overrides: Partial<SharedVariant> & Pick<SharedVariant, "id">): SharedVariant {
-  return {
-    label: overrides.label,
-    variants: {
-      portfolio: "Shared portfolio text",
-      ...overrides.variants,
-    },
-    ...overrides,
-  }
-}
-
 export function makeDocument(overrides?: Partial<ExperiencesDocument>): ExperiencesDocument {
   return {
-    sharedVariants: [],
     companies: [makeCompany({ id: "acme" })],
     ...overrides,
   }

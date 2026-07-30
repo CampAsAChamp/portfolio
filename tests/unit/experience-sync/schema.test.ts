@@ -1,7 +1,7 @@
 import { getRoleEndBeforeStartMessage, validateExperiencesDocument } from "experience-sync/lib/schema"
 import { describe, expect, it } from "vitest"
 
-import { makeAccomplishment, makeCompany, makeDocument, makeRole, makeRoleDate, makeSharedVariant } from "./helpers"
+import { makeAccomplishment, makeCompany, makeDocument, makeRole, makeRoleDate } from "./helpers"
 
 describe("getRoleEndBeforeStartMessage", () => {
   it("allows the same month", () => {
@@ -180,20 +180,8 @@ describe("validateExperiencesDocument", () => {
     expect(result.issues.some((i) => i.severity === "error")).toBe(true)
   })
 
-  it("accepts a document without sharedVariants (backward compatible)", () => {
-    const result = validateExperiencesDocument({ companies: [makeCompany({ id: "acme" })] })
-    expect(result.success).toBe(true)
-    expect(result.data?.sharedVariants).toEqual([])
-  })
-
-  it("accepts linked destinations when shared variant has text", () => {
+  it("accepts variantSources when source destination has text", () => {
     const doc = makeDocument({
-      sharedVariants: [
-        makeSharedVariant({
-          id: "shared-1",
-          variants: { portfolio: "Shared text", resume: "Shared resume" },
-        }),
-      ],
       companies: [
         makeCompany({
           id: "acme",
@@ -204,8 +192,8 @@ describe("validateExperiencesDocument", () => {
                 makeAccomplishment({
                   id: "a1",
                   destinations: ["portfolio", "resume"],
-                  sharedVariants: { portfolio: "shared-1", resume: "shared-1" },
-                  variants: {},
+                  variantSources: { resume: "portfolio" },
+                  variants: { portfolio: "Portfolio text" },
                 }),
               ],
             }),
@@ -219,36 +207,8 @@ describe("validateExperiencesDocument", () => {
     expect(result.issues).toEqual([])
   })
 
-  it("errors when a shared variant ref is missing", () => {
+  it("errors when variant source destination is not selected", () => {
     const doc = makeDocument({
-      companies: [
-        makeCompany({
-          id: "acme",
-          roles: [
-            makeRole({
-              id: "r1",
-              accomplishments: [
-                makeAccomplishment({
-                  id: "a1",
-                  destinations: ["portfolio"],
-                  sharedVariants: { portfolio: "missing-id" },
-                  variants: {},
-                }),
-              ],
-            }),
-          ],
-        }),
-      ],
-    })
-
-    const result = validateExperiencesDocument(doc)
-    expect(result.success).toBe(false)
-    expect(result.issues.some((i) => i.message.includes('Shared variant "missing-id" not found'))).toBe(true)
-  })
-
-  it("errors when shared variant lacks text for linked destination", () => {
-    const doc = makeDocument({
-      sharedVariants: [makeSharedVariant({ id: "shared-1", variants: { portfolio: "Only portfolio" } })],
       companies: [
         makeCompany({
           id: "acme",
@@ -259,7 +219,7 @@ describe("validateExperiencesDocument", () => {
                 makeAccomplishment({
                   id: "a1",
                   destinations: ["resume"],
-                  sharedVariants: { resume: "shared-1" },
+                  variantSources: { resume: "linkedin" },
                   variants: {},
                 }),
               ],
@@ -271,12 +231,11 @@ describe("validateExperiencesDocument", () => {
 
     const result = validateExperiencesDocument(doc)
     expect(result.success).toBe(false)
-    expect(result.issues.some((i) => i.message.includes('has no text for destination "resume"'))).toBe(true)
+    expect(result.issues.some((i) => i.message.includes('Variant source "linkedin" is not a selected destination'))).toBe(true)
   })
 
-  it("warns when inline variant exists on a linked destination", () => {
+  it("errors when a destination aliases itself", () => {
     const doc = makeDocument({
-      sharedVariants: [makeSharedVariant({ id: "shared-1", variants: { portfolio: "Shared text" } })],
       companies: [
         makeCompany({
           id: "acme",
@@ -286,9 +245,63 @@ describe("validateExperiencesDocument", () => {
               accomplishments: [
                 makeAccomplishment({
                   id: "a1",
-                  destinations: ["portfolio"],
-                  sharedVariants: { portfolio: "shared-1" },
-                  variants: { portfolio: "Ignored inline" },
+                  destinations: ["resume"],
+                  variantSources: { resume: "resume" },
+                  variants: { resume: "Text" },
+                }),
+              ],
+            }),
+          ],
+        }),
+      ],
+    })
+
+    const result = validateExperiencesDocument(doc)
+    expect(result.success).toBe(false)
+    expect(result.issues.some((i) => i.message.includes("cannot alias itself"))).toBe(true)
+  })
+
+  it("errors when variantSources create a cycle", () => {
+    const doc = makeDocument({
+      companies: [
+        makeCompany({
+          id: "acme",
+          roles: [
+            makeRole({
+              id: "r1",
+              accomplishments: [
+                makeAccomplishment({
+                  id: "a1",
+                  destinations: ["portfolio", "resume"],
+                  variantSources: { portfolio: "resume", resume: "portfolio" },
+                  variants: { portfolio: "A", resume: "B" },
+                }),
+              ],
+            }),
+          ],
+        }),
+      ],
+    })
+
+    const result = validateExperiencesDocument(doc)
+    expect(result.success).toBe(false)
+    expect(result.issues.some((i) => i.message.includes("creates a cycle"))).toBe(true)
+  })
+
+  it("warns when inline variant exists on an aliased destination", () => {
+    const doc = makeDocument({
+      companies: [
+        makeCompany({
+          id: "acme",
+          roles: [
+            makeRole({
+              id: "r1",
+              accomplishments: [
+                makeAccomplishment({
+                  id: "a1",
+                  destinations: ["portfolio", "resume"],
+                  variantSources: { resume: "portfolio" },
+                  variants: { portfolio: "Portfolio text", resume: "Ignored inline" },
                 }),
               ],
             }),
@@ -302,26 +315,30 @@ describe("validateExperiencesDocument", () => {
     expect(result.issues.some((i) => i.severity === "warning" && i.message.includes("Inline variant ignored"))).toBe(true)
   })
 
-  it("errors on duplicate shared variant ids", () => {
+  it("errors when aliased destination resolves to empty text", () => {
     const doc = makeDocument({
-      sharedVariants: [
-        makeSharedVariant({ id: "dup", variants: { portfolio: "One" } }),
-        makeSharedVariant({ id: "dup", variants: { portfolio: "Two" } }),
+      companies: [
+        makeCompany({
+          id: "acme",
+          roles: [
+            makeRole({
+              id: "r1",
+              accomplishments: [
+                makeAccomplishment({
+                  id: "a1",
+                  destinations: ["portfolio", "resume"],
+                  variantSources: { resume: "portfolio" },
+                  variants: { portfolio: "" },
+                }),
+              ],
+            }),
+          ],
+        }),
       ],
     })
 
     const result = validateExperiencesDocument(doc)
     expect(result.success).toBe(false)
-    expect(result.issues.some((i) => i.message.includes("Duplicate shared variant id"))).toBe(true)
-  })
-
-  it("warns when a shared variant has no destination text", () => {
-    const doc = makeDocument({
-      sharedVariants: [makeSharedVariant({ id: "empty", variants: {} })],
-    })
-
-    const result = validateExperiencesDocument(doc)
-    expect(result.success).toBe(true)
-    expect(result.issues.some((i) => i.path === "sharedVariants.0.variants" && i.severity === "warning")).toBe(true)
+    expect(result.issues.some((i) => i.message.includes('Destination "resume" is selected but has no variant text'))).toBe(true)
   })
 })

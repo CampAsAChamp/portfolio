@@ -31,6 +31,15 @@ describe("parseMarkdownSegments", () => {
     ]
     expect(parseMarkdownSegments("[A](https://a.example) and [B](http://b.example)")).toEqual(expected)
   })
+
+  it("parses markdown links when the label spans a newline", () => {
+    const expected: MarkdownSegment[] = [
+      { type: "text", value: "See " },
+      { type: "link", text: "Virtual Expert\nPlatform", href: "https://example.com" },
+      { type: "text", value: " now" },
+    ]
+    expect(parseMarkdownSegments("See [Virtual Expert\nPlatform](https://example.com) now")).toEqual(expected)
+  })
 })
 
 describe("stripMarkdownLinks", () => {

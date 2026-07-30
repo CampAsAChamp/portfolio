@@ -1,7 +1,7 @@
 import { generateExperiencesTs } from "experience-sync/lib/generate"
 import { describe, expect, it } from "vitest"
 
-import { makeAccomplishment, makeCompany, makeDocument, makeRole, makeSharedVariant } from "./helpers"
+import { makeAccomplishment, makeCompany, makeDocument, makeRole } from "./helpers"
 
 describe("generateExperiencesTs", () => {
   it("includes a logo import derived from the logo filename", () => {
@@ -101,9 +101,8 @@ describe("generateExperiencesTs", () => {
     expect(source).toContain("bulletPoints: [],")
   })
 
-  it("resolves shared variant text for multiple accomplishments", () => {
+  it("resolves variantSources aliases in generated output", () => {
     const doc = makeDocument({
-      sharedVariants: [makeSharedVariant({ id: "shared-1", variants: { portfolio: "Shared portfolio bullet" } })],
       companies: [
         makeCompany({
           id: "acme",
@@ -113,15 +112,9 @@ describe("generateExperiencesTs", () => {
               accomplishments: [
                 makeAccomplishment({
                   id: "a1",
-                  destinations: ["portfolio"],
-                  sharedVariants: { portfolio: "shared-1" },
-                  variants: {},
-                }),
-                makeAccomplishment({
-                  id: "a2",
-                  destinations: ["portfolio"],
-                  sharedVariants: { portfolio: "shared-1" },
-                  variants: {},
+                  destinations: ["portfolio", "resume"],
+                  variantSources: { resume: "portfolio" },
+                  variants: { portfolio: "Shared portfolio bullet" },
                 }),
               ],
             }),
@@ -131,6 +124,6 @@ describe("generateExperiencesTs", () => {
     })
 
     const source = generateExperiencesTs(doc)
-    expect(source.match(/Shared portfolio bullet/g)?.length).toBe(2)
+    expect(source).toContain("Shared portfolio bullet")
   })
 })

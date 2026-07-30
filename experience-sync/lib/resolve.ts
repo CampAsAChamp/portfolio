@@ -1,14 +1,10 @@
-import type {
-  Accomplishment,
-  Company,
-  Destination,
-  ExperienceRole,
-  ExperiencesDocument,
-  SharedVariant,
-  Variants,
-} from "experience-sync/lib/schema"
+import type { Accomplishment, Company, Destination, ExperienceRole, ExperiencesDocument, Variants } from "experience-sync/lib/schema";
 
-/** Accomplishment with all shared-variant refs resolved to inline text. */
+
+
+
+
+/** Accomplishment with all variant-source aliases resolved to inline text. */
 export interface ResolvedAccomplishment {
   id: string
   destinations: Destination[]
@@ -28,31 +24,25 @@ export interface ResolvedExperiencesDocument {
   companies: ResolvedCompany[]
 }
 
-/** Index shared variants by id for O(1) lookup during resolution and validation. */
-export function buildSharedVariantIndex(doc: ExperiencesDocument): Map<string, SharedVariant> {
-  const index = new Map<string, SharedVariant>()
-  for (const shared of doc.sharedVariants ?? []) {
-    index.set(shared.id, shared)
+/** Resolve one destination's text, following variantSources aliases (cycle-safe). */
+export function resolveDestinationText(accomplishment: Accomplishment, dest: Destination, visited = new Set<Destination>()): string {
+  if (visited.has(dest)) return ""
+  visited.add(dest)
+
+  const sourceDest = accomplishment.variantSources?.[dest]
+  if (sourceDest) {
+    return resolveDestinationText(accomplishment, sourceDest, visited)
   }
-  return index
+
+  return accomplishment.variants[dest] ?? ""
 }
 
-/** Resolve one accomplishment's per-destination text from shared refs or inline variants. */
-export function resolveAccomplishment(
-  accomplishment: Accomplishment,
-  sharedVariantsById: Map<string, SharedVariant>,
-): ResolvedAccomplishment {
+/** Resolve one accomplishment's per-destination text from custom variants or aliases. */
+export function resolveAccomplishment(accomplishment: Accomplishment): ResolvedAccomplishment {
   const resolvedVariants: Variants = {}
-  const sharedRefs = accomplishment.sharedVariants ?? {}
 
   for (const dest of accomplishment.destinations) {
-    const refId = sharedRefs[dest]
-    if (refId) {
-      const shared = sharedVariantsById.get(refId)
-      resolvedVariants[dest] = shared?.variants[dest] ?? ""
-    } else {
-      resolvedVariants[dest] = accomplishment.variants[dest] ?? ""
-    }
+    resolvedVariants[dest] = resolveDestinationText(accomplishment, dest)
   }
 
   return {
@@ -62,48 +52,23 @@ export function resolveAccomplishment(
   }
 }
 
-export function resolveRole(role: ExperienceRole, sharedVariantsById: Map<string, SharedVariant>): ResolvedExperienceRole {
+export function resolveRole(role: ExperienceRole): ResolvedExperienceRole {
   return {
     ...role,
-    accomplishments: role.accomplishments.map((a) => resolveAccomplishment(a, sharedVariantsById)),
+    accomplishments: role.accomplishments.map((a) => resolveAccomplishment(a)),
   }
 }
 
-export function resolveCompany(company: Company, sharedVariantsById: Map<string, SharedVariant>): ResolvedCompany {
+export function resolveCompany(company: Company): ResolvedCompany {
   return {
     ...company,
-    roles: company.roles.map((r) => resolveRole(r, sharedVariantsById)),
+    roles: company.roles.map((r) => resolveRole(r)),
   }
 }
 
 /** Resolve the full document for portfolio, LinkedIn, and resume exporters. */
 export function resolveDocument(doc: ExperiencesDocument): ResolvedExperiencesDocument {
-  const index = buildSharedVariantIndex(doc)
   return {
-    companies: doc.companies.map((c) => resolveCompany(c, index)),
+    companies: doc.companies.map((c) => resolveCompany(c)),
   }
-}
-
-/**
- * Map each shared variant id to accomplishment paths that reference it.
- * Paths use dot notation, e.g. `companies.0.roles.1.accomplishments.2`.
- */
-export function listSharedVariantReferences(doc: ExperiencesDocument): Map<string, string[]> {
-  const refs = new Map<string, string[]>()
-
-  for (const [ci, company] of doc.companies.entries()) {
-    for (const [ri, role] of company.roles.entries()) {
-      for (const [ai, accomplishment] of role.accomplishments.entries()) {
-        const base = `companies.${ci}.roles.${ri}.accomplishments.${ai}`
-        const sharedRefs = accomplishment.sharedVariants ?? {}
-        for (const refId of Object.values(sharedRefs)) {
-          const paths = refs.get(refId) ?? []
-          paths.push(base)
-          refs.set(refId, paths)
-        }
-      }
-    }
-  }
-
-  return refs
 }

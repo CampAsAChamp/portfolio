@@ -1,7 +1,7 @@
 import { formatLinkedInExport } from "experience-sync/lib/linkedin"
 import { describe, expect, it } from "vitest"
 
-import { makeAccomplishment, makeCompany, makeDocument, makeRole, makeRoleDate, makeSharedVariant } from "./helpers"
+import { makeAccomplishment, makeCompany, makeDocument, makeRole, makeRoleDate } from "./helpers"
 
 describe("formatLinkedInExport", () => {
   it("formats a role with LinkedIn bullets and ranged dates", () => {
@@ -34,8 +34,7 @@ describe("formatLinkedInExport", () => {
     expect(text).toContain("Engineer")
     expect(text).toContain("Acme Corp · Remote")
     expect(text).toContain("Jan 2020 - Dec 2021")
-    expect(text).toContain("• Shipped API")
-    expect(text).not.toContain("https://api.example")
+    expect(text).toContain("• Shipped [API](https://api.example)")
   })
 
   it("uses Present when role has no end date", () => {
@@ -87,9 +86,8 @@ describe("formatLinkedInExport", () => {
     expect(formatLinkedInExport(doc)).toBe("No LinkedIn-tagged accomplishments found.\n")
   })
 
-  it("resolves shared variant text for linked accomplishments", () => {
+  it("resolves variantSources aliases for linked accomplishments", () => {
     const doc = makeDocument({
-      sharedVariants: [makeSharedVariant({ id: "shared-1", variants: { linkedin: "Shared LinkedIn bullet" } })],
       companies: [
         makeCompany({
           id: "acme",
@@ -99,9 +97,9 @@ describe("formatLinkedInExport", () => {
               accomplishments: [
                 makeAccomplishment({
                   id: "a1",
-                  destinations: ["linkedin"],
-                  sharedVariants: { linkedin: "shared-1" },
-                  variants: {},
+                  destinations: ["linkedin", "resume"],
+                  variantSources: { resume: "linkedin" },
+                  variants: { linkedin: "Shared LinkedIn bullet" },
                 }),
               ],
             }),
