@@ -115,25 +115,13 @@ const projects: SoftwareProject[] = [
     name: "Sprint Planner",
     technologies: [technologies.NEXTJS, technologies.REACT, technologies.TYPESCRIPT, technologies.TAILWIND, technologies.GITHUB_ACTIONS],
     bulletPoints: [
-      "Next.js PWA for real-time sprint capacity planning: (team members × sprint days) − PTO days − on-call days − rollover points.",
+      "Next.js PWA for real-time sprint capacity planning: (team members x sprint days) - PTO days - on-call days - rollover points.",
       "Tracks PTO and activities, on-call time, and unfinished work from prior sprints; save, load, duplicate, rename, and delete configurations in local storage.",
       "Static export deployed to GitHub Pages with installable PWA support, dark mode, and toast feedback.",
     ],
     githubLink: "https://github.com/CampAsAChamp/sprint-planner",
     siteLink: "https://campasachamp.github.io/sprint-planner/",
     thumbnail: SprintPlannerThumbnail,
-  },
-  {
-    name: "SDGE Rate Checker",
-    technologies: [technologies.JAVASCRIPT, technologies.HTML5, technologies.CSS3],
-    bulletPoints: [
-      "Real-time [SDGE](https://www.sdge.com/) Time of Use period tracker — shows current rate level, time range, and when the next period change occurs.",
-      "Automatic weekday/weekend and seasonal schedule detection (summer vs. winter TOU windows).",
-      "Static single-page app with live updates every second; deployed to GitHub Pages with no backend required.",
-    ],
-    githubLink: "https://github.com/CampAsAChamp/sdge-rate-checker",
-    siteLink: "https://campasachamp.github.io/sdge-rate-checker/",
-    thumbnail: SDGERateCheckerThumbnail,
   },
   {
     name: "Los Angeles Sports Chick Fil A Scraper",
@@ -188,10 +176,22 @@ const projects: SoftwareProject[] = [
     thumbnail: HomeServerThumbnail,
   },
   {
+    name: "SDGE Rate Checker",
+    technologies: [technologies.JAVASCRIPT, technologies.HTML5, technologies.CSS3],
+    bulletPoints: [
+      "Real-time [SDGE](https://www.sdge.com/) Time of Use period tracker — shows current rate level, time range, and when the next period change occurs.",
+      "Automatic weekday/weekend and seasonal schedule detection (summer vs. winter TOU windows).",
+      "Static single-page app with live updates every second; deployed to GitHub Pages with no backend required.",
+    ],
+    githubLink: "https://github.com/CampAsAChamp/sdge-rate-checker",
+    siteLink: "https://campasachamp.github.io/sdge-rate-checker/",
+    thumbnail: SDGERateCheckerThumbnail,
+  },
+  {
     name: "Diggerman",
     technologies: [technologies.CPP, technologies.OPEN_GL],
     bulletPoints: [
-      "Dig Dug–style 2D game in C++ with [OpenGL](https://www.opengl.org/)/freeglut: dig through a dirt grid, avoid falling boulders, collect oil barrels to clear the level.",
+      "Dig Dug style 2D game in C++ with [OpenGL](https://www.opengl.org/)/freeglut: dig through a dirt grid, avoid falling boulders, collect oil barrels to clear the level.",
       'Protester AI with state machines (wander, chase, stunned, leave); pathfinding via BFS back to the exit; harder "hardcore" protesters that track the player more aggressively.',
       "Player tools and pickups: water squirts, sonar reveal, gold bait to distract enemies, scoring, and irrKlang sound effects; built as a Visual Studio team project.",
     ],
@@ -222,7 +222,7 @@ const projects: SoftwareProject[] = [
     name: "Object & Face Detection System",
     technologies: [technologies.PYTHON, technologies.NUMPY],
     bulletPoints: [
-      "From-scratch object detector in Python/NumPy: image gradients → HOG descriptors over 8×8 blocks with 9 orientation bins.",
+      "From-scratch object detector in Python/NumPy: image gradients → HOG descriptors over 8x8 blocks with 9 orientation bins.",
       "Learns a template as average positive HOG minus average negative HOG, then finds matches with sliding-window correlation and non-maxima suppression.",
       "Validated on faces and a second category (traffic signs), including scenes with multiple detections.",
     ],
