@@ -9,17 +9,17 @@ alwaysApply: false
 ## Pipeline chain (main branch)
 
 ```
-push/PR → CI → (on main push success) Deploy job in same workflow
-           → (on success) → Release + Lighthouse
+push/PR → Test and Deploy → (on main push success) Deploy job in same workflow
+                        → (on success) → Release + Lighthouse
 ```
 
-| Workflow         | Trigger              | Purpose                                                                                                            |
-| ---------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `ci.yml`         | push/PR to `main`    | audit → lint → exp:check → unit tests → build → E2E → upload `production-build` → (main push only) Wrangler deploy |
-| `release.yml`    | CI success on `main` | semantic-release (skips if `[skip ci]`)                                                                            |
-| `lighthouse.yml` | CI success on `main` | LHCI desktop + mobile against preview server                                                                       |
+| Workflow              | Trigger                   | Purpose                                                                                                            |
+| --------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `test-and-deploy.yml` | push/PR to `main`         | audit → lint → exp:check → unit tests → build → E2E → upload `production-build` → (main push only) Wrangler deploy |
+| `release.yml`         | Test and Deploy on `main` | semantic-release (skips if `[skip ci]`)                                                                            |
+| `lighthouse.yml`      | Test and Deploy on `main` | LHCI desktop + mobile against preview server                                                                       |
 
-Production hosting is **Cloudflare Pages** (`portfolio` project). Deploys are CI-gated: the `deploy` job in `ci.yml` runs after the `test` job passes on pushes to `main`, downloads the same workflow's `production-build` artifact, and uploads via Wrangler. Cloudflare automatic production branch deployments are disabled. Required repo secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
+Production hosting is **Cloudflare Pages** (`portfolio` project). Deploys are CI-gated: the `deploy` job in `test-and-deploy.yml` runs after the `test` job passes on pushes to `main`, downloads the same workflow's `production-build` artifact, and uploads via Wrangler. Cloudflare automatic production branch deployments are disabled. Required repo secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
 
 ## Conventions
 
@@ -31,7 +31,7 @@ Production hosting is **Cloudflare Pages** (`portfolio` project). Deploys are CI
 
 ## When modifying workflows
 
-1. Keep the CI workflow as the single gate — downstream workflows depend on it via `workflow_run`
+1. Keep the Test and Deploy workflow as the single gate — downstream workflows depend on it via `workflow_run`
 2. Do not remove artifact uploads on E2E failure (needed for debugging)
 3. Match Node/Yarn versions with `package.json` engines
 4. Lighthouse runs desktop and mobile CI configs (`config/lighthouse/desktop.ci.json`, `config/lighthouse/mobile.ci.json`)

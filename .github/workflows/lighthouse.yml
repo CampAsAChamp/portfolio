@@ -2,7 +2,7 @@ name: Lighthouse Audits
 
 on:
   workflow_run:
-    workflows: ["CI"]
+    workflows: ["Test and Deploy"]
     types: [completed]
     branches: [main]
 

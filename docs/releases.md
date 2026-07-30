@@ -7,7 +7,7 @@ This project uses [semantic-release](https://semantic-release.gitbook.io/) for a
 Releases are fully automated based on conventional commit messages:
 
 1. **Commit** with conventional format (e.g. `feat:`, `fix:`)
-2. **Push to main** — triggers the CI pipeline
+2. **Push to main** — triggers the Test and Deploy workflow
 3. **After tests pass** — the Release workflow automatically:
    - Analyzes commits since the last release
    - Determines the next version number based on commit types
@@ -40,7 +40,7 @@ git commit -m "fix: resolve mobile navigation bug"
 git push origin main
 
 # GitHub Actions will:
-# 1. Run CI (ci.yml workflow)
+# 1. Run Test and Deploy (test-and-deploy.yml workflow)
 # 2. If tests pass, run release (release.yml workflow)
 # 3. Create version 1.0.1 with generated changelog
 # 4. Create GitHub release with notes
