@@ -49,6 +49,8 @@ export const roleSchema = z.object({
 export const companySchema = z.object({
   id: z.string().min(1),
   companyName: z.string().min(1),
+  /** Optional short label for the editor sidebar (exports use companyName). */
+  nickname: z.string().min(1).optional(),
   location: z.string().min(1),
   /** Key into COLORS (e.g. INTUIT). */
   colorKey: z.string().min(1),

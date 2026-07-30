@@ -1,3 +1,4 @@
+import { getCompanyDisplayName } from "experience-sync/lib/companyDisplayName"
 import type { Destination, ExperiencesDocument, ValidationIssue } from "experience-sync/lib/schema"
 
 const DESTINATION_LABELS: Record<Destination, string> = {
@@ -22,7 +23,7 @@ export function formatValidationIssue(doc: ExperiencesDocument | null | undefine
     const accIdx = Number(accomplishmentMatch[3])
     const company = doc.companies[companyIdx]
     const role = company?.roles[roleIdx]
-    const companyName = company?.companyName || `Company ${companyIdx + 1}`
+    const companyName = company ? getCompanyDisplayName(company) : `Company ${companyIdx + 1}`
     const roleName = role?.position || `Role ${roleIdx + 1}`
     const bulletLabel = `Bullet ${accIdx + 1}`
 
@@ -42,7 +43,7 @@ export function formatValidationIssue(doc: ExperiencesDocument | null | undefine
     const roleIdx = Number(roleEndMatch[2])
     const company = doc.companies[companyIdx]
     const role = company?.roles[roleIdx]
-    const companyName = company?.companyName || `Company ${companyIdx + 1}`
+    const companyName = company ? getCompanyDisplayName(company) : `Company ${companyIdx + 1}`
     const roleName = role?.position || `Role ${roleIdx + 1}`
     return `${companyName} → ${roleName}: ${issue.message}`
   }
@@ -53,7 +54,7 @@ export function formatValidationIssue(doc: ExperiencesDocument | null | undefine
     const roleIdx = Number(roleMatch[2])
     const company = doc.companies[companyIdx]
     const role = company?.roles[roleIdx]
-    const companyName = company?.companyName || `Company ${companyIdx + 1}`
+    const companyName = company ? getCompanyDisplayName(company) : `Company ${companyIdx + 1}`
     const roleName = role?.position || `Role ${roleIdx + 1}`
     return `${companyName} → ${roleName}: ${issue.message}`
   }
@@ -62,7 +63,7 @@ export function formatValidationIssue(doc: ExperiencesDocument | null | undefine
   if (companyMatch) {
     const companyIdx = Number(companyMatch[1])
     const company = doc.companies[companyIdx]
-    const companyName = company?.companyName || `Company ${companyIdx + 1}`
+    const companyName = company ? getCompanyDisplayName(company) : `Company ${companyIdx + 1}`
     return `${companyName}: ${issue.message}`
   }
 

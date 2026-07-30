@@ -25,6 +25,16 @@ describe("validateExperiencesDocument", () => {
     expect(result.issues).toEqual([])
   })
 
+  it("accepts an optional company nickname", () => {
+    const result = validateExperiencesDocument(
+      makeDocument({
+        companies: [makeCompany({ id: "raytheon", companyName: "Raytheon Intelligence & Space", nickname: "Raytheon" })],
+      }),
+    )
+    expect(result.success).toBe(true)
+    expect(result.data?.companies[0]?.nickname).toBe("Raytheon")
+  })
+
   it("errors when a selected destination has no variant text", () => {
     const doc = makeDocument({
       companies: [

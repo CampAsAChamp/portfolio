@@ -559,13 +559,13 @@ label {
 }
 
 .company-accordion-item.expanded {
-  border-color: var(--color-mouse);
+  border-color: var(--company-brand-color, var(--color-purple));
   background: var(--color-card);
 }
 
 .app button.company-accordion-trigger {
   display: grid;
-  grid-template-columns: 1rem 1fr auto;
+  grid-template-columns: 1rem auto 1fr auto;
   gap: 0.55rem;
   align-items: center;
   width: 100%;
@@ -586,21 +586,32 @@ label {
 }
 
 .app button.company-accordion-trigger.active {
-  background: var(--color-mouse);
-  color: var(--color-background);
+  background: transparent;
+  color: var(--color-body-text);
 }
 
 .app button.company-accordion-trigger.active:hover:not(:disabled) {
-  background: var(--color-mouse);
-  color: var(--color-background);
+  background: rgb(112, 112, 112, 0.08);
+  color: var(--color-body-text);
 }
 
 .app button.company-accordion-trigger.active .company-accordion-chevron {
-  color: var(--color-background);
+  color: var(--company-brand-color, var(--color-purple));
 }
 
-.app button.company-accordion-trigger.active .company-accordion-name {
-  color: var(--color-background) !important;
+.company-accordion-logo {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 1rem;
+  height: 1rem;
+}
+
+.company-accordion-logo-img {
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  object-fit: contain;
 }
 
 .company-accordion-chevron {
@@ -637,8 +648,8 @@ label {
 }
 
 .company-accordion-item.expanded .company-accordion-count {
-  background: var(--color-background);
-  color: var(--color-mouse);
+  background: color-mix(in srgb, var(--company-brand-color, var(--color-purple)) 16%, transparent);
+  color: var(--company-brand-color, var(--color-purple));
 }
 
 .company-accordion-panel {
@@ -702,8 +713,8 @@ label {
 
 .app button.role-item.active,
 .app button.role-item.active:hover:not(:disabled) {
-  border-color: var(--color-mouse);
-  background: rgb(112, 112, 112, 0.1);
+  border-color: var(--company-brand-color, var(--color-purple));
+  background: color-mix(in srgb, var(--company-brand-color, var(--color-purple)) 10%, transparent);
   color: var(--color-body-text);
 }
 
@@ -1045,7 +1056,7 @@ label {
 }
 
 .company-primary-fields {
-  grid-template-columns: 1fr 1fr minmax(10rem, 0.75fr) minmax(10rem, 0.75fr);
+  grid-template-columns: 1fr minmax(6.5rem, 0.65fr) 1fr minmax(9rem, 0.7fr) minmax(9rem, 0.7fr);
 }
 
 .company-primary-fields .color-key-hint {

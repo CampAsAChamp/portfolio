@@ -1,4 +1,4 @@
-import type { Accomplishment, Destination, ExperiencesDocument, Variants } from "experience-sync/lib/schema"
+import type { Accomplishment, Company, Destination, ExperiencesDocument, Variants } from "experience-sync/lib/schema"
 
 export const ALL_DESTINATIONS = ["portfolio", "resume", "linkedin"] as const satisfies readonly Destination[]
 
@@ -140,14 +140,27 @@ export function expandDocumentDefaults(doc: ExperiencesDocument): ExperiencesDoc
   }
 }
 
+function normalizeCompany(company: Company): Company {
+  const nickname = company.nickname?.trim()
+  const next: Company = {
+    ...company,
+    roles: company.roles.map((role) => ({
+      ...role,
+      accomplishments: role.accomplishments.map((acc) => normalizeAccomplishment(acc)),
+    })),
+  }
+
+  if (nickname) {
+    next.nickname = nickname
+  } else {
+    delete next.nickname
+  }
+
+  return next
+}
+
 export function normalizeDocument(doc: ExperiencesDocument): ExperiencesDocument {
   return {
-    companies: doc.companies.map((company) => ({
-      ...company,
-      roles: company.roles.map((role) => ({
-        ...role,
-        accomplishments: role.accomplishments.map((acc) => normalizeAccomplishment(acc)),
-      })),
-    })),
+    companies: doc.companies.map((company) => normalizeCompany(company)),
   }
 }

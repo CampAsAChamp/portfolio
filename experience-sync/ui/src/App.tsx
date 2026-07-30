@@ -6,15 +6,18 @@ import {
   useMemo,
   useRef,
   useState,
+  type CSSProperties,
   type AnimationEvent as ReactAnimationEvent,
   type ReactElement,
   type ReactNode,
 } from "react"
 import { ThemeSwitcher } from "components/NavBar/ThemeSwitcher"
 import { expandDocumentDefaults, isDefaultAccomplishmentSetup, isPortfolioOnly } from "experience-sync/lib/accomplishmentDefaults"
+import { getCompanyDisplayName } from "experience-sync/lib/companyDisplayName"
 import { formatValidationIssue, formatValidationSummary } from "experience-sync/lib/formatValidationIssue"
 import { formatLinkedInExport, formatLinkedInExportBlocks, type CompanyExportBlock } from "experience-sync/lib/linkedin"
 import { formatResumeExport, formatResumeExportBlocks } from "experience-sync/lib/resume"
+import { LOGO_OPTIONS_BY_FILE } from "experience-sync/ui/src/catalogs/logoCatalog"
 import { AccomplishmentVariants } from "experience-sync/ui/src/components/AccomplishmentVariants"
 import {
   ArrowDownIcon,
@@ -152,6 +155,21 @@ function GroupedExportPreview({ blocks, emptyMessage, header, renderBlock }: Gro
         </Fragment>
       ))}
     </div>
+  )
+}
+
+/** Small company logo shown in the sidebar accordion trigger. */
+function CompanySidebarLogo({ logoFile }: { logoFile: string }): ReactElement {
+  const logo = LOGO_OPTIONS_BY_FILE.get(logoFile)
+
+  return (
+    <span className="company-accordion-logo" aria-hidden>
+      {logo ? (
+        <img src={logo.url} alt="" className="company-accordion-logo-img" />
+      ) : (
+        <span className="company-accordion-logo-img unknown" />
+      )}
+    </span>
   )
 }
 
@@ -483,7 +501,7 @@ export function App(): ReactElement {
 
   function removeCompany(ci: number): void {
     if (!doc || doc.companies.length <= 1) return
-    const name = doc.companies[ci]?.companyName || "this company"
+    const name = doc.companies[ci] ? getCompanyDisplayName(doc.companies[ci]!) : "this company"
     if (!window.confirm(`Delete ${name} and all its roles?`)) return
 
     updateDoc((d) => {
@@ -802,7 +820,11 @@ export function App(): ReactElement {
               const expanded = ci === companyIdx
               const brandColor = getColorHex(c.colorKey)
               return (
-                <li key={c.id} className={`company-accordion-item${expanded ? " expanded" : ""}`}>
+                <li
+                  key={c.id}
+                  className={`company-accordion-item${expanded ? " expanded" : ""}`}
+                  style={brandColor ? ({ "--company-brand-color": brandColor } as CSSProperties) : undefined}
+                >
                   <button
                     type="button"
                     className={`company-accordion-trigger${expanded ? " active" : ""}`}
@@ -815,8 +837,9 @@ export function App(): ReactElement {
                     <span className="company-accordion-chevron" aria-hidden>
                       ▾
                     </span>
+                    <CompanySidebarLogo logoFile={c.logoFile} />
                     <span className="company-accordion-name" style={brandColor ? { color: brandColor } : undefined}>
-                      {c.companyName || "Untitled company"}
+                      {getCompanyDisplayName(c) || "Untitled company"}
                     </span>
                     <span className="company-accordion-count">{c.roles.length}</span>
                   </button>
@@ -889,6 +912,35 @@ export function App(): ReactElement {
                       onChange={(e) =>
                         updateDoc((d) => {
                           d.companies[companyIdx]!.companyName = e.target.value
+                          return d
+                        })
+                      }
+                    />
+                  </label>
+                  <label>
+                    Nickname
+                    <input
+                      value={company.nickname ?? ""}
+                      placeholder="Sidebar label (optional)"
+                      onChange={(e) =>
+                        updateDoc((d) => {
+                          const value = e.target.value
+                          if (value) {
+                            d.companies[companyIdx]!.nickname = value
+                          } else {
+                            delete d.companies[companyIdx]!.nickname
+                          }
+                          return d
+                        })
+                      }
+                      onBlur={(e) =>
+                        updateDoc((d) => {
+                          const value = e.target.value.trim()
+                          if (value) {
+                            d.companies[companyIdx]!.nickname = value
+                          } else {
+                            delete d.companies[companyIdx]!.nickname
+                          }
                           return d
                         })
                       }
