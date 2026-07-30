@@ -41,11 +41,13 @@ fi
 # binaries, e.g. @rollup/rollup-linux-x64-gnu) never overwrites the host's node_modules —
 # this repo uses yarn's node-modules linker, so without this the host's Mac binaries get
 # clobbered and `yarn test`/`yarn start` break until a fresh host-side `yarn install`.
+# `${arr[@]+"${arr[@]}"}` expands to nothing when empty — plain `"${arr[@]}"` trips
+# `set -u` on macOS's Bash 3.2.
 docker run --rm \
   -v "${ROOT}:/work" \
   -v /work/node_modules \
-  "${CA_MOUNT_ARGS[@]}" \
-  "${CA_ENV_ARGS[@]}" \
+  ${CA_MOUNT_ARGS[@]+"${CA_MOUNT_ARGS[@]}"} \
+  ${CA_ENV_ARGS[@]+"${CA_ENV_ARGS[@]}"} \
   -w /work \
   -e CI=1 \
   -e PW_UPDATE_LINUX_SNAPSHOTS=1 \
