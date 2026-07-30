@@ -1,3 +1,8 @@
+## 1.19.0 (2026-07-30)
+
+* chore: update experiences ([2d570f1](https://github.com/CampAsAChamp/portfolio/commit/2d570f1))
+* feat: improve experience sync export previews ([798c8be](https://github.com/CampAsAChamp/portfolio/commit/798c8be))
+
 ## 1.18.0 (2026-07-30)
 
 * chore: fix vs code test explorer setup ([83b8f62](https://github.com/CampAsAChamp/portfolio/commit/83b8f62))
