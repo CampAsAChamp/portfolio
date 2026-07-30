@@ -770,13 +770,13 @@ export function App(): ReactElement {
               </button>
             </HintedAction>
             <HintedAction
-              label="Save YAML"
+              label="Save"
               description="Writes the current editor state to experience-sync/content/experiences.yaml and refreshes LinkedIn/resume previews."
               when="You're done editing, or before Generate / Copy. Does not update the live portfolio by itself."
             >
               <button type="button" className="ghost icon-action" disabled={busy} onClick={() => void handleSave()}>
                 <SaveIcon />
-                <span>Save YAML</span>
+                <span>Save</span>
               </button>
             </HintedAction>
           </div>
