@@ -21,6 +21,7 @@ import {
   ArrowUpIcon,
   BriefcaseIcon,
   BuildingIcon,
+  CopyIcon,
   DocumentIcon,
   GlobeIcon,
   LinkedInIcon,
@@ -91,6 +92,43 @@ interface GroupedExportPreviewProps {
   emptyMessage: string
   header?: ReactNode
   renderBlock: (block: CompanyExportBlock) => ReactElement
+}
+
+interface PreviewSectionHeaderProps {
+  icon: ReactNode
+  title: string
+  copyLabel: string
+  copyDescription: string
+  copyWhen: string
+  onCopy: () => void | Promise<void>
+  disabled?: boolean
+  spaced?: boolean
+}
+
+/** Preview pane section title with destination icon and copy action. */
+function PreviewSectionHeader({
+  icon,
+  title,
+  copyLabel,
+  copyDescription,
+  copyWhen,
+  onCopy,
+  disabled = false,
+  spaced = false,
+}: PreviewSectionHeaderProps): ReactElement {
+  return (
+    <div className={`preview-section-header${spaced ? " preview-section-header-spaced" : ""}`}>
+      <div className="preview-section-title">
+        {icon}
+        <h2>{title}</h2>
+      </div>
+      <HintedAction label={copyLabel} description={copyDescription} when={copyWhen}>
+        <button type="button" className="preview-copy-btn" disabled={disabled} aria-label={copyLabel} onClick={() => void onCopy()}>
+          <CopyIcon size={16} />
+        </button>
+      </HintedAction>
+    </div>
+  )
 }
 
 /** Preview pane content with horizontal rules between companies. */
@@ -729,14 +767,6 @@ export function App(): ReactElement {
             <GlobeIcon />
             <span>Generate portfolio</span>
           </button>
-          <button type="button" className="ghost icon-action" disabled={busy} onClick={() => void handleExportResume()}>
-            <DocumentIcon />
-            <span>Copy resume</span>
-          </button>
-          <button type="button" className="ghost icon-action" disabled={busy} onClick={() => void handleCopyLinkedIn()}>
-            <LinkedInIcon />
-            <span>Copy LinkedIn</span>
-          </button>
           <ThemeSwitcher />
         </div>
       </header>
@@ -1156,7 +1186,15 @@ export function App(): ReactElement {
         </main>
 
         <aside className="preview-pane">
-          <h2>LinkedIn preview</h2>
+          <PreviewSectionHeader
+            icon={<LinkedInIcon />}
+            title="LinkedIn preview"
+            copyLabel="Copy LinkedIn"
+            copyDescription="Saves YAML if needed, then copies LinkedIn-ready plain text to the clipboard."
+            copyWhen="You're ready to paste experience bullets into LinkedIn."
+            disabled={busy}
+            onCopy={handleCopyLinkedIn}
+          />
           <div className="preview">
             <GroupedExportPreview
               blocks={linkedinPreviewBlocks}
@@ -1164,7 +1202,16 @@ export function App(): ReactElement {
               renderBlock={(block) => <LinkedInExportPreviewContent block={block} />}
             />
           </div>
-          <h2 className="preview-heading-spaced">Resume preview</h2>
+          <PreviewSectionHeader
+            icon={<DocumentIcon />}
+            title="Resume preview"
+            copyLabel="Copy resume"
+            copyDescription="Saves YAML if needed, then copies resume markdown to the clipboard."
+            copyWhen="You're ready to paste the Experience section into your resume."
+            disabled={busy}
+            spaced
+            onCopy={handleExportResume}
+          />
           <div className="preview">
             <GroupedExportPreview
               blocks={resumePreviewBlocks}
