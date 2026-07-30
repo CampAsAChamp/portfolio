@@ -65,11 +65,11 @@ Runs unit tests, Lighthouse audits, and E2E tests in sequence (fastest to slowes
 
 ## Continuous Integration
 
-The CI pipeline runs on every push and pull request via [`.github/workflows/test.yml`](../.github/workflows/test.yml):
+The CI pipeline runs on every push and pull request via [`.github/workflows/ci.yml`](../.github/workflows/ci.yml):
 
 **Test job:** lint → unit tests → build → E2E → upload `build/` artifact → (on `main` push) deploy
 
-**Lighthouse job** ([`lighthouse.yml`](../.github/workflows/lighthouse.yml), after Tests pass on `main`): desktop + mobile audits, artifact upload, GitHub status checks.
+**Lighthouse job** ([`lighthouse.yml`](../.github/workflows/lighthouse.yml), after CI passes on `main`): desktop + mobile audits, artifact upload, GitHub status checks.
 
 Workflow details: [`.cursor/rules/ci-workflows.mdc`](../.cursor/rules/ci-workflows.mdc).
 

@@ -40,7 +40,7 @@ git commit -m "fix: resolve mobile navigation bug"
 git push origin main
 
 # GitHub Actions will:
-# 1. Run tests (test.yml workflow)
+# 1. Run CI (ci.yml workflow)
 # 2. If tests pass, run release (release.yml workflow)
 # 3. Create version 1.0.1 with generated changelog
 # 4. Create GitHub release with notes
