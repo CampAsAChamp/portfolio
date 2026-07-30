@@ -20,10 +20,7 @@ async function expectScrollToTopButtonVisible(button: Locator): Promise<void> {
 test.describe("Scroll To Top Button - Desktop", () => {
   let basePage: BasePage
 
-  test.beforeEach(async ({ page }, testInfo) => {
-    // WebKit headless frequently wedges on programmatic scroll with a tall page under
-    // parallel load; Chromium + Firefox still cover scroll-to-top behavior.
-    test.skip(testInfo.project.name === "webkit", "WebKit headless stalls on programmatic scroll")
+  test.beforeEach(async ({ page }) => {
     basePage = new BasePage(page)
     await basePage.goto("/")
   })

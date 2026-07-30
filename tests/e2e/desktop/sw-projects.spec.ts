@@ -195,7 +195,7 @@ test.describe("SW Projects Section - Desktop", () => {
     expect(count).toBeGreaterThan(0)
   })
 
-  test("should display complete SW Projects section - visual regression", async ({ page }, testInfo) => {
+  test("should display complete SW Projects section - visual regression", { tag: "@visual" }, async ({ page }, testInfo) => {
     skipUnlessVisualBaseline(testInfo)
     const firstCard = sectionPage.getSectionCard("sw-projects-container", 0)
     await takeElementScreenshot(firstCard, "sw-projects-section", {

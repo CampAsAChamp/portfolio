@@ -155,7 +155,7 @@ test.describe("Landing Page - Mobile", () => {
     await expect(landingPage.linkedinLink).toBeVisible()
   })
 
-  test("should display mobile landing page - visual regression", async ({ page }, testInfo) => {
+  test("should display mobile landing page - visual regression", { tag: "@visual" }, async ({ page }, testInfo) => {
     skipUnlessVisualBaseline(testInfo)
     const landing = page.locator("#landing-page-container")
     await expect(landing).toHaveScreenshot("landing-page-mobile.png", { animations: "disabled", timeout: 15000 })
@@ -171,7 +171,7 @@ test.describe("Landing Page - Mobile", () => {
     }
   })
 
-  test("should display hamburger menu - visual regression", async ({ page }, testInfo) => {
+  test("should display hamburger menu - visual regression", { tag: "@visual" }, async ({ page }, testInfo) => {
     skipUnlessVisualBaseline(testInfo)
     await navbarPage.openHamburgerMenu()
     const navMenu = page.locator("nav ul")

@@ -140,13 +140,14 @@ test('should display landing page', async ({ page }) => {
 
 1. **User-visible outcomes** — `toBeVisible`, `toBeInViewport`, theme attribute, dialog open/closed. Prefer one contract assertion over four class-name variants.
 2. **API-first** — `scrollIntoViewIfNeeded` / `scrollToSection`, `swiperSlideNext` + `getSwiperRealIndex`, `ensureVideoPlaying`, `ModalPage` — not click/tap races with sleeps.
-3. **Chromium-only for animation / pixel / exact-index** — visual baselines via `skipUnlessVisualBaseline`; delete hollow “stagger animation” tests that only sleep then assert visibility.
+3. **Chromium-only for animation / pixel / exact-index** — tag screenshot tests `@visual` (routed via Playwright project config); delete hollow “stagger animation” tests that only sleep then assert visibility.
 
 ### Visual Regression Testing
 
 Baselines are **Linux-only** (what CI runs). Local Darwin snapshots are skipped so a green Mac run does not hide CI diffs.
 
-- Projects: **Chromium** + **Mobile Chrome** (`skipUnlessVisualBaseline`)
+- Tag screenshot tests with `{ tag: "@visual" }` — only **Chromium** + **Mobile Chrome** projects run them (`grepInvert: /@visual/` on firefox, webkit, Mobile Safari)
+- Call `skipUnlessVisualBaseline(testInfo)` inside `@visual` tests to skip on macOS (Linux CI runs them normally)
 - Prefer CSS/DOM assertions for hover and icon morph — do not screenshot hover states
 - After intentional UI changes, regenerate Linux baselines with Docker:
 
@@ -160,19 +161,13 @@ Do **not** commit Darwin-only `--update-snapshots` from your Mac — those files
 import { takeStableScreenshot } from '../helpers/screenshot-helpers'
 import { skipUnlessVisualBaseline } from '../helpers/visual-helpers'
 
-test('should match visual snapshot', async ({ page }, testInfo) => {
+test('should match visual snapshot', { tag: '@visual' }, async ({ page }, testInfo) => {
   skipUnlessVisualBaseline(testInfo)
   await page.goto('/')
   await takeStableScreenshot(page, 'landing-page', {
     fullPage: false,
   })
 })
-```
-
-After intentional UI changes, update Linux snapshots via Docker:
-
-```bash
-yarn test:e2e:update-snapshots
 ```
 
 ### Video Testing

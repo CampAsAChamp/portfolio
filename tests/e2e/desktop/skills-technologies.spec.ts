@@ -146,7 +146,7 @@ test.describe("Skills & Technologies Section - Desktop", () => {
     expect(count).toBeGreaterThan(8)
   })
 
-  test("should display complete Skills section - visual regression", async ({ page }, testInfo) => {
+  test("should display complete Skills section - visual regression", { tag: "@visual" }, async ({ page }, testInfo) => {
     skipUnlessVisualBaseline(testInfo)
     const skillsContent = page.locator("#skills-content")
     await takeElementScreenshot(skillsContent, "skills-section")

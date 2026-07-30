@@ -159,7 +159,7 @@ test.describe("Experience Section - Desktop", () => {
     expect(count).toBeGreaterThan(1)
   })
 
-  test("should display complete Experience section - visual regression", async () => {
+  test("should display complete Experience section - visual regression", { tag: "@visual" }, async () => {
     skipUnlessVisualBaseline(test.info())
     const firstCard = sectionPage.getSectionCard("experience-container", 0)
     await takeElementScreenshot(firstCard, "experience-section")

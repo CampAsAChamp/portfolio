@@ -69,12 +69,15 @@ export default defineConfig({
     {
       name: "firefox",
       testMatch: "**/desktop/**/*.spec.ts",
+      grepInvert: /@visual/,
       use: { ...devices["Desktop Firefox"] },
     },
 
     {
       name: "webkit",
       testMatch: "**/desktop/**/*.spec.ts",
+      grepInvert: /@visual/,
+      workers: 1,
       use: { ...devices["Desktop Safari"] },
     },
 
@@ -87,6 +90,7 @@ export default defineConfig({
     {
       name: "Mobile Safari",
       testMatch: "**/mobile/**/*.spec.ts",
+      grepInvert: /@visual/,
       use: { ...devices["iPhone 12"] },
     },
   ],

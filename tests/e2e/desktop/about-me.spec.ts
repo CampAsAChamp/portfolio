@@ -128,7 +128,7 @@ test.describe("About Me Section - Desktop", () => {
     }
   })
 
-  test("should display complete About Me section - visual regression", async ({ page }, testInfo) => {
+  test("should display complete About Me section - visual regression", { tag: "@visual" }, async ({ page }, testInfo) => {
     skipUnlessVisualBaseline(testInfo)
     await takeElementScreenshot(page.locator("#about-me-container"), "about-me-section")
   })

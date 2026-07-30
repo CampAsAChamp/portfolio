@@ -14,8 +14,8 @@
  * the previous commit) — this repo pushes straight to main without a PR, so a
  * PR-only check never actually runs in practice.
  *
- * Only the two projects with maintained baselines (see `VISUAL_BASELINE_PROJECTS` in
- * tests/e2e/helpers/visual-helpers.ts) are checked: chromium and Mobile Chrome.
+ * Only the two projects with maintained baselines (chromium and Mobile Chrome — see
+ * `@visual` tag routing in config/playwright.config.ts) are checked:
  */
 import { execSync } from "node:child_process"
 

@@ -32,7 +32,7 @@ test.describe("Landing Page - Desktop", () => {
     expect(initialScroll).toBe(0)
   })
 
-  test("should display all landing page elements - visual regression", async ({ page }, testInfo) => {
+  test("should display all landing page elements - visual regression", { tag: "@visual" }, async ({ page }, testInfo) => {
     skipUnlessVisualBaseline(testInfo)
     await landingPage.waitForLandingAnimations()
 
@@ -53,9 +53,7 @@ test.describe("Landing Page - Desktop", () => {
     await expect(page.locator("#about-me-images")).toBeInViewport({ timeout: 15000 })
   })
 
-  test("should smooth scroll to all sections via nav links", async ({ page }, testInfo) => {
-    test.skip(testInfo.project.name === "webkit", "WebKit headless stalls on repeated programmatic scroll")
-
+  test("should smooth scroll to all sections via nav links", async ({ page }) => {
     const sections = [
       { link: "About Me", targetId: "about-me-images" },
       { link: "Experience", targetId: "experience-header" },
@@ -65,7 +63,8 @@ test.describe("Landing Page - Desktop", () => {
     ]
 
     for (const section of sections) {
-      await landingPage.scrollToPosition(0)
+      await navbarPage.clickLogo()
+      await expect.poll(() => landingPage.getScrollPosition(), { timeout: 15000 }).toBeLessThan(50)
       await waitForScrollComplete(page)
 
       await navbarPage.clickNavLink(section.link)
@@ -74,20 +73,15 @@ test.describe("Landing Page - Desktop", () => {
     }
   })
 
-  test("should navigate to home when logo is clicked", async ({ page }, testInfo) => {
-    test.skip(testInfo.project.name === "webkit", "WebKit headless stalls on programmatic scroll")
+  test("should navigate to home when logo is clicked", async ({ page }) => {
+    await navbarPage.clickNavLink("About Me")
+    await expect(page.locator("#about-me-images")).toBeInViewport({ timeout: 15000 })
 
-    // Scroll down first
-    await landingPage.scrollToPosition(500)
-    await waitForScrollComplete(page)
-
-    // Click logo
     await navbarPage.clickLogo()
     await waitForScrollComplete(page)
 
-    // Should be back at top
     const scrollPosition = await landingPage.getScrollPosition()
-    expect(scrollPosition).toBeLessThan(50) // Allow small buffer
+    expect(scrollPosition).toBeLessThan(50)
   })
 
   test("should have correct hover effect on nav links", async () => {

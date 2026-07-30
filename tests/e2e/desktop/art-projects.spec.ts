@@ -84,7 +84,7 @@ test.describe("Art Projects Section - Desktop", () => {
     expect(await artModal.isModalOpen()).toBe(false)
   })
 
-  test("should display complete Art Projects section - visual regression", async ({ page }, testInfo) => {
+  test("should display complete Art Projects section - visual regression", { tag: "@visual" }, async ({ page }, testInfo) => {
     skipUnlessVisualBaseline(testInfo)
     const section = page.locator("#graphic-design-container")
     await expect(section).toBeVisible()

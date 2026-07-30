@@ -36,11 +36,12 @@ yarn test:e2e:update-font-cache
 
 1. **User-visible outcomes** — prefer `toBeVisible` / `toBeInViewport` / theme attribute / dialog open. Avoid asserting `hide`/`show`/`entrance` CSS classes except where that class is the public contract (then one test, not four).
 2. **API-first** — use `scrollIntoViewIfNeeded` / `SectionPage.scrollToSection`, Swiper helpers (`swiperSlideNext(0)`, `getSwiperRealIndex`), video helpers (`ensureVideoPlaying`), `ModalPage` open/close. Do not use `waitForTimeout` to “settle.”
-3. **Chromium-only for animation / pixel / exact-index** — keep `skipUnlessVisualBaseline` for screenshots; gate stagger/`animate__*`/threshold-pixel checks to Chromium, or delete tests that only sleep then assert visibility.
+3. **Chromium-only for animation / pixel / exact-index** — tag screenshot tests `@visual` (Playwright project config routes them to Chromium/Mobile Chrome only); gate stagger/`animate__*`/threshold-pixel checks to Chromium, or delete tests that only sleep then assert visibility.
 
 ## Visual regression
 
-- Visual baselines are **Chromium / Mobile Chrome** and **Linux-only** (`skipUnlessVisualBaseline` skips Darwin).
+- Tag screenshot tests `{ tag: "@visual" }`. **Chromium / Mobile Chrome** run them; firefox, webkit, and Mobile Safari use `grepInvert: /@visual/` so they never appear as skipped.
+- `skipUnlessVisualBaseline(testInfo)` skips `@visual` tests on Darwin only (Linux CI runs them normally).
 - Functional coverage still runs in Firefox, WebKit, and Mobile Safari.
 - Prefer CSS/DOM assertions for hover and icon morph — do not screenshot hover states.
 - Use `takeStableScreenshot` from `screenshot-helpers.ts` when adding new captures.
