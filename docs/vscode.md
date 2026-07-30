@@ -20,7 +20,7 @@ Cursor does not yet support auto-opening the integrated browser from `launch.jso
 | **Debug: Unit Tests (All)**          | Debug the full unit test suite                                                       |
 | **Debug: Playwright (Current File)** | Open Playwright Inspector for the open spec file                                     |
 | **Experience Sync: Chrome**          | Starts the editor, attaches Chrome debugging at `http://127.0.0.1:4700`              |
-| **Experience Sync: Start Editor**    | Runs the experience sync Vite app only                                               |
+| **Experience Sync: Start Editor**    | Starts the experience sync Vite app at `http://127.0.0.1:4700` (Node 22 via nvm)   |
 
 ## Tasks
 
