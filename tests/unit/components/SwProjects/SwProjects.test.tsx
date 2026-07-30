@@ -4,6 +4,9 @@ import { projects } from "data/swProjects"
 import { describe, expect, it } from "vitest"
 
 describe("SWProjects", () => {
+  const projectsWithGithub = projects.filter((project) => project.githubLink)
+  const projectsWithSite = projects.filter((project) => project.siteLink)
+
   it("renders without crashing", () => {
     render(<SWProjects />)
   })
@@ -11,23 +14,19 @@ describe("SWProjects", () => {
   it("renders the correct number of project cards", () => {
     render(<SWProjects />)
     const projectCards = screen.getAllByRole("button")
-    // Should have 19 project action buttons (15 "View Code" + 4 "Visit Site")
-    // Plus 2 theme switcher buttons = 21 total
-    expect(projectCards.length).toBe(21)
+    expect(projectCards.length).toBe(projectsWithGithub.length + projectsWithSite.length)
   })
 
   it("renders View Code button for projects with githubLink", () => {
     render(<SWProjects />)
     const githubButtons = screen.getAllByText("View Code")
-    // All 15 projects have GitHub links
-    expect(githubButtons.length).toBe(15)
+    expect(githubButtons.length).toBe(projectsWithGithub.length)
   })
 
   it("renders Visit Site button for projects with siteLink", () => {
     render(<SWProjects />)
     const siteButtons = screen.getAllByText("Visit Site")
-    // 4 projects have site links (Anna M. Schneider Law, Sprint Planner, Portfolio Website, SDGE Rate Checker)
-    expect(siteButtons.length).toBe(4)
+    expect(siteButtons.length).toBe(projectsWithSite.length)
   })
 
   it("renders all project names", () => {
