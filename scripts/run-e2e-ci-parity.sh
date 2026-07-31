@@ -13,9 +13,15 @@
 # that root CA (export it with, e.g., `security find-certificate -a -p
 # /Library/Keychains/System.keychain > ~/all-certs.pem`) and this script will install it
 # into the container's trust store before running yarn.
+#
+# Apple Silicon: never run the Playwright image under linux/amd64 (QEMU). Emulated Chromium
+# SIGBUSes constantly and Docker writes multi-hundred-MB `qemu_chrome-headless-shell*.core`
+# files into this repo via the /work bind mount. Use native linux/arm64 and disable cores.
 set -euo pipefail
 
 log_step() { echo "[*] $*" >&2; }
+
+PLATFORM_ARGS=()
 
 resolve_paths() {
   ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -25,6 +31,29 @@ resolve_paths() {
 resolve_image() {
   PLAYWRIGHT_VERSION="$(node -e "console.log(require('./node_modules/@playwright/test/package.json').version)")"
   IMAGE="mcr.microsoft.com/playwright:v${PLAYWRIGHT_VERSION}-noble"
+}
+
+resolve_platform() {
+  PLATFORM_ARGS=()
+  local host_arch="${1:-$(uname -m)}"
+  if [ "$host_arch" = "arm64" ]; then
+    PLATFORM_ARGS=(--platform linux/arm64)
+    log_step "Apple Silicon: forcing linux/arm64 Playwright image (avoids QEMU core dumps)"
+  fi
+  if [ -n "${DOCKER_DEFAULT_PLATFORM:-}" ] && [ "$host_arch" = "arm64" ] && [ "${DOCKER_DEFAULT_PLATFORM}" = "linux/amd64" ]; then
+    echo "Refusing to run: DOCKER_DEFAULT_PLATFORM=linux/amd64 on Apple Silicon emulates Chromium under QEMU and creates huge qemu_chrome-headless-shell*.core files in the repo." >&2
+    echo "Unset DOCKER_DEFAULT_PLATFORM or run: CI=1 yarn test:e2e" >&2
+    exit 1
+  fi
+}
+
+cleanup_qemu_core_dumps() {
+  local cores=( "$ROOT"/qemu_chrome-headless-shell*.core )
+  if [ ! -e "${cores[0]}" ]; then
+    return 0
+  fi
+  log_step "Removing stale QEMU Chromium core dump(s) from repo root"
+  rm -f "$ROOT"/qemu_chrome-headless-shell*.core
 }
 
 build_corp_ca_args() {
@@ -56,9 +85,10 @@ run_suite_in_container() {
   # `set -u` on macOS's Bash 3.2.
   #
   # Prefer the host's native arch. A global DOCKER_DEFAULT_PLATFORM=linux/amd64 on Apple
-  # Silicon forces QEMU and routinely SIGBUS mid-suite.
+  # Silicon forces QEMU and routinely SIGBUS mid-suite (and writes GB of core dumps).
   unset DOCKER_DEFAULT_PLATFORM || true
   docker run --rm \
+    ${PLATFORM_ARGS[@]+"${PLATFORM_ARGS[@]}"} \
     -v "${ROOT}:/work" \
     -v /work/node_modules \
     ${CA_MOUNT_ARGS[@]+"${CA_MOUNT_ARGS[@]}"} \
@@ -67,6 +97,7 @@ run_suite_in_container() {
     -e CI=1 \
     "${IMAGE}" \
     /bin/bash -lc "
+      ulimit -c 0
       ${CA_INSTALL_CMD}
       corepack enable
       yarn install --immutable
@@ -75,18 +106,20 @@ run_suite_in_container() {
 }
 
 main() {
-  log_step "Step 1/3: Resolving paths and Playwright version"
+  log_step "Step 1/4: Resolving paths and Playwright version"
   resolve_paths
+  cleanup_qemu_core_dumps
   resolve_image
+  resolve_platform
   log_step "Running full e2e suite in ${IMAGE} (CI parity: CI=1, retries=2, workers=2)"
 
-  log_step "Step 2/3: Preparing corporate CA bundle (if CORP_CA_BUNDLE is set)"
+  log_step "Step 2/4: Preparing corporate CA bundle (if CORP_CA_BUNDLE is set)"
   build_corp_ca_args
 
-  log_step "Step 3/3: Running suite"
+  log_step "Step 3/4: Running suite"
   run_suite_in_container
 
-  log_step "Done. This should match the real CI run — if it's green here, it should be green in GitHub Actions."
+  log_step "Step 4/4: Done. This should match the real CI run — if it's green here, it should be green in GitHub Actions."
 }
 
 main "$@"
