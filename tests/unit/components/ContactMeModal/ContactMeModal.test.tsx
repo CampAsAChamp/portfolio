@@ -49,11 +49,18 @@ describe("ContactMeModal", () => {
   })
 
   it("calls close when background is clicked", () => {
+    // The component ignores a backdrop click landing within DISMISS_GRACE_PERIOD_MS of open
+    // (see ContactMeModal's handleBackdropClick) to guard against a stray re-click racing the
+    // modal's own opening. Push performance.now() forward so this test exercises a real "click
+    // outside to dismiss" well after open, rather than the race the guard exists to reject.
+    const nowSpy = vi.spyOn(performance, "now").mockReturnValue(performance.now() + 500)
+
     const background = document.getElementById("contact-me-modal-background")
     expect(background).toBeTruthy()
     fireEvent.click(background!)
 
     expect(mockClose).toHaveBeenCalledTimes(1)
+    nowSpy.mockRestore()
   })
 
   it("does not close when modal content is clicked", () => {

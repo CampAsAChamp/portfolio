@@ -4,10 +4,10 @@ import LinkedInLogo from "assets/Dev_Icons/LinkedIn.svg"
 import { Svg } from "components/Common/Svg"
 import { flushSync } from "react-dom"
 
-const loadContactMeModal = (): Promise<typeof import("components/ContactMeModal/ContactMeModal")> =>
-  import("components/ContactMeModal/ContactMeModal")
+type ContactMeModalModule = typeof import("components/ContactMeModal/ContactMeModal")
+type ContactMeModalComponent = ContactMeModalModule["ContactMeModal"]
 
-type ContactMeModalComponent = typeof import("components/ContactMeModal/ContactMeModal").ContactMeModal
+const loadContactMeModal = (): Promise<ContactMeModalModule> => import("components/ContactMeModal/ContactMeModal")
 
 interface ContactMeBarProps {
   isOpen: boolean
@@ -24,6 +24,23 @@ export function ContactMeBar({ isOpen, open, close }: ContactMeBarProps): React.
   const [hasOpened, setHasOpened] = useState(false)
   // Keep the boundary mounted if parent isOpen survives a remount that resets hasOpened
   const showModal = hasOpened || isOpen
+
+  // Once the chunk has resolved, holds the component so handleOpen can mount + open()
+  // synchronously in the same click tick (see handleOpen below for why that matters).
+  const loadedModalRef = useRef<ContactMeModalComponent | null>(null)
+  // In-flight/started load promise, so overlapping trigger events (e.g. pointerdown then
+  // click) share a single import() call instead of kicking off duplicate fetches.
+  const loadPromiseRef = useRef<Promise<ContactMeModalModule> | null>(null)
+
+  const startLoadingModal = (): Promise<ContactMeModalModule> => {
+    if (!loadPromiseRef.current) {
+      loadPromiseRef.current = loadContactMeModal().then((module) => {
+        loadedModalRef.current = module.ContactMeModal
+        return module
+      })
+    }
+    return loadPromiseRef.current
+  }
 
   // Manage button state, view transitions, and restore focus when the modal closes
   useEffect(() => {
@@ -58,26 +75,57 @@ export function ContactMeBar({ isOpen, open, close }: ContactMeBarProps): React.
     return (): void => clearTimeout(timeoutId)
   }, [isOpen])
 
+  // Warm the modal chunk on the first sign of intent (hover/focus/touch), which on real
+  // user interactions virtually always lands before the subsequent click. That lets
+  // handleOpen below take its synchronous path — calling open() directly in the click
+  // handler — instead of deferring past an `await`. The deferred/async path leaves a window,
+  // between the click and the mount+open() landing, during which the (now-mounted) backdrop
+  // fully overlaps the button; any further click delivered in that window — e.g. a second,
+  // distinct click dispatched by something re-triggering the interaction while the first
+  // click's open is still in flight — lands on the backdrop instead of the button and
+  // immediately dismisses the modal it just opened (see the grace-period guard in
+  // ContactMeModal, which is the other half of this fix).
+  const handlePrimeModal = (): void => {
+    if (!hasOpened) void startLoadingModal()
+  }
+
+  const mountModalAndOpen = (component: ContactMeModalComponent): void => {
+    // flushSync forces the mount to commit to the DOM before open() runs. Calling it here —
+    // synchronously inside the click handler (fast path) or inside the microtask continuation
+    // right after the import resolves (cold path, unavoidable for a genuinely first click) —
+    // guarantees open()'s isOpen=true is applied to an already-mounted modal in one paint,
+    // rather than leaving a closed modal on screen for a frame that a stray click could land on.
+    flushSync(() => {
+      setContactMeModalComponent(() => component)
+      setHasOpened(true)
+    })
+    open()
+  }
+
   const handleOpen = (): void => {
     if (isOpeningRef.current) return
 
-    void (async (): Promise<void> => {
-      isOpeningRef.current = true
-      try {
-        if (!hasOpened) {
-          const module = ContactMeModalComponent ? null : await loadContactMeModal()
-          flushSync(() => {
-            if (module) {
-              setContactMeModalComponent(() => module.ContactMeModal)
-            }
-            setHasOpened(true)
-          })
-        }
-        open()
-      } finally {
+    // Fast path: chunk already resolved (typical case, thanks to handlePrimeModal above).
+    // Mount the modal and call open() synchronously, in the same click-event tick, so
+    // React never leaves the DOM in a state where the click can retarget onto the backdrop.
+    if (!hasOpened && loadedModalRef.current) {
+      mountModalAndOpen(loadedModalRef.current)
+      return
+    }
+    if (hasOpened) {
+      open()
+      return
+    }
+
+    // Cold path: genuinely first-ever interaction before the chunk has finished loading
+    // (e.g. a very fast click with no preceding hover/focus). Must wait for the import to
+    // resolve before we can mount+open — there is no way to do this synchronously.
+    isOpeningRef.current = true
+    void startLoadingModal()
+      .then((module) => mountModalAndOpen(module.ContactMeModal))
+      .finally(() => {
         isOpeningRef.current = false
-      }
-    })()
+      })
   }
 
   return (
@@ -88,6 +136,9 @@ export function ContactMeBar({ isOpen, open, close }: ContactMeBarProps): React.
         id="contact-me-button"
         ref={buttonRef}
         onClick={handleOpen}
+        onPointerDown={handlePrimeModal}
+        onMouseEnter={handlePrimeModal}
+        onFocus={handlePrimeModal}
       >
         <span>Contact Me</span>
       </button>

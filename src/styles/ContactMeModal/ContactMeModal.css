@@ -113,7 +113,17 @@
   font-weight: 600;
   color: var(--color-purple);
   text-decoration: none;
-  transition: all 0.2s ease;
+
+  /* Scoped to `color` (the only property this rule actually animates on hover) rather than
+   * `all`. `transition: all` also puts inherited/ancestor-driven discrete properties like
+   * `visibility` under this element's own transition — harmless on Chromium/Firefox, but on
+   * WebKit a near-zero-duration transition of a discrete property (e.g. under
+   * `prefers-reduced-motion: reduce`, which forces `transition-duration: 0.01ms`) can leave
+   * `getComputedStyle`/focus() briefly observing the pre-flip `visibility: hidden` value right
+   * as the modal opens, causing this link to silently fail to focus (see ModalPage.focusElement,
+   * which is why it uses direct DOM `.focus()` + assertion rather than trusting a single call).
+   */
+  transition: color 0.2s ease;
   overflow-wrap: break-word;
 }
 
@@ -150,7 +160,16 @@
   color: var(--color-body-text);
   font-weight: 600;
   font-size: 1rem;
-  transition: all 0.3s ease;
+
+  /* Scoped to the properties the :hover rule below actually animates, rather than `all` —
+   * see the comment on .contact-me-modal-link above for why `all` is unsafe here (it would
+   * also transition inherited/ancestor-driven `visibility`, which is flaky on WebKit).
+   */
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .contact-me-modal-social-link:hover {

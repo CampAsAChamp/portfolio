@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useLayoutEffect, useRef } from "react"
 import GitHubLogo from "assets/Dev_Icons/GitHub.svg"
 import LinkedInLogo from "assets/Dev_Icons/LinkedIn.svg"
 import RealProfilePic120w from "assets/Real_Profile_Pic_120w.webp"
@@ -17,9 +17,41 @@ interface ContactMeModalProps {
 
 const FOCUSABLE_SELECTOR = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
 
+// Ignore a backdrop dismiss-click that lands within this window of the modal opening. The
+// backdrop mounts underneath the trigger button and is a full-viewport target the instant it
+// appears — a second click delivered right after the opening click (e.g. a trigger's own
+// retry/defensive re-click while the first click's open is still settling) can land on the
+// backdrop instead of the button and immediately dismiss the modal it just opened.
+// No real "click outside to dismiss" is ever intentionally this fast.
+const DISMISS_GRACE_PERIOD_MS = 300
+
 export function ContactMeModal({ isOpen, close }: ContactMeModalProps): React.ReactElement {
   const dialogRef = useRef<HTMLDivElement>(null)
   const modalCloseKeyboardProps = useKeyboardAccessibility(close)
+
+  // Sampled in a layout effect (runs synchronously right after the DOM commits, before the
+  // browser paints or any subsequent user event can fire) whenever isOpen flips false -> true.
+  // A plain useEffect would run too late — after paint, with room for a stray click to land
+  // first — to reliably guard the earliest possible dismiss-click.
+  const openedAtRef = useRef<number | null>(null)
+  useLayoutEffect(() => {
+    openedAtRef.current = isOpen ? performance.now() : null
+  }, [isOpen])
+
+  const handleBackdropClick = (): void => {
+    if (!isOpen) return
+    // Read the clock here (handler-execution time) instead of the click event's own
+    // `timeStamp`. `Event.timeStamp` is supposed to share an origin with `performance.now()`,
+    // and does on Chromium/Firefox — but on WebKit, native/OS-level synthesized clicks (which
+    // is how Playwright's WebKit driver dispatches clicks, and how real trackpad/mouse input
+    // reaches WebKit) carry a `timeStamp` from an unrelated clock, off by many orders of
+    // magnitude from `performance.now()`. Subtracting the two there always yields a huge delta,
+    // so this guard would never engage on WebKit. The handler runs synchronously off the click
+    // dispatch with no meaningful delay, so sampling `performance.now()` right here is just as
+    // accurate for this comparison and is portable across all engines.
+    if (openedAtRef.current !== null && performance.now() - openedAtRef.current < DISMISS_GRACE_PERIOD_MS) return
+    close()
+  }
 
   // Focus trap and initial focus when dialog opens
   useEffect(() => {
@@ -64,7 +96,12 @@ export function ContactMeModal({ isOpen, close }: ContactMeModalProps): React.Re
   return (
     // Backdrop click dismisses; keyboard users close via Escape (useModal) or the Close button
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-    <div className={`modal-bg${isOpen ? " show" : ""}`} id="contact-me-modal-background" onClick={close} aria-hidden={!isOpen}>
+    <div
+      className={`modal-bg${isOpen ? " show" : ""}`}
+      id="contact-me-modal-background"
+      onClick={handleBackdropClick}
+      aria-hidden={!isOpen}
+    >
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
       <div
         id="contact-me-modal-content"
