@@ -3,9 +3,10 @@
 # before a push instead of after.
 #
 # CI runs on GitHub's `ubuntu-latest` (Ubuntu 24.04 / noble) with CI=1 (which sets
-# playwright.config.ts's retries: 2, workers: 2). Running `yarn test:e2e` directly on a
-# Mac does NOT reproduce this: different OS, different Chromium build (font rendering,
-# codec support), different retry/worker config, and no network isolation.
+# playwright.config.ts's workers: 2; retries are 0 in all environments). Running
+# `yarn test:e2e` directly on a Mac does NOT reproduce this: different OS, different
+# Chromium build (font rendering, codec support), different worker count, and no
+# network isolation.
 #
 # On a machine behind a corporate TLS-intercepting proxy (e.g. Intuit's), the container
 # has no route to the proxy's root CA, so yarn/npm HTTPS calls fail with
@@ -75,7 +76,7 @@ build_corp_ca_args() {
 }
 
 run_suite_in_container() {
-  # -e CI=1 mirrors playwright.config.ts's CI-only retries/workers, same as GitHub Actions.
+  # -e CI=1 mirrors playwright.config.ts's CI-only worker count, same as GitHub Actions.
   # This repo uses yarn's node-modules linker, so `yarn install` writes real platform
   # binaries (e.g. @rollup/rollup-linux-x64-gnu) straight into node_modules. Without an
   # anonymous volume there, that install clobbers the host's Mac binaries and breaks
@@ -111,7 +112,7 @@ main() {
   cleanup_qemu_core_dumps
   resolve_image
   resolve_platform
-  log_step "Running full e2e suite in ${IMAGE} (CI parity: CI=1, retries=2, workers=2)"
+  log_step "Running full e2e suite in ${IMAGE} (CI parity: CI=1, workers=2, retries=0)"
 
   log_step "Step 2/4: Preparing corporate CA bundle (if CORP_CA_BUNDLE is set)"
   build_corp_ca_args
