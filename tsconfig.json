@@ -10,18 +10,19 @@
     "module": "ESNext", // Use the latest ES module system (import/export)
     "moduleResolution": "bundler", // Use bundler-style module resolution (optimized for Vite/Webpack)
     "resolveJsonModule": true, // Allow importing .json files as modules
-    "baseUrl": "src", // Base directory for resolving non-relative module imports
     "paths": {
-      // Path aliases for cleaner imports (e.g., "import X from 'components/X'" instead of "../../components/X")
-      "@/*": ["./*"], // @/ refers to src/ directory
-      "components/*": ["components/*"], // Import from components/ directly
-      "assets/*": ["assets/*"], // Import from assets/ directly
-      "data/*": ["data/*"], // Import from data/ directly
-      "styles/*": ["styles/*"], // Import from styles/ directly
-      "hooks/*": ["hooks/*"], // Import from hooks/ directly
-      "utils/*": ["utils/*"], // Import from utils/ directly
-      "tests/*": ["../tests/*"], // Import from tests/ directory (one level up from src)
-      "experience-sync/*": ["../experience-sync/*"] // Experience sync tooling (unit tests import lib/)
+      // Path aliases for cleaner imports (e.g., "import X from 'components/X'" instead of "../../components/X").
+      // Resolved relative to this file directly (baseUrl is deprecated as of TS 5.9).
+      "@/*": ["./src/*"], // @/ refers to src/ directory
+      "components/*": ["./src/components/*"], // Import from components/ directly
+      "assets/*": ["./src/assets/*"], // Import from assets/ directly
+      "data/*": ["./src/data/*"], // Import from data/ directly
+      "styles/*": ["./src/styles/*"], // Import from styles/ directly
+      "hooks/*": ["./src/hooks/*"], // Import from hooks/ directly
+      "utils/*": ["./src/utils/*"], // Import from utils/ directly
+      "types/*": ["./src/types/*"], // Import from types/ directly
+      "tests/*": ["./tests/*"], // Import from tests/ directory
+      "experience-sync/*": ["./experience-sync/*"] // Experience sync tooling (unit tests import lib/)
     },
 
     /* JavaScript Support */
