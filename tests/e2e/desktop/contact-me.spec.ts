@@ -96,14 +96,21 @@ test.describe("Contact Me - Desktop", () => {
       // Assert CSS hover styles instead of a screenshot — rotation anti-aliasing is flaky across runs/OS.
       await modalPage.hoverCloseButton()
 
-      const styles = await modalPage.closeButton.evaluate((el) => {
-        const computed = getComputedStyle(el)
-        return { color: computed.color, transform: computed.transform }
+      // Poll instead of a single read — the spin/color transition may still be in flight.
+      const readStyles = (): Promise<{ color: string; transform: string }> =>
+        modalPage.closeButton.evaluate((el) => {
+          const computed = getComputedStyle(el)
+          return { color: computed.color, transform: computed.transform }
+        })
+
+      await expect.poll(readStyles, { timeout: 5000, intervals: [50, 100, 150] }).toMatchObject({
+        // #ffc261
+        color: "rgb(255, 194, 97)",
       })
 
-      expect(styles.color).toBe("rgb(255, 194, 97)")
-      expect(styles.transform).toMatch(/matrix/)
-      expect(styles.transform).not.toBe("none")
+      await expect.poll(async () => (await readStyles()).transform, { timeout: 5000, intervals: [50, 100, 150] }).toMatch(/matrix/)
+
+      expect((await readStyles()).transform).not.toBe("none")
     })
 
     test("should close when clicking backdrop", async () => {
@@ -146,7 +153,7 @@ test.describe("Contact Me - Desktop", () => {
     })
 
     test("should be keyboard accessible", async ({ page }) => {
-      // Prefer the focus trap's initial focus; fall back to DOM focus (Playwright .focus() is flaky on WebKit)
+      // Prefer the focus trap's initial focus; fall back to DOM focus if it hasn't landed yet
       const focused = await modalPage.closeButton.evaluate((el) => el === document.activeElement)
       if (!focused) {
         await modalPage.focusElement(modalPage.closeButton)
@@ -166,7 +173,7 @@ test.describe("Contact Me - Desktop", () => {
       const githubLink = page.locator("#contact-me-modal-socials a").first()
       const linkedinLink = page.locator("#contact-me-modal-socials a").nth(1)
 
-      // Assert each control is focusable via the DOM API (Playwright locator.focus() is flaky on WebKit)
+      // Assert each control is focusable via the DOM API
       await modalPage.focusElement(closeButton)
       await modalPage.focusElement(emailLink)
       await modalPage.focusElement(githubLink)

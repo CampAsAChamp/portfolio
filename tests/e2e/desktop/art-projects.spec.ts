@@ -62,14 +62,21 @@ test.describe("Art Projects Section - Desktop", () => {
     await openFirstProject()
     await artModal.hoverCloseButton()
 
-    const styles = await artModal.closeButton.evaluate((el) => {
-      const computed = getComputedStyle(el)
-      return { color: computed.color, transform: computed.transform }
+    // Poll instead of a single read — the spin/color transition may still be in flight.
+    const readStyles = (): Promise<{ color: string; transform: string }> =>
+      artModal.closeButton.evaluate((el) => {
+        const computed = getComputedStyle(el)
+        return { color: computed.color, transform: computed.transform }
+      })
+
+    await expect.poll(readStyles, { timeout: 5000, intervals: [50, 100, 150] }).toMatchObject({
+      // #ffc261
+      color: "rgb(255, 194, 97)",
     })
 
-    expect(styles.color).toBe("rgb(255, 194, 97)")
-    expect(styles.transform).toMatch(/matrix/)
-    expect(styles.transform).not.toBe("none")
+    await expect.poll(async () => (await readStyles()).transform, { timeout: 5000, intervals: [50, 100, 150] }).toMatch(/matrix/)
+
+    expect((await readStyles()).transform).not.toBe("none")
   })
 
   test("should close modal when clicking backdrop", async () => {

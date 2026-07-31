@@ -39,24 +39,18 @@ export class ModalPage extends BasePage {
    */
   async waitForModalOpen(): Promise<void> {
     if (this.isContactModal && (await this.modal.count()) === 0) {
-      // Contact modal is lazy-loaded (React.lazy + Suspense); the first click can resolve
-      // before the chunk finishes fetching/parsing under CPU contention (parallel browser
-      // projects competing for cycles on CI's 2-vCPU runner). Only retry-click while the
-      // modal element has never attached at all — once it's attached, re-clicking the
-      // trigger button is itself a bug (it can toggle the modal closed again via a second
-      // `open()` racing the lazy mount), so this loop must stop the instant it appears
-      // rather than clicking again if `show` is merely still pending.
+      // ContactMeBar pre-warms the modal's dynamic import on hover/focus/pointerdown, so a
+      // real click almost always finds the chunk already resolved and opens synchronously
+      // (see ContactMeBar.tsx's handleOpen). A single bounded retry remains as a safety net
+      // for a genuinely cold, unwarmed first click racing a slow/CPU-starved CI runner — but
+      // this must stay a single retry, not a loop: if the modal still isn't attached after
+      // one re-click, that's a real regression in the open path and should fail loudly here
+      // rather than being silently retried away for up to 20s.
       const contactButton = this.page.locator("#contact-me-button")
-      const deadline = Date.now() + 20000
-
-      while (Date.now() < deadline && (await this.modal.count()) === 0) {
+      await contactButton.click({ force: true })
+      await this.modal.waitFor({ state: "attached", timeout: 5000 }).catch(async () => {
         await contactButton.click({ force: true })
-        try {
-          await this.modal.waitFor({ state: "attached", timeout: 3000 })
-        } catch {
-          // Chunk still hasn't mounted — try again until deadline
-        }
-      }
+      })
     }
 
     await this.modal.waitFor({ state: "attached", timeout: 10000 })
@@ -66,7 +60,7 @@ export class ModalPage extends BasePage {
   }
 
   /**
-   * Focus an element via the DOM API — more reliable than Playwright's locator.focus() on WebKit.
+   * Focus an element via the DOM API, then assert the focus landed.
    */
   async focusElement(locator: Locator): Promise<void> {
     await locator.evaluate((el: HTMLElement) => el.focus())
