@@ -1,3 +1,15 @@
+## <small>1.21.4 (2026-08-05)</small>
+
+* chore: drop deprecated baseUrl from tsconfig ([3b8b76c](https://github.com/CampAsAChamp/portfolio/commit/3b8b76c))
+* chore: harden ci parity script ([ddf0311](https://github.com/CampAsAChamp/portfolio/commit/ddf0311))
+* test: harden e2e assertions against transition timing ([c04edb0](https://github.com/CampAsAChamp/portfolio/commit/c04edb0))
+* ci: drop desktop WebKit and tighten retry policy ([0608acf](https://github.com/CampAsAChamp/portfolio/commit/0608acf))
+* ci: improvements ([3b17770](https://github.com/CampAsAChamp/portfolio/commit/3b17770))
+* ci: rename stages ([218ad17](https://github.com/CampAsAChamp/portfolio/commit/218ad17))
+* ci: rename workflow to Test and Deploy ([d4931b8](https://github.com/CampAsAChamp/portfolio/commit/d4931b8))
+* fix: contact me first load animation ([61c186c](https://github.com/CampAsAChamp/portfolio/commit/61c186c))
+* fix: eliminate contact modal open race condition ([c7470d2](https://github.com/CampAsAChamp/portfolio/commit/c7470d2))
+
 ## <small>1.21.3 (2026-07-30)</small>
 
 * fix: naming conflicts ([9b700a3](https://github.com/CampAsAChamp/portfolio/commit/9b700a3))
